@@ -1,0 +1,18 @@
+# Dependências da Tarefa 6 (pipeline/tarefa6_arquitetura.py).
+#
+# torch + transformers: instalados aqui localmente (CPU, versões abaixo) para
+# validar a parte do script que não depende de GPU (batching/padding/máscara,
+# dimensionamento de n_positions). A instanciação real do modelo com
+# attn_implementation="flash_attention_2" só roda com CUDA — precisa ser
+# feita no runtime GPU do Colab Pro (ver ARQUITETURA.md, Estágio 3), não aqui.
+# No Colab, trocar por `torch` (build CUDA, já vem pré-instalado no runtime GPU).
+torch==2.13.0
+transformers==5.15.1
+
+# flash-attn: compila kernels CUDA específicos da GPU no momento da instalação
+# — não instala (ou não serve de nada) numa máquina sem GPU/CUDA como este
+# ambiente local. Instalar direto no runtime do Colab Pro, com GPU Ampere+
+# (L4 recomendado — ver conversa/ROADMAP), depois de confirmar a GPU com
+# `!nvidia-smi`:
+#   pip install flash-attn --no-build-isolation
+flash-attn
