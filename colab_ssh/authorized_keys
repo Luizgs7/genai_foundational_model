@@ -1,0 +1,12 @@
+# Chaves públicas do time autorizadas a conectar na sessão compartilhada do
+# Colab. Uma por linha, formato padrão do OpenSSH (ssh-ed25519 <base64> <comentário>).
+#
+# São chaves PÚBLICAS — não tem problema nenhum isso ficar num repo público.
+# NUNCA coloque uma chave PRIVADA aqui (arquivo sem ".pub", ou o conteúdo que
+# começa com "-----BEGIN OPENSSH PRIVATE KEY-----").
+#
+# Como adicionar a sua: rode colab_ssh/setup_local.sh, copie a linha que ele
+# imprime no final e adicione abaixo.
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN5O6hIIRP6zgnoyjiJJp/cirniOXggFL+b3JKw4YPj2 genai_foundational_model-colab
+
