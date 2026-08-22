@@ -1,0 +1,2040 @@
+<title>Rastro do Cliente 860.703.096-50</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f5;
+    --surface: #ffffff;
+    --surface-alt: #f1efe6;
+    --border: #e2dfd2;
+    --ink: #201f1a;
+    --ink-dim: #6e6c60;
+    --ink-faint: #9a9787;
+    --accent: #2b6e5e;
+    --accent-strong: #1e4f44;
+    --accent-soft: #e3eeea;
+
+    --c-evt-text: #2b6e5e;
+    --c-evt-border: #2b6e5e;
+
+    --c-categoria-bg: #f3e6db; --c-categoria-text: #8a4b24;
+    --c-marca-bg: #e0eaf6;     --c-marca-text: #29538a;
+    --c-fabricante-bg: #e8e9ec; --c-fabricante-text: #52596b;
+    --c-produto-bg: #f0e3f1;   --c-produto-text: #7a3d82;
+    --c-valor-bg: #e0f0e6;     --c-valor-text: #1f7a45;
+    --c-desconto-bg: #eff0dc;  --c-desconto-text: #75801f;
+    --c-qtd-bg: #def0ec;       --c-qtd-text: #1d7a6e;
+    --c-pagamento-bg: #f6ead1; --c-pagamento-text: #8a6210;
+    --c-canal-bg: #f7e3de;     --c-canal-text: #a03d2a;
+    --c-recencia-bg: #e5e3f6; --c-recencia-text: #4a3f9c;
+    --c-mes-bg: #e4e9ee;       --c-mes-text: #47607a;
+
+    --split-train-bg: #e0f0e6; --split-train-text: #1f7a45;
+    --split-val-bg: #f6ead1;   --split-val-text: #8a6210;
+    --split-test-bg: #f7e3de;  --split-test-text: #a03d2a;
+
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14181a;
+      --surface: #1b2023;
+      --surface-alt: #20262a;
+      --border: #2b3236;
+      --ink: #eae8df;
+      --ink-dim: #a3a094;
+      --ink-faint: #6f6c60;
+      --accent: #6fcba9;
+      --accent-strong: #8fe0bf;
+      --accent-soft: #1e2b27;
+
+      --c-evt-text: #6fcba9;
+      --c-evt-border: #6fcba9;
+
+      --c-categoria-bg: #3a2a1e; --c-categoria-text: #e3b48c;
+      --c-marca-bg: #1e2a3a;     --c-marca-text: #9dc3ef;
+      --c-fabricante-bg: #2a2c30; --c-fabricante-text: #b8bcc6;
+      --c-produto-bg: #2e2032;   --c-produto-text: #dda8e3;
+      --c-valor-bg: #1c3226;     --c-valor-text: #7fd8a0;
+      --c-desconto-bg: #2e3018;  --c-desconto-text: #c7d16b;
+      --c-qtd-bg: #1a322e;       --c-qtd-text: #7fd9cb;
+      --c-pagamento-bg: #332b14; --c-pagamento-text: #e8c066;
+      --c-canal-bg: #33201a;     --c-canal-text: #e89a80;
+      --c-recencia-bg: #241f38; --c-recencia-text: #b0a8ee;
+      --c-mes-bg: #202a32;       --c-mes-text: #9db8cc;
+
+      --split-train-bg: #1c3226; --split-train-text: #7fd8a0;
+      --split-val-bg: #332b14;   --split-val-text: #e8c066;
+      --split-test-bg: #33201a;  --split-test-text: #e89a80;
+
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #14181a;
+    --surface: #1b2023;
+    --surface-alt: #20262a;
+    --border: #2b3236;
+    --ink: #eae8df;
+    --ink-dim: #a3a094;
+    --ink-faint: #6f6c60;
+    --accent: #6fcba9;
+    --accent-strong: #8fe0bf;
+    --accent-soft: #1e2b27;
+
+    --c-evt-text: #6fcba9;
+    --c-evt-border: #6fcba9;
+
+    --c-categoria-bg: #3a2a1e; --c-categoria-text: #e3b48c;
+    --c-marca-bg: #1e2a3a;     --c-marca-text: #9dc3ef;
+    --c-fabricante-bg: #2a2c30; --c-fabricante-text: #b8bcc6;
+    --c-produto-bg: #2e2032;   --c-produto-text: #dda8e3;
+    --c-valor-bg: #1c3226;     --c-valor-text: #7fd8a0;
+    --c-desconto-bg: #2e3018;  --c-desconto-text: #c7d16b;
+    --c-qtd-bg: #1a322e;       --c-qtd-text: #7fd9cb;
+    --c-pagamento-bg: #332b14; --c-pagamento-text: #e8c066;
+    --c-canal-bg: #33201a;     --c-canal-text: #e89a80;
+    --c-recencia-bg: #241f38; --c-recencia-text: #b0a8ee;
+    --c-mes-bg: #202a32;       --c-mes-text: #9db8cc;
+
+    --split-train-bg: #1c3226; --split-train-text: #7fd8a0;
+    --split-val-bg: #332b14;   --split-val-text: #e8c066;
+    --split-test-bg: #33201a;  --split-test-text: #e89a80;
+
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono {
+    font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  /* ---- header ---- */
+  .masthead {
+    margin-bottom: 72px;
+  }
+  .eyebrow {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.2vw, 2.9rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  .masthead .lede {
+    max-width: 62ch;
+    font-size: 1.08rem;
+    color: var(--ink-dim);
+    margin: 0 0 32px;
+  }
+  .masthead .lede .cpf {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--ink);
+    background: var(--surface-alt);
+    padding: 0.05em 0.4em;
+    border-radius: 4px;
+    font-size: 0.92em;
+  }
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .stat {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    padding: 9px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .stat b {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.05rem;
+    color: var(--accent-strong);
+  }
+  .stat span {
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+  }
+
+  /* ---- trace / rail ---- */
+  .trace { position: relative; }
+  .trace::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 27px;
+    width: 2px;
+    background: var(--border);
+  }
+  .stage {
+    position: relative;
+    padding-left: 76px;
+    margin-bottom: 76px;
+  }
+  .stage:last-child { margin-bottom: 0; }
+  .stage-num {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--accent-strong);
+  }
+  .stage h2 {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    margin: 0 0 12px;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  .stage .prose {
+    max-width: 68ch;
+    color: var(--ink-dim);
+    margin: 0 0 28px;
+    font-size: 1.02rem;
+  }
+  .stage .source {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+  }
+
+  /* ---- generic table ---- */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 640px;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.86rem;
+  }
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+  }
+  tbody td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+  td.dim, span.dim { color: var(--ink-faint); }
+  td.num { text-align: right; }
+
+  /* ---- stage 1: timeline ---- */
+  .timeline-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 40px 28px 20px;
+  }
+  .timeline {
+    position: relative;
+    height: 2px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+  .tl-dot {
+    position: absolute;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--surface);
+    cursor: default;
+  }
+  .tl-train { background: var(--split-train-text); }
+  .tl-val { background: var(--split-val-text); }
+  .tl-test { background: var(--split-test-text); }
+  .tl-cut {
+    position: absolute;
+    top: -28px;
+    bottom: -10px;
+    width: 0;
+    border-left: 1.5px dashed var(--ink-faint);
+  }
+  .tl-cut span {
+    position: absolute;
+    top: -22px;
+    left: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .timeline-legend {
+    display: flex;
+    gap: 18px;
+    margin-top: 30px;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+  }
+  .timeline-legend .dot {
+    display: inline-block;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .split-pill {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    padding: 2px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .split-train { background: var(--split-train-bg); color: var(--split-train-text); }
+  .split-val   { background: var(--split-val-bg);   color: var(--split-val-text); }
+  .split-test  { background: var(--split-test-bg);  color: var(--split-test-text); }
+
+  /* ---- stage 2: bucket bars ---- */
+  .bucket-cell { display: flex; align-items: center; gap: 8px; }
+  .bucket-fill {
+    display: inline-block;
+    width: 46px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface-alt);
+    position: relative;
+    overflow: hidden;
+  }
+  .bucket-fill::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: calc((var(--b) + 1) / 10 * 100%);
+    background: var(--accent);
+    border-radius: 3px;
+  }
+  .bucket-n { font-size: 0.78rem; color: var(--ink-dim); min-width: 1ch; }
+
+  /* ---- chips (field-type coding) ---- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .chip-EVT, .chip-ESTRUTURAL {
+    background: transparent;
+    border: 1px solid var(--c-evt-border);
+    color: var(--c-evt-text);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .chip-CATEGORIA { background: var(--c-categoria-bg); color: var(--c-categoria-text); }
+  .chip-MARCA { background: var(--c-marca-bg); color: var(--c-marca-text); }
+  .chip-FABRICANTE { background: var(--c-fabricante-bg); color: var(--c-fabricante-text); }
+  .chip-PRODUTO { background: var(--c-produto-bg); color: var(--c-produto-text); }
+  .chip-VALOR_BUCKET { background: var(--c-valor-bg); color: var(--c-valor-text); }
+  .chip-DESCONTO_BUCKET { background: var(--c-desconto-bg); color: var(--c-desconto-text); }
+  .chip-QTD { background: var(--c-qtd-bg); color: var(--c-qtd-text); }
+  .chip-PAGAMENTO { background: var(--c-pagamento-bg); color: var(--c-pagamento-text); }
+  .chip-CANAL { background: var(--c-canal-bg); color: var(--c-canal-text); }
+  .chip-RECENCIA { background: var(--c-recencia-bg); color: var(--c-recencia-text); }
+  .chip-MES { background: var(--c-mes-bg); color: var(--c-mes-text); }
+  .chip-outtrain { opacity: 0.4; filter: saturate(0.6); }
+
+  /* ---- stage 3: mapping table ---- */
+  .map-table td { vertical-align: middle; }
+  .mono-arrow { color: var(--ink-faint); text-align: center; width: 24px; }
+  .id-badge {
+    background: var(--surface-alt);
+    color: var(--ink);
+    padding: 2px 9px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+
+  /* ---- stage 4: legend + chip stream ---- */
+  .legend-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-bottom: 22px;
+  }
+  .legend-item { display: inline-flex; }
+  .chip-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-content: flex-start;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+  .chip-panel::-webkit-scrollbar { width: 8px; }
+  .chip-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .caption {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+    margin-top: 14px;
+  }
+  .caption .swatch {
+    display: inline-block;
+    width: 9px; height: 9px;
+    border-radius: 2px;
+    background: var(--ink-faint);
+    opacity: 0.4;
+    vertical-align: middle;
+    margin: 0 4px;
+  }
+
+  /* ---- stage 5: batch bar ---- */
+  .batch-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.76rem;
+    color: var(--ink-dim);
+    margin-bottom: 6px;
+  }
+  .batchbar {
+    position: relative;
+    height: 30px;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: repeating-linear-gradient(
+      135deg,
+      var(--surface-alt), var(--surface-alt) 6px,
+      var(--surface) 6px, var(--surface) 12px
+    );
+    margin-bottom: 30px;
+  }
+  .batchbar-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: var(--pct);
+    background: var(--accent);
+  }
+  .batchbar-boundary {
+    position: absolute;
+    top: -4px; bottom: -4px;
+    left: var(--pct);
+    width: 0;
+    border-left: 2px solid var(--accent-strong);
+  }
+  .batch-legend {
+    display: flex;
+    gap: 20px;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    margin-bottom: 32px;
+  }
+  .batch-legend .sw {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: -1px;
+  }
+  .sw-real { background: var(--accent); }
+  .sw-pad {
+    background: repeating-linear-gradient(135deg, var(--surface-alt), var(--surface-alt) 3px, var(--surface) 3px, var(--surface) 6px);
+    border: 1px solid var(--border);
+  }
+  tr.zoom-pad td { color: var(--ink-faint); }
+  td.label-ignore { color: var(--ink-faint); }
+
+  h3.subhead {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+
+  /* ---- footer ---- */
+  .footer {
+    margin-top: 96px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 640px) {
+    .stage { padding-left: 56px; }
+    .stage-num { width: 40px; height: 40px; font-size: 0.95rem; }
+    .trace::before { left: 19px; }
+    table { min-width: 560px; }
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Customer Foundation Model &middot; Pipeline de tokeniza&ccedil;&atilde;o</p>
+    <h1>O rastro de um cliente, etapa a etapa</h1>
+    <p class="lede">
+      Do CSV bruto ao lote que entra no Transformer: o cliente <span class="cpf">860.703.096-50</span>
+      passando por cada transforma&ccedil;&atilde;o j&aacute; implementada no pipeline &mdash;
+      splits, discretiza&ccedil;&atilde;o, vocabul&aacute;rio, serializa&ccedil;&atilde;o e batching.
+    </p>
+    <div class="stat-row">
+      <div class="stat"><b>31</b><span>transa&ccedil;&otilde;es</span></div>
+      <div class="stat"><b>29</b><span>treino</span></div>
+      <div class="stat"><b>1</b><span>valida&ccedil;&atilde;o</span></div>
+      <div class="stat"><b>1</b><span>teste</span></div>
+      <div class="stat"><b>373</b><span>tokens (seq_full)</span></div>
+      <div class="stat"><b>349</b><span>tokens (seq_train)</span></div>
+    </div>
+  </header>
+
+  <div class="trace">
+
+    <section class="stage" id="stage-0">
+      <div class="stage-num">0</div>
+      <p class="eyebrow">Etapa 0</p>
+      <h2>31 transa&ccedil;&otilde;es, direto da fonte</h2>
+      <p class="prose">
+        O hist&oacute;rico bruto deste cliente na base sint&eacute;tica, sem nenhum tratamento.
+        Ponto de partida de tudo: cada linha &eacute; uma compra real, com data, categoria,
+        marca, valores, forma de pagamento e canal. As pr&oacute;ximas etapas transformam isso,
+        progressivamente, em algo que um Transformer causal consegue processar.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Data</th><th>Categoria</th><th>Marca</th><th>Fabricante</th>
+            <th>Produto</th><th>Valor total</th><th>Desconto</th><th>Qtd</th>
+            <th>Pagamento</th><th>Canal</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+<td class="mono dim">#0</td>
+<td class="mono">29 jul 2023</td>
+<td>Fertilizantes</td>
+<td>VerdeTech</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0110</td>
+<td class="mono num">R$ 9.065,40</td>
+<td class="mono num dim">R$ 554,70</td>
+<td class="mono num">9</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#998</td>
+<td class="mono">03 ago 2023</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0067</td>
+<td class="mono num">R$ 9.722,54</td>
+<td class="mono num dim">R$ 1.273,56</td>
+<td class="mono num">10</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#1230</td>
+<td class="mono">05 ago 2023</td>
+<td>Máquinas</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0168</td>
+<td class="mono num">R$ 4.507,85</td>
+<td class="mono num dim">R$ 159,11</td>
+<td class="mono num">2</td>
+<td>Boleto</td>
+<td>Online</td>
+</tr>
+<tr>
+<td class="mono dim">#1324</td>
+<td class="mono">05 ago 2023</td>
+<td>Fertilizantes</td>
+<td>CampoForte</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0114</td>
+<td class="mono num">R$ 3.847,30</td>
+<td class="mono num dim">R$ 235,46</td>
+<td class="mono num">9</td>
+<td>PIX</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#5765</td>
+<td class="mono">16 set 2023</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0083</td>
+<td class="mono num">R$ 1.796,69</td>
+<td class="mono num dim">R$ 215,92</td>
+<td class="mono num">3</td>
+<td>PIX</td>
+<td>Online</td>
+</tr>
+<tr>
+<td class="mono dim">#6544</td>
+<td class="mono">24 set 2023</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0073</td>
+<td class="mono num">R$ 3.977,14</td>
+<td class="mono num dim">R$ 419,32</td>
+<td class="mono num">2</td>
+<td>Cartão</td>
+<td>Online</td>
+</tr>
+<tr>
+<td class="mono dim">#13526</td>
+<td class="mono">10 dez 2023</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0068</td>
+<td class="mono num">R$ 2.702,30</td>
+<td class="mono num dim">R$ 258,10</td>
+<td class="mono num">5</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#26862</td>
+<td class="mono">09 mai 2024</td>
+<td>Fertilizantes</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0101</td>
+<td class="mono num">R$ 6.044,83</td>
+<td class="mono num dim">R$ 681,17</td>
+<td class="mono num">4</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#30669</td>
+<td class="mono">20 jun 2024</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0098</td>
+<td class="mono num">R$ 1.216,70</td>
+<td class="mono num dim">R$ 191,59</td>
+<td class="mono num">3</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#35759</td>
+<td class="mono">17 ago 2024</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0063</td>
+<td class="mono num">R$ 4.892,13</td>
+<td class="mono num dim">R$ 404,55</td>
+<td class="mono num">6</td>
+<td>PIX</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#36161</td>
+<td class="mono">21 ago 2024</td>
+<td>Defensivos</td>
+<td>VerdeTech</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0081</td>
+<td class="mono num">R$ 3.320,71</td>
+<td class="mono num dim">R$ 187,61</td>
+<td class="mono num">8</td>
+<td>Cartão</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#40035</td>
+<td class="mono">04 out 2024</td>
+<td>Defensivos</td>
+<td>AgroMax</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0092</td>
+<td class="mono num">R$ 11.113,14</td>
+<td class="mono num dim">R$ 505,74</td>
+<td class="mono num">7</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#41426</td>
+<td class="mono">19 out 2024</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0097</td>
+<td class="mono num">R$ 12.087,54</td>
+<td class="mono num dim">R$ 790,11</td>
+<td class="mono num">9</td>
+<td>Cartão</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#44495</td>
+<td class="mono">24 nov 2024</td>
+<td>Máquinas</td>
+<td>VerdeTech</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0161</td>
+<td class="mono num">R$ 28.390,61</td>
+<td class="mono num dim">R$ 1.546,99</td>
+<td class="mono num">5</td>
+<td>Boleto</td>
+<td>Online</td>
+</tr>
+<tr>
+<td class="mono dim">#47384</td>
+<td class="mono">26 dez 2024</td>
+<td>Defensivos</td>
+<td>CampoForte</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0094</td>
+<td class="mono num">R$ 5.338,29</td>
+<td class="mono num dim">R$ 377,71</td>
+<td class="mono num">4</td>
+<td>Cartão</td>
+<td>Representante</td>
+</tr>
+<tr>
+<td class="mono dim">#48856</td>
+<td class="mono">12 jan 2025</td>
+<td>Máquinas</td>
+<td>CampoForte</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0159</td>
+<td class="mono num">R$ 76.143,38</td>
+<td class="mono num dim">R$ 506,02</td>
+<td class="mono num">4</td>
+<td>Cartão</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#51833</td>
+<td class="mono">14 fev 2025</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0080</td>
+<td class="mono num">R$ 4.612,01</td>
+<td class="mono num dim">R$ 688,81</td>
+<td class="mono num">6</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#51991</td>
+<td class="mono">16 fev 2025</td>
+<td>Máquinas</td>
+<td>VerdeTech</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0167</td>
+<td class="mono num">R$ 152.336,62</td>
+<td class="mono num dim">R$ 10.971,98</td>
+<td class="mono num">7</td>
+<td>PIX</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#53299</td>
+<td class="mono">03 mar 2025</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0078</td>
+<td class="mono num">R$ 2.084,97</td>
+<td class="mono num dim">R$ 267,78</td>
+<td class="mono num">3</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#57291</td>
+<td class="mono">17 abr 2025</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0088</td>
+<td class="mono num">R$ 7.051,07</td>
+<td class="mono num dim">R$ 456,01</td>
+<td class="mono num">6</td>
+<td>Boleto</td>
+<td>Representante</td>
+</tr>
+<tr>
+<td class="mono dim">#57419</td>
+<td class="mono">19 abr 2025</td>
+<td>Sementes</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0007</td>
+<td class="mono num">R$ 15.975,43</td>
+<td class="mono num dim">R$ 1.439,53</td>
+<td class="mono num">8</td>
+<td>Cartão</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#57816</td>
+<td class="mono">23 abr 2025</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0097</td>
+<td class="mono num">R$ 10.912,99</td>
+<td class="mono num dim">R$ 436,91</td>
+<td class="mono num">10</td>
+<td>Boleto</td>
+<td>Representante</td>
+</tr>
+<tr>
+<td class="mono dim">#57832</td>
+<td class="mono">23 abr 2025</td>
+<td>Defensivos</td>
+<td>CampoForte</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0061</td>
+<td class="mono num">R$ 8.262,90</td>
+<td class="mono num dim">R$ 395,90</td>
+<td class="mono num">5</td>
+<td>Cartão</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#71044</td>
+<td class="mono">23 set 2025</td>
+<td>Defensivos</td>
+<td>CampoForte</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0078</td>
+<td class="mono num">R$ 7.943,39</td>
+<td class="mono num dim">R$ 643,81</td>
+<td class="mono num">8</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#71045</td>
+<td class="mono">23 set 2025</td>
+<td>Defensivos</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0084</td>
+<td class="mono num">R$ 3.112,95</td>
+<td class="mono num dim">R$ 152,65</td>
+<td class="mono num">5</td>
+<td>PIX</td>
+<td>Representante</td>
+</tr>
+<tr>
+<td class="mono dim">#76973</td>
+<td class="mono">29 nov 2025</td>
+<td>Defensivos</td>
+<td>CampoForte</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0069</td>
+<td class="mono num">R$ 923,54</td>
+<td class="mono num dim">R$ 49,20</td>
+<td class="mono num">1</td>
+<td>Boleto</td>
+<td>Online</td>
+</tr>
+<tr>
+<td class="mono dim">#78017</td>
+<td class="mono">10 dez 2025</td>
+<td>Máquinas</td>
+<td>VerdeTech</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0172</td>
+<td class="mono num">R$ 37.610,56</td>
+<td class="mono num dim">R$ 4.156,38</td>
+<td class="mono num">2</td>
+<td>PIX</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#78174</td>
+<td class="mono">12 dez 2025</td>
+<td>Defensivos</td>
+<td>AgroMax</td>
+<td class="dim">Empresa A</td>
+<td class="mono">P0097</td>
+<td class="mono num">R$ 1.059,09</td>
+<td class="mono num dim">R$ 100,17</td>
+<td class="mono num">2</td>
+<td>PIX</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#82028</td>
+<td class="mono">24 jan 2026</td>
+<td>Máquinas</td>
+<td>AgriPlus</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0171</td>
+<td class="mono num">R$ 96.208,24</td>
+<td class="mono num dim">R$ 8.460,45</td>
+<td class="mono num">7</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#88838</td>
+<td class="mono">11 abr 2026</td>
+<td>Defensivos</td>
+<td>CampoForte</td>
+<td class="dim">Empresa C</td>
+<td class="mono">P0085</td>
+<td class="mono num">R$ 4.796,25</td>
+<td class="mono num dim">R$ 464,87</td>
+<td class="mono num">4</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+<tr>
+<td class="mono dim">#95462</td>
+<td class="mono">21 jun 2026</td>
+<td>Defensivos</td>
+<td>CampoForte</td>
+<td class="dim">Empresa B</td>
+<td class="mono">P0076</td>
+<td class="mono num">R$ 18.216,81</td>
+<td class="mono num dim">R$ 1.274,63</td>
+<td class="mono num">8</td>
+<td>Boleto</td>
+<td>Loja</td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">base_sintetica_embeddings_100k_v2.csv</p>
+    </section>
+
+    <section class="stage" id="stage-1">
+      <div class="stage-num">1</div>
+      <p class="eyebrow">Etapa 1 &middot; Tarefa 7</p>
+      <h2>A data de cada compra decide seu papel</h2>
+      <p class="prose">
+        O corte de treino / valida&ccedil;&atilde;o / teste &eacute; por data, n&atilde;o por
+        sorteio &mdash; evita que o modelo veja o futuro durante o pr&eacute;-treino. Das
+        31 compras deste cliente, 29 ca&iacute;ram antes do corte de
+        treino, 1 no intervalo de valida&ccedil;&atilde;o e 1 s&oacute; aparece
+        no teste.
+      </p>
+      <div class="timeline-wrap">
+        <div class="timeline">
+          <div class="tl-cut" style="left:86.39%"><span>corte treino&rarr;val<br>28 jan 2026</span></div>
+          <div class="tl-cut" style="left:94.90%"><span>corte val&rarr;teste<br>28 abr 2026</span></div>
+          <div class="tl-dot tl-train" style="left:0.00%" title="#0 · 29 jul 2023 · train"></div>
+<div class="tl-dot tl-train" style="left:0.47%" title="#998 · 03 ago 2023 · train"></div>
+<div class="tl-dot tl-train" style="left:0.66%" title="#1230 · 05 ago 2023 · train"></div>
+<div class="tl-dot tl-train" style="left:0.66%" title="#1324 · 05 ago 2023 · train"></div>
+<div class="tl-dot tl-train" style="left:4.63%" title="#5765 · 16 set 2023 · train"></div>
+<div class="tl-dot tl-train" style="left:5.39%" title="#6544 · 24 set 2023 · train"></div>
+<div class="tl-dot tl-train" style="left:12.67%" title="#13526 · 10 dez 2023 · train"></div>
+<div class="tl-dot tl-train" style="left:26.94%" title="#26862 · 09 mai 2024 · train"></div>
+<div class="tl-dot tl-train" style="left:30.91%" title="#30669 · 20 jun 2024 · train"></div>
+<div class="tl-dot tl-train" style="left:36.39%" title="#35759 · 17 ago 2024 · train"></div>
+<div class="tl-dot tl-train" style="left:36.77%" title="#36161 · 21 ago 2024 · train"></div>
+<div class="tl-dot tl-train" style="left:40.93%" title="#40035 · 04 out 2024 · train"></div>
+<div class="tl-dot tl-train" style="left:42.34%" title="#41426 · 19 out 2024 · train"></div>
+<div class="tl-dot tl-train" style="left:45.75%" title="#44495 · 24 nov 2024 · train"></div>
+<div class="tl-dot tl-train" style="left:48.77%" title="#47384 · 26 dez 2024 · train"></div>
+<div class="tl-dot tl-train" style="left:50.38%" title="#48856 · 12 jan 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:53.50%" title="#51833 · 14 fev 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:53.69%" title="#51991 · 16 fev 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:55.10%" title="#53299 · 03 mar 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:59.36%" title="#57291 · 17 abr 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:59.55%" title="#57419 · 19 abr 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:59.92%" title="#57816 · 23 abr 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:59.92%" title="#57832 · 23 abr 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:74.39%" title="#71044 · 23 set 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:74.39%" title="#71045 · 23 set 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:80.72%" title="#76973 · 29 nov 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:81.76%" title="#78017 · 10 dez 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:81.95%" title="#78174 · 12 dez 2025 · train"></div>
+<div class="tl-dot tl-train" style="left:86.01%" title="#82028 · 24 jan 2026 · train"></div>
+<div class="tl-dot tl-val" style="left:93.29%" title="#88838 · 11 abr 2026 · val"></div>
+<div class="tl-dot tl-test" style="left:100.00%" title="#95462 · 21 jun 2026 · test"></div>
+        </div>
+        <div class="timeline-legend">
+          <span><span class="dot" style="background:var(--split-train-text)"></span>treino</span>
+          <span><span class="dot" style="background:var(--split-val-text)"></span>valida&ccedil;&atilde;o</span>
+          <span><span class="dot" style="background:var(--split-test-text)"></span>teste</span>
+        </div>
+      </div>
+      <p class="source">pipeline/artifacts/splits.csv</p>
+    </section>
+
+    <section class="stage" id="stage-2">
+      <div class="stage-num">2</div>
+      <p class="eyebrow">Etapa 2 &middot; Tarefa 4</p>
+      <h2>Valores cont&iacute;nuos viram posi&ccedil;&atilde;o de quantil</h2>
+      <p class="prose">
+        <span class="mono">valor_total</span> e <span class="mono">desconto</span> s&atilde;o
+        cont&iacute;nuos, mas o vocabul&aacute;rio fechado s&oacute; aceita categorias discretas.
+        Cada valor vira sua posi&ccedil;&atilde;o (0&ndash;9) dentro dos quantis calculados
+        <em>s&oacute; no treino</em>, separadamente por categoria de produto &mdash; M&aacute;quinas
+        tem uma escala de pre&ccedil;o bem diferente das demais.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Data</th><th>Categoria</th><th>Valor total</th><th>Bucket</th>
+            <th>Desconto</th><th>Bucket</th><th>Split</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+<td class="mono dim">#0</td>
+<td class="mono">29 jul 2023</td>
+<td>Fertilizantes</td>
+<td class="mono num dim">R$ 9.065,40</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:7"></span><span class="bucket-n mono">7</span></td>
+<td class="mono num dim">R$ 554,70</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:7"></span><span class="bucket-n mono">7</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#998</td>
+<td class="mono">03 ago 2023</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 9.722,54</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td class="mono num dim">R$ 1.273,56</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:9"></span><span class="bucket-n mono">9</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#1230</td>
+<td class="mono">05 ago 2023</td>
+<td>Máquinas</td>
+<td class="mono num dim">R$ 4.507,85</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:0"></span><span class="bucket-n mono">0</span></td>
+<td class="mono num dim">R$ 159,11</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:0"></span><span class="bucket-n mono">0</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#1324</td>
+<td class="mono">05 ago 2023</td>
+<td>Fertilizantes</td>
+<td class="mono num dim">R$ 3.847,30</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td class="mono num dim">R$ 235,46</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#5765</td>
+<td class="mono">16 set 2023</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 1.796,69</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:1"></span><span class="bucket-n mono">1</span></td>
+<td class="mono num dim">R$ 215,92</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#6544</td>
+<td class="mono">24 set 2023</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 3.977,14</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:4"></span><span class="bucket-n mono">4</span></td>
+<td class="mono num dim">R$ 419,32</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:6"></span><span class="bucket-n mono">6</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#13526</td>
+<td class="mono">10 dez 2023</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 2.702,30</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:2"></span><span class="bucket-n mono">2</span></td>
+<td class="mono num dim">R$ 258,10</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:4"></span><span class="bucket-n mono">4</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#26862</td>
+<td class="mono">09 mai 2024</td>
+<td>Fertilizantes</td>
+<td class="mono num dim">R$ 6.044,83</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:5"></span><span class="bucket-n mono">5</span></td>
+<td class="mono num dim">R$ 681,17</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:7"></span><span class="bucket-n mono">7</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#30669</td>
+<td class="mono">20 jun 2024</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 1.216,70</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:1"></span><span class="bucket-n mono">1</span></td>
+<td class="mono num dim">R$ 191,59</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#35759</td>
+<td class="mono">17 ago 2024</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 4.892,13</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:5"></span><span class="bucket-n mono">5</span></td>
+<td class="mono num dim">R$ 404,55</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:6"></span><span class="bucket-n mono">6</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#36161</td>
+<td class="mono">21 ago 2024</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 3.320,71</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td class="mono num dim">R$ 187,61</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#40035</td>
+<td class="mono">04 out 2024</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 11.113,14</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td class="mono num dim">R$ 505,74</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:7"></span><span class="bucket-n mono">7</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#41426</td>
+<td class="mono">19 out 2024</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 12.087,54</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td class="mono num dim">R$ 790,11</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#44495</td>
+<td class="mono">24 nov 2024</td>
+<td>Máquinas</td>
+<td class="mono num dim">R$ 28.390,61</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td class="mono num dim">R$ 1.546,99</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#47384</td>
+<td class="mono">26 dez 2024</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 5.338,29</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:5"></span><span class="bucket-n mono">5</span></td>
+<td class="mono num dim">R$ 377,71</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:6"></span><span class="bucket-n mono">6</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#48856</td>
+<td class="mono">12 jan 2025</td>
+<td>Máquinas</td>
+<td class="mono num dim">R$ 76.143,38</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td class="mono num dim">R$ 506,02</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:1"></span><span class="bucket-n mono">1</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#51833</td>
+<td class="mono">14 fev 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 4.612,01</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:5"></span><span class="bucket-n mono">5</span></td>
+<td class="mono num dim">R$ 688,81</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#51991</td>
+<td class="mono">16 fev 2025</td>
+<td>Máquinas</td>
+<td class="mono num dim">R$ 152.336,62</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:9"></span><span class="bucket-n mono">9</span></td>
+<td class="mono num dim">R$ 10.971,98</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:9"></span><span class="bucket-n mono">9</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#53299</td>
+<td class="mono">03 mar 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 2.084,97</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:2"></span><span class="bucket-n mono">2</span></td>
+<td class="mono num dim">R$ 267,78</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:4"></span><span class="bucket-n mono">4</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#57291</td>
+<td class="mono">17 abr 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 7.051,07</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:6"></span><span class="bucket-n mono">6</span></td>
+<td class="mono num dim">R$ 456,01</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:6"></span><span class="bucket-n mono">6</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#57419</td>
+<td class="mono">19 abr 2025</td>
+<td>Sementes</td>
+<td class="mono num dim">R$ 15.975,43</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:9"></span><span class="bucket-n mono">9</span></td>
+<td class="mono num dim">R$ 1.439,53</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:9"></span><span class="bucket-n mono">9</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#57816</td>
+<td class="mono">23 abr 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 10.912,99</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td class="mono num dim">R$ 436,91</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:6"></span><span class="bucket-n mono">6</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#57832</td>
+<td class="mono">23 abr 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 8.262,90</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:7"></span><span class="bucket-n mono">7</span></td>
+<td class="mono num dim">R$ 395,90</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:6"></span><span class="bucket-n mono">6</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#71044</td>
+<td class="mono">23 set 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 7.943,39</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:7"></span><span class="bucket-n mono">7</span></td>
+<td class="mono num dim">R$ 643,81</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#71045</td>
+<td class="mono">23 set 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 3.112,95</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:3"></span><span class="bucket-n mono">3</span></td>
+<td class="mono num dim">R$ 152,65</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:2"></span><span class="bucket-n mono">2</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#76973</td>
+<td class="mono">29 nov 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 923,54</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:0"></span><span class="bucket-n mono">0</span></td>
+<td class="mono num dim">R$ 49,20</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:0"></span><span class="bucket-n mono">0</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#78017</td>
+<td class="mono">10 dez 2025</td>
+<td>Máquinas</td>
+<td class="mono num dim">R$ 37.610,56</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:5"></span><span class="bucket-n mono">5</span></td>
+<td class="mono num dim">R$ 4.156,38</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:7"></span><span class="bucket-n mono">7</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#78174</td>
+<td class="mono">12 dez 2025</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 1.059,09</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:0"></span><span class="bucket-n mono">0</span></td>
+<td class="mono num dim">R$ 100,17</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:1"></span><span class="bucket-n mono">1</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#82028</td>
+<td class="mono">24 jan 2026</td>
+<td>Máquinas</td>
+<td class="mono num dim">R$ 96.208,24</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:8"></span><span class="bucket-n mono">8</span></td>
+<td class="mono num dim">R$ 8.460,45</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:9"></span><span class="bucket-n mono">9</span></td>
+<td><span class="split-pill split-train">train</span></td>
+</tr>
+<tr>
+<td class="mono dim">#88838</td>
+<td class="mono">11 abr 2026</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 4.796,25</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:5"></span><span class="bucket-n mono">5</span></td>
+<td class="mono num dim">R$ 464,87</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:6"></span><span class="bucket-n mono">6</span></td>
+<td><span class="split-pill split-val">val</span></td>
+</tr>
+<tr>
+<td class="mono dim">#95462</td>
+<td class="mono">21 jun 2026</td>
+<td>Defensivos</td>
+<td class="mono num dim">R$ 18.216,81</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:9"></span><span class="bucket-n mono">9</span></td>
+<td class="mono num dim">R$ 1.274,63</td>
+<td class="bucket-cell"><span class="bucket-fill" style="--b:9"></span><span class="bucket-n mono">9</span></td>
+<td><span class="split-pill split-test">test</span></td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">pipeline/artifacts/discretizado.csv &middot; pipeline/artifacts/buckets.json</p>
+    </section>
+
+    <section class="stage" id="stage-3">
+      <div class="stage-num">3</div>
+      <p class="eyebrow">Etapa 3 &middot; Tarefa 5</p>
+      <h2>Cada valor vira um token de um vocabul&aacute;rio fechado</h2>
+      <p class="prose">
+        Um dicion&aacute;rio de 312 tokens (fechado, sem BPE) mapeia cada campo &mdash;
+        categoria, marca, bucket de valor, etc. &mdash; para um id inteiro. Abaixo, a
+        <strong>primeira</strong> compra deste cliente (29 jul 2023) passando por esse
+        mapeamento, campo a campo.
+      </p>
+      <div class="table-wrap">
+        <table class="map-table">
+          <thead><tr>
+            <th>Campo original</th><th></th><th>Token</th><th></th><th>id</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+<td class="mono dim">EVT</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-ESTRUTURAL">EVT</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">2</td>
+</tr>
+<tr>
+<td class="mono dim">categoria_produto</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Fertilizantes</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">6</td>
+</tr>
+<tr>
+<td class="mono dim">marca</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-MARCA">MARCA_VerdeTech</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">12</td>
+</tr>
+<tr>
+<td class="mono dim">fabricante</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa B</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">14</td>
+</tr>
+<tr>
+<td class="mono dim">cod_produto</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0110</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">131</td>
+</tr>
+<tr>
+<td class="mono dim">valor_total_bucket</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-VALOR">VALOR_BUCKET_Fertilizantes_7</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">229</td>
+</tr>
+<tr>
+<td class="mono dim">desconto_bucket</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-DESCONTO">DESCONTO_BUCKET_Fertilizantes_7</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">269</td>
+</tr>
+<tr>
+<td class="mono dim">quantidade</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-QTD">QTD_9</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">210</td>
+</tr>
+<tr>
+<td class="mono dim">forma_pagamento</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">16</td>
+</tr>
+<tr>
+<td class="mono dim">canal_venda</td>
+<td class="mono-arrow">&#8594;</td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td class="mono-arrow">&#8594;</td>
+<td class="mono id-badge">19</td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">pipeline/artifacts/vocab.json &mdash; 312 tokens</p>
+    </section>
+
+    <section class="stage" id="stage-4">
+      <div class="stage-num">4</div>
+      <p class="eyebrow">Etapa 4 &middot; Tarefa 3</p>
+      <h2>31 compras viram uma sequ&ecirc;ncia &uacute;nica de 373 tokens</h2>
+      <p class="prose">
+        Cada compra vira um bloco <span class="chip chip-EVT" style="padding:0 6px;">EVT</span>
+        com ordem fixa de campos &mdash; &eacute; essa ordem consistente que permite ao modelo
+        inferir "onde" est&aacute; cada token sem precisar de um embedding posicional (NoPE, Etapa 5).
+        Os tokens esmaecidos no final pertencem &agrave;s 1+1 &uacute;ltimas
+        compras (valida&ccedil;&atilde;o e teste): ficam de fora de <span class="mono">seq_train</span>,
+        o corpus usado no pr&eacute;-treino.
+      </p>
+      <div class="legend-row">
+        <span class="legend-item"><span class="chip chip-ESTRUTURAL">estrutural (BOS/EOS)</span></span>
+<span class="legend-item"><span class="chip chip-EVT">abertura de evento</span></span>
+<span class="legend-item"><span class="chip chip-CATEGORIA">categoria</span></span>
+<span class="legend-item"><span class="chip chip-MARCA">marca</span></span>
+<span class="legend-item"><span class="chip chip-FABRICANTE">fabricante</span></span>
+<span class="legend-item"><span class="chip chip-PRODUTO">produto</span></span>
+<span class="legend-item"><span class="chip chip-VALOR_BUCKET">valor (bucket)</span></span>
+<span class="legend-item"><span class="chip chip-DESCONTO_BUCKET">desconto (bucket)</span></span>
+<span class="legend-item"><span class="chip chip-QTD">quantidade</span></span>
+<span class="legend-item"><span class="chip chip-PAGAMENTO">pagamento</span></span>
+<span class="legend-item"><span class="chip chip-CANAL">canal</span></span>
+<span class="legend-item"><span class="chip chip-MES">mês</span></span>
+<span class="legend-item"><span class="chip chip-RECENCIA">recência</span></span>
+      </div>
+      <div class="chip-panel">
+        <span class="chip chip-ESTRUTURAL" title="id 0">BOS</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 6">CATEGORIA_Fertilizantes</span>
+<span class="chip chip-MARCA" title="id 12">MARCA_VerdeTech</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 131">PRODUTO_P0110</span>
+<span class="chip chip-VALOR_BUCKET" title="id 229">VALOR_BUCKET_Fertilizantes_7</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 269">DESCONTO_BUCKET_Fertilizantes_7</span>
+<span class="chip chip-QTD" title="id 210">QTD_9</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-MES" title="id 306">MES_7</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 88">PRODUTO_P0067</span>
+<span class="chip chip-VALOR_BUCKET" title="id 220">VALOR_BUCKET_Defensivos_8</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 261">DESCONTO_BUCKET_Defensivos_9</span>
+<span class="chip chip-QTD" title="id 211">QTD_10</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 307">MES_8</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 7">CATEGORIA_Máquinas</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 189">PRODUTO_P0168</span>
+<span class="chip chip-VALOR_BUCKET" title="id 232">VALOR_BUCKET_Máquinas_0</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 272">DESCONTO_BUCKET_Máquinas_0</span>
+<span class="chip chip-QTD" title="id 203">QTD_2</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 20">CANAL_Online</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 307">MES_8</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 6">CATEGORIA_Fertilizantes</span>
+<span class="chip chip-MARCA" title="id 11">MARCA_CampoForte</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 135">PRODUTO_P0114</span>
+<span class="chip chip-VALOR_BUCKET" title="id 225">VALOR_BUCKET_Fertilizantes_3</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 265">DESCONTO_BUCKET_Fertilizantes_3</span>
+<span class="chip chip-QTD" title="id 210">QTD_9</span>
+<span class="chip chip-PAGAMENTO" title="id 18">PAGAMENTO_PIX</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 307">MES_8</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 104">PRODUTO_P0083</span>
+<span class="chip chip-VALOR_BUCKET" title="id 213">VALOR_BUCKET_Defensivos_1</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 255">DESCONTO_BUCKET_Defensivos_3</span>
+<span class="chip chip-QTD" title="id 204">QTD_3</span>
+<span class="chip chip-PAGAMENTO" title="id 18">PAGAMENTO_PIX</span>
+<span class="chip chip-CANAL" title="id 20">CANAL_Online</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 308">MES_9</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 94">PRODUTO_P0073</span>
+<span class="chip chip-VALOR_BUCKET" title="id 216">VALOR_BUCKET_Defensivos_4</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 258">DESCONTO_BUCKET_Defensivos_6</span>
+<span class="chip chip-QTD" title="id 203">QTD_2</span>
+<span class="chip chip-PAGAMENTO" title="id 17">PAGAMENTO_Cartão</span>
+<span class="chip chip-CANAL" title="id 20">CANAL_Online</span>
+<span class="chip chip-RECENCIA" title="id 293">RECENCIA_8-15</span>
+<span class="chip chip-MES" title="id 308">MES_9</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 89">PRODUTO_P0068</span>
+<span class="chip chip-VALOR_BUCKET" title="id 214">VALOR_BUCKET_Defensivos_2</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 256">DESCONTO_BUCKET_Defensivos_4</span>
+<span class="chip chip-QTD" title="id 206">QTD_5</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 296">RECENCIA_61-90</span>
+<span class="chip chip-MES" title="id 311">MES_12</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 6">CATEGORIA_Fertilizantes</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 122">PRODUTO_P0101</span>
+<span class="chip chip-VALOR_BUCKET" title="id 227">VALOR_BUCKET_Fertilizantes_5</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 269">DESCONTO_BUCKET_Fertilizantes_7</span>
+<span class="chip chip-QTD" title="id 205">QTD_4</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 297">RECENCIA_91-180</span>
+<span class="chip chip-MES" title="id 304">MES_5</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 119">PRODUTO_P0098</span>
+<span class="chip chip-VALOR_BUCKET" title="id 213">VALOR_BUCKET_Defensivos_1</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 255">DESCONTO_BUCKET_Defensivos_3</span>
+<span class="chip chip-QTD" title="id 204">QTD_3</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 305">MES_6</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 84">PRODUTO_P0063</span>
+<span class="chip chip-VALOR_BUCKET" title="id 217">VALOR_BUCKET_Defensivos_5</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 258">DESCONTO_BUCKET_Defensivos_6</span>
+<span class="chip chip-QTD" title="id 207">QTD_6</span>
+<span class="chip chip-PAGAMENTO" title="id 18">PAGAMENTO_PIX</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 307">MES_8</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 12">MARCA_VerdeTech</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 102">PRODUTO_P0081</span>
+<span class="chip chip-VALOR_BUCKET" title="id 215">VALOR_BUCKET_Defensivos_3</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 255">DESCONTO_BUCKET_Defensivos_3</span>
+<span class="chip chip-QTD" title="id 209">QTD_8</span>
+<span class="chip chip-PAGAMENTO" title="id 17">PAGAMENTO_Cartão</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 307">MES_8</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 10">MARCA_AgroMax</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 113">PRODUTO_P0092</span>
+<span class="chip chip-VALOR_BUCKET" title="id 220">VALOR_BUCKET_Defensivos_8</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 259">DESCONTO_BUCKET_Defensivos_7</span>
+<span class="chip chip-QTD" title="id 208">QTD_7</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 309">MES_10</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 118">PRODUTO_P0097</span>
+<span class="chip chip-VALOR_BUCKET" title="id 220">VALOR_BUCKET_Defensivos_8</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 260">DESCONTO_BUCKET_Defensivos_8</span>
+<span class="chip chip-QTD" title="id 210">QTD_9</span>
+<span class="chip chip-PAGAMENTO" title="id 17">PAGAMENTO_Cartão</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 293">RECENCIA_8-15</span>
+<span class="chip chip-MES" title="id 309">MES_10</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 7">CATEGORIA_Máquinas</span>
+<span class="chip chip-MARCA" title="id 12">MARCA_VerdeTech</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 182">PRODUTO_P0161</span>
+<span class="chip chip-VALOR_BUCKET" title="id 235">VALOR_BUCKET_Máquinas_3</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 275">DESCONTO_BUCKET_Máquinas_3</span>
+<span class="chip chip-QTD" title="id 206">QTD_5</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 20">CANAL_Online</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 310">MES_11</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 11">MARCA_CampoForte</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 115">PRODUTO_P0094</span>
+<span class="chip chip-VALOR_BUCKET" title="id 217">VALOR_BUCKET_Defensivos_5</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 258">DESCONTO_BUCKET_Defensivos_6</span>
+<span class="chip chip-QTD" title="id 205">QTD_4</span>
+<span class="chip chip-PAGAMENTO" title="id 17">PAGAMENTO_Cartão</span>
+<span class="chip chip-CANAL" title="id 21">CANAL_Representante</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 311">MES_12</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 7">CATEGORIA_Máquinas</span>
+<span class="chip chip-MARCA" title="id 11">MARCA_CampoForte</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 180">PRODUTO_P0159</span>
+<span class="chip chip-VALOR_BUCKET" title="id 240">VALOR_BUCKET_Máquinas_8</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 273">DESCONTO_BUCKET_Máquinas_1</span>
+<span class="chip chip-QTD" title="id 205">QTD_4</span>
+<span class="chip chip-PAGAMENTO" title="id 17">PAGAMENTO_Cartão</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 294">RECENCIA_16-30</span>
+<span class="chip chip-MES" title="id 300">MES_1</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 101">PRODUTO_P0080</span>
+<span class="chip chip-VALOR_BUCKET" title="id 217">VALOR_BUCKET_Defensivos_5</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 260">DESCONTO_BUCKET_Defensivos_8</span>
+<span class="chip chip-QTD" title="id 207">QTD_6</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 301">MES_2</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 7">CATEGORIA_Máquinas</span>
+<span class="chip chip-MARCA" title="id 12">MARCA_VerdeTech</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 188">PRODUTO_P0167</span>
+<span class="chip chip-VALOR_BUCKET" title="id 241">VALOR_BUCKET_Máquinas_9</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 281">DESCONTO_BUCKET_Máquinas_9</span>
+<span class="chip chip-QTD" title="id 208">QTD_7</span>
+<span class="chip chip-PAGAMENTO" title="id 18">PAGAMENTO_PIX</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 301">MES_2</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 99">PRODUTO_P0078</span>
+<span class="chip chip-VALOR_BUCKET" title="id 214">VALOR_BUCKET_Defensivos_2</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 256">DESCONTO_BUCKET_Defensivos_4</span>
+<span class="chip chip-QTD" title="id 204">QTD_3</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 293">RECENCIA_8-15</span>
+<span class="chip chip-MES" title="id 302">MES_3</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 109">PRODUTO_P0088</span>
+<span class="chip chip-VALOR_BUCKET" title="id 218">VALOR_BUCKET_Defensivos_6</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 258">DESCONTO_BUCKET_Defensivos_6</span>
+<span class="chip chip-QTD" title="id 207">QTD_6</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 21">CANAL_Representante</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 303">MES_4</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 8">CATEGORIA_Sementes</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 28">PRODUTO_P0007</span>
+<span class="chip chip-VALOR_BUCKET" title="id 251">VALOR_BUCKET_Sementes_9</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 291">DESCONTO_BUCKET_Sementes_9</span>
+<span class="chip chip-QTD" title="id 209">QTD_8</span>
+<span class="chip chip-PAGAMENTO" title="id 17">PAGAMENTO_Cartão</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 303">MES_4</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 118">PRODUTO_P0097</span>
+<span class="chip chip-VALOR_BUCKET" title="id 220">VALOR_BUCKET_Defensivos_8</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 258">DESCONTO_BUCKET_Defensivos_6</span>
+<span class="chip chip-QTD" title="id 211">QTD_10</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 21">CANAL_Representante</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 303">MES_4</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 11">MARCA_CampoForte</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 82">PRODUTO_P0061</span>
+<span class="chip chip-VALOR_BUCKET" title="id 219">VALOR_BUCKET_Defensivos_7</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 258">DESCONTO_BUCKET_Defensivos_6</span>
+<span class="chip chip-QTD" title="id 206">QTD_5</span>
+<span class="chip chip-PAGAMENTO" title="id 17">PAGAMENTO_Cartão</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 303">MES_4</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 11">MARCA_CampoForte</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 99">PRODUTO_P0078</span>
+<span class="chip chip-VALOR_BUCKET" title="id 219">VALOR_BUCKET_Defensivos_7</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 260">DESCONTO_BUCKET_Defensivos_8</span>
+<span class="chip chip-QTD" title="id 209">QTD_8</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 297">RECENCIA_91-180</span>
+<span class="chip chip-MES" title="id 308">MES_9</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 105">PRODUTO_P0084</span>
+<span class="chip chip-VALOR_BUCKET" title="id 215">VALOR_BUCKET_Defensivos_3</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 254">DESCONTO_BUCKET_Defensivos_2</span>
+<span class="chip chip-QTD" title="id 206">QTD_5</span>
+<span class="chip chip-PAGAMENTO" title="id 18">PAGAMENTO_PIX</span>
+<span class="chip chip-CANAL" title="id 21">CANAL_Representante</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 308">MES_9</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 11">MARCA_CampoForte</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 90">PRODUTO_P0069</span>
+<span class="chip chip-VALOR_BUCKET" title="id 212">VALOR_BUCKET_Defensivos_0</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 252">DESCONTO_BUCKET_Defensivos_0</span>
+<span class="chip chip-QTD" title="id 202">QTD_1</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 20">CANAL_Online</span>
+<span class="chip chip-RECENCIA" title="id 296">RECENCIA_61-90</span>
+<span class="chip chip-MES" title="id 310">MES_11</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 7">CATEGORIA_Máquinas</span>
+<span class="chip chip-MARCA" title="id 12">MARCA_VerdeTech</span>
+<span class="chip chip-FABRICANTE" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO" title="id 193">PRODUTO_P0172</span>
+<span class="chip chip-VALOR_BUCKET" title="id 237">VALOR_BUCKET_Máquinas_5</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 279">DESCONTO_BUCKET_Máquinas_7</span>
+<span class="chip chip-QTD" title="id 203">QTD_2</span>
+<span class="chip chip-PAGAMENTO" title="id 18">PAGAMENTO_PIX</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 293">RECENCIA_8-15</span>
+<span class="chip chip-MES" title="id 311">MES_12</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA" title="id 10">MARCA_AgroMax</span>
+<span class="chip chip-FABRICANTE" title="id 13">FABRICANTE_Empresa A</span>
+<span class="chip chip-PRODUTO" title="id 118">PRODUTO_P0097</span>
+<span class="chip chip-VALOR_BUCKET" title="id 212">VALOR_BUCKET_Defensivos_0</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 253">DESCONTO_BUCKET_Defensivos_1</span>
+<span class="chip chip-QTD" title="id 203">QTD_2</span>
+<span class="chip chip-PAGAMENTO" title="id 18">PAGAMENTO_PIX</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 292">RECENCIA_0-7</span>
+<span class="chip chip-MES" title="id 311">MES_12</span>
+<span class="chip chip-EVT" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA" title="id 7">CATEGORIA_Máquinas</span>
+<span class="chip chip-MARCA" title="id 9">MARCA_AgriPlus</span>
+<span class="chip chip-FABRICANTE" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO" title="id 192">PRODUTO_P0171</span>
+<span class="chip chip-VALOR_BUCKET" title="id 240">VALOR_BUCKET_Máquinas_8</span>
+<span class="chip chip-DESCONTO_BUCKET" title="id 281">DESCONTO_BUCKET_Máquinas_9</span>
+<span class="chip chip-QTD" title="id 208">QTD_7</span>
+<span class="chip chip-PAGAMENTO" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA" title="id 295">RECENCIA_31-60</span>
+<span class="chip chip-MES" title="id 300">MES_1</span>
+<span class="chip chip-EVT chip-outtrain" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA chip-outtrain" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA chip-outtrain" title="id 11">MARCA_CampoForte</span>
+<span class="chip chip-FABRICANTE chip-outtrain" title="id 15">FABRICANTE_Empresa C</span>
+<span class="chip chip-PRODUTO chip-outtrain" title="id 106">PRODUTO_P0085</span>
+<span class="chip chip-VALOR_BUCKET chip-outtrain" title="id 217">VALOR_BUCKET_Defensivos_5</span>
+<span class="chip chip-DESCONTO_BUCKET chip-outtrain" title="id 258">DESCONTO_BUCKET_Defensivos_6</span>
+<span class="chip chip-QTD chip-outtrain" title="id 205">QTD_4</span>
+<span class="chip chip-PAGAMENTO chip-outtrain" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL chip-outtrain" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA chip-outtrain" title="id 296">RECENCIA_61-90</span>
+<span class="chip chip-MES chip-outtrain" title="id 303">MES_4</span>
+<span class="chip chip-EVT chip-outtrain" title="id 2">EVT</span>
+<span class="chip chip-CATEGORIA chip-outtrain" title="id 5">CATEGORIA_Defensivos</span>
+<span class="chip chip-MARCA chip-outtrain" title="id 11">MARCA_CampoForte</span>
+<span class="chip chip-FABRICANTE chip-outtrain" title="id 14">FABRICANTE_Empresa B</span>
+<span class="chip chip-PRODUTO chip-outtrain" title="id 97">PRODUTO_P0076</span>
+<span class="chip chip-VALOR_BUCKET chip-outtrain" title="id 221">VALOR_BUCKET_Defensivos_9</span>
+<span class="chip chip-DESCONTO_BUCKET chip-outtrain" title="id 261">DESCONTO_BUCKET_Defensivos_9</span>
+<span class="chip chip-QTD chip-outtrain" title="id 209">QTD_8</span>
+<span class="chip chip-PAGAMENTO chip-outtrain" title="id 16">PAGAMENTO_Boleto</span>
+<span class="chip chip-CANAL chip-outtrain" title="id 19">CANAL_Loja</span>
+<span class="chip chip-RECENCIA chip-outtrain" title="id 296">RECENCIA_61-90</span>
+<span class="chip chip-MES chip-outtrain" title="id 305">MES_6</span>
+<span class="chip chip-ESTRUTURAL" title="id 1">EOS</span>
+      </div>
+      <p class="caption">
+        <span class="swatch"></span> tokens fora de <span class="mono">seq_train</span>
+        (31 eventos no total, 29 usados no treino)
+      </p>
+      <p class="source">pipeline/artifacts/sequencias.json</p>
+    </section>
+
+    <section class="stage" id="stage-5">
+      <div class="stage-num">5</div>
+      <p class="eyebrow">Etapa 5 &middot; Tarefa 6</p>
+      <h2>Preenchido at&eacute; 512 posi&ccedil;&otilde;es para entrar em lote</h2>
+      <p class="prose">
+        O Transformer processa lotes de sequ&ecirc;ncias do mesmo comprimento.
+        <span class="mono">seq_train</span> deste cliente tem 349 tokens; as
+        163 posi&ccedil;&otilde;es restantes at&eacute; <span class="mono">n_positions=512</span>
+        s&atilde;o <span class="mono">PAD</span> &mdash; e viram <span class="mono">-100</span> em
+        <span class="mono">labels</span>, para n&atilde;o entrar na loss de Next Token Prediction.
+      </p>
+      <h3 class="subhead">input_ids &middot; 0 &rarr; 512</h3>
+      <div class="batch-bar-labels"><span>0</span><span>512</span></div>
+      <div class="batchbar" style="--pct:68.2%">
+        <div class="batchbar-fill"></div>
+        <div class="batchbar-boundary"></div>
+      </div>
+      <div class="batch-legend">
+        <span><span class="sw sw-real"></span>tokens reais (349)</span>
+        <span><span class="sw sw-pad"></span>PAD (163)</span>
+      </div>
+      <h3 class="subhead">Zoom na transi&ccedil;&atilde;o (&iacute;ndice 349)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>idx</th><th>input_id</th><th>token</th><th>attention_mask</th><th>label</th>
+          </tr></thead>
+          <tbody>
+            <tr class="">
+<td class="mono dim">343</td>
+<td class="mono">208</td>
+<td><span class="chip chip-QTD">QTD_7</span></td>
+<td class="mono num">1</td>
+<td class="mono num ">208</td>
+</tr>
+<tr class="">
+<td class="mono dim">344</td>
+<td class="mono">16</td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td class="mono num">1</td>
+<td class="mono num ">16</td>
+</tr>
+<tr class="">
+<td class="mono dim">345</td>
+<td class="mono">19</td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td class="mono num">1</td>
+<td class="mono num ">19</td>
+</tr>
+<tr class="">
+<td class="mono dim">346</td>
+<td class="mono">295</td>
+<td><span class="chip chip-RECENCIA">RECENCIA_31-60</span></td>
+<td class="mono num">1</td>
+<td class="mono num ">295</td>
+</tr>
+<tr class="">
+<td class="mono dim">347</td>
+<td class="mono">300</td>
+<td><span class="chip chip-MES">MES_1</span></td>
+<td class="mono num">1</td>
+<td class="mono num ">300</td>
+</tr>
+<tr class="">
+<td class="mono dim">348</td>
+<td class="mono">1</td>
+<td><span class="chip chip-ESTRUTURAL">EOS</span></td>
+<td class="mono num">1</td>
+<td class="mono num ">1</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">349</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">350</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">351</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">352</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">353</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">354</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">355</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">356</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">357</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+<tr class="zoom-pad">
+<td class="mono dim">358</td>
+<td class="mono">3</td>
+<td><span class="chip chip-ESTRUTURAL">PAD</span></td>
+<td class="mono num">0</td>
+<td class="mono num label-ignore">-100</td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">pipeline/tarefa6_arquitetura.py</p>
+    </section>
+
+  </div>
+
+  <p class="footer">
+    gerado a partir de pipeline/artifacts/{splits,discretizado,vocab,sequencias}.{csv,json} &middot;
+    tarefas 7, 4, 5, 3, 6
+  </p>
+
+</div>

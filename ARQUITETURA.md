@@ -74,7 +74,7 @@ Ponto crítico (Tarefa 4): os buckets de `valor_total`/`desconto` são calculado
 
 Diferença chave em relação a um Transformer padrão: **não há soma de embedding posicional** (NoPE). Cada token entra no modelo representado só pelo seu embedding de conteúdo — a posição relativa entre tokens é inferida pelo próprio Transformer a partir do padrão de atenção causal (mask triangular), não por um vetor de posição somado a priori. Isso é o que permite ao modelo generalizar para sequências de cliente mais longas do que as vistas em treino sem precisar retreinar do zero.
 
-A ordem dos campos dentro de cada evento é fixa (categoria → marca → fabricante → valor → desconto → quantidade → pagamento → canal → recência → sazonalidade) — essa ordem consistente é o que dá ao NoPE algo estável para aprender como "sintaxe" implícita.
+A ordem dos campos dentro de cada evento é fixa (`EVT` → categoria → marca → fabricante → produto → valor → desconto → quantidade → pagamento → canal → recência → sazonalidade) — essa ordem consistente é o que dá ao NoPE algo estável para aprender como "sintaxe" implícita. O token `EVT` abre cada bloco de evento (marcador estrutural de fronteira, útil mesmo com ordem fixa porque o nº de campos por evento varia — ver recência abaixo). `recência` é omitida no primeiro evento de cada cliente (não há evento anterior para calcular o delta): ausência de dado vira ausência de token, não um bucket sentinela.
 
 ---
 
@@ -84,7 +84,7 @@ A ordem dos campos dentro de cada evento é fixa (categoria → marca → fabric
 
 - **Arquitetura**: GPT-2-like (HuggingFace `GPT2Config`/`GPT2LMHeadModel` como base), com a matriz de position embeddings (`wpe`) removida/neutralizada (NoPE).
 - **Atenção**: `attn_implementation="flash_attention_2"` — custo de memória O(seq_len) em vez de O(seq_len²), viabilizando batch sizes maiores em ~16GB de VRAM.
-- **Dimensionamento**: `n_embd=256-384`, `n_layer=6-8`, `n_head=8`, `n_positions=128` (cobre p99=40 e max=88 eventos/cliente observados na base v2, com folga). ~10-30M de parâmetros — modesto de propósito, dado o volume de 15.000 clientes.
+- **Dimensionamento**: `n_embd=384`, `n_layer=8`, `n_head=8`, `n_positions=512`. O `n_positions` é dimensionado pelo comprimento em **tokens** de `seq_full` (Tarefa 3: mediana=37, p90=205, p99=481, máx=1057) — não pelo nº de eventos brutos (p99=40/máx=88 eventos/cliente), que subestimaria a janela real em ~12x (cada evento vira ~12 tokens). 512 cobre o p99 de tokens com folga; o 1% de clientes de cauda (até 1057 tokens) fica fora da janela de treino e é tratado via truncamento/currículo (ver "Experimento planejado" abaixo) + extrapolação NoPE. ~14,3M de parâmetros (estimado por fórmula, ver Tarefa 6) — modesto de propósito, dado o volume de 15.000 clientes.
 - **Precisão**: `bfloat16` (obrigatório para FlashAttention2 funcionar).
 - **Saída relevante para as próximas etapas**: não é a cabeça de NTP em si (usada só durante o pré-treino), mas o **hidden state do último token da sequência** de cada cliente — essa é a representação vetorial ("embedding sequencial") que carrega o comportamento aprendido daquele cliente até o momento.
 - **Experimento planejado**: currículo de janela truncada (treinar com últimos 24-32 eventos) + avaliação de extrapolação em sequências completas (clientes de cauda, >40 eventos) — testa concretamente se o NoPE generaliza no nosso domínio, sem precisar esperar até o fim do projeto.
@@ -127,9 +127,9 @@ Em produção, esse embedding seria computado em lote (ex. diariamente/semanalme
 
 | Estágio | Tarefa(s) | Status |
 |---|---|---|
-| Tokenização (buckets) | Tarefa 4 (discretização), Tarefa 5 (vocabulário) | pendente |
-| Serialização em sequência | Tarefa 3 | pendente |
-| Embedding + Transformer causal | Tarefa 6 | pendente |
+| Tokenização (buckets) | Tarefa 4 (discretização), Tarefa 5 (vocabulário) | ✅ concluída |
+| Serialização em sequência | Tarefa 3 | ✅ concluída |
+| Embedding + Transformer causal | Tarefa 6 | ⚠️ código pronto, validação em GPU pendente |
 | Rótulos para as heads | Tarefa 8 | pendente |
 | Fusão DCNv2 + embedding universal | parte da Tarefa 8 (heads consomem a fusão) | pendente |
 | Splits (pré-requisito de tudo acima) | Tarefa 7 | ✅ concluída |

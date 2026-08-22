@@ -14,7 +14,7 @@ Ver `.claude/skills/` para os guias especialistas consultados em cada tarefa.
 
 ---
 
-## Tarefa 4 — Discretização (bucketing por quantil por categoria)
+## ✅ Tarefa 4 — Discretização (bucketing por quantil por categoria) (concluída)
 
 **Objetivo**: calcular os limites de bucket de `valor_total` e `desconto`, separadamente por `categoria_produto`, usando apenas o split de treino (`pipeline/artifacts/splits.csv`).
 
@@ -23,12 +23,14 @@ Ver `.claude/skills/` para os guias especialistas consultados em cada tarefa.
 - Função de mapeamento valor→bucket testada nos 3 splits (aplicando os limites do treino em val/test, nunca recalculando).
 - Relatório de ocupação dos buckets por categoria no treino.
 
+**Resultado**: `pipeline/tarefa4_discretizacao.py` → `pipeline/artifacts/buckets.json` + `pipeline/artifacts/discretizado.csv` (100.000 linhas). Ocupação dos 10 buckets balanceada (~10% cada) nas 4 categorias, para `valor_total` e `desconto`. Limites calibrados só no treino e reaplicados em val/teste — os 2 splits cobrem os 10 buckets (0-9) sem recalcular.
+
 **Dependências**: Tarefa 7 (concluída).
 **Skill de apoio**: `customer-sequence-serialization`.
 
 ---
 
-## Tarefa 5 — Vocabulário e tokenizer fechado
+## ✅ Tarefa 5 — Vocabulário e tokenizer fechado (concluída)
 
 **Objetivo**: tokenizer de vocabulário fechado (sem BPE), cobrindo campos categóricos + buckets (Tarefa 4) + tokens estruturais (`BOS`, `EOS`, `EVT`, `PAD`, `UNK`).
 
@@ -37,12 +39,14 @@ Ver `.claude/skills/` para os guias especialistas consultados em cada tarefa.
 - `encode`/`decode` implementados e testados.
 - 100% dos valores categóricos do dataset mapeiam para um token válido.
 
+**Resultado**: `pipeline/tarefa5_vocabulario.py` → `pipeline/artifacts/vocab.json` com **312 tokens**. `encode`/`decode` testados (`CATEGORIA_Máquinas` ↔ id 7). Validação de cobertura sobre 100.000 linhas em 8 campos categóricos: 0 valores caindo em `UNK`.
+
 **Dependências**: Tarefa 4.
 **Skill de apoio**: `customer-sequence-serialization`.
 
 ---
 
-## Tarefa 3 — Serialização das sequências por cliente
+## ✅ Tarefa 3 — Serialização das sequências por cliente (concluída)
 
 **Objetivo**: montar, por `cpf`, a sequência ordenada de tokens (evento a evento) usando o tokenizer da Tarefa 5.
 
@@ -52,12 +56,14 @@ Ver `.claude/skills/` para os guias especialistas consultados em cada tarefa.
 - Spot-check manual de 5 clientes decodificados.
 - Clientes com 1 evento gerando sequência `[BOS][EVT][EOS]` válida.
 
+**Resultado**: `pipeline/tarefa3_serializacao.py` → `pipeline/artifacts/sequencias.json` (15.000 clientes, `seq_full` + `seq_train` truncado no corte de treino). Comprimento de `seq_full`: mediana 37 tokens, p90=205, p99=481, máx=1057 (consistente com p99=40/máx=88 eventos/cliente). 870 clientes sem nenhum evento de treino (`seq_train=null` — só entraram na base após o corte). Spot-check de 5 clientes decodificados conferido linha a linha contra os dados originais (categoria/marca/buckets/recência batendo com os deltas de data reais). Validado: cliente de 1 evento gera `[BOS, EVT, ..., EOS]`.
+
 **Dependências**: Tarefa 7, Tarefa 4, Tarefa 5.
 **Skill de apoio**: `customer-sequence-serialization`.
 
 ---
 
-## Tarefa 6 — Arquitetura e instanciação do modelo
+## ⚠️ Tarefa 6 — Arquitetura e instanciação do modelo (código pronto, validação em GPU pendente)
 
 **Objetivo**: config do modelo causal (HuggingFace, estilo GPT-2) com NoPE e FlashAttention2.
 
@@ -66,6 +72,8 @@ Ver `.claude/skills/` para os guias especialistas consultados em cada tarefa.
 - Modelo instancia sem erro; parâmetros reportados (~10-30M).
 - Forward pass com batch real (Tarefa 3).
 - Smoke test de 1-2 passos de treino sem erro/OOM.
+
+**Resultado**: `pipeline/tarefa6_arquitetura.py`. Ambiente local não tem GPU/torch/transformers, então o script foi dividido em duas partes: (1) roda sempre, sem torch — deriva `n_positions=512` dos dados reais (Tarefa 3: p99=481 tokens de `seq_full`, corrigindo o `n_positions=128` original do DoD, que confundia eventos com tokens) e valida a lógica de batching/padding/máscara causal com numpy sobre um batch real de 8 clientes; (2) roda só se torch/transformers estiverem disponíveis — instancia `GPT2Config`/`GPT2LMHeadModel` (`n_embd=384`, `n_layer=8`, `n_head=8`, ~14,3M parâmetros estimados), neutraliza NoPE (zera e congela `wpe.weight`) e ativa `attn_implementation="flash_attention_2"`, com forward pass + smoke test de 2 passos de treino. Parte (1) validada nesta sessão; parte (2) requer GPU (Colab, ~16GB VRAM) — pendente de execução lá.
 
 **Dependências**: Tarefa 5, Tarefa 3.
 **Skill de apoio**: `causal-transformer-nope-flashattn`.
@@ -106,7 +114,7 @@ Ver `.claude/skills/` para os guias especialistas consultados em cada tarefa.
 
 ## Ordem de execução recomendada
 
-`7 (✅) → 4 → 5 → 3 → 6 → 8 → 9 → 10`
+`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (⚠️) → 8 → 9 → 10`
 
 ## Protocolo de execução
 
