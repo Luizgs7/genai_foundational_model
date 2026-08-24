@@ -9,4 +9,5 @@
 # imprime no final e adicione abaixo.
 
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN5O6hIIRP6zgnoyjiJJp/cirniOXggFL+b3JKw4YPj2 genai_foundational_model-colab
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ3kzectmasjWaaUGWekzNk6SL4zD3kr6yhQ6xjLSY5s colab-team-lgsouza
 
