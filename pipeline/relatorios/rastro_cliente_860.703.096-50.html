@@ -542,6 +542,50 @@
     .trace::before { left: 19px; }
     table { min-width: 560px; }
   }
+
+  /* ---- stage 6: previsões do modelo treinado (Tarefa 11) ---- */
+  .pred-check { color: var(--accent); font-weight: 700; font-size: 1.05rem; }
+  .pred-cell { white-space: nowrap; }
+  .pred-p { font-family: "JetBrains Mono", monospace; font-size: 0.72rem; color: var(--ink-faint); }
+  .pred-miss td:nth-child(3) .chip { opacity: 0.6; }
+  .prob-cell { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .prob-bar { width: 54px; height: 6px; border-radius: 3px; background: var(--surface-alt); overflow: hidden; }
+  .prob-bar-fill { height: 100%; background: var(--accent); }
+  .pred-miss .prob-bar-fill { background: var(--split-test-text); }
+  .prob-pct { font-size: 0.74rem; color: var(--ink-dim); min-width: 3.4em; }
+  .subhead {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+    margin: 30px 0 12px;
+  }
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 30px 0 0;
+  }
+  .callout .callout-title {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .callout p {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    margin: 0 0 8px;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: var(--ink-dim);
+  }
+  .callout p:last-child { margin-bottom: 0; }
 </style>
 
 <div class="page">
@@ -556,11 +600,11 @@
     </p>
     <div class="stat-row">
       <div class="stat"><b>31</b><span>transa&ccedil;&otilde;es</span></div>
-      <div class="stat"><b>29</b><span>treino</span></div>
-      <div class="stat"><b>1</b><span>valida&ccedil;&atilde;o</span></div>
-      <div class="stat"><b>1</b><span>teste</span></div>
+      <div class="stat"><b>25</b><span>treino</span></div>
+      <div class="stat"><b>4</b><span>valida&ccedil;&atilde;o</span></div>
+      <div class="stat"><b>2</b><span>teste</span></div>
       <div class="stat"><b>373</b><span>tokens (seq_full)</span></div>
-      <div class="stat"><b>349</b><span>tokens (seq_train)</span></div>
+      <div class="stat"><b>301</b><span>tokens (seq_train)</span></div>
     </div>
   </header>
 
@@ -1000,9 +1044,16 @@
       <p class="prose">
         O corte de treino / valida&ccedil;&atilde;o / teste &eacute; por data, n&atilde;o por
         sorteio &mdash; evita que o modelo veja o futuro durante o pr&eacute;-treino. Das
-        31 compras deste cliente, 29 ca&iacute;ram antes do corte de
-        treino, 1 no intervalo de valida&ccedil;&atilde;o e 1 s&oacute; aparece
+        31 compras deste cliente, 25 ca&iacute;ram antes do corte de
+        treino, 4 no intervalo de valida&ccedil;&atilde;o e 2 s&oacute; aparecem
         no teste.
+      </p>
+      <p class="source">
+        Nota (25/08/2026): os cortes foram revisados na Tarefa 7 (janela de teste
+        90&rarr;180 dias, pra viabilizar avalia&ccedil;&atilde;o de churn &mdash; ver ROADMAP.md)
+        depois deste relat&oacute;rio ter sido gerado. Os n&uacute;meros acima j&aacute; refletem
+        os cortes atuais; a linha do tempo abaixo ainda mostra os cortes antigos
+        (28&nbsp;jan/28&nbsp;abr&nbsp;2026 &mdash; hoje s&atilde;o 30&nbsp;out&nbsp;2025/29&nbsp;jan&nbsp;2026).
       </p>
       <div class="timeline-wrap">
         <div class="timeline">
@@ -1046,7 +1097,7 @@
           <span><span class="dot" style="background:var(--split-test-text)"></span>teste</span>
         </div>
       </div>
-      <p class="source">pipeline/artifacts/splits.csv</p>
+      <p class="source">pipeline/splits/splits.csv</p>
     </section>
 
     <section class="stage" id="stage-2">
@@ -1380,7 +1431,7 @@
           </tbody>
         </table>
       </div>
-      <p class="source">pipeline/artifacts/discretizado.csv &middot; pipeline/artifacts/buckets.json</p>
+      <p class="source">pipeline/discretizacao/discretizado.csv &middot; pipeline/discretizacao/buckets.json</p>
     </section>
 
     <section class="stage" id="stage-3">
@@ -1472,7 +1523,7 @@
           </tbody>
         </table>
       </div>
-      <p class="source">pipeline/artifacts/vocab.json &mdash; 312 tokens</p>
+      <p class="source">pipeline/vocabulario/vocab.json &mdash; 312 tokens</p>
     </section>
 
     <section class="stage" id="stage-4">
@@ -1881,7 +1932,7 @@
         <span class="swatch"></span> tokens fora de <span class="mono">seq_train</span>
         (31 eventos no total, 29 usados no treino)
       </p>
-      <p class="source">pipeline/artifacts/sequencias.json</p>
+      <p class="source">pipeline/serializacao/sequencias.json</p>
     </section>
 
     <section class="stage" id="stage-5">
@@ -2027,14 +2078,664 @@
           </tbody>
         </table>
       </div>
-      <p class="source">pipeline/tarefa6_arquitetura.py</p>
+      <p class="source">pipeline/arquitetura/tarefa6_arquitetura.py</p>
+    </section>
+
+    <section class="stage" id="stage-6">
+      <div class="stage-num">6</div>
+      <p class="eyebrow">Etapa 6 &middot; Tarefa 11</p>
+      <h2>O que o modelo aprendeu, de verdade</h2>
+      <p class="prose">
+        As Etapas 0-5 mostraram como os dados desse cliente viram tokens e chegam
+        formatados na entrada do Transformer. Esta etapa mostra o que sai do outro
+        lado, depois do pr&eacute;-treino real (30 &eacute;pocas, checkpoint da &eacute;poca 1 &mdash;
+        a de menor loss de valida&ccedil;&atilde;o): a cada posi&ccedil;&atilde;o da continua&ccedil;&atilde;o real
+        deste cliente (as compras de valida&ccedil;&atilde;o e teste, nunca vistas como alvo de
+        treino), o modelo recebe o hist&oacute;rico real at&eacute; ali e tenta prever o
+        pr&oacute;ximo token &mdash; exatamente a tarefa de Next Token Prediction, agora avaliada
+        fora da amostra.
+      </p>
+      <div class="stat-row">
+        <div class="stat"><b>1.72</b><span>loss valida&ccedil;&atilde;o (cliente)</span></div>
+        <div class="stat"><b>5.59</b><span>perplexidade valida&ccedil;&atilde;o</span></div>
+        <div class="stat"><b>1.66</b><span>loss teste (cliente)</span></div>
+        <div class="stat"><b>5.25</b><span>perplexidade teste</span></div>
+        <div class="stat"><b>18/48</b><span>acertos top-1 (val)</span></div>
+        <div class="stat"><b>12/24</b><span>acertos top-1 (teste)</span></div>
+      </div>
+      <p class="prose">
+        Pra compara&ccedil;&atilde;o: a perplexidade m&eacute;dia do checkpoint em <strong>todo</strong> o
+        split de valida&ccedil;&atilde;o &eacute; 5,57, e no teste, 5,44 (todos os clientes,
+        pipeline/pretreino/pretreino_relatorio.json) &mdash; um chute aleat&oacute;rio, nesse
+        vocabul&aacute;rio de 312 tokens, teria perplexidade &asymp;312. Este cliente
+        espec&iacute;fico est&aacute; bem pr&oacute;ximo da m&eacute;dia geral, ent&atilde;o serve como uma amostra
+        razo&aacute;vel do comportamento t&iacute;pico do modelo.
+      </p>
+
+      <p class="subhead">Continua&ccedil;&atilde;o de valida&ccedil;&atilde;o &mdash; 48 previs&otilde;es</p>
+      <div class="table-wrap">
+        <table class="map-table">
+          <thead><tr>
+            <th>split</th><th>contexto (&uacute;ltimo token)</th><th>alvo real</th><th>previsto</th><th>confian&ccedil;a no alvo</th><th>loss</th>
+          </tr></thead>
+          <tbody>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-MES">MES_9</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:99.6%"></div></div><span class="prob-pct mono">99.6%</span></td>
+<td class="mono num">0.00</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:67.7%"></div></div><span class="prob-pct mono">67.7%</span></td>
+<td class="mono num">0.39</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span></td>
+<td><span class="chip chip-MARCA">MARCA_CampoForte</span></td>
+<td class="pred-cell"><span class="chip chip-MARCA">MARCA_AgriPlus</span> <span class="pred-p">59%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:12.7%"></div></div><span class="prob-pct mono">12.7%</span></td>
+<td class="mono num">2.06</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-MARCA">MARCA_CampoForte</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa A</span></td>
+<td class="pred-cell"><span class="chip chip-FABRICANTE">FABRICANTE_Empresa C</span> <span class="pred-p">40%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:27.2%"></div></div><span class="prob-pct mono">27.2%</span></td>
+<td class="mono num">1.30</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa A</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0069</span></td>
+<td class="pred-cell"><span class="chip chip-PRODUTO">PRODUTO_P0094</span> <span class="pred-p">2%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:1.5%"></div></div><span class="prob-pct mono">1.5%</span></td>
+<td class="mono num">4.18</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0069</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_0</span></td>
+<td class="pred-cell"><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_9</span> <span class="pred-p">13%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:9.5%"></div></div><span class="prob-pct mono">9.5%</span></td>
+<td class="mono num">2.35</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_0</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_0</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:46.4%"></div></div><span class="prob-pct mono">46.4%</span></td>
+<td class="mono num">0.77</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_0</span></td>
+<td><span class="chip chip-QTD">QTD_1</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:60.4%"></div></div><span class="prob-pct mono">60.4%</span></td>
+<td class="mono num">0.50</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-QTD">QTD_1</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:55.3%"></div></div><span class="prob-pct mono">55.3%</span></td>
+<td class="mono num">0.59</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td><span class="chip chip-CANAL">CANAL_Online</span></td>
+<td class="pred-cell"><span class="chip chip-CANAL">CANAL_Loja</span> <span class="pred-p">62%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:18.8%"></div></div><span class="prob-pct mono">18.8%</span></td>
+<td class="mono num">1.67</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-CANAL">CANAL_Online</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_61-90</span></td>
+<td class="pred-cell"><span class="chip chip-RECENCIA">RECENCIA_0-7</span> <span class="pred-p">30%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:7.0%"></div></div><span class="prob-pct mono">7.0%</span></td>
+<td class="mono num">2.66</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_61-90</span></td>
+<td><span class="chip chip-MES">MES_11</span></td>
+<td class="pred-cell"><span class="chip chip-MES">MES_10</span> <span class="pred-p">56%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:20.5%"></div></div><span class="prob-pct mono">20.5%</span></td>
+<td class="mono num">1.58</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-MES">MES_11</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:98.4%"></div></div><span class="prob-pct mono">98.4%</span></td>
+<td class="mono num">0.02</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Máquinas</span></td>
+<td class="pred-cell"><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span> <span class="pred-p">68%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:5.7%"></div></div><span class="prob-pct mono">5.7%</span></td>
+<td class="mono num">2.86</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Máquinas</span></td>
+<td><span class="chip chip-MARCA">MARCA_VerdeTech</span></td>
+<td class="pred-cell"><span class="chip chip-MARCA">MARCA_AgriPlus</span> <span class="pred-p">49%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:18.6%"></div></div><span class="prob-pct mono">18.6%</span></td>
+<td class="mono num">1.68</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-MARCA">MARCA_VerdeTech</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa B</span></td>
+<td class="pred-cell"><span class="chip chip-FABRICANTE">FABRICANTE_Empresa C</span> <span class="pred-p">40%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:32.8%"></div></div><span class="prob-pct mono">32.8%</span></td>
+<td class="mono num">1.12</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa B</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0172</span></td>
+<td class="pred-cell"><span class="chip chip-PRODUTO">PRODUTO_P0180</span> <span class="pred-p">3%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:1.9%"></div></div><span class="prob-pct mono">1.9%</span></td>
+<td class="mono num">3.95</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0172</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Máquinas_4</span></td>
+<td class="pred-cell"><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Máquinas_9</span> <span class="pred-p">16%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:11.0%"></div></div><span class="prob-pct mono">11.0%</span></td>
+<td class="mono num">2.20</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Máquinas_4</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Máquinas_7</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:22.0%"></div></div><span class="prob-pct mono">22.0%</span></td>
+<td class="mono num">1.51</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Máquinas_7</span></td>
+<td><span class="chip chip-QTD">QTD_2</span></td>
+<td class="pred-cell"><span class="chip chip-QTD">QTD_8</span> <span class="pred-p">16%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:1.4%"></div></div><span class="prob-pct mono">1.4%</span></td>
+<td class="mono num">4.24</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-QTD">QTD_2</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_PIX</span></td>
+<td class="pred-cell"><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span> <span class="pred-p">57%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:17.3%"></div></div><span class="prob-pct mono">17.3%</span></td>
+<td class="mono num">1.75</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_PIX</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:67.5%"></div></div><span class="prob-pct mono">67.5%</span></td>
+<td class="mono num">0.39</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_8-15</span></td>
+<td class="pred-cell"><span class="chip chip-RECENCIA">RECENCIA_0-7</span> <span class="pred-p">30%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:18.5%"></div></div><span class="prob-pct mono">18.5%</span></td>
+<td class="mono num">1.69</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_8-15</span></td>
+<td><span class="chip chip-MES">MES_12</span></td>
+<td class="pred-cell"><span class="chip chip-MES">MES_10</span> <span class="pred-p">82%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:1.0%"></div></div><span class="prob-pct mono">1.0%</span></td>
+<td class="mono num">4.64</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-MES">MES_12</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:98.8%"></div></div><span class="prob-pct mono">98.8%</span></td>
+<td class="mono num">0.01</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:65.7%"></div></div><span class="prob-pct mono">65.7%</span></td>
+<td class="mono num">0.42</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span></td>
+<td><span class="chip chip-MARCA">MARCA_AgroMax</span></td>
+<td class="pred-cell"><span class="chip chip-MARCA">MARCA_AgriPlus</span> <span class="pred-p">54%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:11.3%"></div></div><span class="prob-pct mono">11.3%</span></td>
+<td class="mono num">2.18</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-MARCA">MARCA_AgroMax</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa A</span></td>
+<td class="pred-cell"><span class="chip chip-FABRICANTE">FABRICANTE_Empresa C</span> <span class="pred-p">41%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:26.5%"></div></div><span class="prob-pct mono">26.5%</span></td>
+<td class="mono num">1.33</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa A</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0097</span></td>
+<td class="pred-cell"><span class="chip chip-PRODUTO">PRODUTO_P0108</span> <span class="pred-p">2%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:1.2%"></div></div><span class="prob-pct mono">1.2%</span></td>
+<td class="mono num">4.46</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0097</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_0</span></td>
+<td class="pred-cell"><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_9</span> <span class="pred-p">13%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:9.2%"></div></div><span class="prob-pct mono">9.2%</span></td>
+<td class="mono num">2.38</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_0</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_1</span></td>
+<td class="pred-cell"><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_0</span> <span class="pred-p">47%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:38.6%"></div></div><span class="prob-pct mono">38.6%</span></td>
+<td class="mono num">0.95</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_1</span></td>
+<td><span class="chip chip-QTD">QTD_2</span></td>
+<td class="pred-cell"><span class="chip chip-QTD">QTD_1</span> <span class="pred-p">51%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:27.3%"></div></div><span class="prob-pct mono">27.3%</span></td>
+<td class="mono num">1.30</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-QTD">QTD_2</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_PIX</span></td>
+<td class="pred-cell"><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span> <span class="pred-p">56%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:18.2%"></div></div><span class="prob-pct mono">18.2%</span></td>
+<td class="mono num">1.70</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_PIX</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:66.8%"></div></div><span class="prob-pct mono">66.8%</span></td>
+<td class="mono num">0.40</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_0-7</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:29.9%"></div></div><span class="prob-pct mono">29.9%</span></td>
+<td class="mono num">1.21</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_0-7</span></td>
+<td><span class="chip chip-MES">MES_12</span></td>
+<td class="pred-cell"><span class="chip chip-MES">MES_10</span> <span class="pred-p">74%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:2.8%"></div></div><span class="prob-pct mono">2.8%</span></td>
+<td class="mono num">3.58</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-MES">MES_12</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:99.2%"></div></div><span class="prob-pct mono">99.2%</span></td>
+<td class="mono num">0.01</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Máquinas</span></td>
+<td class="pred-cell"><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span> <span class="pred-p">67%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:7.0%"></div></div><span class="prob-pct mono">7.0%</span></td>
+<td class="mono num">2.66</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Máquinas</span></td>
+<td><span class="chip chip-MARCA">MARCA_AgriPlus</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:46.1%"></div></div><span class="prob-pct mono">46.1%</span></td>
+<td class="mono num">0.78</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-MARCA">MARCA_AgriPlus</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa C</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:40.2%"></div></div><span class="prob-pct mono">40.2%</span></td>
+<td class="mono num">0.91</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa C</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0171</span></td>
+<td class="pred-cell"><span class="chip chip-PRODUTO">PRODUTO_P0180</span> <span class="pred-p">4%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:1.6%"></div></div><span class="prob-pct mono">1.6%</span></td>
+<td class="mono num">4.16</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0171</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Máquinas_8</span></td>
+<td class="pred-cell"><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Máquinas_9</span> <span class="pred-p">16%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:8.2%"></div></div><span class="prob-pct mono">8.2%</span></td>
+<td class="mono num">2.50</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Máquinas_8</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Máquinas_9</span></td>
+<td class="pred-cell"><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Máquinas_8</span> <span class="pred-p">26%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:26.5%"></div></div><span class="prob-pct mono">26.5%</span></td>
+<td class="mono num">1.33</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Máquinas_9</span></td>
+<td><span class="chip chip-QTD">QTD_7</span></td>
+<td class="pred-cell"><span class="chip chip-QTD">QTD_10</span> <span class="pred-p">30%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:11.1%"></div></div><span class="prob-pct mono">11.1%</span></td>
+<td class="mono num">2.20</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-QTD">QTD_7</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:55.5%"></div></div><span class="prob-pct mono">55.5%</span></td>
+<td class="mono num">0.59</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:62.3%"></div></div><span class="prob-pct mono">62.3%</span></td>
+<td class="mono num">0.47</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_31-60</span></td>
+<td class="pred-cell"><span class="chip chip-RECENCIA">RECENCIA_0-7</span> <span class="pred-p">31%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:16.0%"></div></div><span class="prob-pct mono">16.0%</span></td>
+<td class="mono num">1.84</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-val">val</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_31-60</span></td>
+<td><span class="chip chip-MES">MES_1</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:33.0%"></div></div><span class="prob-pct mono">33.0%</span></td>
+<td class="mono num">1.11</td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="subhead">Continua&ccedil;&atilde;o de teste &mdash; 24 previs&otilde;es (avalia&ccedil;&atilde;o &uacute;nica, ap&oacute;s todo o treino)</p>
+      <div class="table-wrap">
+        <table class="map-table">
+          <thead><tr>
+            <th>split</th><th>contexto (&uacute;ltimo token)</th><th>alvo real</th><th>previsto</th><th>confian&ccedil;a no alvo</th><th>loss</th>
+          </tr></thead>
+          <tbody>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-MES">MES_1</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:99.2%"></div></div><span class="prob-pct mono">99.2%</span></td>
+<td class="mono num">0.01</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:64.8%"></div></div><span class="prob-pct mono">64.8%</span></td>
+<td class="mono num">0.43</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span></td>
+<td><span class="chip chip-MARCA">MARCA_CampoForte</span></td>
+<td class="pred-cell"><span class="chip chip-MARCA">MARCA_AgriPlus</span> <span class="pred-p">53%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:14.7%"></div></div><span class="prob-pct mono">14.7%</span></td>
+<td class="mono num">1.92</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-MARCA">MARCA_CampoForte</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa C</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:40.2%"></div></div><span class="prob-pct mono">40.2%</span></td>
+<td class="mono num">0.91</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa C</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0085</span></td>
+<td class="pred-cell"><span class="chip chip-PRODUTO">PRODUTO_P0094</span> <span class="pred-p">2%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:0.7%"></div></div><span class="prob-pct mono">0.7%</span></td>
+<td class="mono num">4.92</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0085</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_5</span></td>
+<td class="pred-cell"><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_9</span> <span class="pred-p">12%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:12.0%"></div></div><span class="prob-pct mono">12.0%</span></td>
+<td class="mono num">2.12</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_5</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_6</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:19.9%"></div></div><span class="prob-pct mono">19.9%</span></td>
+<td class="mono num">1.62</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_6</span></td>
+<td><span class="chip chip-QTD">QTD_4</span></td>
+<td class="pred-cell"><span class="chip chip-QTD">QTD_8</span> <span class="pred-p">16%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:8.1%"></div></div><span class="prob-pct mono">8.1%</span></td>
+<td class="mono num">2.51</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-QTD">QTD_4</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:57.1%"></div></div><span class="prob-pct mono">57.1%</span></td>
+<td class="mono num">0.56</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:63.7%"></div></div><span class="prob-pct mono">63.7%</span></td>
+<td class="mono num">0.45</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_61-90</span></td>
+<td class="pred-cell"><span class="chip chip-RECENCIA">RECENCIA_0-7</span> <span class="pred-p">30%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:6.9%"></div></div><span class="prob-pct mono">6.9%</span></td>
+<td class="mono num">2.67</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_61-90</span></td>
+<td><span class="chip chip-MES">MES_4</span></td>
+<td class="pred-cell"><span class="chip chip-MES">MES_3</span> <span class="pred-p">31%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:11.0%"></div></div><span class="prob-pct mono">11.0%</span></td>
+<td class="mono num">2.20</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-MES">MES_4</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:98.9%"></div></div><span class="prob-pct mono">98.9%</span></td>
+<td class="mono num">0.01</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-EVT">EVT</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:67.4%"></div></div><span class="prob-pct mono">67.4%</span></td>
+<td class="mono num">0.39</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-CATEGORIA">CATEGORIA_Defensivos</span></td>
+<td><span class="chip chip-MARCA">MARCA_CampoForte</span></td>
+<td class="pred-cell"><span class="chip chip-MARCA">MARCA_AgriPlus</span> <span class="pred-p">52%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:16.4%"></div></div><span class="prob-pct mono">16.4%</span></td>
+<td class="mono num">1.81</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-MARCA">MARCA_CampoForte</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa B</span></td>
+<td class="pred-cell"><span class="chip chip-FABRICANTE">FABRICANTE_Empresa C</span> <span class="pred-p">40%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:33.3%"></div></div><span class="prob-pct mono">33.3%</span></td>
+<td class="mono num">1.10</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-FABRICANTE">FABRICANTE_Empresa B</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0076</span></td>
+<td class="pred-cell"><span class="chip chip-PRODUTO">PRODUTO_P0094</span> <span class="pred-p">2%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:1.7%"></div></div><span class="prob-pct mono">1.7%</span></td>
+<td class="mono num">4.08</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-PRODUTO">PRODUTO_P0076</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_9</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:13.2%"></div></div><span class="prob-pct mono">13.2%</span></td>
+<td class="mono num">2.03</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-VALOR_BUCKET">VALOR_BUCKET_Defensivos_9</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_9</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:31.7%"></div></div><span class="prob-pct mono">31.7%</span></td>
+<td class="mono num">1.15</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-DESCONTO_BUCKET">DESCONTO_BUCKET_Defensivos_9</span></td>
+<td><span class="chip chip-QTD">QTD_8</span></td>
+<td class="pred-cell"><span class="chip chip-QTD">QTD_10</span> <span class="pred-p">33%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:19.9%"></div></div><span class="prob-pct mono">19.9%</span></td>
+<td class="mono num">1.61</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-QTD">QTD_8</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:54.6%"></div></div><span class="prob-pct mono">54.6%</span></td>
+<td class="mono num">0.60</td>
+</tr>
+<tr class="pred-ok">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-PAGAMENTO">PAGAMENTO_Boleto</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td class="pred-cell"><span class="pred-check">&#10003;</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:62.2%"></div></div><span class="prob-pct mono">62.2%</span></td>
+<td class="mono num">0.47</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-CANAL">CANAL_Loja</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_61-90</span></td>
+<td class="pred-cell"><span class="chip chip-RECENCIA">RECENCIA_0-7</span> <span class="pred-p">30%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:7.0%"></div></div><span class="prob-pct mono">7.0%</span></td>
+<td class="mono num">2.66</td>
+</tr>
+<tr class="pred-miss">
+<td><span class="split-pill split-test">teste</span></td>
+<td><span class="chip chip-RECENCIA">RECENCIA_61-90</span></td>
+<td><span class="chip chip-MES">MES_6</span></td>
+<td class="pred-cell"><span class="chip chip-MES">MES_10</span> <span class="pred-p">55%</span></td>
+<td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:2.8%"></div></div><span class="prob-pct mono">2.8%</span></td>
+<td class="mono num">3.57</td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <span class="callout-title">Nota de bastidores</span>
+        <p>
+          A primeira vers&atilde;o do script de treino tinha um bug real: o
+          <code class="mono">GPT2LMHeadModel</code> da HuggingFace j&aacute; desloca os
+          <code class="mono">labels</code> internamente pra calcular a loss de Next Token
+          Prediction &mdash; mas o c&oacute;digo estava passando <code class="mono">labels</code>
+          <strong>j&aacute; deslocados</strong>, fazendo o modelo aprender a prever o token
+          <strong>dois passos &agrave; frente</strong>, n&atilde;o um. O sintoma: loss de treino parecia
+          normal, mas loss de valida&ccedil;&atilde;o ficava <strong>47&times; pior que chute aleat&oacute;rio</strong>.
+        </p>
+        <p>
+          S&oacute; ficou claro inspecionando previs&atilde;o-por-posi&ccedil;&atilde;o num cliente real (como
+          nesta p&aacute;gina) &mdash; as previs&otilde;es estavam sistematicamente "um campo adiantadas"
+          (contexto <code class="mono">MES</code> previa <code class="mono">CATEGORIA</code> em vez de
+          <code class="mono">EVT</code>, etc.). Uma curva de loss de treino "bonita" n&atilde;o &eacute;
+          evid&ecirc;ncia suficiente de que o treino est&aacute; correto.
+        </p>
+      </div>
     </section>
 
   </div>
 
   <p class="footer">
-    gerado a partir de pipeline/artifacts/{splits,discretizado,vocab,sequencias}.{csv,json} &middot;
-    tarefas 7, 4, 5, 3, 6
+    gerado a partir de pipeline/{splits,discretizacao,vocabulario,serializacao,pretreino}/ &middot;
+    tarefas 7, 4, 5, 3, 6, 11
   </p>
 
 </div>

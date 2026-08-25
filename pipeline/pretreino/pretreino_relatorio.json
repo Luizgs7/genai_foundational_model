@@ -1,0 +1,21 @@
+{
+  "n_params": 14512896,
+  "n_params_trainable": 14316288,
+  "total_tokens_treino": 892236,
+  "razao_tokens_por_parametro_treinavel": 0.06232313851188241,
+  "n_epochs_executadas": 30,
+  "melhor_epoca": 1,
+  "melhor_loss_val": 1.7166776652575293,
+  "melhor_perplexidade_val": 5.566005577991014,
+  "loss_val_ultima_epoca": 1.8775302351974257,
+  "loss_treino_ultima_epoca": 1.5014075295466212,
+  "loss_teste": 1.694359690277979,
+  "perplexidade_teste": 5.443159541163591,
+  "n_tokens_teste_avaliados": 209778,
+  "n_clientes_teste_frios_incluidos": 961,
+  "tempo_total_segundos": 1163.5985417366028,
+  "peak_gpu_mem_gb": 3.320510464,
+  "gpu": "NVIDIA L4",
+  "torch_version": "2.11.0+cu128",
+  "diagnostico_overfitting": "loss de treino caiu monotonicamente enquanto loss de validação atingiu o mínimo na época 1/30 e depois piorou — overfitting esperado dado que o modelo (14,5M parâmetros treináveis) tem 16.0x mais parâmetros do que tokens de treino disponíveis."
+}

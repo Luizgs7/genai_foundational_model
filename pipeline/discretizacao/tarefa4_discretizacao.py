@@ -4,9 +4,9 @@ Ver .claude/skills/customer-sequence-serialization/SKILL.md para o racional
 (por que quantil, por que separado por categoria, por que calibrar só no treino).
 
 Gera:
-  - pipeline/artifacts/buckets.json: limites de quantil por categoria, para
+  - pipeline/discretizacao/buckets.json: limites de quantil por categoria, para
     valor_total e desconto (10 buckets cada), calculados só no split de treino.
-  - pipeline/artifacts/discretizado.csv: transacao_id, categoria_produto,
+  - pipeline/discretizacao/discretizado.csv: transacao_id, categoria_produto,
     valor_total, valor_total_bucket, desconto, desconto_bucket, split.
 """
 
@@ -16,9 +16,9 @@ import numpy as np
 import pandas as pd
 
 SOURCE_CSV = "base_sintetica_embeddings_100k_v2.csv"
-SPLITS_CSV = "pipeline/artifacts/splits.csv"
-BUCKETS_JSON = "pipeline/artifacts/buckets.json"
-OUTPUT_CSV = "pipeline/artifacts/discretizado.csv"
+SPLITS_CSV = "pipeline/splits/splits.csv"
+BUCKETS_JSON = "pipeline/discretizacao/buckets.json"
+OUTPUT_CSV = "pipeline/discretizacao/discretizado.csv"
 
 N_BUCKETS = 10
 CAMPOS = ["valor_total", "desconto"]

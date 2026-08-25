@@ -6,7 +6,7 @@ dado = ausência de token).
 
 Monta, por `cpf`, a sequência ordenada de tokens (evento a evento) usando o
 vocabulário/tokenizer da Tarefa 5 e os buckets já calculados na Tarefa 4
-(via `pipeline/artifacts/discretizado.csv`).
+(via `pipeline/discretizacao/discretizado.csv`).
 
 Ordem fixa dos campos dentro de cada evento (ver ARQUITETURA.md, Estágio 1/2):
     EVT, categoria, marca, fabricante, produto, valor_bucket, desconto_bucket,
@@ -16,7 +16,7 @@ Ordem fixa dos campos dentro de cada evento (ver ARQUITETURA.md, Estágio 1/2):
 anterior para calcular o delta) — ausência de dado vira ausência de token,
 não um bucket sentinela artificial.
 
-Gera pipeline/artifacts/sequencias.json:
+Gera pipeline/serializacao/sequencias.json:
     {cpf: {"n_eventos": int, "seq_full": [ids...], "seq_train": [ids...] | null}}
 
 `seq_full` cobre todo o histórico do cliente; `seq_train` é o prefixo
@@ -31,7 +31,7 @@ import sys
 
 import pandas as pd
 
-sys.path.insert(0, "pipeline")
+sys.path.insert(0, "pipeline/vocabulario")
 from tarefa5_vocabulario import (  # noqa: E402
     TokenizerFechado,
     token_canal,
@@ -47,9 +47,9 @@ from tarefa5_vocabulario import (  # noqa: E402
 )
 
 SOURCE_CSV = "base_sintetica_embeddings_100k_v2.csv"
-DISCRETIZADO_CSV = "pipeline/artifacts/discretizado.csv"
-VOCAB_JSON = "pipeline/artifacts/vocab.json"
-OUTPUT_JSON = "pipeline/artifacts/sequencias.json"
+DISCRETIZADO_CSV = "pipeline/discretizacao/discretizado.csv"
+VOCAB_JSON = "pipeline/vocabulario/vocab.json"
+OUTPUT_JSON = "pipeline/serializacao/sequencias.json"
 
 RECENCIA_EDGES = [7, 15, 30, 60, 90, 180, 365]
 RECENCIA_LABELS = ["0-7", "8-15", "16-30", "31-60", "61-90", "91-180", "181-365", ">365"]
@@ -101,8 +101,22 @@ def montar_sequencias(df, tokenizer):
         seq_full = [bos] + [tid for bloco in blocos for tid in bloco] + [eos]
         blocos_train = [b for b, s in zip(blocos, splits_evento) if s == "train"]
         seq_train = [bos] + [tid for bloco in blocos_train for tid in bloco] + [eos] if blocos_train else None
+        blocos_train_val = [b for b, s in zip(blocos, splits_evento) if s in ("train", "val")]
+        seq_train_val = (
+            [bos] + [tid for bloco in blocos_train_val for tid in bloco] + [eos] if blocos_train_val else None
+        )
 
-        sequencias[cpf] = {"n_eventos": len(grupo), "seq_full": seq_full, "seq_train": seq_train}
+        # seq_train_val: prefixo treino+val (usado no pré-treino, Estágio 3 do
+        # ARQUITETURA.md, para medir NTP loss só nos tokens de val — nunca
+        # recalcula nada do treino, só estende o mesmo prefixo cronológico).
+        # Como o corte é por data, seq_train é sempre um prefixo de
+        # seq_train_val, que por sua vez é sempre um prefixo de seq_full.
+        sequencias[cpf] = {
+            "n_eventos": len(grupo),
+            "seq_full": seq_full,
+            "seq_train": seq_train,
+            "seq_train_val": seq_train_val,
+        }
     return sequencias
 
 

@@ -1,0 +1,13 @@
+# Bytecode Python
+__pycache__/
+*.pyc
+
+# Checkpoints de modelo (binários grandes, recriáveis rodando
+# pipeline/pretreino/tarefa_pretreino.py — ver ROADMAP.md, Tarefa 11)
+pipeline/pretreino/checkpoints/
+
+# Ambientes virtuais / editores
+.venv/
+venv/
+.vscode/
+.DS_Store

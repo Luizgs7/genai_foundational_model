@@ -1,0 +1,66 @@
+{
+  "churn": {
+    "n_dias": 121,
+    "criterio_escolha_n": "varredura de candidatos sobre a distribuição real de gaps entre compras consecutivas; N=121 é o corte cuja taxa de positivos (~29.7%) fica na faixa não-degenerada (nem <5% nem >90%)",
+    "n_linhas_determinaveis": 93570,
+    "n_linhas_censuradas_excluidas": 6430,
+    "base_rate_geral": 0.29697552634391366,
+    "base_rate_por_split": {
+      "test": 0.1403272204243078,
+      "train": 0.31818487485373825,
+      "val": 0.31743482021500063
+    },
+    "diagnostico_split_teste": "base rate de churn no teste = 0.1403, não-degenerado — a janela de teste (Tarefa 7, TEST_WINDOW_DAYS=180) foi dimensionada com margem acima do horizonte de churn (N=121 dias) especificamente para viabilizar essa avaliação. Ver ROADMAP.md (Tarefa 7) para o histórico da correção (janela original de 90 dias era menor que N e zerava a taxa de churn no teste por construção).",
+    "baseline": {
+      "nome": "media_historica_causal_de_gap_por_cliente (RFM)",
+      "metrica": "AUC-ROC",
+      "geral": 0.6999528681365357,
+      "por_split": {
+        "train": 0.6989996146304552,
+        "val": 0.7442754487372276,
+        "test": 0.7501548616233437
+      }
+    }
+  },
+  "proxima_categoria": {
+    "n_linhas_determinaveis": 85000,
+    "baseline": {
+      "nome": "moda_historica_causal_por_cliente",
+      "accuracy": {
+        "train": 0.5056750211536778,
+        "val": 0.5952055833712638,
+        "test": 0.5897799858055358,
+        "geral": 0.5223764705882353
+      },
+      "f1_macro": {
+        "train": 0.5031071592977201,
+        "val": 0.594104939429044,
+        "test": 0.5873804315819111,
+        "geral": 0.520362975006882
+      }
+    }
+  },
+  "proximo_valor_bucket": {
+    "n_linhas_determinaveis": 85000,
+    "baseline": {
+      "nome": "moda_historica_causal_por_cliente",
+      "accuracy": {
+        "train": 0.09780293525515713,
+        "val": 0.09846760734334699,
+        "test": 0.09946263814255298,
+        "geral": 0.09804705882352942
+      },
+      "f1_macro": {
+        "train": 0.09436717326498292,
+        "val": 0.09846426353762086,
+        "test": 0.09949725520419868,
+        "geral": 0.09560361289211129
+      }
+    }
+  },
+  "fallback_global_calibrado_no_treino": {
+    "fallback_gap_medio_treino": 101.99133428646456,
+    "fallback_categoria_treino": "Defensivos",
+    "fallback_valor_bucket_treino": 0
+  }
+}

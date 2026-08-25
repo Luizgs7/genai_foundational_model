@@ -2,7 +2,7 @@
 
 Ver .claude/skills/customer-sequence-serialization/SKILL.md para o racional.
 
-Gera pipeline/artifacts/vocab.json (token -> id) e valida que 100% dos
+Gera pipeline/vocabulario/vocab.json (token -> id) e valida que 100% dos
 valores categóricos/bucket/mês observados no dataset mapeiam para um token
 válido (sem UNK).
 """
@@ -12,8 +12,8 @@ import json
 import pandas as pd
 
 SOURCE_CSV = "base_sintetica_embeddings_100k_v2.csv"
-BUCKETS_JSON = "pipeline/artifacts/buckets.json"
-VOCAB_JSON = "pipeline/artifacts/vocab.json"
+BUCKETS_JSON = "pipeline/discretizacao/buckets.json"
+VOCAB_JSON = "pipeline/vocabulario/vocab.json"
 
 RECENCIA_BUCKETS = ["0-7", "8-15", "16-30", "31-60", "61-90", "91-180", "181-365", ">365"]
 ESTRUTURAIS = ["BOS", "EOS", "EVT", "PAD", "UNK"]

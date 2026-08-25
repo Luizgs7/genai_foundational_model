@@ -2,7 +2,7 @@
 
 Ver .claude/skills/temporal-customer-splits/SKILL.md para o racional.
 
-Gera pipeline/artifacts/splits.csv com uma linha por transação de
+Gera pipeline/splits/splits.csv com uma linha por transação de
 base_sintetica_embeddings_100k_v2.csv, contendo:
   - transacao_id: índice da linha no CSV de origem (para join posterior)
   - cpf, data_compra
@@ -15,9 +15,18 @@ from datetime import timedelta
 import pandas as pd
 
 SOURCE_CSV = "base_sintetica_embeddings_100k_v2.csv"
-OUTPUT_CSV = "pipeline/artifacts/splits.csv"
+OUTPUT_CSV = "pipeline/splits/splits.csv"
 
-TEST_WINDOW_DAYS = 90
+# TEST_WINDOW_DAYS=180 (não 90): a Tarefa 8 define churn com um horizonte de
+# N=121 dias (censura: só sabemos que um cliente "não voltou" se passaram
+# >=N dias até o fim do dataset sem nova compra). Com uma janela de teste
+# menor que N, NENHUM evento de teste consegue satisfazer essa condição —
+# o split fica estruturalmente incapaz de avaliar churn (taxa 0% garantida,
+# não é o modelo acertando tudo). 180 dias dá margem confortável acima de N
+# (verificado por simulação: ~63% das linhas de teste viram determináveis,
+# taxa de churn resultante ~14%, não-degenerada). Custo aceito: treino cai
+# de 82,4% para 74,4% do total de linhas.
+TEST_WINDOW_DAYS = 180
 VAL_WINDOW_DAYS = 90
 
 

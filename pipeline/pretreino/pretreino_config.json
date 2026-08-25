@@ -1,0 +1,23 @@
+{
+  "vocab_size": 312,
+  "n_positions": 512,
+  "n_embd": 384,
+  "n_layer": 8,
+  "n_head": 8,
+  "attn_implementation": "flash_attention_2",
+  "dtype": "bfloat16",
+  "batch_size": 32,
+  "n_epochs": 30,
+  "lr": 0.0003,
+  "warmup_steps": 100,
+  "weight_decay": 0.01,
+  "grad_clip": 1.0,
+  "seed": 0,
+  "n_params": 14512896,
+  "n_params_trainable": 14316288,
+  "n_clientes_treino": 13609,
+  "total_tokens_treino": 892236,
+  "n_clientes_val": 4661,
+  "n_clientes_teste": 7691,
+  "n_clientes_teste_frios": 961
+}

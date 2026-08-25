@@ -21,8 +21,8 @@ import math
 import numpy as np
 import pandas as pd
 
-VOCAB_JSON = "pipeline/artifacts/vocab.json"
-SEQUENCIAS_JSON = "pipeline/artifacts/sequencias.json"
+VOCAB_JSON = "pipeline/vocabulario/vocab.json"
+SEQUENCIAS_JSON = "pipeline/serializacao/sequencias.json"
 
 N_EMBD = 384
 N_LAYER = 8
@@ -138,8 +138,9 @@ def main():
         n_head=N_HEAD,
         bos_token_id=vocab["BOS"],
         eos_token_id=vocab["EOS"],
+        attn_implementation="flash_attention_2",
     )
-    model = GPT2LMHeadModel(config, attn_implementation="flash_attention_2")
+    model = GPT2LMHeadModel(config)
     model = model.to(dtype=torch.bfloat16, device="cuda")
 
     # NoPE: neutraliza a matriz de position embeddings — fica sempre zero e

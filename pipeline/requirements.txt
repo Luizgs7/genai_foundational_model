@@ -1,4 +1,4 @@
-# Dependências da Tarefa 6 (pipeline/tarefa6_arquitetura.py).
+# Dependências da Tarefa 6 (pipeline/arquitetura/tarefa6_arquitetura.py).
 #
 # torch + transformers: instalados aqui localmente (CPU, versões abaixo) para
 # validar a parte do script que não depende de GPU (batching/padding/máscara,
