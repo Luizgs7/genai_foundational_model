@@ -88,9 +88,20 @@ sobre dados reais. Em particular:
   curva de loss de treino "bonita" não é evidência suficiente de
   correção — vale sempre inspecionar previsões reais antes de confiar
   numa métrica agregada.
-- Recomendação decorrente: antes do fine-tuning (Estágio 4, DCNv2), avaliar
+- ~~Recomendação decorrente: antes do fine-tuning (Estágio 4, DCNv2), avaliar
   reduzir `n_layer`/`n_embd` (modelo menor) ou aumentar o volume de dados
-  de treino — na configuração atual, mais épocas só pioram overfitting.
+  de treino~~ **RESOLVIDO na Tarefa 12 (2026-08-25)**: reduzido para
+  `n_embd=128, n_layer=4, n_head=4` (833K parâmetros treináveis, razão
+  tokens/parâmetro ≈1,07 — antes 0,06). Resultado, nos mesmos dados/splits:
+  melhor época de val passou de 1/30 para 10/30, loss de teste caiu de 1,69
+  para 1,63 (ppl 5,44→5,11), e a curva de val deixou de divergir (fica quase
+  plana após a época 10, em vez de subir continuamente). Confirma que o
+  gargalo era tamanho do modelo relativo ao volume de dados, não capacidade
+  insuficiente. Baseline antigo preservado em
+  `pipeline/pretreino/run_baseline_384emb_8layer/` para comparação; ver
+  `ROADMAP.md`, Tarefa 12, para a tabela completa. Pendência: o relatório
+  visual do cliente (`rastro_cliente_860.703.096-50.html`, Etapa 6) ainda
+  reflete o checkpoint antigo — precisa ser regenerado com o novo `melhor.pt`.
 - A API real de `attn_implementation` do `transformers` instalado (5.15.0)
   diverge do padrão assumido inicialmente no código (precisa ir na
   `GPT2Config`, não no construtor do modelo) — indício de que a
@@ -156,10 +167,20 @@ sobre dados reais. Em particular:
 
 ## 7. Escopo não coberto ainda
 
-- Estágios 4 e 5 do `ARQUITETURA.md` (fusão DCNv2, embedding universal) —
-  ainda não implementados; o backbone (Tarefa 11) já está treinado, mas
-  sobredimensionado pro volume de dados atual (ver item 4) — vale
-  reconsiderar o tamanho do modelo antes de construir a fusão em cima dele.
+- ~~Estágios 4 e 5 do `ARQUITETURA.md` (fusão DCNv2, embedding universal) —
+  ainda não implementados~~ **RESOLVIDO na Tarefa 13 (2026-08-25)**: DCNv2
+  (backbone congelado da Tarefa 12) + 3 cabeças de tarefa, treinado sobre
+  ~98,7 mil transações rotuladas (âncora causal por evento, não por split —
+  ver ROADMAP.md, Tarefa 13, para o viés de seleção encontrado e corrigido
+  na primeira tentativa). Resultado misto e reportado sem ajuste
+  cosmético: churn bate o baseline causal com folga (AUC 0,80 vs. 0,75),
+  mas próxima categoria (acc. 0,56 vs. baseline 0,59) e próximo valor
+  (acc. 0,094 vs. baseline 0,10) **não** superam seus baselines — reforça a
+  suspeita já registrada no item 6 de que "próximo valor" pode ter sinal
+  genuinamente fraco neste dataset sintético. Só a opção "backbone
+  congelado" foi testada (fine-tuning conjunto do ARQUITETURA.md, Estágio 4,
+  fica como próximo passo caso os resultados de categoria/valor precisem
+  melhorar). Ver `pipeline/fusao/tarefa13_relatorio.json`.
 - ~~Nenhum treino real foi executado~~ **RESOLVIDO na Tarefa 11.** Backbone
   pré-treinado por 30 épocas com observabilidade completa (métricas por
   passo/época, checkpoints, curva de loss) — ver item 4 e

@@ -1,0 +1,38 @@
+{
+  "n_params": 9005,
+  "n_train": 73065,
+  "n_val": 8093,
+  "n_test": 17554,
+  "razao_exemplos_por_parametro_treino": 8.113825652415326,
+  "melhor_epoca": 31,
+  "melhor_churn_auc_val": 0.7902141305472226,
+  "metricas_teste": {
+    "churn_auc": 0.8002271996027825,
+    "categoria_accuracy": 0.5578424414478353,
+    "categoria_f1_macro": 0.5500057325092408,
+    "valor_accuracy": 0.09408901956808273
+  },
+  "comparacao_com_baseline_tarefa8": {
+    "churn_auc": {
+      "modelo_teste": 0.8002271996027825,
+      "baseline_rfm_teste": 0.7501548616233437,
+      "delta": 0.050072337979438886
+    },
+    "categoria_accuracy": {
+      "modelo_teste": 0.5578424414478353,
+      "baseline_moda_teste": 0.5897799858055358,
+      "delta": -0.031937544357700465
+    },
+    "categoria_f1_macro": {
+      "modelo_teste": 0.5500057325092408,
+      "baseline_moda_teste": 0.5873804315819111,
+      "delta": -0.037374699072670325
+    },
+    "valor_accuracy": {
+      "modelo_teste": 0.09408901956808273,
+      "baseline_moda_teste": 0.09946263814255298,
+      "delta": -0.005373618574470246
+    }
+  },
+  "tempo_total_segundos": 39.691293478012085
+}

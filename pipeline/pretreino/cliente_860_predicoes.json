@@ -1,2169 +1,1609 @@
 {
-  "val": [
-    {
-      "pos": 299,
-      "contexto_tok": "MES_9",
-      "alvo": "EVT",
-      "p_alvo": 0.9964755177497864,
-      "loss": 0.00353070787014207,
-      "top5": [
-        [
+  "cpf": "860.703.096-50",
+  "checkpoint": "pipeline/pretreino/checkpoints/melhor.pt",
+  "config_modelo": {
+    "n_embd": 128,
+    "n_layer": 4,
+    "n_head": 4
+  },
+  "validacao": {
+    "n_alvos": 48,
+    "loss_media": 1.529,
+    "perplexidade": 4.6137,
+    "acertos_top1": 17,
+    "previsoes": [
+      {
+        "split": "val",
+        "contexto_token": "MES_9",
+        "alvo_real": "EVT",
+        "top5_previsto": [
           "EVT",
-          0.9964755177497864
-        ],
-        [
-          "VALOR_BUCKET_Sementes_1",
-          4.523992174654268e-05
-        ],
-        [
-          "VALOR_BUCKET_Sementes_6",
-          4.506354525801726e-05
-        ],
-        [
-          "RECENCIA_0-7",
-          4.0394697862211615e-05
-        ],
-        [
-          "VALOR_BUCKET_Sementes_0",
-          3.976843800046481e-05
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 300,
-      "contexto_tok": "EVT",
-      "alvo": "CATEGORIA_Defensivos",
-      "p_alvo": 0.6773718595504761,
-      "loss": 0.3895348813118452,
-      "top5": [
-        [
-          "CATEGORIA_Defensivos",
-          0.6773718595504761
-        ],
-        [
           "CATEGORIA_Fertilizantes",
-          0.16599711775779724
-        ],
-        [
-          "CATEGORIA_Sementes",
-          0.09167230874300003
-        ],
-        [
           "CATEGORIA_Máquinas",
-          0.055602066218853
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Sementes"
         ],
-        [
-          "QTD_1",
-          0.00014902299153618515
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 301,
-      "contexto_tok": "CATEGORIA_Defensivos",
-      "alvo": "MARCA_CampoForte",
-      "p_alvo": 0.12699268758296967,
-      "loss": 2.0636257722680806,
-      "top5": [
-        [
-          "MARCA_AgriPlus",
-          0.5872082114219666
+        "top5_prob": [
+          0.9612,
+          0.0009,
+          0.0008,
+          0.0008,
+          0.0007
         ],
-        [
+        "acertou_top1": true,
+        "prob_alvo": 0.9612,
+        "loss_token": 0.0396
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_Defensivos",
+        "top5_previsto": [
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Sementes",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.6437,
+          0.1191,
+          0.0957,
+          0.0871,
+          0.0019
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.6437,
+        "loss_token": 0.4405
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_Defensivos",
+        "alvo_real": "MARCA_CampoForte",
+        "top5_previsto": [
           "MARCA_VerdeTech",
-          0.16306182742118835
-        ],
-        [
           "MARCA_CampoForte",
-          0.12699268758296967
-        ],
-        [
+          "MARCA_AgriPlus",
           "MARCA_AgroMax",
-          0.11207064986228943
+          "EVT"
         ],
-        [
-          "CANAL_Loja",
-          0.0001985313865588978
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 302,
-      "contexto_tok": "MARCA_CampoForte",
-      "alvo": "FABRICANTE_Empresa A",
-      "p_alvo": 0.27167752385139465,
-      "loss": 1.303139490110809,
-      "top5": [
-        [
+        "top5_prob": [
+          0.2562,
+          0.2483,
+          0.2407,
+          0.2333,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.2483,
+        "loss_token": 1.3931
+      },
+      {
+        "split": "val",
+        "contexto_token": "MARCA_CampoForte",
+        "alvo_real": "FABRICANTE_Empresa A",
+        "top5_previsto": [
           "FABRICANTE_Empresa C",
-          0.39528846740722656
-        ],
-        [
           "FABRICANTE_Empresa B",
-          0.32770565152168274
-        ],
-        [
           "FABRICANTE_Empresa A",
-          0.27167752385139465
+          "EVT",
+          "CATEGORIA_Defensivos"
         ],
-        [
-          "MARCA_VerdeTech",
-          7.674560038140044e-05
+        "top5_prob": [
+          0.3346,
+          0.3243,
+          0.3143,
+          0.0007,
+          0.0006
         ],
-        [
-          "RECENCIA_31-60",
-          6.288308941293508e-05
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 303,
-      "contexto_tok": "FABRICANTE_Empresa A",
-      "alvo": "PRODUTO_P0069",
-      "p_alvo": 0.01536404900252819,
-      "loss": 4.175724979065385,
-      "top5": [
-        [
-          "PRODUTO_P0094",
-          0.02166678197681904
+        "acertou_top1": false,
+        "prob_alvo": 0.3143,
+        "loss_token": 1.1574
+      },
+      {
+        "split": "val",
+        "contexto_token": "FABRICANTE_Empresa A",
+        "alvo_real": "PRODUTO_P0069",
+        "top5_previsto": [
+          "PRODUTO_P0071",
+          "PRODUTO_P0065",
+          "PRODUTO_P0062",
+          "PRODUTO_P0090",
+          "PRODUTO_P0069"
         ],
-        [
-          "PRODUTO_P0086",
-          0.02100016549229622
+        "top5_prob": [
+          0.0265,
+          0.0265,
+          0.0265,
+          0.0256,
+          0.0256
         ],
-        [
-          "PRODUTO_P0097",
-          0.02035405859351158
-        ],
-        [
-          "PRODUTO_P0084",
-          0.019727829843759537
-        ],
-        [
-          "PRODUTO_P0066",
-          0.019727829843759537
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 304,
-      "contexto_tok": "PRODUTO_P0069",
-      "alvo": "VALOR_BUCKET_Defensivos_0",
-      "p_alvo": 0.09526146203279495,
-      "loss": 2.3511299359128497,
-      "top5": [
-        [
-          "VALOR_BUCKET_Defensivos_9",
-          0.12620092928409576
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_5",
-          0.11855480819940567
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_4",
-          0.11855480819940567
-        ],
-        [
+        "acertou_top1": false,
+        "prob_alvo": 0.0256,
+        "loss_token": 3.6636
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_P0069",
+        "alvo_real": "VALOR_BUCKET_Defensivos_0",
+        "top5_previsto": [
+          "VALOR_BUCKET_Defensivos_6",
           "VALOR_BUCKET_Defensivos_7",
-          0.11137193441390991
+          "VALOR_BUCKET_Defensivos_4",
+          "VALOR_BUCKET_Defensivos_8",
+          "VALOR_BUCKET_Defensivos_5"
         ],
-        [
-          "VALOR_BUCKET_Defensivos_2",
-          0.10462425649166107
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 305,
-      "contexto_tok": "VALOR_BUCKET_Defensivos_0",
-      "alvo": "DESCONTO_BUCKET_Defensivos_0",
-      "p_alvo": 0.46371331810951233,
-      "loss": 0.7684887666050828,
-      "top5": [
-        [
+        "top5_prob": [
+          0.1024,
+          0.0993,
+          0.0993,
+          0.0993,
+          0.0993
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0933,
+        "loss_token": 2.3722
+      },
+      {
+        "split": "val",
+        "contexto_token": "VALOR_BUCKET_Defensivos_0",
+        "alvo_real": "DESCONTO_BUCKET_Defensivos_0",
+        "top5_previsto": [
           "DESCONTO_BUCKET_Defensivos_0",
-          0.46371331810951233
-        ],
-        [
           "DESCONTO_BUCKET_Defensivos_1",
-          0.3844318389892578
-        ],
-        [
           "DESCONTO_BUCKET_Defensivos_2",
-          0.09131056070327759
-        ],
-        [
           "DESCONTO_BUCKET_Defensivos_3",
-          0.023819783702492714
+          "DESCONTO_BUCKET_Defensivos_4"
         ],
-        [
-          "DESCONTO_BUCKET_Defensivos_4",
-          0.011608836241066456
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 306,
-      "contexto_tok": "DESCONTO_BUCKET_Defensivos_0",
-      "alvo": "QTD_1",
-      "p_alvo": 0.6041662693023682,
-      "loss": 0.5039058386280583,
-      "top5": [
-        [
+        "top5_prob": [
+          0.5583,
+          0.2556,
+          0.078,
+          0.0253,
+          0.0095
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.5583,
+        "loss_token": 0.5829
+      },
+      {
+        "split": "val",
+        "contexto_token": "DESCONTO_BUCKET_Defensivos_0",
+        "alvo_real": "QTD_1",
+        "top5_previsto": [
           "QTD_1",
-          0.6041662693023682
-        ],
-        [
           "QTD_2",
-          0.25185397267341614
-        ],
-        [
           "QTD_3",
-          0.06778557598590851
-        ],
-        [
           "QTD_4",
-          0.027387849986553192
+          "QTD_5"
         ],
-        [
-          "QTD_5",
-          0.012539071030914783
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 307,
-      "contexto_tok": "QTD_1",
-      "alvo": "PAGAMENTO_Boleto",
-      "p_alvo": 0.5527656078338623,
-      "loss": 0.592821222946961,
-      "top5": [
-        [
-          "PAGAMENTO_Boleto",
-          0.5527656078338623
+        "top5_prob": [
+          0.6332,
+          0.2056,
+          0.0627,
+          0.0246,
+          0.014
         ],
-        [
-          "PAGAMENTO_Cartão",
-          0.2611079812049866
-        ],
-        [
+        "acertou_top1": true,
+        "prob_alvo": 0.6332,
+        "loss_token": 0.457
+      },
+      {
+        "split": "val",
+        "contexto_token": "QTD_1",
+        "alvo_real": "PAGAMENTO_Boleto",
+        "top5_previsto": [
           "PAGAMENTO_PIX",
-          0.1794567108154297
-        ],
-        [
-          "EVT",
-          9.582590428180993e-05
-        ],
-        [
-          "CATEGORIA_Sementes",
-          7.010772969806567e-05
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 308,
-      "contexto_tok": "PAGAMENTO_Boleto",
-      "alvo": "CANAL_Online",
-      "p_alvo": 0.18775053322315216,
-      "loss": 1.6726411482718744,
-      "top5": [
-        [
+          "PAGAMENTO_Cartão",
+          "PAGAMENTO_Boleto",
           "CANAL_Loja",
-          0.6156103014945984
+          "CANAL_Online"
         ],
-        [
+        "top5_prob": [
+          0.3329,
+          0.3227,
+          0.3227,
+          0.0007,
+          0.0005
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.3227,
+        "loss_token": 1.131
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_Boleto",
+        "alvo_real": "CANAL_Online",
+        "top5_previsto": [
+          "CANAL_Loja",
           "CANAL_Representante",
-          0.18775053322315216
-        ],
-        [
           "CANAL_Online",
-          0.18775053322315216
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão"
         ],
-        [
-          "MARCA_AgriPlus",
-          0.0001558851363370195
+        "top5_prob": [
+          0.6135,
+          0.1703,
+          0.16,
+          0.002,
+          0.0018
         ],
-        [
-          "MES_3",
-          0.00012772770423907787
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 309,
-      "contexto_tok": "CANAL_Online",
-      "alvo": "RECENCIA_61-90",
-      "p_alvo": 0.07027644664049149,
-      "loss": 2.6553185769799814,
-      "top5": [
-        [
+        "acertou_top1": false,
+        "prob_alvo": 0.16,
+        "loss_token": 1.8324
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_Online",
+        "alvo_real": "RECENCIA_61-90",
+        "top5_previsto": [
           "RECENCIA_0-7",
-          0.2958748936653137
-        ],
-        [
           "RECENCIA_16-30",
-          0.21646668016910553
-        ],
-        [
           "RECENCIA_8-15",
-          0.1851537823677063
-        ],
-        [
           "RECENCIA_31-60",
-          0.1633976250886917
+          "RECENCIA_61-90"
         ],
-        [
-          "RECENCIA_61-90",
-          0.07027644664049149
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 310,
-      "contexto_tok": "RECENCIA_61-90",
-      "alvo": "MES_11",
-      "p_alvo": 0.20523042976856232,
-      "loss": 1.5836218834607605,
-      "top5": [
-        [
-          "MES_10",
-          0.5578740835189819
+        "top5_prob": [
+          0.3333,
+          0.1899,
+          0.1784,
+          0.1625,
+          0.0544
         ],
-        [
+        "acertou_top1": false,
+        "prob_alvo": 0.0544,
+        "loss_token": 2.9111
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_61-90",
+        "alvo_real": "MES_11",
+        "top5_previsto": [
           "MES_11",
-          0.20523042976856232
-        ],
-        [
+          "MES_10",
           "MES_12",
-          0.12064873427152634
-        ],
-        [
           "MES_1",
-          0.048746492713689804
+          "MES_9"
         ],
-        [
-          "MES_9",
-          0.026920368894934654
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 311,
-      "contexto_tok": "MES_11",
-      "alvo": "EVT",
-      "p_alvo": 0.9844074249267578,
-      "loss": 0.015715417902501225,
-      "top5": [
-        [
+        "top5_prob": [
+          0.3449,
+          0.324,
+          0.1734,
+          0.0513,
+          0.0399
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.3449,
+        "loss_token": 1.0646
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_11",
+        "alvo_real": "EVT",
+        "top5_previsto": [
           "EVT",
-          0.9844074249267578
-        ],
-        [
-          "VALOR_BUCKET_Sementes_1",
-          0.0005360192153602839
-        ],
-        [
-          "VALOR_BUCKET_Sementes_0",
-          0.0005195277044549584
-        ],
-        [
-          "VALOR_BUCKET_Sementes_6",
-          0.0004957367782481015
-        ],
-        [
-          "VALOR_BUCKET_Sementes_4",
-          0.00043070357060059905
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 312,
-      "contexto_tok": "EVT",
-      "alvo": "CATEGORIA_Máquinas",
-      "p_alvo": 0.05742618441581726,
-      "loss": 2.857254905180978,
-      "top5": [
-        [
-          "CATEGORIA_Defensivos",
-          0.6780699491500854
-        ],
-        [
           "CATEGORIA_Fertilizantes",
-          0.1661681979894638
-        ],
-        [
-          "CATEGORIA_Sementes",
-          0.08894341439008713
-        ],
-        [
           "CATEGORIA_Máquinas",
-          0.05742618441581726
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Sementes"
         ],
-        [
-          "QTD_1",
-          0.00015331190661527216
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 313,
-      "contexto_tok": "CATEGORIA_Máquinas",
-      "alvo": "MARCA_VerdeTech",
-      "p_alvo": 0.1859797090291977,
-      "loss": 1.6821177024606906,
-      "top5": [
-        [
-          "MARCA_AgriPlus",
-          0.4899912476539612
+        "top5_prob": [
+          0.9609,
+          0.0009,
+          0.0008,
+          0.0008,
+          0.0007
         ],
-        [
-          "MARCA_VerdeTech",
-          0.1859797090291977
+        "acertou_top1": true,
+        "prob_alvo": 0.9609,
+        "loss_token": 0.0399
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_Máquinas",
+        "top5_previsto": [
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Sementes",
+          "EVT"
         ],
-        [
+        "top5_prob": [
+          0.6532,
+          0.1171,
+          0.0912,
+          0.083,
+          0.0019
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.1171,
+        "loss_token": 2.1447
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_Máquinas",
+        "alvo_real": "MARCA_VerdeTech",
+        "top5_previsto": [
           "MARCA_CampoForte",
-          0.1859797090291977
-        ],
-        [
-          "MARCA_AgroMax",
-          0.12782186269760132
-        ],
-        [
-          "CANAL_Loja",
-          0.00024103817122522742
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 314,
-      "contexto_tok": "MARCA_VerdeTech",
-      "alvo": "FABRICANTE_Empresa B",
-      "p_alvo": 0.32767850160598755,
-      "loss": 1.1157223293171374,
-      "top5": [
-        [
-          "FABRICANTE_Empresa C",
-          0.3952556848526001
-        ],
-        [
-          "FABRICANTE_Empresa B",
-          0.32767850160598755
-        ],
-        [
-          "FABRICANTE_Empresa A",
-          0.27165499329566956
-        ],
-        [
           "MARCA_VerdeTech",
-          9.256519115297124e-05
+          "MARCA_AgroMax",
+          "MARCA_AgriPlus",
+          "EVT"
         ],
-        [
-          "MES_1",
-          5.46292430954054e-05
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 315,
-      "contexto_tok": "FABRICANTE_Empresa B",
-      "alvo": "PRODUTO_P0172",
-      "p_alvo": 0.01925516501069069,
-      "loss": 3.9499759419939644,
-      "top5": [
-        [
-          "PRODUTO_P0180",
-          0.033793866634368896
+        "top5_prob": [
+          0.2602,
+          0.2444,
+          0.2369,
+          0.2369,
+          0.0006
         ],
-        [
-          "PRODUTO_P0151",
-          0.026318691670894623
+        "acertou_top1": false,
+        "prob_alvo": 0.2444,
+        "loss_token": 1.4088
+      },
+      {
+        "split": "val",
+        "contexto_token": "MARCA_VerdeTech",
+        "alvo_real": "FABRICANTE_Empresa B",
+        "top5_previsto": [
+          "FABRICANTE_Empresa B",
+          "FABRICANTE_Empresa C",
+          "FABRICANTE_Empresa A",
+          "EVT",
+          "CATEGORIA_Defensivos"
         ],
-        [
-          "PRODUTO_P0168",
-          0.024724120274186134
+        "top5_prob": [
+          0.3276,
+          0.3276,
+          0.3176,
+          0.0007,
+          0.0006
         ],
-        [
+        "acertou_top1": true,
+        "prob_alvo": 0.3276,
+        "loss_token": 1.1158
+      },
+      {
+        "split": "val",
+        "contexto_token": "FABRICANTE_Empresa B",
+        "alvo_real": "PRODUTO_P0172",
+        "top5_previsto": [
+          "PRODUTO_P0144",
           "PRODUTO_P0166",
-          0.024724120274186134
+          "PRODUTO_P0163",
+          "PRODUTO_P0159",
+          "PRODUTO_P0150"
         ],
-        [
-          "PRODUTO_P0148",
-          0.02396344020962715
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 316,
-      "contexto_tok": "PRODUTO_P0172",
-      "alvo": "VALOR_BUCKET_Máquinas_4",
-      "p_alvo": 0.11045444756746292,
-      "loss": 2.203152082226752,
-      "top5": [
-        [
-          "VALOR_BUCKET_Máquinas_9",
-          0.16071027517318726
+        "top5_prob": [
+          0.0265,
+          0.0257,
+          0.0257,
+          0.0241,
+          0.0241
         ],
-        [
-          "VALOR_BUCKET_Máquinas_1",
-          0.13323350250720978
-        ],
-        [
-          "VALOR_BUCKET_Máquinas_0",
-          0.1139606386423111
-        ],
-        [
+        "acertou_top1": false,
+        "prob_alvo": 0.0188,
+        "loss_token": 3.9755
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_P0172",
+        "alvo_real": "VALOR_BUCKET_Máquinas_4",
+        "top5_previsto": [
+          "VALOR_BUCKET_Máquinas_6",
           "VALOR_BUCKET_Máquinas_4",
-          0.11045444756746292
-        ],
-        [
           "VALOR_BUCKET_Máquinas_7",
-          0.10376235097646713
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 317,
-      "contexto_tok": "VALOR_BUCKET_Máquinas_4",
-      "alvo": "DESCONTO_BUCKET_Máquinas_7",
-      "p_alvo": 0.2199416309595108,
-      "loss": 1.5143930816521192,
-      "top5": [
-        [
-          "DESCONTO_BUCKET_Máquinas_7",
-          0.2199416309595108
+          "VALOR_BUCKET_Máquinas_9",
+          "VALOR_BUCKET_Máquinas_8"
         ],
-        [
-          "DESCONTO_BUCKET_Máquinas_6",
-          0.20661604404449463
+        "top5_prob": [
+          0.0992,
+          0.0992,
+          0.0992,
+          0.0992,
+          0.0992
         ],
-        [
+        "acertou_top1": false,
+        "prob_alvo": 0.0992,
+        "loss_token": 2.3109
+      },
+      {
+        "split": "val",
+        "contexto_token": "VALOR_BUCKET_Máquinas_4",
+        "alvo_real": "DESCONTO_BUCKET_Máquinas_7",
+        "top5_previsto": [
           "DESCONTO_BUCKET_Máquinas_5",
-          0.1376359611749649
-        ],
-        [
           "DESCONTO_BUCKET_Máquinas_4",
-          0.11410421133041382
-        ],
-        [
-          "DESCONTO_BUCKET_Máquinas_3",
-          0.10389307141304016
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 318,
-      "contexto_tok": "DESCONTO_BUCKET_Máquinas_7",
-      "alvo": "QTD_2",
-      "p_alvo": 0.01441359892487526,
-      "loss": 4.23958314825378,
-      "top5": [
-        [
-          "QTD_8",
-          0.16495491564273834
-        ],
-        [
-          "QTD_10",
-          0.16495491564273834
-        ],
-        [
-          "QTD_9",
-          0.15496079623699188
-        ],
-        [
-          "QTD_6",
-          0.15496079623699188
-        ],
-        [
-          "QTD_7",
-          0.1367524266242981
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 319,
-      "contexto_tok": "QTD_2",
-      "alvo": "PAGAMENTO_PIX",
-      "p_alvo": 0.1733018010854721,
-      "loss": 1.7527206894382286,
-      "top5": [
-        [
-          "PAGAMENTO_Boleto",
-          0.5682347416877747
-        ],
-        [
-          "PAGAMENTO_Cartão",
-          0.2521526515483856
-        ],
-        [
-          "PAGAMENTO_PIX",
-          0.1733018010854721
-        ],
-        [
-          "EVT",
-          8.198528666980565e-05
-        ],
-        [
-          "QTD_2",
-          7.291923247976229e-05
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 320,
-      "contexto_tok": "PAGAMENTO_PIX",
-      "alvo": "CANAL_Loja",
-      "p_alvo": 0.6749861240386963,
-      "loss": 0.39306314530061404,
-      "top5": [
-        [
-          "CANAL_Loja",
-          0.6749861240386963
-        ],
-        [
-          "CANAL_Online",
-          0.16032326221466064
-        ],
-        [
-          "CANAL_Representante",
-          0.1553906351327896
-        ],
-        [
-          "MARCA_AgriPlus",
-          0.00019067538960371166
-        ],
-        [
-          "MES_3",
-          0.0001656616514082998
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 321,
-      "contexto_tok": "CANAL_Loja",
-      "alvo": "RECENCIA_8-15",
-      "p_alvo": 0.18532200157642365,
-      "loss": 1.6856604178422014,
-      "top5": [
-        [
-          "RECENCIA_0-7",
-          0.29614371061325073
-        ],
-        [
-          "RECENCIA_16-30",
-          0.21666336059570312
-        ],
-        [
-          "RECENCIA_8-15",
-          0.18532200157642365
-        ],
-        [
-          "RECENCIA_31-60",
-          0.16354607045650482
-        ],
-        [
-          "RECENCIA_61-90",
-          0.07034029811620712
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 322,
-      "contexto_tok": "RECENCIA_8-15",
-      "alvo": "MES_12",
-      "p_alvo": 0.009686140343546867,
-      "loss": 4.637059245786756,
-      "top5": [
-        [
-          "MES_10",
-          0.8190916776657104
-        ],
-        [
-          "MES_9",
-          0.07860584557056427
-        ],
-        [
-          "MES_11",
-          0.06316156685352325
-        ],
-        [
-          "MES_12",
-          0.009686140343546867
-        ],
-        [
-          "MES_8",
-          0.007086531724780798
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 323,
-      "contexto_tok": "MES_12",
-      "alvo": "EVT",
-      "p_alvo": 0.9879310131072998,
-      "loss": 0.012142408462315766,
-      "top5": [
-        [
-          "EVT",
-          0.9879310131072998
-        ],
-        [
-          "MES_10",
-          0.0003997615131083876
-        ],
-        [
-          "VALOR_BUCKET_Sementes_1",
-          0.0002856966748367995
-        ],
-        [
-          "VALOR_BUCKET_Sementes_0",
-          0.00026422622613608837
-        ],
-        [
-          "VALOR_BUCKET_Sementes_6",
-          0.0002621699823066592
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 324,
-      "contexto_tok": "EVT",
-      "alvo": "CATEGORIA_Defensivos",
-      "p_alvo": 0.6565953493118286,
-      "loss": 0.42068735692506487,
-      "top5": [
-        [
-          "CATEGORIA_Defensivos",
-          0.6565953493118286
-        ],
-        [
-          "CATEGORIA_Fertilizantes",
-          0.1767202466726303
-        ],
-        [
-          "CATEGORIA_Sementes",
-          0.08612656593322754
-        ],
-        [
-          "CATEGORIA_Máquinas",
-          0.0714014321565628
-        ],
-        [
-          "MARCA_CampoForte",
-          0.00014787772670388222
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 325,
-      "contexto_tok": "CATEGORIA_Defensivos",
-      "alvo": "MARCA_AgroMax",
-      "p_alvo": 0.1131851002573967,
-      "loss": 2.1787307450440174,
-      "top5": [
-        [
-          "MARCA_AgriPlus",
-          0.5399759411811829
-        ],
-        [
-          "MARCA_VerdeTech",
-          0.18661069869995117
-        ],
-        [
-          "MARCA_CampoForte",
-          0.14994589984416962
-        ],
-        [
-          "MARCA_AgroMax",
-          0.1131851002573967
-        ],
-        [
-          "CANAL_Loja",
-          0.00017694559937808663
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 326,
-      "contexto_tok": "MARCA_AgroMax",
-      "alvo": "FABRICANTE_Empresa A",
-      "p_alvo": 0.2648521661758423,
-      "loss": 1.328583472147033,
-      "top5": [
-        [
-          "FABRICANTE_Empresa C",
-          0.4102110266685486
-        ],
-        [
-          "FABRICANTE_Empresa B",
-          0.31947267055511475
-        ],
-        [
-          "FABRICANTE_Empresa A",
-          0.2648521661758423
-        ],
-        [
-          "MARCA_VerdeTech",
-          0.00010067797848023474
-        ],
-        [
-          "RECENCIA_31-60",
-          5.725264418288134e-05
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 327,
-      "contexto_tok": "FABRICANTE_Empresa A",
-      "alvo": "PRODUTO_P0097",
-      "p_alvo": 0.011605831794440746,
-      "loss": 4.45624756630162,
-      "top5": [
-        [
-          "PRODUTO_P0108",
-          0.02168254740536213
-        ],
-        [
-          "PRODUTO_P0126",
-          0.01974218524992466
-        ],
-        [
-          "PRODUTO_P0119",
-          0.01974218524992466
-        ],
-        [
-          "PRODUTO_P0124",
-          0.01974218524992466
-        ],
-        [
-          "PRODUTO_P0101",
-          0.01854606717824936
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 328,
-      "contexto_tok": "PRODUTO_P0097",
-      "alvo": "VALOR_BUCKET_Defensivos_0",
-      "p_alvo": 0.09215444326400757,
-      "loss": 2.3842893782967014,
-      "top5": [
-        [
-          "VALOR_BUCKET_Defensivos_9",
-          0.12596020102500916
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_5",
-          0.12208480387926102
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_4",
-          0.12208480387926102
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_7",
-          0.10773947089910507
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_2",
-          0.10442467033863068
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 329,
-      "contexto_tok": "VALOR_BUCKET_Defensivos_0",
-      "alvo": "DESCONTO_BUCKET_Defensivos_1",
-      "p_alvo": 0.3859894871711731,
-      "loss": 0.9519451451960357,
-      "top5": [
-        [
-          "DESCONTO_BUCKET_Defensivos_0",
-          0.4655921757221222
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_1",
-          0.3859894871711731
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_2",
-          0.08885982632637024
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_3",
-          0.023180469870567322
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_4",
-          0.011297259479761124
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 330,
-      "contexto_tok": "DESCONTO_BUCKET_Defensivos_1",
-      "alvo": "QTD_2",
-      "p_alvo": 0.2732168734073639,
-      "loss": 1.2974893910866852,
-      "top5": [
-        [
-          "QTD_1",
-          0.5104362964630127
-        ],
-        [
-          "QTD_2",
-          0.2732168734073639
-        ],
-        [
-          "QTD_3",
-          0.09151618927717209
-        ],
-        [
-          "QTD_4",
-          0.043229181319475174
-        ],
-        [
-          "QTD_5",
-          0.02106822282075882
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 331,
-      "contexto_tok": "QTD_2",
-      "alvo": "PAGAMENTO_PIX",
-      "p_alvo": 0.18243995308876038,
-      "loss": 1.7013341842710954,
-      "top5": [
-        [
-          "PAGAMENTO_Boleto",
-          0.5619546175003052
-        ],
-        [
-          "PAGAMENTO_Cartão",
-          0.24936585128307343
-        ],
-        [
-          "PAGAMENTO_PIX",
-          0.18243995308876038
-        ],
-        [
-          "EVT",
-          7.951098086778075e-05
-        ],
-        [
-          "CATEGORIA_Sementes",
-          7.099531649146229e-05
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 332,
-      "contexto_tok": "PAGAMENTO_PIX",
-      "alvo": "CANAL_Loja",
-      "p_alvo": 0.6678451299667358,
-      "loss": 0.40369897369201757,
-      "top5": [
-        [
-          "CANAL_Loja",
-          0.6678451299667358
-        ],
-        [
-          "CANAL_Online",
-          0.16366249322891235
-        ],
-        [
-          "CANAL_Representante",
-          0.15862713754177094
-        ],
-        [
-          "MES_3",
-          0.0001992627076106146
-        ],
-        [
-          "MARCA_AgriPlus",
-          0.00019464679644443095
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 333,
-      "contexto_tok": "CANAL_Loja",
-      "alvo": "RECENCIA_0-7",
-      "p_alvo": 0.2985316216945648,
-      "loss": 1.2088794164350554,
-      "top5": [
-        [
-          "RECENCIA_0-7",
-          0.2985316216945648
-        ],
-        [
-          "RECENCIA_16-30",
-          0.2184104025363922
-        ],
-        [
-          "RECENCIA_8-15",
-          0.18106858432292938
-        ],
-        [
-          "RECENCIA_31-60",
-          0.16486480832099915
-        ],
-        [
-          "RECENCIA_61-90",
-          0.07090748101472855
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 334,
-      "contexto_tok": "RECENCIA_0-7",
-      "alvo": "MES_12",
-      "p_alvo": 0.027833780273795128,
-      "loss": 3.5815048781812187,
-      "top5": [
-        [
-          "MES_10",
-          0.7406293749809265
-        ],
-        [
-          "MES_11",
-          0.1171845868229866
-        ],
-        [
-          "MES_9",
-          0.05711120367050171
-        ],
-        [
-          "MES_12",
-          0.027833780273795128
-        ],
-        [
-          "MES_1",
-          0.010239474475383759
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 335,
-      "contexto_tok": "MES_12",
-      "alvo": "EVT",
-      "p_alvo": 0.9917883276939392,
-      "loss": 0.008245573806661842,
-      "top5": [
-        [
-          "EVT",
-          0.9917883276939392
-        ],
-        [
-          "MES_10",
-          0.00016993057215586305
-        ],
-        [
-          "VALOR_BUCKET_Sementes_1",
-          0.00015963500482030213
-        ],
-        [
-          "VALOR_BUCKET_Sementes_0",
-          0.00014763823128305376
-        ],
-        [
-          "VALOR_BUCKET_Sementes_6",
-          0.00014534931688103825
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 336,
-      "contexto_tok": "EVT",
-      "alvo": "CATEGORIA_Máquinas",
-      "p_alvo": 0.07010544091463089,
-      "loss": 2.6577548714823984,
-      "top5": [
-        [
-          "CATEGORIA_Defensivos",
-          0.6651419401168823
-        ],
-        [
-          "CATEGORIA_Fertilizantes",
-          0.17351265251636505
-        ],
-        [
-          "CATEGORIA_Sementes",
-          0.08196157217025757
-        ],
-        [
-          "CATEGORIA_Máquinas",
-          0.07010544091463089
-        ],
-        [
-          "MARCA_CampoForte",
-          0.00014576190733350813
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 337,
-      "contexto_tok": "CATEGORIA_Máquinas",
-      "alvo": "MARCA_AgriPlus",
-      "p_alvo": 0.46067529916763306,
-      "loss": 0.7750618243499444,
-      "top5": [
-        [
-          "MARCA_AgriPlus",
-          0.46067529916763306
-        ],
-        [
-          "MARCA_VerdeTech",
-          0.2044234275817871
-        ],
-        [
-          "MARCA_CampoForte",
-          0.18040303885936737
-        ],
-        [
-          "MARCA_AgroMax",
-          0.14495791494846344
-        ],
-        [
-          "CATEGORIA_Defensivos",
-          0.00019232732302043587
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 338,
-      "contexto_tok": "MARCA_AgriPlus",
-      "alvo": "FABRICANTE_Empresa C",
-      "p_alvo": 0.40205225348472595,
-      "loss": 0.9111732150174265,
-      "top5": [
-        [
-          "FABRICANTE_Empresa C",
-          0.40205225348472595
-        ],
-        [
-          "FABRICANTE_Empresa B",
-          0.3333130478858948
-        ],
-        [
-          "FABRICANTE_Empresa A",
-          0.2595844566822052
-        ],
-        [
-          "MARCA_VerdeTech",
-          7.565718260593712e-05
-        ],
-        [
-          "QTD_1",
-          5.733255602535792e-05
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 339,
-      "contexto_tok": "FABRICANTE_Empresa C",
-      "alvo": "PRODUTO_P0171",
-      "p_alvo": 0.015668455511331558,
-      "loss": 4.1561057908840535,
-      "top5": [
-        [
-          "PRODUTO_P0180",
-          0.03530941158533096
-        ],
-        [
-          "PRODUTO_P0151",
-          0.027498995885252953
-        ],
-        [
-          "PRODUTO_P0168",
-          0.02583291567862034
-        ],
-        [
-          "PRODUTO_P0166",
-          0.02583291567862034
-        ],
-        [
-          "PRODUTO_P0158",
-          0.02503811940550804
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 340,
-      "contexto_tok": "PRODUTO_P0171",
-      "alvo": "VALOR_BUCKET_Máquinas_8",
-      "p_alvo": 0.08226647973060608,
-      "loss": 2.497791547939998,
-      "top5": [
-        [
-          "VALOR_BUCKET_Máquinas_9",
-          0.1636064201593399
-        ],
-        [
-          "VALOR_BUCKET_Máquinas_1",
-          0.13146145641803741
-        ],
-        [
-          "VALOR_BUCKET_Máquinas_4",
-          0.11601432412862778
-        ],
-        [
-          "VALOR_BUCKET_Máquinas_0",
-          0.11601432412862778
-        ],
-        [
-          "VALOR_BUCKET_Máquinas_7",
-          0.10238228738307953
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 341,
-      "contexto_tok": "VALOR_BUCKET_Máquinas_8",
-      "alvo": "DESCONTO_BUCKET_Máquinas_9",
-      "p_alvo": 0.2647871971130371,
-      "loss": 1.3288288053591555,
-      "top5": [
-        [
-          "DESCONTO_BUCKET_Máquinas_8",
-          0.2647871971130371
-        ],
-        [
-          "DESCONTO_BUCKET_Máquinas_9",
-          0.2647871971130371
-        ],
-        [
-          "DESCONTO_BUCKET_Máquinas_7",
-          0.23367388546466827
-        ],
-        [
           "DESCONTO_BUCKET_Máquinas_6",
-          0.10369215905666351
+          "DESCONTO_BUCKET_Máquinas_3",
+          "DESCONTO_BUCKET_Máquinas_7"
         ],
-        [
-          "DESCONTO_BUCKET_Máquinas_5",
-          0.04601311311125755
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 342,
-      "contexto_tok": "DESCONTO_BUCKET_Máquinas_9",
-      "alvo": "QTD_7",
-      "p_alvo": 0.11071015149354935,
-      "loss": 2.2008397407298954,
-      "top5": [
-        [
-          "QTD_10",
-          0.3009413480758667
+        "top5_prob": [
+          0.1789,
+          0.1734,
+          0.1579,
+          0.1351,
+          0.1052
         ],
-        [
-          "QTD_9",
-          0.20683377981185913
-        ],
-        [
-          "QTD_8",
-          0.19430235028266907
-        ],
-        [
-          "QTD_7",
-          0.11071015149354935
-        ],
-        [
+        "acertou_top1": false,
+        "prob_alvo": 0.1052,
+        "loss_token": 2.2521
+      },
+      {
+        "split": "val",
+        "contexto_token": "DESCONTO_BUCKET_Máquinas_7",
+        "alvo_real": "QTD_2",
+        "top5_previsto": [
           "QTD_6",
-          0.09469539672136307
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 343,
-      "contexto_tok": "QTD_7",
-      "alvo": "PAGAMENTO_Boleto",
-      "p_alvo": 0.5551713705062866,
-      "loss": 0.5884784372101012,
-      "top5": [
-        [
-          "PAGAMENTO_Boleto",
-          0.5551713705062866
-        ],
-        [
-          "PAGAMENTO_Cartão",
-          0.2463557869195938
-        ],
-        [
-          "PAGAMENTO_PIX",
-          0.191862091422081
-        ],
-        [
-          "EVT",
-          0.00011930933396797627
-        ],
-        [
-          "CATEGORIA_Sementes",
-          7.379203452728689e-05
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 344,
-      "contexto_tok": "PAGAMENTO_Boleto",
-      "alvo": "CANAL_Loja",
-      "p_alvo": 0.6225745677947998,
-      "loss": 0.47389187019507034,
-      "top5": [
-        [
-          "CANAL_Loja",
-          0.6225745677947998
-        ],
-        [
-          "CANAL_Online",
-          0.18987450003623962
-        ],
-        [
-          "CANAL_Representante",
-          0.17837059497833252
-        ],
-        [
-          "MES_3",
-          0.00019016054284293205
-        ],
-        [
-          "MARCA_AgriPlus",
-          0.0001639286201680079
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 345,
-      "contexto_tok": "CANAL_Loja",
-      "alvo": "RECENCIA_31-60",
-      "p_alvo": 0.15958896279335022,
-      "loss": 1.8351537517879122,
-      "top5": [
-        [
-          "RECENCIA_0-7",
-          0.3076157867908478
-        ],
-        [
-          "RECENCIA_16-30",
-          0.21813224256038666
-        ],
-        [
-          "RECENCIA_8-15",
-          0.1808379888534546
-        ],
-        [
-          "RECENCIA_31-60",
-          0.15958896279335022
-        ],
-        [
-          "RECENCIA_61-90",
-          0.06863836199045181
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 346,
-      "contexto_tok": "RECENCIA_31-60",
-      "alvo": "MES_1",
-      "p_alvo": 0.3295477628707886,
-      "loss": 1.110033979942837,
-      "top5": [
-        [
-          "MES_1",
-          0.3295477628707886
-        ],
-        [
-          "MES_12",
-          0.17096713185310364
-        ],
-        [
-          "MES_2",
-          0.13737595081329346
-        ],
-        [
-          "MES_10",
-          0.11038467288017273
-        ],
-        [
-          "MES_3",
-          0.0758662074804306
-        ]
-      ],
-      "acerto_top1": true
-    }
-  ],
-  "test": [
-    {
-      "pos": 347,
-      "contexto_tok": "MES_1",
-      "alvo": "EVT",
-      "p_alvo": 0.9918081164360046,
-      "loss": 0.00822562141954737,
-      "top5": [
-        [
-          "EVT",
-          0.9918081164360046
-        ],
-        [
-          "VALOR_BUCKET_Sementes_1",
-          0.00016342390154022723
-        ],
-        [
-          "VALOR_BUCKET_Sementes_4",
-          0.00015716323105152696
-        ],
-        [
-          "VALOR_BUCKET_Sementes_6",
-          0.00015232781879603863
-        ],
-        [
-          "MES_10",
-          0.00015114240522962064
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 348,
-      "contexto_tok": "EVT",
-      "alvo": "CATEGORIA_Defensivos",
-      "p_alvo": 0.6480024456977844,
-      "loss": 0.43386080841200875,
-      "top5": [
-        [
-          "CATEGORIA_Defensivos",
-          0.6480024456977844
-        ],
-        [
-          "CATEGORIA_Fertilizantes",
-          0.1799437701702118
-        ],
-        [
-          "CATEGORIA_Máquinas",
-          0.08238425850868225
-        ],
-        [
-          "CATEGORIA_Sementes",
-          0.07984956353902817
-        ],
-        [
-          "MARCA_CampoForte",
-          0.00015780139074195176
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 349,
-      "contexto_tok": "CATEGORIA_Defensivos",
-      "alvo": "MARCA_CampoForte",
-      "p_alvo": 0.1471315324306488,
-      "loss": 1.9164283138392062,
-      "top5": [
-        [
-          "MARCA_AgriPlus",
-          0.5298410058021545
-        ],
-        [
-          "MARCA_VerdeTech",
-          0.1831081658601761
-        ],
-        [
-          "MARCA_CampoForte",
-          0.1471315324306488
-        ],
-        [
-          "MARCA_AgroMax",
-          0.12984313070774078
-        ],
-        [
-          "CANAL_Loja",
-          0.00017093268979806453
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 350,
-      "contexto_tok": "MARCA_CampoForte",
-      "alvo": "FABRICANTE_Empresa C",
-      "p_alvo": 0.4020380973815918,
-      "loss": 0.9112084252475217,
-      "top5": [
-        [
-          "FABRICANTE_Empresa C",
-          0.4020380973815918
-        ],
-        [
-          "FABRICANTE_Empresa B",
-          0.333301305770874
-        ],
-        [
-          "FABRICANTE_Empresa A",
-          0.2595753073692322
-        ],
-        [
-          "MARCA_VerdeTech",
-          7.247259054565802e-05
-        ],
-        [
-          "RECENCIA_31-60",
-          5.938191316090524e-05
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 351,
-      "contexto_tok": "FABRICANTE_Empresa C",
-      "alvo": "PRODUTO_P0085",
-      "p_alvo": 0.007296452298760414,
-      "loss": 4.920367035428668,
-      "top5": [
-        [
-          "PRODUTO_P0094",
-          0.01863214373588562
-        ],
-        [
-          "PRODUTO_P0063",
-          0.016442809253931046
-        ],
-        [
-          "PRODUTO_P0076",
-          0.015936918556690216
-        ],
-        [
-          "PRODUTO_P0067",
-          0.015936918556690216
-        ],
-        [
-          "PRODUTO_P0065",
-          0.015936918556690216
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 352,
-      "contexto_tok": "PRODUTO_P0085",
-      "alvo": "VALOR_BUCKET_Defensivos_5",
-      "p_alvo": 0.12025659531354904,
-      "loss": 2.1181275248179703,
-      "top5": [
-        [
-          "VALOR_BUCKET_Defensivos_9",
-          0.12407395243644714
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_5",
-          0.12025659531354904
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_4",
-          0.12025659531354904
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_7",
-          0.11297062039375305
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_2",
-          0.10949487239122391
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 353,
-      "contexto_tok": "VALOR_BUCKET_Defensivos_5",
-      "alvo": "DESCONTO_BUCKET_Defensivos_6",
-      "p_alvo": 0.1986755132675171,
-      "loss": 1.6160823717062698,
-      "top5": [
-        [
-          "DESCONTO_BUCKET_Defensivos_6",
-          0.1986755132675171
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_7",
-          0.18663837015628815
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_5",
-          0.1699361801147461
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_4",
-          0.1282745599746704
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_8",
-          0.0968267098069191
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 354,
-      "contexto_tok": "DESCONTO_BUCKET_Defensivos_6",
-      "alvo": "QTD_4",
-      "p_alvo": 0.08127330988645554,
-      "loss": 2.5099376080073963,
-      "top5": [
-        [
           "QTD_8",
-          0.1616312712430954
-        ],
-        [
-          "QTD_10",
-          0.1616312712430954
-        ],
-        [
-          "QTD_6",
-          0.1518385261297226
-        ],
-        [
-          "QTD_9",
-          0.14263910055160522
-        ],
-        [
           "QTD_7",
-          0.13399703800678253
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 355,
-      "contexto_tok": "QTD_4",
-      "alvo": "PAGAMENTO_Boleto",
-      "p_alvo": 0.5705839395523071,
-      "loss": 0.561094987194887,
-      "top5": [
-        [
+          "QTD_5",
+          "QTD_9"
+        ],
+        "top5_prob": [
+          0.139,
+          0.139,
+          0.1347,
+          0.1306,
+          0.1266
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0274,
+        "loss_token": 3.5982
+      },
+      {
+        "split": "val",
+        "contexto_token": "QTD_2",
+        "alvo_real": "PAGAMENTO_PIX",
+        "top5_previsto": [
           "PAGAMENTO_Boleto",
-          0.5705839395523071
-        ],
-        [
-          "PAGAMENTO_Cartão",
-          0.2378547638654709
-        ],
-        [
           "PAGAMENTO_PIX",
-          0.1852414757013321
-        ],
-        [
-          "EVT",
-          8.168358181137592e-05
-        ],
-        [
-          "MARCA_AgroMax",
-          7.733646634733304e-05
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 356,
-      "contexto_tok": "PAGAMENTO_Boleto",
-      "alvo": "CANAL_Loja",
-      "p_alvo": 0.6367262005805969,
-      "loss": 0.4514155422159078,
-      "top5": [
-        [
+          "PAGAMENTO_Cartão",
           "CANAL_Loja",
-          0.6367262005805969
+          "CANAL_Representante"
         ],
-        [
-          "CANAL_Online",
-          0.1824251115322113
+        "top5_prob": [
+          0.3295,
+          0.3295,
+          0.3194,
+          0.0008,
+          0.0006
         ],
-        [
+        "acertou_top1": false,
+        "prob_alvo": 0.3295,
+        "loss_token": 1.1102
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_PIX",
+        "alvo_real": "CANAL_Loja",
+        "top5_previsto": [
+          "CANAL_Loja",
           "CANAL_Representante",
-          0.17137253284454346
+          "CANAL_Online",
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão"
         ],
-        [
-          "MES_3",
-          0.00022210663883015513
+        "top5_prob": [
+          0.6051,
+          0.1734,
+          0.168,
+          0.002,
+          0.0018
         ],
-        [
-          "MES_2",
-          0.0001812781410990283
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 357,
-      "contexto_tok": "CANAL_Loja",
-      "alvo": "RECENCIA_61-90",
-      "p_alvo": 0.06935830414295197,
-      "loss": 2.6684693968815387,
-      "top5": [
-        [
+        "acertou_top1": true,
+        "prob_alvo": 0.6051,
+        "loss_token": 0.5023
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_Loja",
+        "alvo_real": "RECENCIA_8-15",
+        "top5_previsto": [
           "RECENCIA_0-7",
-          0.3012787401676178
-        ],
-        [
           "RECENCIA_16-30",
-          0.2204202264547348
-        ],
-        [
           "RECENCIA_8-15",
-          0.18273478746414185
-        ],
-        [
           "RECENCIA_31-60",
-          0.1612628847360611
+          "RECENCIA_61-90"
         ],
-        [
-          "RECENCIA_61-90",
-          0.06935830414295197
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 358,
-      "contexto_tok": "RECENCIA_61-90",
-      "alvo": "MES_4",
-      "p_alvo": 0.11044425517320633,
-      "loss": 2.2032443633867347,
-      "top5": [
-        [
-          "MES_3",
-          0.3097485601902008
+        "top5_prob": [
+          0.3334,
+          0.1841,
+          0.1785,
+          0.1625,
+          0.0579
         ],
-        [
-          "MES_2",
-          0.21964460611343384
-        ],
-        [
-          "MES_1",
-          0.15575136244297028
-        ],
-        [
-          "MES_4",
-          0.11044425517320633
-        ],
-        [
-          "MES_5",
-          0.0538262240588665
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 359,
-      "contexto_tok": "MES_4",
-      "alvo": "EVT",
-      "p_alvo": 0.9892213344573975,
-      "loss": 0.010837176182291462,
-      "top5": [
-        [
-          "EVT",
-          0.9892213344573975
-        ],
-        [
-          "MES_1",
-          0.0005139743443578482
-        ],
-        [
-          "MES_12",
-          0.0004828342644032091
-        ],
-        [
+        "acertou_top1": false,
+        "prob_alvo": 0.1785,
+        "loss_token": 1.7233
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_8-15",
+        "alvo_real": "MES_12",
+        "top5_previsto": [
           "MES_10",
-          0.0003532490518409759
-        ],
-        [
           "MES_11",
-          0.00026251241797581315
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 360,
-      "contexto_tok": "EVT",
-      "alvo": "CATEGORIA_Defensivos",
-      "p_alvo": 0.6740094423294067,
-      "loss": 0.39451115877714943,
-      "top5": [
-        [
-          "CATEGORIA_Defensivos",
-          0.6740094423294067
-        ],
-        [
-          "CATEGORIA_Fertilizantes",
-          0.16517311334609985
-        ],
-        [
-          "CATEGORIA_Sementes",
-          0.07802225649356842
-        ],
-        [
-          "CATEGORIA_Máquinas",
-          0.07329512387514114
-        ],
-        [
-          "MARCA_CampoForte",
-          0.00015061837621033192
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 361,
-      "contexto_tok": "CATEGORIA_Defensivos",
-      "alvo": "MARCA_CampoForte",
-      "p_alvo": 0.16353537142276764,
-      "loss": 1.810725973065559,
-      "top5": [
-        [
-          "MARCA_AgriPlus",
-          0.51971435546875
-        ],
-        [
-          "MARCA_VerdeTech",
-          0.17960847914218903
-        ],
-        [
-          "MARCA_CampoForte",
-          0.16353537142276764
-        ],
-        [
-          "MARCA_AgroMax",
-          0.1273614764213562
-        ],
-        [
-          "CANAL_Loja",
-          0.000168321916135028
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 362,
-      "contexto_tok": "MARCA_CampoForte",
-      "alvo": "FABRICANTE_Empresa B",
-      "p_alvo": 0.33330124616622925,
-      "loss": 1.0987085548028577,
-      "top5": [
-        [
-          "FABRICANTE_Empresa C",
-          0.402038037776947
-        ],
-        [
-          "FABRICANTE_Empresa B",
-          0.33330124616622925
-        ],
-        [
-          "FABRICANTE_Empresa A",
-          0.2595752775669098
-        ],
-        [
-          "MARCA_VerdeTech",
-          7.219002873171121e-05
-        ],
-        [
-          "RECENCIA_31-60",
-          5.961431816103868e-05
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 363,
-      "contexto_tok": "FABRICANTE_Empresa B",
-      "alvo": "PRODUTO_P0076",
-      "p_alvo": 0.01689896546304226,
-      "loss": 4.080502874131437,
-      "top5": [
-        [
-          "PRODUTO_P0094",
-          0.020384041592478752
-        ],
-        [
-          "PRODUTO_P0065",
-          0.01743539609014988
-        ],
-        [
-          "PRODUTO_P0063",
-          0.01743539609014988
-        ],
-        [
-          "PRODUTO_P0076",
-          0.01689896546304226
-        ],
-        [
-          "PRODUTO_P0067",
-          0.01689896546304226
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 364,
-      "contexto_tok": "PRODUTO_P0076",
-      "alvo": "VALOR_BUCKET_Defensivos_9",
-      "p_alvo": 0.13171498477458954,
-      "loss": 2.0271148970956707,
-      "top5": [
-        [
-          "VALOR_BUCKET_Defensivos_9",
-          0.13171498477458954
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_5",
-          0.11992785334587097
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_4",
-          0.1162380650639534
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_7",
-          0.10919556021690369
-        ],
-        [
-          "VALOR_BUCKET_Defensivos_2",
-          0.09942368417978287
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 365,
-      "contexto_tok": "VALOR_BUCKET_Defensivos_9",
-      "alvo": "DESCONTO_BUCKET_Defensivos_9",
-      "p_alvo": 0.31701764464378357,
-      "loss": 1.1487978453170344,
-      "top5": [
-        [
-          "DESCONTO_BUCKET_Defensivos_9",
-          0.31701764464378357
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_8",
-          0.2628168761730194
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_7",
-          0.1750737577676773
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_6",
-          0.09975402802228928
-        ],
-        [
-          "DESCONTO_BUCKET_Defensivos_5",
-          0.05175171047449112
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 366,
-      "contexto_tok": "DESCONTO_BUCKET_Defensivos_9",
-      "alvo": "QTD_8",
-      "p_alvo": 0.19915394484996796,
-      "loss": 1.6136771611149767,
-      "top5": [
-        [
-          "QTD_10",
-          0.32834935188293457
-        ],
-        [
-          "QTD_9",
-          0.21199826896190643
-        ],
-        [
-          "QTD_8",
-          0.19915394484996796
-        ],
-        [
-          "QTD_7",
-          0.09705988317728043
-        ],
-        [
-          "QTD_6",
-          0.08837402611970901
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 367,
-      "contexto_tok": "QTD_8",
-      "alvo": "PAGAMENTO_Boleto",
-      "p_alvo": 0.5464234352111816,
-      "loss": 0.6043610814345146,
-      "top5": [
-        [
-          "PAGAMENTO_Boleto",
-          0.5464234352111816
-        ],
-        [
-          "PAGAMENTO_Cartão",
-          0.2581121623516083
-        ],
-        [
-          "PAGAMENTO_PIX",
-          0.1888388842344284
-        ],
-        [
-          "EVT",
-          0.00013202938134782016
-        ],
-        [
-          "CATEGORIA_Sementes",
-          6.334838690236211e-05
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 368,
-      "contexto_tok": "PAGAMENTO_Boleto",
-      "alvo": "CANAL_Loja",
-      "p_alvo": 0.6221505999565125,
-      "loss": 0.4745730934332073,
-      "top5": [
-        [
-          "CANAL_Loja",
-          0.6221505999565125
-        ],
-        [
-          "CANAL_Online",
-          0.18974518775939941
-        ],
-        [
-          "CANAL_Representante",
-          0.17824913561344147
-        ],
-        [
-          "MES_3",
-          0.0002187243808293715
-        ],
-        [
-          "MES_4",
-          0.00019606327987276018
-        ]
-      ],
-      "acerto_top1": true
-    },
-    {
-      "pos": 369,
-      "contexto_tok": "CANAL_Loja",
-      "alvo": "RECENCIA_61-90",
-      "p_alvo": 0.06984134763479233,
-      "loss": 2.661529071606138,
-      "top5": [
-        [
-          "RECENCIA_0-7",
-          0.3033769726753235
-        ],
-        [
-          "RECENCIA_16-30",
-          0.21512646973133087
-        ],
-        [
-          "RECENCIA_8-15",
-          0.1840074360370636
-        ],
-        [
-          "RECENCIA_31-60",
-          0.1623860001564026
-        ],
-        [
-          "RECENCIA_61-90",
-          0.06984134763479233
-        ]
-      ],
-      "acerto_top1": false
-    },
-    {
-      "pos": 370,
-      "contexto_tok": "RECENCIA_61-90",
-      "alvo": "MES_6",
-      "p_alvo": 0.028267312794923782,
-      "loss": 3.5660491668026535,
-      "top5": [
-        [
-          "MES_10",
-          0.550295889377594
-        ],
-        [
+          "MES_12",
           "MES_9",
-          0.14811012148857117
+          "MES_1"
         ],
-        [
-          "MES_8",
-          0.07447444647550583
+        "top5_prob": [
+          0.3583,
+          0.3473,
+          0.1494,
+          0.0428,
+          0.0378
         ],
-        [
-          "MES_7",
-          0.04243426397442818
+        "acertou_top1": false,
+        "prob_alvo": 0.1494,
+        "loss_token": 1.9013
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_12",
+        "alvo_real": "EVT",
+        "top5_previsto": [
+          "EVT",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Sementes"
         ],
-        [
+        "top5_prob": [
+          0.9611,
+          0.0009,
+          0.0008,
+          0.0008,
+          0.0007
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.9611,
+        "loss_token": 0.0397
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_Defensivos",
+        "top5_previsto": [
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Sementes",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.6405,
+          0.1261,
+          0.0952,
+          0.084,
+          0.0019
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.6405,
+        "loss_token": 0.4454
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_Defensivos",
+        "alvo_real": "MARCA_AgroMax",
+        "top5_previsto": [
+          "MARCA_VerdeTech",
+          "MARCA_CampoForte",
+          "MARCA_AgriPlus",
+          "MARCA_AgroMax",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.2562,
+          0.2483,
+          0.2406,
+          0.2332,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.2332,
+        "loss_token": 1.4557
+      },
+      {
+        "split": "val",
+        "contexto_token": "MARCA_AgroMax",
+        "alvo_real": "FABRICANTE_Empresa A",
+        "top5_previsto": [
+          "FABRICANTE_Empresa C",
+          "FABRICANTE_Empresa B",
+          "FABRICANTE_Empresa A",
+          "EVT",
+          "CATEGORIA_Defensivos"
+        ],
+        "top5_prob": [
+          0.3346,
+          0.3243,
+          0.3143,
+          0.0007,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.3143,
+        "loss_token": 1.1574
+      },
+      {
+        "split": "val",
+        "contexto_token": "FABRICANTE_Empresa A",
+        "alvo_real": "PRODUTO_P0097",
+        "top5_previsto": [
+          "PRODUTO_P0065",
+          "PRODUTO_P0062",
+          "PRODUTO_P0069",
+          "PRODUTO_P0093",
+          "PRODUTO_P0071"
+        ],
+        "top5_prob": [
+          0.0261,
+          0.0261,
+          0.0261,
+          0.0261,
+          0.0261
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0231,
+        "loss_token": 3.7695
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_P0097",
+        "alvo_real": "VALOR_BUCKET_Defensivos_0",
+        "top5_previsto": [
+          "VALOR_BUCKET_Defensivos_8",
+          "VALOR_BUCKET_Defensivos_6",
+          "VALOR_BUCKET_Defensivos_4",
+          "VALOR_BUCKET_Defensivos_7",
+          "VALOR_BUCKET_Defensivos_5"
+        ],
+        "top5_prob": [
+          0.1005,
+          0.1005,
+          0.1005,
+          0.0974,
+          0.0974
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0944,
+        "loss_token": 2.3602
+      },
+      {
+        "split": "val",
+        "contexto_token": "VALOR_BUCKET_Defensivos_0",
+        "alvo_real": "DESCONTO_BUCKET_Defensivos_1",
+        "top5_previsto": [
+          "DESCONTO_BUCKET_Defensivos_0",
+          "DESCONTO_BUCKET_Defensivos_1",
+          "DESCONTO_BUCKET_Defensivos_2",
+          "DESCONTO_BUCKET_Defensivos_3",
+          "DESCONTO_BUCKET_Defensivos_4"
+        ],
+        "top5_prob": [
+          0.5568,
+          0.2549,
+          0.0802,
+          0.0252,
+          0.0096
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.2549,
+        "loss_token": 1.3668
+      },
+      {
+        "split": "val",
+        "contexto_token": "DESCONTO_BUCKET_Defensivos_1",
+        "alvo_real": "QTD_2",
+        "top5_previsto": [
+          "QTD_1",
+          "QTD_2",
+          "QTD_3",
+          "QTD_4",
+          "QTD_5"
+        ],
+        "top5_prob": [
+          0.555,
+          0.2387,
+          0.0851,
+          0.0344,
+          0.0202
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.2387,
+        "loss_token": 1.4326
+      },
+      {
+        "split": "val",
+        "contexto_token": "QTD_2",
+        "alvo_real": "PAGAMENTO_PIX",
+        "top5_previsto": [
+          "PAGAMENTO_Boleto",
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão",
+          "CANAL_Loja",
+          "CANAL_Representante"
+        ],
+        "top5_prob": [
+          0.3295,
+          0.3295,
+          0.3194,
+          0.0008,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.3295,
+        "loss_token": 1.1102
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_PIX",
+        "alvo_real": "CANAL_Loja",
+        "top5_previsto": [
+          "CANAL_Loja",
+          "CANAL_Representante",
+          "CANAL_Online",
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão"
+        ],
+        "top5_prob": [
+          0.6007,
+          0.1776,
+          0.1668,
+          0.0021,
+          0.0019
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.6007,
+        "loss_token": 0.5096
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_Loja",
+        "alvo_real": "RECENCIA_0-7",
+        "top5_previsto": [
+          "RECENCIA_0-7",
+          "RECENCIA_16-30",
+          "RECENCIA_8-15",
+          "RECENCIA_31-60",
+          "RECENCIA_61-90"
+        ],
+        "top5_prob": [
+          0.3321,
+          0.1834,
+          0.1778,
+          0.1619,
+          0.0595
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.3321,
+        "loss_token": 1.1023
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_12",
+        "top5_previsto": [
+          "MES_12",
+          "MES_11",
+          "MES_10",
+          "MES_1",
+          "MES_2"
+        ],
+        "top5_prob": [
+          0.3496,
+          0.3389,
+          0.1208,
+          0.1066,
+          0.0197
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.3496,
+        "loss_token": 1.0508
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_12",
+        "alvo_real": "EVT",
+        "top5_previsto": [
+          "EVT",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Sementes"
+        ],
+        "top5_prob": [
+          0.9611,
+          0.0009,
+          0.0008,
+          0.0008,
+          0.0007
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.9611,
+        "loss_token": 0.0397
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_Máquinas",
+        "top5_previsto": [
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Sementes",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.6465,
+          0.1234,
+          0.0931,
+          0.0822,
+          0.0019
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.1234,
+        "loss_token": 2.0925
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_Máquinas",
+        "alvo_real": "MARCA_AgriPlus",
+        "top5_previsto": [
+          "MARCA_CampoForte",
+          "MARCA_VerdeTech",
+          "MARCA_AgroMax",
+          "MARCA_AgriPlus",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.2602,
+          0.2444,
+          0.2369,
+          0.2369,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.2369,
+        "loss_token": 1.44
+      },
+      {
+        "split": "val",
+        "contexto_token": "MARCA_AgriPlus",
+        "alvo_real": "FABRICANTE_Empresa C",
+        "top5_previsto": [
+          "FABRICANTE_Empresa B",
+          "FABRICANTE_Empresa C",
+          "FABRICANTE_Empresa A",
+          "EVT",
+          "CATEGORIA_Defensivos"
+        ],
+        "top5_prob": [
+          0.3277,
+          0.3277,
+          0.3176,
+          0.0008,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.3277,
+        "loss_token": 1.1158
+      },
+      {
+        "split": "val",
+        "contexto_token": "FABRICANTE_Empresa C",
+        "alvo_real": "PRODUTO_P0171",
+        "top5_previsto": [
+          "PRODUTO_P0144",
+          "PRODUTO_P0166",
+          "PRODUTO_P0163",
+          "PRODUTO_P0159",
+          "PRODUTO_P0150"
+        ],
+        "top5_prob": [
+          0.0268,
+          0.0252,
+          0.0252,
+          0.0237,
+          0.0237
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0222,
+        "loss_token": 3.8064
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_P0171",
+        "alvo_real": "VALOR_BUCKET_Máquinas_8",
+        "top5_previsto": [
+          "VALOR_BUCKET_Máquinas_6",
+          "VALOR_BUCKET_Máquinas_4",
+          "VALOR_BUCKET_Máquinas_7",
+          "VALOR_BUCKET_Máquinas_9",
+          "VALOR_BUCKET_Máquinas_8"
+        ],
+        "top5_prob": [
+          0.0989,
+          0.0989,
+          0.0989,
+          0.0989,
+          0.0989
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0989,
+        "loss_token": 2.314
+      },
+      {
+        "split": "val",
+        "contexto_token": "VALOR_BUCKET_Máquinas_8",
+        "alvo_real": "DESCONTO_BUCKET_Máquinas_9",
+        "top5_previsto": [
+          "DESCONTO_BUCKET_Máquinas_9",
+          "DESCONTO_BUCKET_Máquinas_8",
+          "DESCONTO_BUCKET_Máquinas_7",
+          "DESCONTO_BUCKET_Máquinas_6",
+          "DESCONTO_BUCKET_Máquinas_5"
+        ],
+        "top5_prob": [
+          0.2979,
+          0.2629,
+          0.1751,
+          0.0967,
+          0.0551
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.2979,
+        "loss_token": 1.211
+      },
+      {
+        "split": "val",
+        "contexto_token": "DESCONTO_BUCKET_Máquinas_9",
+        "alvo_real": "QTD_7",
+        "top5_previsto": [
+          "QTD_10",
+          "QTD_9",
+          "QTD_8",
+          "QTD_7",
+          "QTD_6"
+        ],
+        "top5_prob": [
+          0.2407,
+          0.2124,
+          0.1817,
+          0.1371,
+          0.0972
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.1371,
+        "loss_token": 1.9869
+      },
+      {
+        "split": "val",
+        "contexto_token": "QTD_7",
+        "alvo_real": "PAGAMENTO_Boleto",
+        "top5_previsto": [
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão",
+          "PAGAMENTO_Boleto",
+          "CANAL_Loja",
+          "CANAL_Online"
+        ],
+        "top5_prob": [
+          0.3262,
+          0.3262,
+          0.3262,
+          0.0007,
+          0.0005
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.3262,
+        "loss_token": 1.1202
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_Boleto",
+        "alvo_real": "CANAL_Loja",
+        "top5_previsto": [
+          "CANAL_Loja",
+          "CANAL_Representante",
+          "CANAL_Online",
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão"
+        ],
+        "top5_prob": [
+          0.6104,
+          0.1695,
+          0.1643,
+          0.002,
+          0.0019
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.6104,
+        "loss_token": 0.4937
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_Loja",
+        "alvo_real": "RECENCIA_31-60",
+        "top5_previsto": [
+          "RECENCIA_0-7",
+          "RECENCIA_16-30",
+          "RECENCIA_8-15",
+          "RECENCIA_31-60",
+          "RECENCIA_61-90"
+        ],
+        "top5_prob": [
+          0.3321,
+          0.1834,
+          0.1778,
+          0.1619,
+          0.0595
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.1619,
+        "loss_token": 1.8209
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_31-60",
+        "alvo_real": "MES_1",
+        "top5_previsto": [
+          "MES_1",
+          "MES_2",
+          "MES_3",
+          "MES_12",
+          "MES_4"
+        ],
+        "top5_prob": [
+          0.3593,
+          0.3482,
+          0.1364,
+          0.0686,
+          0.0252
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.3593,
+        "loss_token": 1.0237
+      }
+    ]
+  },
+  "teste": {
+    "n_alvos": 24,
+    "loss_media": 1.4814,
+    "perplexidade": 4.399,
+    "acertos_top1": 11,
+    "previsoes": [
+      {
+        "split": "test",
+        "contexto_token": "MES_1",
+        "alvo_real": "EVT",
+        "top5_previsto": [
+          "EVT",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Defensivos",
+          "MARCA_VerdeTech"
+        ],
+        "top5_prob": [
+          0.9609,
+          0.0009,
+          0.0008,
+          0.0008,
+          0.0007
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.9609,
+        "loss_token": 0.0399
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_Defensivos",
+        "top5_previsto": [
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Sementes",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.638,
+          0.1296,
+          0.0948,
+          0.0837,
+          0.002
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.638,
+        "loss_token": 0.4494
+      },
+      {
+        "split": "test",
+        "contexto_token": "CATEGORIA_Defensivos",
+        "alvo_real": "MARCA_CampoForte",
+        "top5_previsto": [
+          "MARCA_VerdeTech",
+          "MARCA_CampoForte",
+          "MARCA_AgriPlus",
+          "MARCA_AgroMax",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.2562,
+          0.2483,
+          0.2406,
+          0.2332,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.2483,
+        "loss_token": 1.3932
+      },
+      {
+        "split": "test",
+        "contexto_token": "MARCA_CampoForte",
+        "alvo_real": "FABRICANTE_Empresa C",
+        "top5_previsto": [
+          "FABRICANTE_Empresa B",
+          "FABRICANTE_Empresa C",
+          "FABRICANTE_Empresa A",
+          "EVT",
+          "CATEGORIA_Defensivos"
+        ],
+        "top5_prob": [
+          0.3277,
+          0.3277,
+          0.3176,
+          0.0007,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.3277,
+        "loss_token": 1.1158
+      },
+      {
+        "split": "test",
+        "contexto_token": "FABRICANTE_Empresa C",
+        "alvo_real": "PRODUTO_P0085",
+        "top5_previsto": [
+          "PRODUTO_P0065",
+          "PRODUTO_P0062",
+          "PRODUTO_P0067",
+          "PRODUTO_P0071",
+          "PRODUTO_P0069"
+        ],
+        "top5_prob": [
+          0.0258,
+          0.0258,
+          0.0258,
+          0.0258,
+          0.0258
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0221,
+        "loss_token": 3.8139
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRODUTO_P0085",
+        "alvo_real": "VALOR_BUCKET_Defensivos_5",
+        "top5_previsto": [
+          "VALOR_BUCKET_Defensivos_8",
+          "VALOR_BUCKET_Defensivos_7",
+          "VALOR_BUCKET_Defensivos_6",
+          "VALOR_BUCKET_Defensivos_5",
+          "VALOR_BUCKET_Defensivos_4"
+        ],
+        "top5_prob": [
+          0.1005,
+          0.1005,
+          0.1005,
+          0.0974,
+          0.0974
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0974,
+        "loss_token": 2.3291
+      },
+      {
+        "split": "test",
+        "contexto_token": "VALOR_BUCKET_Defensivos_5",
+        "alvo_real": "DESCONTO_BUCKET_Defensivos_6",
+        "top5_previsto": [
+          "DESCONTO_BUCKET_Defensivos_6",
+          "DESCONTO_BUCKET_Defensivos_5",
+          "DESCONTO_BUCKET_Defensivos_7",
+          "DESCONTO_BUCKET_Defensivos_4",
+          "DESCONTO_BUCKET_Defensivos_8"
+        ],
+        "top5_prob": [
+          0.1961,
+          0.1786,
+          0.1677,
+          0.1391,
+          0.0898
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.1961,
+        "loss_token": 1.6291
+      },
+      {
+        "split": "test",
+        "contexto_token": "DESCONTO_BUCKET_Defensivos_6",
+        "alvo_real": "QTD_4",
+        "top5_previsto": [
+          "QTD_8",
+          "QTD_7",
+          "QTD_6",
+          "QTD_9",
+          "QTD_5"
+        ],
+        "top5_prob": [
+          0.1453,
+          0.1408,
+          0.1365,
+          0.1323,
+          0.1242
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0968,
+        "loss_token": 2.3355
+      },
+      {
+        "split": "test",
+        "contexto_token": "QTD_4",
+        "alvo_real": "PAGAMENTO_Boleto",
+        "top5_previsto": [
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Boleto",
+          "PAGAMENTO_Cartão",
+          "CANAL_Loja",
+          "CANAL_Online"
+        ],
+        "top5_prob": [
+          0.3364,
+          0.3261,
+          0.316,
+          0.0007,
+          0.0005
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.3261,
+        "loss_token": 1.1206
+      },
+      {
+        "split": "test",
+        "contexto_token": "PAGAMENTO_Boleto",
+        "alvo_real": "CANAL_Loja",
+        "top5_previsto": [
+          "CANAL_Loja",
+          "CANAL_Representante",
+          "CANAL_Online",
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão"
+        ],
+        "top5_prob": [
+          0.6092,
+          0.1692,
+          0.164,
+          0.0021,
+          0.0019
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.6092,
+        "loss_token": 0.4956
+      },
+      {
+        "split": "test",
+        "contexto_token": "CANAL_Loja",
+        "alvo_real": "RECENCIA_61-90",
+        "top5_previsto": [
+          "RECENCIA_0-7",
+          "RECENCIA_16-30",
+          "RECENCIA_8-15",
+          "RECENCIA_31-60",
+          "RECENCIA_61-90"
+        ],
+        "top5_prob": [
+          0.3253,
+          0.1854,
+          0.1796,
+          0.1636,
+          0.0602
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0602,
+        "loss_token": 2.8105
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_61-90",
+        "alvo_real": "MES_4",
+        "top5_previsto": [
+          "MES_4",
+          "MES_3",
           "MES_5",
-          0.028267312794923782
-        ]
-      ],
-      "acerto_top1": false
-    }
-  ],
-  "seq_train_len": 301,
-  "seq_train_val_len": 349,
-  "seq_full_len": 373
+          "MES_2",
+          "MES_6"
+        ],
+        "top5_prob": [
+          0.3597,
+          0.3174,
+          0.1323,
+          0.0938,
+          0.0286
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.3597,
+        "loss_token": 1.0224
+      },
+      {
+        "split": "test",
+        "contexto_token": "MES_4",
+        "alvo_real": "EVT",
+        "top5_previsto": [
+          "EVT",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Sementes"
+        ],
+        "top5_prob": [
+          0.9611,
+          0.001,
+          0.0009,
+          0.0009,
+          0.0008
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.9611,
+        "loss_token": 0.0397
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_Defensivos",
+        "top5_previsto": [
+          "CATEGORIA_Defensivos",
+          "CATEGORIA_Máquinas",
+          "CATEGORIA_Fertilizantes",
+          "CATEGORIA_Sementes",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.6465,
+          0.1234,
+          0.0931,
+          0.0822,
+          0.0019
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.6465,
+        "loss_token": 0.4362
+      },
+      {
+        "split": "test",
+        "contexto_token": "CATEGORIA_Defensivos",
+        "alvo_real": "MARCA_CampoForte",
+        "top5_previsto": [
+          "MARCA_VerdeTech",
+          "MARCA_CampoForte",
+          "MARCA_AgriPlus",
+          "MARCA_AgroMax",
+          "EVT"
+        ],
+        "top5_prob": [
+          0.2562,
+          0.2483,
+          0.2406,
+          0.2332,
+          0.0006
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.2483,
+        "loss_token": 1.3932
+      },
+      {
+        "split": "test",
+        "contexto_token": "MARCA_CampoForte",
+        "alvo_real": "FABRICANTE_Empresa B",
+        "top5_previsto": [
+          "FABRICANTE_Empresa B",
+          "FABRICANTE_Empresa C",
+          "FABRICANTE_Empresa A",
+          "EVT",
+          "CATEGORIA_Defensivos"
+        ],
+        "top5_prob": [
+          0.3277,
+          0.3277,
+          0.3176,
+          0.0007,
+          0.0006
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.3277,
+        "loss_token": 1.1158
+      },
+      {
+        "split": "test",
+        "contexto_token": "FABRICANTE_Empresa B",
+        "alvo_real": "PRODUTO_P0076",
+        "top5_previsto": [
+          "PRODUTO_P0065",
+          "PRODUTO_P0062",
+          "PRODUTO_P0069",
+          "PRODUTO_P0090",
+          "PRODUTO_P0071"
+        ],
+        "top5_prob": [
+          0.0259,
+          0.0259,
+          0.0259,
+          0.0259,
+          0.0259
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0236,
+        "loss_token": 3.7473
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRODUTO_P0076",
+        "alvo_real": "VALOR_BUCKET_Defensivos_9",
+        "top5_previsto": [
+          "VALOR_BUCKET_Defensivos_6",
+          "VALOR_BUCKET_Defensivos_8",
+          "VALOR_BUCKET_Defensivos_7",
+          "VALOR_BUCKET_Defensivos_5",
+          "VALOR_BUCKET_Defensivos_4"
+        ],
+        "top5_prob": [
+          0.1033,
+          0.1001,
+          0.1001,
+          0.0971,
+          0.0971
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0971,
+        "loss_token": 2.3324
+      },
+      {
+        "split": "test",
+        "contexto_token": "VALOR_BUCKET_Defensivos_9",
+        "alvo_real": "DESCONTO_BUCKET_Defensivos_9",
+        "top5_previsto": [
+          "DESCONTO_BUCKET_Defensivos_9",
+          "DESCONTO_BUCKET_Defensivos_8",
+          "DESCONTO_BUCKET_Defensivos_7",
+          "DESCONTO_BUCKET_Defensivos_6",
+          "DESCONTO_BUCKET_Defensivos_5"
+        ],
+        "top5_prob": [
+          0.4793,
+          0.2264,
+          0.1069,
+          0.0591,
+          0.0306
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.4793,
+        "loss_token": 0.7354
+      },
+      {
+        "split": "test",
+        "contexto_token": "DESCONTO_BUCKET_Defensivos_9",
+        "alvo_real": "QTD_8",
+        "top5_previsto": [
+          "QTD_10",
+          "QTD_9",
+          "QTD_8",
+          "QTD_7",
+          "QTD_6"
+        ],
+        "top5_prob": [
+          0.237,
+          0.2092,
+          0.1846,
+          0.135,
+          0.0988
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.1846,
+        "loss_token": 1.6896
+      },
+      {
+        "split": "test",
+        "contexto_token": "QTD_8",
+        "alvo_real": "PAGAMENTO_Boleto",
+        "top5_previsto": [
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão",
+          "PAGAMENTO_Boleto",
+          "CANAL_Loja",
+          "CANAL_Online"
+        ],
+        "top5_prob": [
+          0.3331,
+          0.3228,
+          0.3228,
+          0.0007,
+          0.0005
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.3228,
+        "loss_token": 1.1307
+      },
+      {
+        "split": "test",
+        "contexto_token": "PAGAMENTO_Boleto",
+        "alvo_real": "CANAL_Loja",
+        "top5_previsto": [
+          "CANAL_Loja",
+          "CANAL_Representante",
+          "CANAL_Online",
+          "PAGAMENTO_PIX",
+          "PAGAMENTO_Cartão"
+        ],
+        "top5_prob": [
+          0.6122,
+          0.17,
+          0.1597,
+          0.0022,
+          0.002
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.6122,
+        "loss_token": 0.4907
+      },
+      {
+        "split": "test",
+        "contexto_token": "CANAL_Loja",
+        "alvo_real": "RECENCIA_61-90",
+        "top5_previsto": [
+          "RECENCIA_0-7",
+          "RECENCIA_16-30",
+          "RECENCIA_8-15",
+          "RECENCIA_31-60",
+          "RECENCIA_61-90"
+        ],
+        "top5_prob": [
+          0.3303,
+          0.1824,
+          0.1768,
+          0.1661,
+          0.0592
+        ],
+        "acertou_top1": false,
+        "prob_alvo": 0.0592,
+        "loss_token": 2.8266
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_61-90",
+        "alvo_real": "MES_6",
+        "top5_previsto": [
+          "MES_6",
+          "MES_7",
+          "MES_5",
+          "MES_8",
+          "MES_9"
+        ],
+        "top5_prob": [
+          0.3463,
+          0.2783,
+          0.1356,
+          0.1124,
+          0.0365
+        ],
+        "acertou_top1": true,
+        "prob_alvo": 0.3463,
+        "loss_token": 1.0604
+      }
+    ]
+  }
 }

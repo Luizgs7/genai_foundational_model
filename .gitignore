@@ -5,6 +5,12 @@ __pycache__/
 # Checkpoints de modelo (binários grandes, recriáveis rodando
 # pipeline/pretreino/tarefa_pretreino.py — ver ROADMAP.md, Tarefa 11)
 pipeline/pretreino/checkpoints/
+pipeline/pretreino/run_baseline_384emb_8layer/checkpoints/
+
+# Embeddings extraídos do backbone (binário grande, recriável rodando
+# pipeline/fusao/tarefa13_extrair_embeddings.py — ver ROADMAP.md, Tarefa 13)
+pipeline/fusao/embeddings_eventos.npy
+pipeline/fusao/embeddings_eventos_index.csv
 
 # Ambientes virtuais / editores
 .venv/

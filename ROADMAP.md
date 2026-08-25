@@ -133,13 +133,70 @@ Parte (2) validada de fato numa GPU L4 (Colab, via `colab_ssh/`) em 2026-08-25, 
 - Avaliação inclui 961 clientes "frios" no teste (sem nenhum histórico de treino) — o modelo ainda assim generaliza melhor que o acaso pra eles.
 - Pico de VRAM: 3,3GB (de 23GB disponíveis na L4) — folga grande pra aumentar `batch_size`/`n_layer` numa iteração futura.
 
-**Implicação prática**: o modelo atual (14,3M parâmetros) está sobredimensionado para o volume de dados disponível (15.000 clientes sintéticos). Antes de qualquer uso downstream (fine-tuning DCNv2, Estágio 4), vale considerar reduzir `n_layer`/`n_embd` ou aumentar o volume de dados de treino — ver `LIMITACOES.md` (atualizado).
+**Implicação prática**: o modelo atual (14,3M parâmetros) está sobredimensionado para o volume de dados disponível (15.000 clientes sintéticos). Antes de qualquer uso downstream (fine-tuning DCNv2, Estágio 4), vale considerar reduzir `n_layer`/`n_embd` ou aumentar o volume de dados de treino — ~~ver `LIMITACOES.md` (atualizado)~~ **feito na Tarefa 12, abaixo**.
 
 **Dependências**: Tarefa 6, Tarefa 3 (campo `seq_train_val`, adicionado especificamente para viabilizar a avaliação temporal de validação).
 **Skill de apoio**: `causal-transformer-nope-flashattn`.
 
 **Dependências**: Tarefas 3, 4, 5, 6, 7, 8.
 **Skill de apoio**: nenhuma.
+
+---
+
+## ✅ Tarefa 12 — Redução do backbone para corrigir overfitting (concluída, 2026-08-25)
+
+**Objetivo**: aplicar a recomendação da Tarefa 11 — o backbone original (`n_embd=384, n_layer=8, n_head=8`, 14,3M parâmetros treináveis) tinha 16x mais parâmetros do que tokens de treino (892.236), produzindo overfitting claro (melhor época de val era a 1ª de 30). Reduzir o modelo para uma razão parâmetros/tokens próxima de 1:1, sem alterar dados nem splits, e comparar contra o baseline.
+
+**Config nova**: `n_embd=128, n_layer=4, n_head=4` (mantido `n_positions=512`) → **833.280 parâmetros treináveis** (contra 14,3M antes), razão tokens/parâmetro = **1,07** (contra 0,06 antes — 16x mais params que tokens). Baseline original preservado integralmente em `pipeline/pretreino/run_baseline_384emb_8layer/` (config, métricas, curva, checkpoints) para comparação.
+
+**Resultado — comparação direta** (mesmos dados, mesmos splits, mesmas 30 épocas, batch=32, lr=3e-4):
+
+| Métrica | Baseline (384/8, 14,3M params) | Modelo reduzido (128/4, 0,83M params) |
+|---|---|---|
+| Razão tokens/parâmetro treinável | 0,06 (16x mais params que tokens) | 1,07 (≈1:1) |
+| Melhor época (por loss val) | 1 / 30 | **10 / 30** |
+| Loss val (melhor época) | 1,7167 (ppl 5,57) | **1,6220 (ppl 5,06)** |
+| Loss val (última época) | 1,8775 (+0,16 vs. melhor — diverge) | 1,6376 (+0,016 vs. melhor — quase plana) |
+| Loss teste (checkpoint melhor época) | 1,6944 (ppl 5,44) | **1,6312 (ppl 5,11)** |
+| Tempo total de treino | 1.163,6s (~19,4 min) | **276,5s (~4,6 min)** |
+| Pico de VRAM | 3,32GB | 0,62GB |
+
+O modelo menor generaliza melhor (loss de teste ~4% menor), quase não sobreajusta (a curva de val fica praticamente plana depois da época 10, em vez de subir continuamente) e treina ~4x mais rápido — confirma empiricamente a recomendação da Tarefa 11: o gargalo não era capacidade do modelo, era volume de dados de treino relativo ao tamanho do backbone.
+
+**Artefatos**: `pipeline/pretreino/{pretreino_config.json,pretreino_relatorio.json,pretreino_metricas_epoca.csv,pretreino_metricas_passo.csv,pretreino_loss_curve.png,checkpoints/{melhor,final}.pt}` (substituem os do baseline, que ficam arquivados em `run_baseline_384emb_8layer/`).
+
+**Pendente**: `pipeline/relatorios/rastro_cliente_860.703.096-50.html` (Etapa 6) ainda mostra as previsões do checkpoint **antigo** (384/8) — os números de loss/perplexidade/acerto do cliente exemplo estão desatualizados frente ao modelo atual. Precisa regenerar `cliente_860_predicoes.json` com o novo `melhor.pt` e republicar o Artifact antes de considerar o relatório visual consistente com o backbone vigente.
+
+**Dependências**: Tarefa 11.
+**Skill de apoio**: `causal-transformer-nope-flashattn`.
+
+---
+
+## ✅ Tarefa 13 — Fusão DCNv2 (Estágio 4/5, concluída, 2026-08-25)
+
+**Objetivo**: implementar o Estágio 4/5 do `ARQUITETURA.md` — combinar o embedding sequencial do backbone (Tarefa 12) com features estáticas do cliente via DCNv2, treinar as 3 cabeças de tarefa (churn, próxima categoria, próximo valor) e comparar contra os baselines causais da Tarefa 8.
+
+**Decisão de desenho importante — âncora por evento, não por split**: a primeira tentativa usava, por cliente, só a hidden state na fronteira de cada split (a mesma posição já explorada na Etapa 6 do relatório do cliente). Isso introduziu um viés de seleção grave: a *última* transação de um cliente dentro de um split tende a estar perto da borda temporal (pouco tempo pra "voltar a comprar"), inflando a taxa de churn medida para 83% no treino e 55% na validação — bem longe dos ~29,7%/~31,8% reais da Tarefa 8. Corrigido usando **todas as ~98,7 mil transações rotuladas** como âncoras independentes (hidden state causal na posição de cada evento, formula `11 + 12*i` no índice de tokens — validada batendo com as contagens exatas do cliente 860.703.096-50), reproduzindo exatamente as taxas oficiais da Tarefa 8 (31,8%/31,7%/14,0%). ~1.288 eventos (1,3%) de clientes de cauda longa (>512 tokens) ficaram fora da janela do backbone e foram excluídos — mesma limitação já documentada sobre `n_positions`.
+
+**Arquitetura**: `pipeline/fusao/tarefa13_extrair_embeddings.py` (GPU, backbone **congelado** — só inferência) gera `embeddings_eventos.npy` (98.712 × 128) a partir do checkpoint da Tarefa 12. `pipeline/fusao/tarefa13_treinar_fusao.py` (CPU, ~40s) treina a fusão: `x0` = embedding sequencial (128) + UF (embedding aprendido, 4) + sexo (1) + idade na data da âncora (padronizada só com estatística do treino) = 134 dimensões; 2 camadas de Cross Network v2 de baixo posto (rank=8, evita explosão de parâmetros); torre deep de 1 camada (134→16); saídas concatenadas (150) alimentam 3 cabeças lineares. **~9.005 parâmetros treináveis para 73.065 exemplos de treino** (razão exemplos/parâmetro ≈8,1 — bem folgado, deliberado após a lição de overfitting da Tarefa 12).
+
+**Resultado — comparação contra os baselines causais da Tarefa 8** (split de teste, avaliação única no checkpoint de melhor AUC de val, época 31/40):
+
+| Tarefa | Métrica | Baseline causal (Tarefa 8) | DCNv2 + backbone | Delta |
+|---|---|---|---|---|
+| Churn | AUC-ROC | 0,750 (RFM: recência histórica) | **0,800** | **+0,050** |
+| Próxima categoria | Accuracy | 0,590 (moda histórica por cliente) | 0,558 | −0,032 |
+| Próxima categoria | F1 macro | 0,587 | 0,550 | −0,037 |
+| Próximo valor | Accuracy | 0,100 (moda histórica por cliente) | 0,094 | −0,005 |
+
+**Leitura honesta**: churn é onde o Customer Foundation Model demonstra valor real — o embedding sequencial captura sinal além da recência simples (RFM), batendo o baseline com margem clara. Próxima categoria e próximo valor **não** superam seus baselines nesta primeira iteração: próxima categoria já tem um baseline por-cliente forte (moda histórica) difícil de bater com uma cabeça linear de 604 parâmetros treinada em conjunto com as outras duas tarefas; próximo valor segue praticamente no acaso em ambos os casos (baseline E modelo), reforçando a hipótese já levantada em `LIMITACOES.md` (item 6) de que o valor da próxima compra pode não ter autocorrelação de curto prazo relevante neste gerador sintético — um resultado fraco aqui não é necessariamente falha do modelo. Não houve tentativa de ajustar hiperparâmetros pra "melhorar" esses dois números — reportados como saíram, por honestidade científica.
+
+**Artefatos**: `pipeline/fusao/{tarefa13_config.json,tarefa13_metricas_epoca.csv,tarefa13_relatorio.json,tarefa13_loss_curve.png,tarefa13_fusao.pt,embeddings_eventos.npy,embeddings_eventos_index.csv}`.
+
+**Modo de treino usado**: opção 1 do `ARQUITETURA.md` (backbone congelado) — não testada a opção 2 (fine-tuning conjunto).
+
+**Dependências**: Tarefa 8, Tarefa 12.
+**Skill de apoio**: `downstream-label-engineering` (reaproveita `auc_roc`/`accuracy`/`f1_macro` de `tarefa8_rotulos.py`).
 
 ---
 
@@ -154,7 +211,7 @@ Parte (2) validada de fato numa GPU L4 (Colab, via `colab_ssh/`) em 2026-08-25, 
 
 ## Ordem de execução recomendada
 
-`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (✅) → 8 (✅) → 9 (✅) → 10`
+`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (✅) → 8 (✅) → 9 (✅) → 11 (✅) → 12 (✅) → 13 (✅) → 10`
 
 ## Protocolo de execução
 

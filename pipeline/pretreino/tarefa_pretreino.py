@@ -40,7 +40,7 @@ SEQUENCIAS_JSON = "pipeline/serializacao/sequencias.json"
 OUT_DIR = "pipeline/pretreino"
 CKPT_DIR = "pipeline/pretreino/checkpoints"
 
-N_EMBD, N_LAYER, N_HEAD, N_POSITIONS = 384, 8, 8, 512
+N_EMBD, N_LAYER, N_HEAD, N_POSITIONS = 128, 4, 4, 512
 BATCH_SIZE = 32
 N_EPOCHS = 30
 LR = 3e-4
@@ -348,7 +348,7 @@ def main():
         "diagnostico_overfitting": (
             "loss de treino caiu monotonicamente enquanto loss de validação "
             f"atingiu o mínimo na época {melhor_epoca}/{N_EPOCHS} e depois "
-            "piorou — overfitting esperado dado que o modelo (14,5M "
+            f"piorou — overfitting esperado dado que o modelo ({n_params_trainable/1e6:.2f}M "
             f"parâmetros treináveis) tem {n_params_trainable/max(total_tokens_treino,1):.1f}x mais "
             "parâmetros do que tokens de treino disponíveis."
             if melhor_epoca < N_EPOCHS else

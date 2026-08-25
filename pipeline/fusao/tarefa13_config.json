@@ -1,0 +1,36 @@
+{
+  "emb_dim": 128,
+  "uf_emb_dim": 4,
+  "n_cross": 2,
+  "cross_rank": 8,
+  "deep_hidden": 16,
+  "batch_size": 256,
+  "n_epochs": 40,
+  "lr": 0.002,
+  "weight_decay": 0.0001,
+  "seed": 0,
+  "n_params": 9005,
+  "n_train": 73065,
+  "n_val": 8093,
+  "n_test": 17554,
+  "uf_to_id": {
+    "BA": 0,
+    "GO": 1,
+    "MG": 2,
+    "MT": 3,
+    "PR": 4,
+    "RS": 5
+  },
+  "categoria_to_id": {
+    "Defensivos": 0,
+    "Fertilizantes": 1,
+    "Máquinas": 2,
+    "Sementes": 3
+  },
+  "idade_stats": {
+    "idade_media": 46.768236340617825,
+    "idade_std": 17.886379012062676
+  },
+  "backbone_congelado": true,
+  "backbone_checkpoint": "pipeline/pretreino/checkpoints/melhor.pt"
+}
