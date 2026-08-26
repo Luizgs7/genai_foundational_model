@@ -1,0 +1,20 @@
+{
+  "n_params": 759936,
+  "n_params_trainable": 366720,
+  "total_tokens_treino": 611048,
+  "razao_tokens_por_parametro_treinavel": 1.6662521815008726,
+  "n_epochs_executadas": 30,
+  "melhor_epoca": 13,
+  "melhor_loss_val": 1.3018900216230993,
+  "melhor_perplexidade_val": 3.6762382754907086,
+  "loss_val_ultima_epoca": 1.310401397340762,
+  "loss_treino_ultima_epoca": 1.1362963880317798,
+  "loss_teste": 1.3922845874763596,
+  "perplexidade_teste": 4.024032814561776,
+  "n_tokens_teste_avaliados": 162594,
+  "n_entidades_teste_frias_incluidas": 762,
+  "tempo_total_segundos": 499.9420917034149,
+  "peak_gpu_mem_gb": 6.666545664,
+  "gpu": "NVIDIA L4",
+  "torch_version": "2.11.0+cu128"
+}

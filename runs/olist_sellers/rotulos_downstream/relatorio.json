@@ -1,0 +1,54 @@
+{
+  "churn": {
+    "n_linhas_determinaveis": 110917,
+    "n_linhas_total": 112101,
+    "taxa_determinabilidade": 0.9894380960027118,
+    "n_dias": 30,
+    "base_rate_geral": 0.04923501356870453,
+    "base_rate_por_split": {
+      "train": 0.049017425799609854,
+      "val": 0.05323816383995809,
+      "test": 0.0469244744355048
+    },
+    "baseline_auc_por_split": {
+      "train": 0.8200659876697485,
+      "val": 0.8597925500627257,
+      "test": 0.8422552273889492,
+      "geral": 0.8295749247897902
+    }
+  },
+  "risco_review_negativo": {
+    "n_linhas_determinaveis": 108145,
+    "n_linhas_total": 112101,
+    "taxa_determinabilidade": 0.9647103950901419,
+    "base_rate_geral": 0.15776966110314855,
+    "base_rate_por_split": {
+      "train": 0.17100824587706148,
+      "val": 0.13703604088219473,
+      "test": 0.12111583822499865
+    },
+    "baseline_auc_por_split": {
+      "train": 0.48364707529634576,
+      "val": 0.46999718072838603,
+      "test": 0.4862164093627669,
+      "geral": 0.48189969817255474
+    }
+  },
+  "risco_atraso_entrega": {
+    "n_linhas_determinaveis": 107275,
+    "n_linhas_total": 112101,
+    "taxa_determinabilidade": 0.956949536578621,
+    "base_rate_geral": 0.07935679328827779,
+    "base_rate_por_split": {
+      "train": 0.08944792905807289,
+      "val": 0.05605835472105903,
+      "test": 0.057643432650191964
+    },
+    "baseline_auc_por_split": {
+      "train": 0.6304675955316625,
+      "val": 0.5391609799242764,
+      "test": 0.5425705577950413,
+      "geral": 0.5965069247641731
+    }
+  }
+}

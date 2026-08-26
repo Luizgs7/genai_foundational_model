@@ -1,0 +1,16 @@
+{
+  "vocab_size": 312,
+  "n_positions": 512,
+  "n_embd": 128,
+  "n_layer": 4,
+  "n_head": 4,
+  "batch_size": 32,
+  "n_epochs": 30,
+  "lr": 0.0003,
+  "n_params": 898816,
+  "n_params_trainable": 833280,
+  "n_entidades_treino": 13609,
+  "total_tokens_treino": 892236,
+  "n_entidades_val": 4661,
+  "n_entidades_teste": 7691
+}

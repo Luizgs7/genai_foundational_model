@@ -1,0 +1,739 @@
+{
+  "entidade_id": "e89c4adbe7b1d0819dbb636e16461cf1",
+  "validacao": {
+    "n_alvos": 40,
+    "loss_media": 0.9016,
+    "perplexidade": 2.4635,
+    "acertos_top1": 31,
+    "previsoes": [
+      {
+        "split": "val",
+        "contexto_token": "MES_4",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9377,
+        "acertou_top1": true,
+        "prob_alvo": 0.9377,
+        "loss_token": 0.0643
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.698,
+        "acertou_top1": true,
+        "prob_alvo": 0.698,
+        "loss_token": 0.3595
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_credit_card",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6962,
+        "acertou_top1": true,
+        "prob_alvo": 0.6962,
+        "loss_token": 0.3621
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_credit_card",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.9063,
+        "acertou_top1": true,
+        "prob_alvo": 0.9063,
+        "loss_token": 0.0984
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_8",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.1942,
+        "acertou_top1": true,
+        "prob_alvo": 0.1942,
+        "loss_token": 1.639
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_8",
+        "alvo_real": "FRETE_BUCKET_7",
+        "top1_previsto": "FRETE_BUCKET_7",
+        "top1_prob": 0.1533,
+        "acertou_top1": true,
+        "prob_alvo": 0.1533,
+        "loss_token": 1.8753
+      },
+      {
+        "split": "val",
+        "contexto_token": "FRETE_BUCKET_7",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.7778,
+        "acertou_top1": true,
+        "prob_alvo": 0.7778,
+        "loss_token": 0.2513
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_4",
+        "top1_previsto": "MES_4",
+        "top1_prob": 0.3779,
+        "acertou_top1": true,
+        "prob_alvo": 0.3779,
+        "loss_token": 0.9731
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_4",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9378,
+        "acertou_top1": true,
+        "prob_alvo": 0.9378,
+        "loss_token": 0.0642
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.6978,
+        "acertou_top1": true,
+        "prob_alvo": 0.6978,
+        "loss_token": 0.3598
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_credit_card",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6962,
+        "acertou_top1": true,
+        "prob_alvo": 0.6962,
+        "loss_token": 0.3621
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_credit_card",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.9064,
+        "acertou_top1": true,
+        "prob_alvo": 0.9064,
+        "loss_token": 0.0983
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_8",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.2059,
+        "acertou_top1": true,
+        "prob_alvo": 0.2059,
+        "loss_token": 1.5806
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_8",
+        "alvo_real": "FRETE_BUCKET_6",
+        "top1_previsto": "FRETE_BUCKET_7",
+        "top1_prob": 0.1541,
+        "acertou_top1": false,
+        "prob_alvo": 0.1128,
+        "loss_token": 2.1824
+      },
+      {
+        "split": "val",
+        "contexto_token": "FRETE_BUCKET_6",
+        "alvo_real": "RECENCIA_8-15",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.7874,
+        "acertou_top1": false,
+        "prob_alvo": 0.0732,
+        "loss_token": 2.614
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_8-15",
+        "alvo_real": "MES_4",
+        "top1_previsto": "MES_5",
+        "top1_prob": 0.3363,
+        "acertou_top1": false,
+        "prob_alvo": 0.2539,
+        "loss_token": 1.3709
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_4",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9378,
+        "acertou_top1": true,
+        "prob_alvo": 0.9378,
+        "loss_token": 0.0642
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.698,
+        "acertou_top1": true,
+        "prob_alvo": 0.698,
+        "loss_token": 0.3595
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_boleto",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6962,
+        "acertou_top1": false,
+        "prob_alvo": 0.1995,
+        "loss_token": 1.6122
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_boleto",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.9042,
+        "acertou_top1": true,
+        "prob_alvo": 0.9042,
+        "loss_token": 0.1007
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_8",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.2143,
+        "acertou_top1": true,
+        "prob_alvo": 0.2143,
+        "loss_token": 1.5406
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_8",
+        "alvo_real": "FRETE_BUCKET_7",
+        "top1_previsto": "FRETE_BUCKET_7",
+        "top1_prob": 0.1545,
+        "acertou_top1": true,
+        "prob_alvo": 0.1545,
+        "loss_token": 1.8678
+      },
+      {
+        "split": "val",
+        "contexto_token": "FRETE_BUCKET_7",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.7731,
+        "acertou_top1": true,
+        "prob_alvo": 0.7731,
+        "loss_token": 0.2574
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_5",
+        "top1_previsto": "MES_4",
+        "top1_prob": 0.3461,
+        "acertou_top1": false,
+        "prob_alvo": 0.2695,
+        "loss_token": 1.3111
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_5",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9381,
+        "acertou_top1": true,
+        "prob_alvo": 0.9381,
+        "loss_token": 0.0639
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.698,
+        "acertou_top1": true,
+        "prob_alvo": 0.698,
+        "loss_token": 0.3595
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_credit_card",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6962,
+        "acertou_top1": true,
+        "prob_alvo": 0.6962,
+        "loss_token": 0.3622
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_credit_card",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.9063,
+        "acertou_top1": true,
+        "prob_alvo": 0.9063,
+        "loss_token": 0.0983
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_4",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.2183,
+        "acertou_top1": false,
+        "prob_alvo": 0.0687,
+        "loss_token": 2.6783
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_4",
+        "alvo_real": "FRETE_BUCKET_0",
+        "top1_previsto": "FRETE_BUCKET_5",
+        "top1_prob": 0.1391,
+        "acertou_top1": false,
+        "prob_alvo": 0.0598,
+        "loss_token": 2.8163
+      },
+      {
+        "split": "val",
+        "contexto_token": "FRETE_BUCKET_0",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.8032,
+        "acertou_top1": true,
+        "prob_alvo": 0.8032,
+        "loss_token": 0.2191
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_5",
+        "top1_previsto": "MES_5",
+        "top1_prob": 0.4062,
+        "acertou_top1": true,
+        "prob_alvo": 0.4062,
+        "loss_token": 0.901
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_5",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9381,
+        "acertou_top1": true,
+        "prob_alvo": 0.9381,
+        "loss_token": 0.0639
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.6982,
+        "acertou_top1": true,
+        "prob_alvo": 0.6982,
+        "loss_token": 0.3593
+      },
+      {
+        "split": "val",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_credit_card",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6961,
+        "acertou_top1": true,
+        "prob_alvo": 0.6961,
+        "loss_token": 0.3622
+      },
+      {
+        "split": "val",
+        "contexto_token": "PAGAMENTO_credit_card",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.9063,
+        "acertou_top1": true,
+        "prob_alvo": 0.9063,
+        "loss_token": 0.0984
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_4",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.2038,
+        "acertou_top1": false,
+        "prob_alvo": 0.0824,
+        "loss_token": 2.4968
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_4",
+        "alvo_real": "FRETE_BUCKET_0",
+        "top1_previsto": "FRETE_BUCKET_4",
+        "top1_prob": 0.1396,
+        "acertou_top1": false,
+        "prob_alvo": 0.066,
+        "loss_token": 2.7187
+      },
+      {
+        "split": "val",
+        "contexto_token": "FRETE_BUCKET_0",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.8043,
+        "acertou_top1": true,
+        "prob_alvo": 0.8043,
+        "loss_token": 0.2178
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_5",
+        "top1_previsto": "MES_5",
+        "top1_prob": 0.4154,
+        "acertou_top1": true,
+        "prob_alvo": 0.4154,
+        "loss_token": 0.8786
+      }
+    ]
+  },
+  "teste": {
+    "n_alvos": 32,
+    "loss_media": 1.3959,
+    "perplexidade": 4.0384,
+    "acertos_top1": 20,
+    "previsoes": [
+      {
+        "split": "test",
+        "contexto_token": "MES_5",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9382,
+        "acertou_top1": true,
+        "prob_alvo": 0.9382,
+        "loss_token": 0.0638
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.6981,
+        "acertou_top1": true,
+        "prob_alvo": 0.6981,
+        "loss_token": 0.3593
+      },
+      {
+        "split": "test",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_boleto",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6961,
+        "acertou_top1": false,
+        "prob_alvo": 0.1994,
+        "loss_token": 1.6123
+      },
+      {
+        "split": "test",
+        "contexto_token": "PAGAMENTO_boleto",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.9042,
+        "acertou_top1": true,
+        "prob_alvo": 0.9042,
+        "loss_token": 0.1007
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_8",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.1914,
+        "acertou_top1": true,
+        "prob_alvo": 0.1914,
+        "loss_token": 1.6536
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_8",
+        "alvo_real": "FRETE_BUCKET_8",
+        "top1_previsto": "FRETE_BUCKET_7",
+        "top1_prob": 0.147,
+        "acertou_top1": false,
+        "prob_alvo": 0.1381,
+        "loss_token": 1.9799
+      },
+      {
+        "split": "test",
+        "contexto_token": "FRETE_BUCKET_8",
+        "alvo_real": "RECENCIA_31-60",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.7874,
+        "acertou_top1": false,
+        "prob_alvo": 0.0174,
+        "loss_token": 4.0515
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_31-60",
+        "alvo_real": "MES_6",
+        "top1_previsto": "MES_6",
+        "top1_prob": 0.31,
+        "acertou_top1": true,
+        "prob_alvo": 0.31,
+        "loss_token": 1.1712
+      },
+      {
+        "split": "test",
+        "contexto_token": "MES_6",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9379,
+        "acertou_top1": true,
+        "prob_alvo": 0.9379,
+        "loss_token": 0.0641
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.6984,
+        "acertou_top1": true,
+        "prob_alvo": 0.6984,
+        "loss_token": 0.359
+      },
+      {
+        "split": "test",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_credit_card",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6957,
+        "acertou_top1": true,
+        "prob_alvo": 0.6957,
+        "loss_token": 0.3628
+      },
+      {
+        "split": "test",
+        "contexto_token": "PAGAMENTO_credit_card",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.9063,
+        "acertou_top1": true,
+        "prob_alvo": 0.9063,
+        "loss_token": 0.0984
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_8",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.1981,
+        "acertou_top1": true,
+        "prob_alvo": 0.1981,
+        "loss_token": 1.619
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_8",
+        "alvo_real": "FRETE_BUCKET_7",
+        "top1_previsto": "FRETE_BUCKET_7",
+        "top1_prob": 0.1534,
+        "acertou_top1": true,
+        "prob_alvo": 0.1534,
+        "loss_token": 1.8749
+      },
+      {
+        "split": "test",
+        "contexto_token": "FRETE_BUCKET_7",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.7586,
+        "acertou_top1": true,
+        "prob_alvo": 0.7586,
+        "loss_token": 0.2763
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_6",
+        "top1_previsto": "MES_6",
+        "top1_prob": 0.3344,
+        "acertou_top1": true,
+        "prob_alvo": 0.3344,
+        "loss_token": 1.0955
+      },
+      {
+        "split": "test",
+        "contexto_token": "MES_6",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.938,
+        "acertou_top1": true,
+        "prob_alvo": 0.938,
+        "loss_token": 0.064
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.6985,
+        "acertou_top1": true,
+        "prob_alvo": 0.6985,
+        "loss_token": 0.3588
+      },
+      {
+        "split": "test",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_debit_card",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6958,
+        "acertou_top1": false,
+        "prob_alvo": 0.0077,
+        "loss_token": 4.8626
+      },
+      {
+        "split": "test",
+        "contexto_token": "PAGAMENTO_debit_card",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.8981,
+        "acertou_top1": true,
+        "prob_alvo": 0.8981,
+        "loss_token": 0.1075
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_8",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.2056,
+        "acertou_top1": true,
+        "prob_alvo": 0.2056,
+        "loss_token": 1.5816
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_8",
+        "alvo_real": "FRETE_BUCKET_8",
+        "top1_previsto": "FRETE_BUCKET_7",
+        "top1_prob": 0.1531,
+        "acertou_top1": false,
+        "prob_alvo": 0.1439,
+        "loss_token": 1.9389
+      },
+      {
+        "split": "test",
+        "contexto_token": "FRETE_BUCKET_8",
+        "alvo_real": "RECENCIA_16-30",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.7622,
+        "acertou_top1": false,
+        "prob_alvo": 0.0458,
+        "loss_token": 3.084
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_16-30",
+        "alvo_real": "MES_7",
+        "top1_previsto": "MES_6",
+        "top1_prob": 0.3023,
+        "acertou_top1": false,
+        "prob_alvo": 0.293,
+        "loss_token": 1.2277
+      },
+      {
+        "split": "test",
+        "contexto_token": "MES_7",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9371,
+        "acertou_top1": true,
+        "prob_alvo": 0.9371,
+        "loss_token": 0.065
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "CATEGORIA_sports_leisure",
+        "top1_previsto": "CATEGORIA_sports_leisure",
+        "top1_prob": 0.6987,
+        "acertou_top1": true,
+        "prob_alvo": 0.6987,
+        "loss_token": 0.3586
+      },
+      {
+        "split": "test",
+        "contexto_token": "CATEGORIA_sports_leisure",
+        "alvo_real": "PAGAMENTO_debit_card",
+        "top1_previsto": "PAGAMENTO_credit_card",
+        "top1_prob": 0.6957,
+        "acertou_top1": false,
+        "prob_alvo": 0.0079,
+        "loss_token": 4.8472
+      },
+      {
+        "split": "test",
+        "contexto_token": "PAGAMENTO_debit_card",
+        "alvo_real": "PRODUTO_OUTROS",
+        "top1_previsto": "PRODUTO_OUTROS",
+        "top1_prob": 0.8979,
+        "acertou_top1": true,
+        "prob_alvo": 0.8979,
+        "loss_token": 0.1077
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRODUTO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_4",
+        "top1_previsto": "PRECO_BUCKET_8",
+        "top1_prob": 0.2131,
+        "acertou_top1": false,
+        "prob_alvo": 0.0809,
+        "loss_token": 2.5148
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_4",
+        "alvo_real": "FRETE_BUCKET_8",
+        "top1_previsto": "FRETE_BUCKET_4",
+        "top1_prob": 0.1384,
+        "acertou_top1": false,
+        "prob_alvo": 0.0765,
+        "loss_token": 2.5711
+      },
+      {
+        "split": "test",
+        "contexto_token": "FRETE_BUCKET_8",
+        "alvo_real": "RECENCIA_16-30",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.7456,
+        "acertou_top1": false,
+        "prob_alvo": 0.0507,
+        "loss_token": 2.981
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_16-30",
+        "alvo_real": "MES_8",
+        "top1_previsto": "MES_7",
+        "top1_prob": 0.3441,
+        "acertou_top1": false,
+        "prob_alvo": 0.2852,
+        "loss_token": 1.2545
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "n_params": 10448,
+  "n_train": 73065,
+  "n_val": 8093,
+  "n_test": 17554,
+  "tarefas": [
+    {
+      "nome": "churn",
+      "tipo": "binaria",
+      "n_classes": 1
+    },
+    {
+      "nome": "next_category",
+      "tipo": "multiclasse",
+      "n_classes": 4
+    },
+    {
+      "nome": "next_value",
+      "tipo": "multiclasse",
+      "n_classes": 10
+    },
+    {
+      "nome": "ltv",
+      "tipo": "multiclasse",
+      "n_classes": 8
+    }
+  ],
+  "campos_estaticos_categoricos": [
+    "uf",
+    "sexo"
+  ],
+  "campos_estaticos_numericos": [
+    "_idade"
+  ],
+  "batch_size": 256,
+  "n_epochs": 40,
+  "lr": 0.002,
+  "seed": 0
+}

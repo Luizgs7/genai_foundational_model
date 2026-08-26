@@ -1,0 +1,31 @@
+{
+  "n_params": 5463,
+  "n_train": 62658,
+  "n_val": 14642,
+  "n_test": 20388,
+  "tarefas": [
+    {
+      "nome": "churn",
+      "tipo": "binaria",
+      "n_classes": 1
+    },
+    {
+      "nome": "risco_review_negativo",
+      "tipo": "binaria",
+      "n_classes": 1
+    },
+    {
+      "nome": "risco_atraso_entrega",
+      "tipo": "binaria",
+      "n_classes": 1
+    }
+  ],
+  "campos_estaticos_categoricos": [
+    "seller_state"
+  ],
+  "campos_estaticos_numericos": [],
+  "batch_size": 256,
+  "n_epochs": 40,
+  "lr": 0.002,
+  "seed": 0
+}

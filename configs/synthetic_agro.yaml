@@ -1,0 +1,68 @@
+# Config canônico da base sintética agro — migração do pipeline original
+# (branch luiz_g) pro motor genérico. Deve reproduzir os mesmos resultados
+# já publicados (base rate de churn, AUC baseline, contagens de tokens).
+
+nome: synthetic_agro
+entidade_label: cliente
+fonte_canonica: runs/synthetic_agro/eventos_canonicos.csv
+
+campos_categoricos:
+  - nome: categoria
+    estrategia: fechado
+  - nome: marca
+    estrategia: fechado
+  - nome: fabricante
+    estrategia: fechado
+  - nome: produto
+    estrategia: fechado   # só 180 valores na base sintética, cabe fechado
+  - nome: pagamento
+    estrategia: fechado
+  - nome: canal
+    estrategia: fechado
+  - nome: quantidade
+    estrategia: fechado
+
+campos_numericos:
+  - nome: valor
+    agrupar_por: categoria
+    n_buckets: 10
+  - nome: desconto
+    agrupar_por: categoria
+    n_buckets: 10
+
+campos_estaticos_categoricos: [uf, sexo]
+campos_estaticos_numericos: []
+campo_data_nascimento: data_nascimento   # usado só na fusão, pra idade-na-âncora
+
+usa_recencia: true
+usa_mes: true
+
+splits:
+  val_window_days: 90
+  test_window_days: 180
+
+arquitetura:
+  n_embd: 128
+  n_layer: 4
+  n_head: 4
+  n_positions: 512
+  # sdpa: pré-treino original (Tarefa 12) usou flash_attention_2; esta
+  # sessão de extração de embeddings roda num container Colab que resetou
+  # e ficou sem flash-attn (ver LIMITACOES.md, item 4). Pesos do checkpoint
+  # não mudam com a troca de backend de atenção — só o kernel usado.
+  attn_implementation: sdpa
+
+tarefas_downstream:
+  - tipo: churn
+    candidatos_dias: [30, 45, 60, 75, 90, 105, 120, 121, 135, 150, 180]
+    dias_escolhido: 121
+  - tipo: campo_futuro
+    nome: next_category
+    campo_fonte: categoria
+  - tipo: campo_futuro
+    nome: next_value
+    campo_fonte: valor_bucket
+  - tipo: ltv
+    campo_valor: valor
+    horizonte_dias: 180
+    n_buckets: 10

@@ -1,0 +1,73 @@
+{
+  "churn": {
+    "n_linhas_determinaveis": 93570,
+    "n_linhas_total": 100000,
+    "taxa_determinabilidade": 0.9357,
+    "n_dias": 121,
+    "base_rate_geral": 0.29697552634391366,
+    "base_rate_por_split": {
+      "train": 0.31818487485373825,
+      "val": 0.31743482021500063,
+      "test": 0.1403272204243078
+    },
+    "baseline_auc_por_split": {
+      "train": 0.6989996146304552,
+      "val": 0.7442754487372276,
+      "test": 0.7501548616233437,
+      "geral": 0.6999528681365357
+    }
+  },
+  "next_category": {
+    "n_linhas_determinaveis": 85000,
+    "n_linhas_total": 100000,
+    "taxa_determinabilidade": 0.85,
+    "baseline_accuracy_por_split": {
+      "train": 0.5056750211536778,
+      "val": 0.5952055833712638,
+      "test": 0.5897799858055358,
+      "geral": 0.5223764705882353
+    },
+    "baseline_f1_macro_por_split": {
+      "train": 0.5031071592977201,
+      "val": 0.594104939429044,
+      "test": 0.5873804315819111,
+      "geral": 0.520362975006882
+    }
+  },
+  "next_value": {
+    "n_linhas_determinaveis": 85000,
+    "n_linhas_total": 100000,
+    "taxa_determinabilidade": 0.85,
+    "baseline_accuracy_por_split": {
+      "train": 0.09780293525515713,
+      "val": 0.09846760734334699,
+      "test": 0.09946263814255298,
+      "geral": 0.09804705882352942
+    },
+    "baseline_f1_macro_por_split": {
+      "train": 0.09436717326498292,
+      "val": 0.09846426353762086,
+      "test": 0.09949725520419868,
+      "geral": 0.09560361289211129
+    }
+  },
+  "ltv": {
+    "n_linhas_determinaveis": 82528,
+    "n_linhas_total": 100000,
+    "taxa_determinabilidade": 0.82528,
+    "horizonte_dias": 180,
+    "n_buckets": 10,
+    "baseline_accuracy_por_split": {
+      "train": 0.3416943499253561,
+      "val": 0.32447794390213763,
+      "test": 0.34146341463414637,
+      "geral": 0.3400058162078325
+    },
+    "baseline_f1_macro_por_split": {
+      "train": 0.274650704121262,
+      "val": 0.25012336624096504,
+      "test": 0.2506331506726738,
+      "geral": 0.2721385775617987
+    }
+  }
+}

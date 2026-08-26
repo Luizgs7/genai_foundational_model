@@ -12,6 +12,15 @@ pipeline/pretreino/run_baseline_384emb_8layer/checkpoints/
 pipeline/fusao/embeddings_eventos.npy
 pipeline/fusao/embeddings_eventos_index.csv
 
+# Dados de terceiros baixados via kagglehub (grandes, não versionar —
+# ver adapters/adapter_olist_sellers.py)
+dados_olist/
+
+# Runs gerados pelo motor genérico (recriáveis — ver pipeline/common/)
+runs/*/pretreino/checkpoints/
+runs/*/fusao/embeddings_eventos.npy
+runs/*/fusao/embeddings_eventos_index.csv
+
 # Ambientes virtuais / editores
 .venv/
 venv/

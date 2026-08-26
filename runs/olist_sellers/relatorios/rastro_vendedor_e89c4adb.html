@@ -1,0 +1,330 @@
+<title>Rastro do Vendedor e89c4adb</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f5; --surface: #ffffff; --surface-alt: #f1efe6; --border: #e2dfd2;
+    --ink: #201f1a; --ink-dim: #6e6c60; --ink-faint: #9a9787;
+    --accent: #2b6e5e; --accent-strong: #1e4f44; --accent-soft: #e3eeea;
+    --c-categoria-bg: #f3e6db; --c-categoria-text: #8a4b24;
+    --c-pagamento-bg: #f6ead1; --c-pagamento-text: #8a6210;
+    --c-produto-bg: #f0e3f1; --c-produto-text: #7a3d82;
+    --c-preco-bg: #e0f0e6; --c-preco-text: #1f7a45;
+    --c-frete-bg: #eff0dc; --c-frete-text: #75801f;
+    --c-recencia-bg: #e5e3f6; --c-recencia-text: #4a3f9c;
+    --c-mes-bg: #e4e9ee; --c-mes-text: #47607a;
+    --c-evt-text: #2b6e5e; --c-evt-border: #2b6e5e;
+    --split-train-bg: #e0f0e6; --split-train-text: #1f7a45;
+    --split-val-bg: #f6ead1; --split-val-text: #8a6210;
+    --split-test-bg: #f7e3de; --split-test-text: #a03d2a;
+    --pill-real-bg: #f7e3de; --pill-real-text: #a03d2a;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14181a; --surface: #1b2023; --surface-alt: #20262a; --border: #2b3236;
+      --ink: #eae8df; --ink-dim: #a3a094; --ink-faint: #6f6c60;
+      --accent: #6fcba9; --accent-strong: #8fe0bf; --accent-soft: #1e2b27;
+      --c-categoria-bg: #3a2a1e; --c-categoria-text: #e3b48c;
+      --c-pagamento-bg: #332b14; --c-pagamento-text: #e8c066;
+      --c-produto-bg: #2e2032; --c-produto-text: #dda8e3;
+      --c-preco-bg: #1c3226; --c-preco-text: #7fd8a0;
+      --c-frete-bg: #2e3018; --c-frete-text: #c7d16b;
+      --c-recencia-bg: #241f38; --c-recencia-text: #b0a8ee;
+      --c-mes-bg: #202a32; --c-mes-text: #9db8cc;
+      --c-evt-text: #6fcba9; --c-evt-border: #6fcba9;
+      --split-train-bg: #1c3226; --split-train-text: #7fd8a0;
+      --split-val-bg: #332b14; --split-val-text: #e8c066;
+      --split-test-bg: #33201a; --split-test-text: #e89a80;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14181a; --surface: #1b2023; --surface-alt: #20262a; --border: #2b3236;
+    --ink: #eae8df; --ink-dim: #a3a094; --ink-faint: #6f6c60;
+    --accent: #6fcba9; --accent-strong: #8fe0bf; --accent-soft: #1e2b27;
+    --c-categoria-bg: #3a2a1e; --c-categoria-text: #e3b48c;
+    --c-pagamento-bg: #332b14; --c-pagamento-text: #e8c066;
+    --c-produto-bg: #2e2032; --c-produto-text: #dda8e3;
+    --c-preco-bg: #1c3226; --c-preco-text: #7fd8a0;
+    --c-frete-bg: #2e3018; --c-frete-text: #c7d16b;
+    --c-recencia-bg: #241f38; --c-recencia-text: #b0a8ee;
+    --c-mes-bg: #202a32; --c-mes-text: #9db8cc;
+    --c-evt-text: #6fcba9; --c-evt-border: #6fcba9;
+    --split-train-bg: #1c3226; --split-train-text: #7fd8a0;
+    --split-val-bg: #332b14; --split-val-text: #e8c066;
+    --split-test-bg: #33201a; --split-test-text: #e89a80;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Source Serif 4", Georgia, serif;
+         font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .page { max-width: 980px; margin: 0 auto; padding: 56px 24px 96px; }
+  .eyebrow { font-family: "IBM Plex Sans", sans-serif; font-weight: 600; font-size: .72rem; letter-spacing: .09em;
+             text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+  h1 { font-family: "IBM Plex Sans", sans-serif; font-weight: 700; font-size: clamp(2rem,4.2vw,2.8rem);
+       line-height: 1.1; margin: 0 0 18px; text-wrap: balance; }
+  .lede { max-width: 64ch; font-size: 1.06rem; color: var(--ink-dim); margin: 0 0 32px; }
+  .lede .id { font-family: "JetBrains Mono", monospace; color: var(--ink); background: var(--surface-alt);
+              padding: .05em .4em; border-radius: 4px; font-size: .9em; }
+  .stat-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stat { font-family: "IBM Plex Sans", sans-serif; display: flex; align-items: baseline; gap: 7px;
+          padding: 9px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
+  .stat b { font-family: "JetBrains Mono", monospace; font-size: 1.02rem; color: var(--accent-strong); }
+  .stat span { font-size: .76rem; color: var(--ink-dim); }
+  .trace { position: relative; }
+  .trace::before { content: ""; position: absolute; top: 4px; bottom: 4px; left: 27px; width: 2px; background: var(--border); }
+  .stage { position: relative; padding-left: 76px; margin-bottom: 68px; }
+  .stage:last-child { margin-bottom: 0; }
+  .stage-num { position: absolute; left: 0; top: 0; width: 56px; height: 56px; border-radius: 50%;
+               background: var(--surface); border: 2px solid var(--accent); display: flex; align-items: center;
+               justify-content: center; font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 1.2rem;
+               color: var(--accent-strong); }
+  .stage h2 { font-family: "IBM Plex Sans", sans-serif; font-weight: 700; font-size: 1.4rem; margin: 0 0 12px; text-wrap: balance; }
+  .stage .prose { max-width: 68ch; color: var(--ink-dim); margin: 0 0 24px; font-size: 1rem; }
+  .stage .source { font-family: "JetBrains Mono", monospace; font-size: .76rem; color: var(--ink-faint); }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 600px; font-family: "IBM Plex Sans", sans-serif; font-size: .84rem; }
+  thead th { text-align: left; font-weight: 600; font-size: .68rem; letter-spacing: .06em; text-transform: uppercase;
+             color: var(--ink-dim); padding: 11px 13px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tbody td { padding: 8px 13px; border-bottom: 1px solid var(--border); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+  td.num { text-align: right; } td.dim { color: var(--ink-faint); }
+  .chip { display: inline-flex; align-items: center; font-family: "JetBrains Mono", monospace; font-size: .7rem;
+          line-height: 1.6; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+  .chip-CATEGORIA { background: var(--c-categoria-bg); color: var(--c-categoria-text); }
+  .chip-PAGAMENTO { background: var(--c-pagamento-bg); color: var(--c-pagamento-text); }
+  .chip-PRODUTO { background: var(--c-produto-bg); color: var(--c-produto-text); }
+  .chip-PRECO { background: var(--c-preco-bg); color: var(--c-preco-text); }
+  .chip-FRETE { background: var(--c-frete-bg); color: var(--c-frete-text); }
+  .chip-RECENCIA { background: var(--c-recencia-bg); color: var(--c-recencia-text); }
+  .chip-MES { background: var(--c-mes-bg); color: var(--c-mes-text); }
+  .chip-EVT { background: transparent; border: 1px solid var(--c-evt-border); color: var(--c-evt-text);
+              text-transform: uppercase; font-weight: 600; letter-spacing: .03em; }
+  .split-pill { font-family: "JetBrains Mono", monospace; font-size: .7rem; padding: 2px 9px; border-radius: 999px;
+                text-transform: uppercase; letter-spacing: .03em; }
+  .split-train { background: var(--split-train-bg); color: var(--split-train-text); }
+  .split-val { background: var(--split-val-bg); color: var(--split-val-text); }
+  .split-test { background: var(--split-test-bg); color: var(--split-test-text); }
+  .pred-check { color: var(--accent); font-weight: 700; }
+  .pred-miss { color: var(--split-test-text); font-weight: 700; }
+  .prob-cell { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .prob-bar { width: 52px; height: 6px; border-radius: 3px; background: var(--surface-alt); overflow: hidden; }
+  .prob-bar-fill { height: 100%; background: var(--accent); }
+  .miss .prob-bar-fill { background: var(--split-test-text); }
+  .prob-pct { font-size: .72rem; color: var(--ink-dim); min-width: 3.2em; }
+  .subhead { font-family: "IBM Plex Sans", sans-serif; font-weight: 600; font-size: .9rem; margin: 26px 0 12px; }
+  .callout { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+             border-radius: 6px; padding: 16px 20px; margin: 24px 0 0; }
+  .callout .callout-title { font-family: "IBM Plex Sans", sans-serif; font-weight: 600; font-size: .74rem;
+                             text-transform: uppercase; letter-spacing: .05em; color: var(--accent); margin-bottom: 8px; display: block; }
+  .callout p { font-family: "IBM Plex Sans", sans-serif; margin: 0 0 6px; font-size: .84rem; line-height: 1.55; color: var(--ink-dim); }
+  .callout p:last-child { margin-bottom: 0; }
+  .footer { margin-top: 88px; padding-top: 22px; border-top: 1px solid var(--border); font-family: "JetBrains Mono", monospace;
+            font-size: .74rem; color: var(--ink-faint); }
+  @media (max-width: 640px) { .stage { padding-left: 56px; } .stage-num { width: 40px; height: 40px; font-size: .9rem; } .trace::before { left: 19px; } }
+</style>
+
+<div class="page">
+  <header style="margin-bottom:64px">
+    <p class="eyebrow">Customer Foundation Model &middot; generalizado pra Seller Foundation Model</p>
+    <h1>O rastro de um vendedor, no dataset real da Olist</h1>
+    <p class="lede">
+      Mesmo pipeline usado pro cliente <span class="id">860.703.096-50</span> (base sint&eacute;tica agro),
+      agora rodando sobre um schema completamente diferente &mdash; 9 tabelas relacionais do
+      <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce" style="color:inherit">e-commerce brasileiro Olist</a>,
+      entidade = <span class="id">vendedor</span> em vez de cliente. Este &eacute; o vendedor
+      <span class="id">e89c4adb&hellip;</span>, de artigos esportivos em SP.
+    </p>
+    <div class="stat-row">
+      <div class="stat"><b>25</b><span>vendas</span></div>
+      <div class="stat"><b>16</b><span>treino</span></div>
+      <div class="stat"><b>5</b><span>valida&ccedil;&atilde;o</span></div>
+      <div class="stat"><b>4</b><span>teste</span></div>
+      <div class="stat"><b>SP</b><span>estado</span></div>
+      <div class="stat"><b>sports_leisure</b><span>categoria</span></div>
+    </div>
+  </header>
+
+  <div class="trace">
+
+    <section class="stage" id="stage-0">
+      <div class="stage-num">0</div>
+      <p class="eyebrow">Etapa 0 &middot; dado real, sem tratamento</p>
+      <h2>25 vendas, direto de 5 tabelas da Olist</h2>
+      <p class="prose">
+        Cada linha vem de um <em>join</em> de <code class="mono">order_items</code> +
+        <code class="mono">orders</code> + <code class="mono">products</code> +
+        <code class="mono">order_payments</code> + <code class="mono">order_reviews</code> &mdash;
+        a Olist n&atilde;o tem uma tabela &uacute;nica de transa&ccedil;&otilde;es como a base sint&eacute;tica.
+        <code class="mono">review_score</code> e o atraso de entrega (calculado de
+        <code class="mono">order_delivered_customer_date</code> vs.
+        <code class="mono">order_estimated_delivery_date</code>) s&atilde;o atributos do <strong>pedido</strong>,
+        n&atilde;o do item.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Data</th><th>Categoria</th><th>Produto</th><th>Pagamento</th><th>Pre&ccedil;o</th>
+            <th>Frete</th><th>Review</th><th>Atraso</th><th>Split</th></tr></thead>
+          <tbody>
+<tr><td class="mono">10 jan 2018</td><td>sports_leisure</td><td class="mono dim">f8a9&hellip;</td><td>debit_card</td><td class="mono num">R$ 159,00</td><td class="mono num dim">R$ 20,60</td><td class="mono num">1</td><td class="mono num">sim</td><td><span class="split-pill split-train">train</span></td></tr>
+<tr><td class="mono">15 jan 2018</td><td>sports_leisure</td><td class="mono dim">f8a9&hellip;</td><td>credit_card</td><td class="mono num">R$ 159,00</td><td class="mono num dim">R$ 14,23</td><td class="mono num">5</td><td class="mono num">n&atilde;o</td><td><span class="split-pill split-train">train</span></td></tr>
+<tr><td class="mono">22 jan 2018</td><td>sports_leisure</td><td class="mono dim">1697&hellip;</td><td>credit_card</td><td class="mono num">R$ 159,00</td><td class="mono num dim">R$ 20,60</td><td class="mono num">1</td><td class="mono num">sim</td><td><span class="split-pill split-train">train</span></td></tr>
+<tr><td class="mono dim">&hellip; 13 vendas de treino, mesmo padr&atilde;o (produtos repetidos, cart&atilde;o de cr&eacute;dito predominante) &hellip;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td class="mono">05 abr 2018</td><td>sports_leisure</td><td class="mono dim">e9b9&hellip;</td><td>credit_card</td><td class="mono num">R$ 116,00</td><td class="mono num dim">R$ 7,68</td><td class="mono num">5</td><td class="mono num">n&atilde;o</td><td><span class="split-pill split-train">train</span></td></tr>
+<tr><td class="mono">13 abr 2018</td><td>sports_leisure</td><td class="mono dim">f8a9&hellip;</td><td>credit_card</td><td class="mono num">R$ 159,00</td><td class="mono num dim">R$ 22,19</td><td class="mono num">5</td><td class="mono num">n&atilde;o</td><td><span class="split-pill split-val">val</span></td></tr>
+<tr><td class="mono dim">&hellip; mais 3 vendas de valida&ccedil;&atilde;o &hellip;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td class="mono">09 mai 2018</td><td>sports_leisure</td><td class="mono dim">0e16&hellip;</td><td>credit_card</td><td class="mono num">R$ 59,90</td><td class="mono num dim">R$ 7,39</td><td class="mono num">5</td><td class="mono num">n&atilde;o</td><td><span class="split-pill split-val">val</span></td></tr>
+<tr><td class="mono">27 jun 2018</td><td>sports_leisure</td><td class="mono dim">f8a9&hellip;</td><td>boleto</td><td class="mono num">R$ 159,00</td><td class="mono num dim">R$ 22,41</td><td class="mono num">4</td><td class="mono num">n&atilde;o</td><td><span class="split-pill split-test">test</span></td></tr>
+<tr><td class="mono">30 jun 2018</td><td>sports_leisure</td><td class="mono dim">1697&hellip;</td><td>credit_card</td><td class="mono num">R$ 159,00</td><td class="mono num dim">R$ 19,41</td><td class="mono num">5</td><td class="mono num">n&atilde;o</td><td><span class="split-pill split-test">test</span></td></tr>
+<tr><td class="mono">26 jul 2018</td><td>sports_leisure</td><td class="mono dim">f8a9&hellip;</td><td>debit_card</td><td class="mono num">R$ 159,00</td><td class="mono num dim">R$ 22,41</td><td class="mono num">5</td><td class="mono num">n&atilde;o</td><td><span class="split-pill split-test">test</span></td></tr>
+<tr><td class="mono">17 ago 2018</td><td>sports_leisure</td><td class="mono dim">dfdd&hellip;</td><td>debit_card</td><td class="mono num">R$ 69,90</td><td class="mono num dim">R$ 26,79</td><td class="mono num">5</td><td class="mono num">n&atilde;o</td><td><span class="split-pill split-test">test</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">adapters/adapter_olist_sellers.py &middot; dados_olist/*.csv (Kaggle olistbr/brazilian-ecommerce)</p>
+    </section>
+
+    <section class="stage" id="stage-1">
+      <div class="stage-num">1</div>
+      <p class="eyebrow">Etapa 1 &middot; motor gen&eacute;rico, splits</p>
+      <h2>Mesmo corte por data, dataset bem mais curto</h2>
+      <p class="prose">
+        A Olist cobre s&oacute; 728 dias (set/2016&ndash;set/2018) &mdash; bem menos que os ~3 anos da base
+        sint&eacute;tica. Janelas recalibradas do zero: <code class="mono">val_window_days=60</code>,
+        <code class="mono">test_window_days=90</code> (n&atilde;o reaproveitou os 90/180 da base sint&eacute;tica).
+        Este vendedor tem vendas nos 3 splits: 16 treino (at&eacute; 05/abr), 5 valida&ccedil;&atilde;o
+        (13/abr&ndash;09/mai), 4 teste (27/jun&ndash;17/ago).
+      </p>
+      <p class="source">pipeline/common/tarefa7_splits.py configs/olist_sellers.yaml</p>
+    </section>
+
+    <section class="stage" id="stage-2">
+      <div class="stage-num">2</div>
+      <p class="eyebrow">Etapa 2 &middot; motor gen&eacute;rico, tokeniza&ccedil;&atilde;o</p>
+      <h2>Um schema com menos campos, e uma lacuna honesta</h2>
+      <p class="prose">
+        A Olist n&atilde;o tem marca/fabricante/canal (n&atilde;o existem nesse schema) &mdash; o bloco de
+        cada evento fica com 3 campos categ&oacute;ricos (categoria, pagamento, produto) + 2 num&eacute;ricos
+        (pre&ccedil;o, frete) em vez dos 7+2 da base sint&eacute;tica. <code class="mono">produto</code> usa
+        <code class="mono">top_n_outros</code> (top-200 + OUTROS, dos ~32,7 mil produtos da Olist) &mdash;
+        e este vendedor espec&iacute;fico &eacute; um caso honesto do custo dessa escolha: nenhum dos produtos
+        dele est&aacute; entre os 200 mais vendidos da plataforma, ent&atilde;o o token de produto &eacute; sempre
+        <span class="chip chip-PRODUTO">PRODUTO_OUTROS</span> &mdash; o modelo perde a identidade espec&iacute;fica
+        do produto e depende de categoria+pre&ccedil;o+frete pra sinal.
+      </p>
+      <p class="subhead">Um evento tokenizado (venda de 22 jan 2018)</p>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr>
+              <td><span class="chip chip-EVT">EVT</span></td>
+              <td><span class="chip chip-CATEGORIA">CATEGORIA_sports_leisure</span></td>
+              <td><span class="chip chip-PAGAMENTO">PAGAMENTO_credit_card</span></td>
+              <td><span class="chip chip-PRODUTO">PRODUTO_OUTROS</span></td>
+              <td><span class="chip chip-PRECO">PRECO_BUCKET_8</span></td>
+              <td><span class="chip chip-FRETE">FRETE_BUCKET_7</span></td>
+              <td><span class="chip chip-RECENCIA">RECENCIA_0-7</span></td>
+              <td><span class="chip chip-MES">MES_1</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">vocab: 323 tokens (vs. 312 da base sint&eacute;tica) &middot; pipeline/common/tarefa5_vocabulario.py</p>
+    </section>
+
+    <section class="stage" id="stage-3">
+      <div class="stage-num">3</div>
+      <p class="eyebrow">Etapa 3 &middot; backbone treinado</p>
+      <h2>O que o modelo aprendeu sobre este vendedor</h2>
+      <p class="prose">
+        Backbone: 96 de embedding, 3 camadas, <code class="mono">n_positions=4096</code> (dimensionado pra
+        cauda bem mais longa que a base sint&eacute;tica &mdash; alguns vendedores da Olist t&ecirc;m mais de
+        2 mil vendas). Perplexidade de teste geral: 4,02 (contra ~323 no acaso). Para este vendedor
+        espec&iacute;fico, o backbone acerta a maior parte das previs&otilde;es &oacute;bvias (EVT, categoria &mdash;
+        s&oacute; vende uma categoria &mdash; pagamento dominante) e erra mais em pre&ccedil;o/frete espec&iacute;ficos
+        e no timing exato (m&ecirc;s/rec&ecirc;ncia), como esperado.
+      </p>
+      <div class="stat-row">
+        <div class="stat"><b>0,90</b><span>loss valida&ccedil;&atilde;o</span></div>
+        <div class="stat"><b>31/40</b><span>acertos top-1 (val)</span></div>
+        <div class="stat"><b>1,40</b><span>loss teste</span></div>
+        <div class="stat"><b>20/32</b><span>acertos top-1 (teste)</span></div>
+      </div>
+      <p class="subhead">Amostra da continua&ccedil;&atilde;o de teste (8 de 32 previs&otilde;es)</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>contexto</th><th>alvo real</th><th>previsto</th><th>confian&ccedil;a no alvo</th></tr></thead>
+          <tbody>
+<tr><td><span class="chip chip-MES">MES_4</span></td><td><span class="chip chip-EVT">EVT</span></td><td class="pred-check">&#10003;</td><td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:94.4%"></div></div><span class="prob-pct mono">94,4%</span></td></tr>
+<tr><td><span class="chip chip-EVT">EVT</span></td><td><span class="chip chip-CATEGORIA">CATEGORIA_sports_leisure</span></td><td class="pred-check">&#10003;</td><td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:70.4%"></div></div><span class="prob-pct mono">70,4%</span></td></tr>
+<tr><td><span class="chip chip-CATEGORIA">CATEGORIA_sports_leisure</span></td><td><span class="chip chip-PAGAMENTO">PAGAMENTO_boleto</span></td><td class="pred-miss">&times;</td><td class="prob-cell miss"><div class="prob-bar"><div class="prob-bar-fill" style="width:12.9%"></div></div><span class="prob-pct mono">12,9%</span></td></tr>
+<tr><td><span class="chip chip-PAGAMENTO">PAGAMENTO_boleto</span></td><td><span class="chip chip-PRODUTO">PRODUTO_OUTROS</span></td><td class="pred-check">&#10003;</td><td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:88.1%"></div></div><span class="prob-pct mono">88,1%</span></td></tr>
+<tr><td><span class="chip chip-PRODUTO">PRODUTO_OUTROS</span></td><td><span class="chip chip-PRECO">PRECO_BUCKET_8</span></td><td class="pred-check">&#10003;</td><td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:21.3%"></div></div><span class="prob-pct mono">21,3%</span></td></tr>
+<tr><td><span class="chip chip-PRECO">PRECO_BUCKET_8</span></td><td><span class="chip chip-FRETE">FRETE_BUCKET_8</span></td><td class="pred-miss">&times;</td><td class="prob-cell miss"><div class="prob-bar"><div class="prob-bar-fill" style="width:9.8%"></div></div><span class="prob-pct mono">9,8%</span></td></tr>
+<tr><td><span class="chip chip-FRETE">FRETE_BUCKET_8</span></td><td><span class="chip chip-RECENCIA">RECENCIA_16-30</span></td><td class="pred-miss">&times;</td><td class="prob-cell miss"><div class="prob-bar"><div class="prob-bar-fill" style="width:6.1%"></div></div><span class="prob-pct mono">6,1%</span></td></tr>
+<tr><td><span class="chip chip-RECENCIA">RECENCIA_16-30</span></td><td><span class="chip chip-MES">MES_6</span></td><td class="pred-check">&#10003;</td><td class="prob-cell"><div class="prob-bar"><div class="prob-bar-fill" style="width:41.2%"></div></div><span class="prob-pct mono">41,2%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">pipeline/common/gerar_predicoes_entidade.py configs/olist_sellers.yaml e89c4adb&hellip;</p>
+    </section>
+
+    <section class="stage" id="stage-4">
+      <div class="stage-num">4</div>
+      <p class="eyebrow">Etapa 4 &middot; fus&atilde;o DCNv2, 3 tarefas de neg&oacute;cio</p>
+      <h2>Churn, review e atraso &mdash; 3 perguntas, 3 times, o mesmo embedding</h2>
+      <p class="prose">
+        Backbone congelado + DCNv2 (5.463 par&acirc;metros) treinado com 3 cabe&ccedil;as, uma por pergunta de
+        neg&oacute;cio &mdash; construc&#807;a&#771;o din&acirc;mica a partir do config, n&atilde;o mais fixa em 3 tarefas
+        espec&iacute;ficas da base sint&eacute;tica. Nas duas tarefas com r&oacute;tulo <strong>real</strong> (n&atilde;o
+        proxy), o embedding sequencial supera a taxa hist&oacute;rica simples com folga maior que no churn:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tarefa</th><th>Time</th><th>Sinal</th><th>Baseline (AUC)</th><th>Modelo (AUC)</th><th>Delta</th></tr></thead>
+          <tbody>
+            <tr><td>Churn</td><td>Account mgmt.</td><td>proxy</td><td class="mono num">0,842</td><td class="mono num">0,856</td><td class="mono num" style="color:var(--accent)">+0,014</td></tr>
+            <tr><td>Risco de review negativo</td><td>Qualidade/CS</td><td><strong>real</strong></td><td class="mono num">0,486</td><td class="mono num">0,514</td><td class="mono num" style="color:var(--accent)">+0,028</td></tr>
+            <tr><td>Risco de atraso na entrega</td><td>Log&iacute;stica</td><td><strong>real</strong></td><td class="mono num">0,543</td><td class="mono num">0,599</td><td class="mono num" style="color:var(--accent)">+0,056</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="subhead">Previs&otilde;es da fus&atilde;o pra este vendedor (&acirc;ncoras de teste)</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>venda (&acirc;ncora)</th><th>tarefa</th><th>p_modelo</th><th>real</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">26 jul 2018</td><td>Churn (30d)</td><td class="mono num">3,4%</td><td>n&atilde;o churnou</td></tr>
+            <tr><td class="mono">26 jul 2018</td><td>Risco review negativo</td><td class="mono num">12,3%</td><td>review 5 (ok)</td></tr>
+            <tr><td class="mono">26 jul 2018</td><td>Risco atraso</td><td class="mono num">3,9%</td><td>n&atilde;o atrasou</td></tr>
+            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Churn (30d)</td><td class="mono num">3,1%</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
+            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Risco review negativo</td><td class="mono num">13,2%</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
+            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Risco atraso</td><td class="mono num">4,6%</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="callout-title">Por que isso importa pro produto</span>
+        <p>
+          As 2 tarefas com dado real (n&atilde;o proxy) s&atilde;o exatamente onde o baseline simples
+          (taxa hist&oacute;rica do pr&oacute;prio vendedor) &eacute; mais fraco &mdash; quase aleat&oacute;rio pra review
+          (0,486, pior que cara-ou-coroa). O ganho do modelo &eacute; proporcionalmente maior ali do que no
+          churn, onde a recorr&ecirc;ncia hist&oacute;rica j&aacute; era um sinal forte por si s&oacute; (0,842).
+          &Eacute; a demonstra&ccedil;&atilde;o mais direta de que o pipeline generalizado responde perguntas de
+          neg&oacute;cio de tipos diferentes (reten&ccedil;&atilde;o, qualidade, opera&ccedil;&atilde;o) com o mesmo
+          motor, trocando s&oacute; o config.
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="footer">
+    gerado a partir de pipeline/common/ + configs/olist_sellers.yaml + adapters/adapter_olist_sellers.py &middot;
+    dataset: Kaggle olistbr/brazilian-ecommerce &middot; branch luiz_g_product_exp
+  </p>
+</div>

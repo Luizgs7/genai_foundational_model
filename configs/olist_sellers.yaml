@@ -1,0 +1,84 @@
+# Config canônico do dataset real Olist Brazilian E-commerce (Kaggle,
+# olistbr/brazilian-ecommerce). Entidade = VENDEDOR (seller_id) — ver
+# PLANO_PRODUTO.md pro racional (clientes têm ~1 pedido cada, inviabiliza
+# a premissa de sequência; vendedores têm bem mais atividade repetida).
+
+nome: olist_sellers
+entidade_label: vendedor
+fonte_canonica: runs/olist_sellers/eventos_canonicos.csv
+
+campos_categoricos:
+  - nome: categoria
+    estrategia: fechado          # 72 categorias, cabe fechado
+  - nome: pagamento
+    estrategia: fechado          # 5 valores
+  - nome: produto
+    estrategia: top_n_outros     # ~32,7 mil produtos — inviável fechado
+    top_n: 200
+
+campos_numericos:
+  # Sem agrupar_por (diferente da base sintética): a Olist tem 72 categorias
+  # (vs. 4 da base sintética) — bucket por categoria explodiria o vocabulário
+  # (720 tokens só pra preço) sem ganho real de sinal frente ao volume de
+  # dados disponível. Quantil global é a escolha mais enxuta aqui.
+  - nome: preco
+    agrupar_por: null
+    n_buckets: 10
+  - nome: frete
+    agrupar_por: null
+    n_buckets: 10
+
+campos_estaticos_categoricos: [seller_state]
+campos_estaticos_numericos: []
+campo_data_nascimento: null   # Olist não tem dado demográfico de vendedor
+
+usa_recencia: true
+usa_mes: true
+
+splits:
+  # dataset cobre só 728 dias (04/09/2016-03/09/2018) — janelas bem menores
+  # que a base sintética (ver adapter, distribuição real de gaps: mediana=0,
+  # p90=11, p99=69 dias entre vendas do mesmo vendedor).
+  val_window_days: 60
+  test_window_days: 90
+
+# Distribuição real de comprimento de sequência (medida): mediana=65 tokens,
+# p90=657, p99=3452, máx=16201 — cauda bem mais longa que a base sintética
+# (máx=1057). Testado n_positions=1024 primeiro (cobre 93,8% dos VENDEDORES
+# por sequência inteira) — mas por EVENTO (não por vendedor) isso descartava
+# 36,1% das transações rotuladas (poucos vendedores de cauda longa
+# concentram um nº desproporional de eventos). Subiu pra 4096: descarta só
+# 12,9% dos eventos, custo de GPU seguiu desprezível (~1min de treino, rede
+# pequena) — vale a troca. n_embd/n_layer escolhidos pela mesma razão
+# parâmetros/tokens saudável validada na Tarefa 12 (~1:1).
+arquitetura:
+  n_positions: 4096
+  n_embd: 96
+  n_layer: 3
+  n_head: 4
+  # sdpa (não flash_attention_2): o runtime Colab desta rodada resetou por
+  # completo (container efêmero) e reinstalar flash-attn do zero custaria
+  # ~2-3h de compilação de novo (ver LIMITACOES.md, item 4, sobre
+  # fragilidade desse ambiente). sdpa é a atenção nativa do PyTorch
+  # (kernels eficientes em memória inclusos, sem precisar compilar nada) —
+  # equivalente numericamente pro nosso volume de dados/tamanho de modelo.
+  attn_implementation: sdpa
+
+tarefas_downstream:
+  - tipo: churn
+    # candidatos bem abaixo de test_window_days=90 (margem de 2x, mesma
+    # lição da Tarefa 7 da base sintética: N precisa de folga confortável
+    # abaixo da janela de teste, senão churn fica estruturalmente 0% no teste)
+    candidatos_dias: [7, 14, 21, 30, 45]
+    dias_escolhido: 30   # taxa resultante 4,9% geral / 4,7% teste — acima do
+    # piso de 2% (skill downstream-label-engineering), interpretação de
+    # negócio clara ("vendedor sumiu por um mês"), 3x de margem sob
+    # test_window_days=90
+  - tipo: campo_futuro
+    nome: risco_review_negativo
+    campo_fonte: review_score
+    limiar: 2
+    operador: "<="
+  - tipo: campo_futuro
+    nome: risco_atraso_entrega
+    campo_fonte: atraso
