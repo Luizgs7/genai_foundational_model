@@ -278,45 +278,66 @@
       <p class="eyebrow">Etapa 4 &middot; fus&atilde;o DCNv2, 3 tarefas de neg&oacute;cio</p>
       <h2>Churn, review e atraso &mdash; 3 perguntas, 3 times, o mesmo embedding</h2>
       <p class="prose">
-        Backbone congelado + DCNv2 (5.463 par&acirc;metros) treinado com 3 cabe&ccedil;as, uma por pergunta de
-        neg&oacute;cio &mdash; construc&#807;a&#771;o din&acirc;mica a partir do config, n&atilde;o mais fixa em 3 tarefas
-        espec&iacute;ficas da base sint&eacute;tica. Nas duas tarefas com r&oacute;tulo <strong>real</strong> (n&atilde;o
-        proxy), o embedding sequencial supera a taxa hist&oacute;rica simples com folga maior que no churn:
+        Backbone congelado + DCNv2 (5.675 par&acirc;metros) treinado com 3 cabe&ccedil;as, uma por pergunta de
+        neg&oacute;cio &mdash; constru&ccedil;&atilde;o din&acirc;mica a partir do config, n&atilde;o mais fixa em 3
+        tarefas espec&iacute;ficas da base sint&eacute;tica. A cabe&ccedil;a recebe, al&eacute;m do embedding, as
+        mesmas estat&iacute;sticas causais que os pr&oacute;prios baselines usam (frequ&ecirc;ncia hist&oacute;rica de
+        vendas, taxa hist&oacute;rica de atraso/review ruim) &mdash; sem essa mudan&ccedil;a o ganho de churn sobre o
+        baseline era bem menor (+0,014 em vez de +0,035):
       </p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Tarefa</th><th>Time</th><th>Sinal</th><th>Baseline (AUC)</th><th>Modelo (AUC)</th><th>Delta</th></tr></thead>
           <tbody>
-            <tr><td>Churn</td><td>Account mgmt.</td><td>proxy</td><td class="mono num">0,842</td><td class="mono num">0,856</td><td class="mono num" style="color:var(--accent)">+0,014</td></tr>
-            <tr><td>Risco de review negativo</td><td>Qualidade/CS</td><td><strong>real</strong></td><td class="mono num">0,486</td><td class="mono num">0,514</td><td class="mono num" style="color:var(--accent)">+0,028</td></tr>
-            <tr><td>Risco de atraso na entrega</td><td>Log&iacute;stica</td><td><strong>real</strong></td><td class="mono num">0,543</td><td class="mono num">0,599</td><td class="mono num" style="color:var(--accent)">+0,056</td></tr>
+            <tr><td>Churn</td><td>Account mgmt.</td><td>proxy</td><td class="mono num">0,842</td><td class="mono num">0,877</td><td class="mono num" style="color:var(--accent)">+0,035</td></tr>
+            <tr><td>Risco de review negativo</td><td>Qualidade/CS</td><td><strong>real</strong></td><td class="mono num">0,583</td><td class="mono num">0,571</td><td class="mono num" style="color:var(--split-test-text)">&minus;0,012</td></tr>
+            <tr><td>Risco de atraso na entrega</td><td>Log&iacute;stica</td><td><strong>real</strong></td><td class="mono num">0,542</td><td class="mono num">0,592</td><td class="mono num" style="color:var(--accent)">+0,050</td></tr>
           </tbody>
         </table>
       </div>
       <p class="subhead">Previs&otilde;es da fus&atilde;o pra este vendedor (&acirc;ncoras de teste)</p>
+      <p class="prose" style="margin-bottom:14px">
+        <code class="mono">score do modelo</code> n&atilde;o &eacute; probabilidade calibrada &mdash; o treino usa
+        <code class="mono">pos_weight</code> pra compensar tarefas raras (churn &eacute; s&oacute; 4,9% da base),
+        o que melhora o ranking (AUC) &agrave;s custas da calibra&ccedil;&atilde;o bruta. <code class="mono">percentil</code>
+        &eacute; a posi&ccedil;&atilde;o desse score dentro da distribui&ccedil;&atilde;o do split de teste inteiro
+        &mdash; robusto a essa descalibra&ccedil;&atilde;o, e literalmente o que a AUC mede.
+      </p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>venda (&acirc;ncora)</th><th>tarefa</th><th>p_modelo</th><th>real</th></tr></thead>
+          <thead><tr><th>venda (&acirc;ncora)</th><th>tarefa</th><th>score do modelo</th><th>percentil (teste)</th><th>real</th></tr></thead>
           <tbody>
-            <tr><td class="mono">26 jul 2018</td><td>Churn (30d)</td><td class="mono num">3,4%</td><td>n&atilde;o churnou</td></tr>
-            <tr><td class="mono">26 jul 2018</td><td>Risco review negativo</td><td class="mono num">12,3%</td><td>review 5 (ok)</td></tr>
-            <tr><td class="mono">26 jul 2018</td><td>Risco atraso</td><td class="mono num">3,9%</td><td>n&atilde;o atrasou</td></tr>
-            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Churn (30d)</td><td class="mono num">3,1%</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
-            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Risco review negativo</td><td class="mono num">13,2%</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
-            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Risco atraso</td><td class="mono num">4,6%</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
+            <tr><td class="mono">26 jul 2018</td><td>Churn (30d)</td><td class="mono num">45,7%</td><td class="mono num">p80</td><td>n&atilde;o churnou</td></tr>
+            <tr><td class="mono">26 jul 2018</td><td>Risco review negativo</td><td class="mono num">38,9%</td><td class="mono num">p41</td><td>review 5 (ok)</td></tr>
+            <tr><td class="mono">26 jul 2018</td><td>Risco atraso</td><td class="mono num">34,6%</td><td class="mono num">p62</td><td>n&atilde;o atrasou</td></tr>
+            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Churn (30d)</td><td class="mono num">41,0%</td><td class="mono num">p78</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
+            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Risco review negativo</td><td class="mono num">41,0%</td><td class="mono num">p52</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
+            <tr><td class="mono">17 ago 2018 <span class="dim">(&uacute;ltima venda)</span></td><td>Risco atraso</td><td class="mono num">41,2%</td><td class="mono num">p79</td><td class="dim">ainda n&atilde;o observ&aacute;vel</td></tr>
           </tbody>
         </table>
       </div>
       <div class="callout">
         <span class="callout-title">Por que isso importa pro produto</span>
         <p>
-          As 2 tarefas com dado real (n&atilde;o proxy) s&atilde;o exatamente onde o baseline simples
-          (taxa hist&oacute;rica do pr&oacute;prio vendedor) &eacute; mais fraco &mdash; quase aleat&oacute;rio pra review
-          (0,486, pior que cara-ou-coroa). O ganho do modelo &eacute; proporcionalmente maior ali do que no
-          churn, onde a recorr&ecirc;ncia hist&oacute;rica j&aacute; era um sinal forte por si s&oacute; (0,842).
-          &Eacute; a demonstra&ccedil;&atilde;o mais direta de que o pipeline generalizado responde perguntas de
-          neg&oacute;cio de tipos diferentes (reten&ccedil;&atilde;o, qualidade, opera&ccedil;&atilde;o) com o mesmo
-          motor, trocando s&oacute; o config.
+          Depois de corrigir um bug no baseline de review (comparava contra a moda da nota bruta, n&atilde;o a taxa
+          hist&oacute;rica de nota ruim &mdash; subiu de 0,486 pra 0,583) e expor as mesmas estat&iacute;sticas
+          causais que os baselines usam como feature de entrada da fus&atilde;o, o quadro fica mais desafiador do
+          que a primeira rodada sugeria: o modelo bate o baseline com folga em churn e atraso &mdash; onde o
+          hist&oacute;rico da pr&oacute;pria entidade (frequ&ecirc;ncia de vendas, taxa de atraso) j&aacute; carrega
+          bastante sinal, e agora chega ao modelo de forma expl&iacute;cita, n&atilde;o s&oacute; indireta via
+          embedding. Em review negativo o baseline &eacute; forte e o modelo fica ligeiramente abaixo &mdash; a
+          satisfa&ccedil;&atilde;o do PR&Oacute;XIMO comprador espec&iacute;fico parece depender mais do pedido em
+          si (produto, expectativa) do que de um padr&atilde;o est&aacute;vel do vendedor.
+        </p>
+        <p>
+          Pra este vendedor especificamente, o risco de churn fica consistentemente no quinto superior da
+          distribui&ccedil;&atilde;o de teste (p78&ndash;p80) nas duas &acirc;ncoras &mdash; mesmo sem ele ter de
+          fato churnado na janela observada. Review e atraso oscilam mais perto do meio em julho (p41&ndash;p62),
+          mas atraso tamb&eacute;m sobe a p79 na &uacute;ltima venda: risco elevado n&atilde;o &eacute; o mesmo que
+          desfecho certo &mdash; &eacute; a distin&ccedil;&atilde;o que uma m&eacute;trica de ranking como AUC capta
+          e um n&uacute;mero isolado n&atilde;o. &Eacute; a demonstra&ccedil;&atilde;o mais direta de que o pipeline
+          generalizado responde perguntas de neg&oacute;cio de tipos diferentes (reten&ccedil;&atilde;o, qualidade,
+          opera&ccedil;&atilde;o) com o mesmo motor, trocando s&oacute; o config.
         </p>
       </div>
     </section>

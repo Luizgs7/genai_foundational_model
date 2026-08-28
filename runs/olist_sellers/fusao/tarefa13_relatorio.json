@@ -1,39 +1,39 @@
 {
-  "n_params": 5463,
+  "n_params": 5675,
   "n_train": 62658,
   "n_val": 14642,
   "n_test": 20388,
-  "melhor_epoca": 33,
+  "melhor_epoca": 11,
   "metricas_teste": {
     "churn": {
-      "auc": 0.8560277032254945
+      "auc": 0.8770436795783162
     },
     "risco_review_negativo": {
-      "auc": 0.5141509878126214
+      "auc": 0.5706999375807984
     },
     "risco_atraso_entrega": {
-      "auc": 0.5986473726140262
+      "auc": 0.5924793419931115
     }
   },
   "comparacao_com_baseline": {
     "churn": {
       "metrica": "auc",
-      "modelo": 0.8560277032254945,
+      "modelo": 0.8770436795783162,
       "baseline": 0.8418105324241985,
-      "delta": 0.01421717080129603
+      "delta": 0.03523314715411774
     },
     "risco_review_negativo": {
       "metrica": "auc",
-      "modelo": 0.5141509878126214,
-      "baseline": 0.4861242117678135,
-      "delta": 0.028026776044807855
+      "modelo": 0.5706999375807984,
+      "baseline": 0.5825896740351633,
+      "delta": -0.011889736454364863
     },
     "risco_atraso_entrega": {
       "metrica": "auc",
-      "modelo": 0.5986473726140262,
+      "modelo": 0.5924793419931115,
       "baseline": 0.5424915474304919,
-      "delta": 0.05615582518353435
+      "delta": 0.04998779456261959
     }
   },
-  "tempo_total_segundos": 32.63786172866821
+  "tempo_total_segundos": 32.46285343170166
 }

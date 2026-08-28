@@ -1,5 +1,5 @@
 {
-  "n_params": 10448,
+  "n_params": 10740,
   "n_train": 73065,
   "n_val": 8093,
   "n_test": 17554,
@@ -30,8 +30,15 @@
     "sexo"
   ],
   "campos_estaticos_numericos": [
-    "_idade"
+    "_idade",
+    "n_eventos_anteriores",
+    "churn_baseline",
+    "next_value_baseline",
+    "ltv_baseline"
   ],
+  "pos_weights": {
+    "churn": 2.0894291400909424
+  },
   "batch_size": 256,
   "n_epochs": 40,
   "lr": 0.002,

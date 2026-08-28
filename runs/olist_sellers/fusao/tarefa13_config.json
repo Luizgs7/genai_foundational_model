@@ -1,5 +1,5 @@
 {
-  "n_params": 5463,
+  "n_params": 5675,
   "n_train": 62658,
   "n_val": 14642,
   "n_test": 20388,
@@ -23,7 +23,17 @@
   "campos_estaticos_categoricos": [
     "seller_state"
   ],
-  "campos_estaticos_numericos": [],
+  "campos_estaticos_numericos": [
+    "n_eventos_anteriores",
+    "churn_baseline",
+    "risco_review_negativo_baseline",
+    "risco_atraso_entrega_baseline"
+  ],
+  "pos_weights": {
+    "churn": 15.766925811767578,
+    "risco_review_negativo": 4.877140522003174,
+    "risco_atraso_entrega": 10.082340240478516
+  },
   "batch_size": 256,
   "n_epochs": 40,
   "lr": 0.002,

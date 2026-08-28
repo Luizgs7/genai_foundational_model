@@ -131,6 +131,20 @@ def carregar_dados(config):
         df["_idade"] = (df["data_evento"] - nascimento).dt.days / 365.25
         num_estaticos = num_estaticos + ["_idade"]
 
+    # Features causais genéricas: expõe pro DCNv2, como número, o mesmo
+    # material que os baselines já usam (ex. média histórica causal do gap
+    # entre eventos) — sem isso a cabeça só recebe o embedding congelado e
+    # precisa redescobrir indiretamente um sinal que já está calculado em
+    # tarefa8_rotulos.py. Só entram colunas numéricas (baseline categórico/
+    # moda de texto, como next_category, fica de fora).
+    num_causais = [c for c in ["n_eventos_anteriores"] if c in df.columns]
+    for tarefa_cfg in tarefas_ativas(config):
+        nome = tarefa_cfg.get("nome", tarefa_cfg["tipo"])
+        col = f"{nome}_baseline"
+        if col in df.columns and pd.api.types.is_numeric_dtype(df[col]):
+            num_causais.append(col)
+    num_estaticos = num_estaticos + num_causais
+
     return emb, df, cat_estaticos, num_estaticos
 
 
@@ -194,6 +208,19 @@ def main(config_path):
     print(f"train={n_train}  val={len(sub_val)}  test={len(sub_test)}")
     print(f"tarefas ativas: {[t[0] for t in tarefas_modelo]}")
 
+    # pos_weight por tarefa binária (razão neg/pos do TREINO) -- sem isso a
+    # BCE trata um rótulo raro (ex. churn a ~5%) igual a um balanceado, e o
+    # gradiente é dominado pelos negativos.
+    pos_weights = {}
+    for nome, tipo, _n in tarefas_modelo:
+        if tipo != "binaria":
+            continue
+        y_validos = alvos_tr[nome][~torch.isnan(alvos_tr[nome])]
+        n_pos = (y_validos == 1).sum().item()
+        n_neg = (y_validos == 0).sum().item()
+        pos_weights[nome] = torch.tensor(n_neg / max(n_pos, 1), dtype=torch.float32)
+        print(f"  pos_weight[{nome}] = {pos_weights[nome].item():.2f}  (n_pos={n_pos} n_neg={n_neg})")
+
     model = DCNv2Fusao(emb.shape[1], cardinalidades, len(num_estaticos), N_CROSS, CROSS_RANK, DEEP_HIDDEN, tarefas_modelo)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"DCNv2 + heads: {n_params} parâmetros treináveis (razão exemplos/parâmetro = {n_train/n_params:.2f})")
@@ -207,7 +234,9 @@ def main(config_path):
             y = alvos[nome][idx]
             if tipo == "binaria":
                 mask = ~torch.isnan(y)
-                l = F.binary_cross_entropy_with_logits(saidas[nome].squeeze(-1)[mask], y[mask]) if mask.any() else torch.tensor(0.0)
+                l = F.binary_cross_entropy_with_logits(
+                    saidas[nome].squeeze(-1)[mask], y[mask], pos_weight=pos_weights[nome]
+                ) if mask.any() else torch.tensor(0.0)
             else:
                 mask = y >= 0
                 l = F.cross_entropy(saidas[nome][mask], y[mask]) if mask.any() else torch.tensor(0.0)
@@ -243,6 +272,7 @@ def main(config_path):
             "n_params": n_params, "n_train": n_train, "n_val": len(sub_val), "n_test": len(sub_test),
             "tarefas": [{"nome": n, "tipo": t, "n_classes": c} for n, t, c in tarefas_modelo],
             "campos_estaticos_categoricos": cat_estaticos, "campos_estaticos_numericos": num_estaticos,
+            "pos_weights": {k: v.item() for k, v in pos_weights.items()},
             "batch_size": BATCH_SIZE, "n_epochs": N_EPOCHS, "lr": LR, "seed": SEED,
         }, f, ensure_ascii=False, indent=2, default=str)
 

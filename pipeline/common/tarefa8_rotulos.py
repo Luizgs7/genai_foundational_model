@@ -147,22 +147,31 @@ def receita_campo_futuro(df, cfg):
         operador = cfg.get("operador", "<=")
         if operador == "<=":
             rotulo = (proximo <= cfg["limiar"]).astype(float)
+            alvo_bruto = (df[campo_fonte] <= cfg["limiar"]).astype(float)
         elif operador == ">":
             rotulo = (proximo > cfg["limiar"]).astype(float)
+            alvo_bruto = (df[campo_fonte] > cfg["limiar"]).astype(float)
         else:
             raise ValueError(f"operador desconhecido: {operador}")
         rotulo = rotulo.where(proximo.notna())
+        alvo_bruto = alvo_bruto.where(df[campo_fonte].notna())
     else:
         rotulo = proximo
+        alvo_bruto = df[campo_fonte]
 
     if rotulo.dtype == bool:
         rotulo = rotulo.astype(float)
 
-    # baseline: booleano -> taxa histórica causal do próprio campo_fonte;
-    # categórico/bucket -> moda histórica causal.
-    if pd.api.types.is_numeric_dtype(df[campo_fonte]) and set(df[campo_fonte].dropna().unique()) <= {0, 1, 0.0, 1.0}:
-        baseline = media_expandida_causal(df, "entidade_id", campo_fonte)
-        fallback = df.loc[df["split"] == "train", campo_fonte].dropna().mean()
+    # baseline: decidido pelo tipo do RÓTULO (já limiarizado, se houver
+    # `limiar`) -> taxa histórica causal quando o alvo é booleano (mesma
+    # lógica do churn); moda histórica causal quando é categórico/bucket.
+    # Importante: usa `alvo_bruto` (mesma transformação do rótulo, mas SEM
+    # o shift(-1)) -- media_expandida_causal já desloca 1 posição pra trás
+    # por conta própria; aplicar em cima do rótulo (já deslocado pra
+    # frente) reintroduziria o próprio evento atual na média causal.
+    if eh_binaria(rotulo):
+        baseline = media_expandida_causal(df.assign(_alvo_bin=alvo_bruto), "entidade_id", "_alvo_bin")
+        fallback = alvo_bruto[df["split"] == "train"].dropna().mean()
         baseline = baseline.fillna(fallback)
     else:
         baseline = moda_causal_por_grupo(df, "entidade_id", campo_fonte)
@@ -244,6 +253,10 @@ def main(config_path):
 
     relatorio = {}
     saida = df[["evento_id", "entidade_id", "split"]].copy()
+    # Feature causal genérica (não amarrada a nenhuma tarefa): quantos
+    # eventos essa entidade já teve ANTES deste. Consumida pela Tarefa 13
+    # como sinal de "maturidade"/histórico disponível na cabeça DCNv2.
+    saida["n_eventos_anteriores"] = df.groupby("entidade_id").cumcount()
 
     for tarefa_cfg in tarefas_ativas(config):
         nome = tarefa_cfg.get("nome", tarefa_cfg["tipo"])

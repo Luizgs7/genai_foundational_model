@@ -135,20 +135,71 @@ validada na Tarefa 12.
 
 | Tarefa | Dataset | Sinal | Baseline (AUC/acc.) | Modelo | Delta |
 |---|---|---|---|---|---|
-| Churn | synthetic_agro | proxy | 0,750 | 0,806 | +0,056 |
-| Próxima categoria | synthetic_agro | proxy | 0,590 | 0,558 | −0,032 |
-| Próximo valor | synthetic_agro | proxy | 0,099 | 0,103 | +0,003 |
-| LTV (nova receita) | synthetic_agro | proxy | 0,341 | 0,280 | −0,061 |
-| Churn | olist_sellers | proxy | 0,842 | 0,856 | +0,014 |
-| **Risco de review negativo** | olist_sellers | **real** | 0,486 | 0,514 | +0,028 |
-| **Risco de atraso na entrega** | olist_sellers | **real** | 0,543 | 0,599 | +0,056 |
+| Churn | synthetic_agro | proxy | 0,7502 | 0,7964 | +0,0462 |
+| Próxima categoria | synthetic_agro | proxy | 0,5898 | 0,5327 | −0,0571 |
+| Próximo valor | synthetic_agro | proxy | 0,0995 | 0,1022 | +0,0027 |
+| LTV | synthetic_agro | proxy | 0,3415 | 0,3171 | −0,0244 |
+| Churn | olist_sellers | proxy | 0,8418 | 0,8770 | +0,0352 |
+| **Risco de review negativo** | olist_sellers | **real** | 0,5826 | 0,5707 | −0,0119 |
+| **Risco de atraso na entrega** | olist_sellers | **real** | 0,5425 | 0,5925 | +0,0500 |
 
-**Leitura**: nas 2 tarefas com rótulo real (não inventado), o baseline
-simples (taxa histórica do vendedor) é fraco — quase aleatório pra review
-(0,486) — e é exatamente onde o embedding sequencial mostra o ganho
-proporcional mais claro. Próxima categoria e LTV não bateram seus
-baselines nesta rodada; reportado sem ajuste cosmético, mesma postura da
-Tarefa 13 original.
+**Leitura**: churn e atraso de entrega batem o baseline com folga — as 2
+tarefas onde o histórico causal da própria entidade (frequência de vendas,
+taxa histórica de atraso) já é informativo e agora chega ao modelo como
+feature explícita (ver "Iteração de qualidade" abaixo). Em review negativo
+o baseline (taxa histórica causal de review ruim do vendedor) é forte e o
+modelo fica ligeiramente abaixo dele — a satisfação do PRÓXIMO comprador
+específico parece carregar ruído que nem a sequência nem o histórico do
+vendedor capturam (depende do produto/comprador daquele pedido, não só do
+padrão do vendedor). Próxima categoria e LTV no synthetic_agro não bateram
+seus baselines nesta rodada; reportado sem ajuste cosmético, mesma postura
+da Tarefa 13 original.
+
+### Iteração de qualidade — features causais explícitas na fusão
+
+O ganho de AUC do DCNv2 sobre o baseline de churn na Olist era pequeno na
+primeira rodada (+0,014). Investigação (sem GPU) achou 3 causas concretas:
+
+1. **A cabeça DCNv2 recebia só o embedding congelado + `seller_state`** —
+   nenhuma estatística causal chegava ao modelo como número, nem a mesma
+   que os próprios baselines usam (ex. gap médio histórico entre vendas).
+   `tarefa13_treinar_fusao.py` agora expõe automaticamente, como feature
+   numérica de entrada, toda coluna `{tarefa}_baseline` numérica das
+   tarefas ativas do config + uma feature genérica nova
+   (`n_eventos_anteriores`, quantos eventos a entidade já teve antes
+   deste, calculada em `tarefa8_rotulos.py`). Nenhum nome de campo
+   específico de empresa é hardcoded — o mecanismo lê
+   `tarefas_ativas(config)` e filtra por tipo numérico, então funciona pra
+   qualquer config novo sem mudança de código.
+2. **Bug no baseline de `risco_review_negativo`** — em `receita_campo_futuro`,
+   quando o campo-fonte de uma receita com `limiar` não é binário (caso do
+   `review_score`, 1-5), o baseline comparava contra a moda histórica do
+   valor bruto em vez da taxa histórica causal do rótulo já limiarizado.
+   Corrigido: o baseline agora usa sempre a mesma transformação aplicada
+   ao rótulo, mas sem o `shift(-1)` do rótulo (`media_expandida_causal` já
+   desloca 1 posição por conta própria — aplicar em cima do rótulo
+   reintroduziria o próprio evento atual na média). Baseline de
+   `risco_review_negativo` sobe de 0,486 (quase aleatório) pra 0,583
+   (teste); `risco_atraso_entrega`, que já não tinha esse bug, ficou
+   idêntico (0,5425→0,5426, diferença de arredondamento).
+3. **BCE sem `pos_weight`** — as 3 tarefas Olist são desbalanceadas
+   (churn 4,9%, review-ruim 15,8%, atraso 7,9%); adicionado `pos_weight`
+   por tarefa (razão neg/pos do treino, calculada uma vez a partir do
+   split de treino).
+
+**Ablation de interferência multi-tarefa**: treinar só a cabeça de churn
+(sem review/atraso) deu delta=+0,0336 — praticamente igual ao treino
+conjunto (+0,0352). As 3 tarefas dividindo o mesmo tronco pequeno não
+está prejudicando churn; hipótese descartada.
+
+**Efeito misto no synthetic_agro**: o mesmo pacote de mudanças (features
+causais + pos_weight) piorou levemente churn (+0,056→+0,046) e
+next_category (−0,032→−0,057), mas melhorou bastante ltv (−0,061→−0,024).
+Com 4 tarefas ativas dividindo o mesmo tronco pequeno (`n_cross=2`,
+`rank=8`, `deep_hidden=16`), mais features de entrada competem por
+capacidade entre tarefas de formas que esta rodada não isolou por
+completo — candidato natural pra uma próxima iteração (peso por tarefa na
+loss, ou crescer a cabeça agora que ela tem mais sinal pra usar).
 
 ## Limitações desta generalização
 

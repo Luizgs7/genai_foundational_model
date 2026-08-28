@@ -1,0 +1,505 @@
+{
+  "entidade_id": "e89c4adbe7b1d0819dbb636e16461cf1",
+  "previsoes": [
+    {
+      "evento_id": 72557,
+      "data_evento": "2018-01-10",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.6473,
+        "percentil_teste": 87.7,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4474,
+        "percentil_teste": 69.4,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.3723,
+        "percentil_teste": 69.0,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 80670,
+      "data_evento": "2018-01-15",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.677,
+        "percentil_teste": 88.8,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.7558,
+        "percentil_teste": 99.3,
+        "rotulo_real": 1.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.3107,
+        "percentil_teste": 48.6,
+        "rotulo_real": 1.0
+      }
+    },
+    {
+      "evento_id": 82389,
+      "data_evento": "2018-01-22",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.4781,
+        "percentil_teste": 81.2,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.5913,
+        "percentil_teste": 92.8,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.2874,
+        "percentil_teste": 40.1,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 53234,
+      "data_evento": "2018-01-28",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.4367,
+        "percentil_teste": 79.3,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.7189,
+        "percentil_teste": 97.9,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6599,
+        "percentil_teste": 98.5,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 12084,
+      "data_evento": "2018-01-30",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.3772,
+        "percentil_teste": 76.0,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.6343,
+        "percentil_teste": 95.6,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.5719,
+        "percentil_teste": 96.4,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 80652,
+      "data_evento": "2018-02-03",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.3521,
+        "percentil_teste": 74.6,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.6438,
+        "percentil_teste": 96.1,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.7088,
+        "percentil_teste": 98.8,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 31321,
+      "data_evento": "2018-02-03",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.3367,
+        "percentil_teste": 73.6,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.604,
+        "percentil_teste": 93.9,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6725,
+        "percentil_teste": 98.6,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 89772,
+      "data_evento": "2018-02-12",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.3602,
+        "percentil_teste": 75.1,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.5739,
+        "percentil_teste": 90.8,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6496,
+        "percentil_teste": 98.4,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 42633,
+      "data_evento": "2018-02-18",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.3596,
+        "percentil_teste": 75.0,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.5552,
+        "percentil_teste": 89.1,
+        "rotulo_real": 1.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6332,
+        "percentil_teste": 98.2,
+        "rotulo_real": 1.0
+      }
+    },
+    {
+      "evento_id": 8065,
+      "data_evento": "2018-03-07",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.3411,
+        "percentil_teste": 73.8,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4826,
+        "percentil_teste": 78.6,
+        "rotulo_real": 1.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.5481,
+        "percentil_teste": 95.6,
+        "rotulo_real": 1.0
+      }
+    },
+    {
+      "evento_id": 11730,
+      "data_evento": "2018-03-08",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.3145,
+        "percentil_teste": 72.3,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.5372,
+        "percentil_teste": 87.6,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6339,
+        "percentil_teste": 98.2,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 84036,
+      "data_evento": "2018-03-08",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.2909,
+        "percentil_teste": 70.8,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.5834,
+        "percentil_teste": 92.1,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6912,
+        "percentil_teste": 98.8,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 6379,
+      "data_evento": "2018-03-14",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.2796,
+        "percentil_teste": 70.0,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.5662,
+        "percentil_teste": 90.1,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6755,
+        "percentil_teste": 98.6,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 10649,
+      "data_evento": "2018-03-23",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.2859,
+        "percentil_teste": 70.4,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.5502,
+        "percentil_teste": 88.9,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6635,
+        "percentil_teste": 98.5,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 27198,
+      "data_evento": "2018-03-30",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.2795,
+        "percentil_teste": 70.0,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.5373,
+        "percentil_teste": 87.6,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.6518,
+        "percentil_teste": 98.4,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 43669,
+      "data_evento": "2018-04-05",
+      "split": "train",
+      "churn": {
+        "p_modelo": 0.3217,
+        "percentil_teste": 72.7,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4723,
+        "percentil_teste": 76.1,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.5019,
+        "percentil_teste": 92.8,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 20435,
+      "data_evento": "2018-04-13",
+      "split": "val",
+      "churn": {
+        "p_modelo": 0.3142,
+        "percentil_teste": 72.3,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4617,
+        "percentil_teste": 73.3,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.4937,
+        "percentil_teste": 92.2,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 72692,
+      "data_evento": "2018-04-26",
+      "split": "val",
+      "churn": {
+        "p_modelo": 0.329,
+        "percentil_teste": 73.1,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4535,
+        "percentil_teste": 71.0,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.4855,
+        "percentil_teste": 91.5,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 63082,
+      "data_evento": "2018-05-01",
+      "split": "val",
+      "churn": {
+        "p_modelo": 0.3168,
+        "percentil_teste": 72.4,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4455,
+        "percentil_teste": 68.9,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.4519,
+        "percentil_teste": 86.7,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 92265,
+      "data_evento": "2018-05-09",
+      "split": "val",
+      "churn": {
+        "p_modelo": 0.3209,
+        "percentil_teste": 72.7,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4374,
+        "percentil_teste": 65.8,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.4417,
+        "percentil_teste": 84.9,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 92266,
+      "data_evento": "2018-05-09",
+      "split": "val",
+      "churn": {
+        "p_modelo": 0.3076,
+        "percentil_teste": 72.0,
+        "rotulo_real": 1.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4324,
+        "percentil_teste": 63.8,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.435,
+        "percentil_teste": 83.6,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 24192,
+      "data_evento": "2018-06-27",
+      "split": "test",
+      "churn": {
+        "p_modelo": 0.3459,
+        "percentil_teste": 74.2,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.3971,
+        "percentil_teste": 46.1,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.3744,
+        "percentil_teste": 69.7,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 91451,
+      "data_evento": "2018-06-30",
+      "split": "test",
+      "churn": {
+        "p_modelo": 0.3301,
+        "percentil_teste": 73.2,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.3913,
+        "percentil_teste": 42.4,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.3648,
+        "percentil_teste": 66.6,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 62724,
+      "data_evento": "2018-07-26",
+      "split": "test",
+      "churn": {
+        "p_modelo": 0.4571,
+        "percentil_teste": 80.2,
+        "rotulo_real": 0.0
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.3892,
+        "percentil_teste": 41.1,
+        "rotulo_real": 0.0
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.3462,
+        "percentil_teste": 61.8,
+        "rotulo_real": 0.0
+      }
+    },
+    {
+      "evento_id": 75975,
+      "data_evento": "2018-08-17",
+      "split": "test",
+      "churn": {
+        "p_modelo": 0.4099,
+        "percentil_teste": 77.8,
+        "rotulo_real": null
+      },
+      "risco_review_negativo": {
+        "p_modelo": 0.4097,
+        "percentil_teste": 52.4,
+        "rotulo_real": null
+      },
+      "risco_atraso_entrega": {
+        "p_modelo": 0.4119,
+        "percentil_teste": 79.1,
+        "rotulo_real": null
+      }
+    }
+  ]
+}
