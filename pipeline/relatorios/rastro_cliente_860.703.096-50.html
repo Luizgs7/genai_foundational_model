@@ -586,6 +586,163 @@
     color: var(--ink-dim);
   }
   .callout p:last-child { margin-bottom: 0; }
+
+  /* ---- diagrama de fluxo (arquitetura da solu&ccedil;&atilde;o) ---- */
+  .flow-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 34px 30px 30px;
+    margin: 0 0 8px;
+  }
+  .flow-wrap .eyebrow { margin: 0 0 26px; }
+  .flow-col { display: flex; flex-direction: column; align-items: center; }
+
+  .flow-box {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--surface);
+    border: 1.5px solid var(--ink-dim);
+    border-radius: 7px;
+    padding: 10px 20px;
+    text-align: center;
+    transition: border-color .15s ease, background .15s ease, transform .15s ease;
+  }
+  a.flow-box:hover { border-color: var(--accent); background: var(--surface-alt); transform: translateY(-1px); }
+  .flow-box-title {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .flow-box-caption {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    margin-top: 3px;
+  }
+  .flow-box-terminal { border-radius: 999px; border-color: var(--ink-faint); }
+  .flow-box-model { border-top: 3px solid var(--accent); }
+  .flow-box-final {
+    border-radius: 999px;
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    cursor: default;
+  }
+
+  .flow-connector { width: 2px; height: 20px; background: var(--ink-faint); opacity: .45; position: relative; }
+  .flow-connector::after {
+    content: "";
+    position: absolute;
+    bottom: -1px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--ink-faint);
+    opacity: .8;
+  }
+  .flow-connector-h { width: 16px; height: 2px; background: var(--ink-faint); opacity: .45; position: relative; flex-shrink: 0; }
+  .flow-connector-h::after {
+    content: "";
+    position: absolute;
+    right: -1px; top: 50%;
+    transform: translateY(-50%);
+    width: 0; height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 6px solid var(--ink-faint);
+    opacity: .8;
+  }
+
+  .flow-lanes { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; margin: 4px 0 0; }
+  .flow-subsystem {
+    position: relative;
+    border: 1.5px dashed var(--border);
+    border-radius: 10px;
+    padding: 24px 16px 16px;
+    background: var(--surface-alt);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .flow-subsystem-label {
+    position: absolute;
+    top: -10px; left: 14px;
+    background: var(--surface);
+    padding: 2px 9px;
+    border-radius: 4px;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.64rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    border: 1px solid var(--border);
+  }
+  .flow-chain { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; row-gap: 12px; }
+  .flow-chip {
+    display: block;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px 13px;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 0.74rem;
+    white-space: nowrap;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  a.flow-chip:hover { border-color: var(--accent); background: var(--surface); color: var(--accent-strong); }
+  .flow-chip-model { border-color: var(--accent); color: var(--accent-strong); font-weight: 600; }
+  .flow-subsystem-note {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.67rem;
+    font-style: italic;
+    color: var(--ink-faint);
+    text-align: center;
+    margin: 12px 0 0;
+    line-height: 1.4;
+  }
+
+  .flow-merge { position: relative; height: 26px; }
+  .flow-merge::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 25%; right: 25%;
+    height: 1.5px;
+    background: var(--ink-faint);
+    opacity: .45;
+  }
+  .flow-merge::after {
+    content: "";
+    position: absolute;
+    bottom: 3px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--ink-faint);
+    opacity: .8;
+  }
+
+  .flow-tasks-row { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+  .flow-task-pill {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--accent-strong);
+    border: 1px solid var(--accent);
+  }
+  @media (max-width: 640px) {
+    .flow-lanes { grid-template-columns: 1fr; }
+  }
 </style>
 
 <div class="page">
@@ -607,6 +764,65 @@
       <div class="stat"><b>301</b><span>tokens (seq_train)</span></div>
     </div>
   </header>
+
+  <section class="flow-wrap" aria-label="Arquitetura da solu&ccedil;&atilde;o, em fluxo">
+    <p class="eyebrow">Arquitetura da solu&ccedil;&atilde;o</p>
+
+    <div class="flow-col">
+      <a class="flow-box flow-box-terminal" href="#stage-0">
+        <div class="flow-box-title">Dado bruto</div>
+        <div class="flow-box-caption">hist&oacute;rico de transa&ccedil;&otilde;es</div>
+      </a>
+      <div class="flow-connector"></div>
+      <a class="flow-box" href="#stage-1">
+        <div class="flow-box-title">Splits temporais</div>
+        <div class="flow-box-caption">train / val / test por data</div>
+      </a>
+      <div class="flow-connector"></div>
+    </div>
+
+    <div class="flow-lanes">
+      <div class="flow-subsystem">
+        <span class="flow-subsystem-label">tokeniza&ccedil;&atilde;o + backbone</span>
+        <div class="flow-chain">
+          <a class="flow-chip" href="#stage-2">Discretiza&ccedil;&atilde;o</a>
+          <div class="flow-connector-h"></div>
+          <a class="flow-chip" href="#stage-3">Vocabul&aacute;rio</a>
+          <div class="flow-connector-h"></div>
+          <a class="flow-chip" href="#stage-4">Serializa&ccedil;&atilde;o</a>
+          <div class="flow-connector-h"></div>
+          <a class="flow-chip" href="#stage-5">Batching</a>
+          <div class="flow-connector-h"></div>
+          <a class="flow-chip flow-chip-model" href="#stage-6">Backbone treinado</a>
+        </div>
+      </div>
+      <div class="flow-subsystem">
+        <span class="flow-subsystem-label">r&oacute;tulos downstream</span>
+        <div class="flow-chain">
+          <a class="flow-chip" href="#stage-7">R&oacute;tulos downstream</a>
+        </div>
+        <p class="flow-subsystem-note">n&atilde;o depende do backbone &mdash; calculado direto do dado bruto + splits, em paralelo</p>
+      </div>
+    </div>
+
+    <div class="flow-merge"></div>
+
+    <div class="flow-col">
+      <a class="flow-box flow-box-model" href="#stage-8">
+        <div class="flow-box-title">Fus&atilde;o DCNv2</div>
+        <div class="flow-box-caption">embedding + r&oacute;tulos + dados cadastrais</div>
+      </a>
+      <div class="flow-connector"></div>
+      <div class="flow-box flow-box-final">
+        <div class="flow-box-title">Decis&atilde;o de neg&oacute;cio</div>
+        <div class="flow-tasks-row">
+          <span class="flow-task-pill">churn</span>
+          <span class="flow-task-pill">pr&oacute;xima categoria</span>
+          <span class="flow-task-pill">pr&oacute;ximo valor</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="trace">
 
@@ -2759,15 +2975,150 @@
 
     <section class="stage" id="stage-7">
       <div class="stage-num">7</div>
-      <p class="eyebrow">Etapa 7 &middot; Tarefa 13</p>
+      <p class="eyebrow">Etapa 7 &middot; Tarefa 8</p>
+      <h2>O r&oacute;tulo de churn n&atilde;o vem do modelo: vem do futuro do pr&oacute;prio cliente</h2>
+      <p class="prose">
+        Antes de qualquer previs&atilde;o, algu&eacute;m precisa responder "este cliente churnou,
+        sim ou n&atilde;o?" &mdash; pra cada uma das 31 compras dele, n&atilde;o uma vez s&oacute; pro
+        cliente inteiro. Essa resposta (o <strong>r&oacute;tulo</strong>, ou <em>target</em>) &eacute;
+        calculada direto do hist&oacute;rico bruto (Etapa 0) mais os splits da Etapa 1 &mdash;
+        <strong>n&atilde;o depende em nada</strong> do vocabul&aacute;rio, da serializa&ccedil;&atilde;o ou do
+        backbone treinado das etapas seguintes. &Eacute; uma trilha paralela: os dois caminhos
+        s&oacute; se encontram na Etapa 8 (fus&atilde;o), quando cada r&oacute;tulo &eacute; emparelhado com o
+        embedding daquela mesma transa&ccedil;&atilde;o.
+      </p>
+
+      <p class="subhead">A regra, em 3 passos</p>
+      <p class="prose">
+        Pra cada compra (a <strong>&acirc;ncora</strong>), olhamos exclusivamente pro que esse
+        cliente fez <strong>depois</strong> dela &mdash; nunca pro dataset inteiro de uma vez, sen&atilde;o
+        o r&oacute;tulo vazaria informa&ccedil;&atilde;o do futuro pro pr&oacute;prio ponto que est&aacute; sendo
+        rotulado:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Passo</th><th>Regra</th></tr></thead>
+          <tbody>
+            <tr><td class="mono num">1</td><td>Achar a pr&oacute;xima compra</td>
+              <td><code class="mono">next_date</code> = data da compra seguinte deste mesmo
+                cliente (ou nenhuma, se esta for a &uacute;ltima)</td></tr>
+            <tr><td class="mono num">2</td><td>Medir o intervalo</td>
+              <td><code class="mono">gap_dias</code> = <code class="mono">next_date</code>
+                &minus; data desta compra</td></tr>
+            <tr><td class="mono num">3</td><td>Decidir o r&oacute;tulo</td>
+              <td><code class="mono">gap_dias &gt; 121</code> &rarr; <strong>churnou</strong> (1)
+                &middot; <code class="mono">gap_dias &le; 121</code> &rarr; <strong>n&atilde;o
+                churnou</strong> (0) &middot; sem pr&oacute;xima compra <em>e</em> menos de 121 dias
+                passados at&eacute; o fim do dataset &rarr; <strong>indetermin&aacute;vel</strong>
+                (descartado do treino/avalia&ccedil;&atilde;o)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose">
+        Os 121 dias n&atilde;o foram escolhidos de cabe&ccedil;a: vieram de uma varredura sobre a
+        distribui&ccedil;&atilde;o real de intervalos entre compras de toda a base &mdash; o corte que
+        produz uma taxa de churn nem rara demais nem comum demais (29,7% geral, calculada
+        s&oacute; sobre as linhas determin&aacute;veis). Ver <code class="mono">pipeline/rotulos_downstream/tarefa8_rotulos.py</code>.
+      </p>
+
+      <p class="subhead">A mesma regra, aplicada a 5 compras reais deste cliente</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>compra (&acirc;ncora)</th><th>split</th><th>pr&oacute;xima compra</th>
+            <th>gap</th><th>r&oacute;tulo de churn</th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="mono">#0 &middot; 29 jul 2023</td><td><span class="split-pill split-train">train</span></td>
+              <td class="mono">03 ago 2023</td><td class="mono num">5 d</td>
+              <td>0 &mdash; voltou bem dentro do prazo</td></tr>
+            <tr><td class="mono">#13526 &middot; 10 dez 2023</td><td><span class="split-pill split-train">train</span></td>
+              <td class="mono">09 mai 2024</td><td class="mono num">151 d</td>
+              <td><strong>1</strong> &mdash; voltou, mas 30 dias al&eacute;m do limite</td></tr>
+            <tr><td class="mono">#57832 &middot; 23 abr 2025</td><td><span class="split-pill split-train">train</span></td>
+              <td class="mono">23 set 2025</td><td class="mono num">153 d</td>
+              <td><strong>1</strong> &mdash; mesmo padr&atilde;o, de novo</td></tr>
+            <tr><td class="mono">#88838 &middot; 11 abr 2026</td><td><span class="split-pill split-test">test</span></td>
+              <td class="mono">21 jun 2026</td><td class="mono num">71 d</td>
+              <td>0 &mdash; dentro do prazo</td></tr>
+            <tr><td class="mono">#95462 &middot; 21 jun 2026 <span class="dim">(&uacute;ltima compra)</span></td>
+              <td><span class="split-pill split-test">test</span></td>
+              <td class="dim">nenhuma registrada</td><td class="dim">&mdash;</td>
+              <td class="dim">indetermin&aacute;vel &mdash; s&oacute; 37 dos 121 dias necess&aacute;rios se
+                passaram at&eacute; o fim do dataset (28 jul 2026)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose">
+        Repare: "churnou" aqui n&atilde;o significa "nunca mais comprou" &mdash; as compras
+        <code class="mono">#13526</code> e <code class="mono">#57832</code> tiveram uma pr&oacute;xima
+        compra de verdade, s&oacute; que tarde demais. E a &uacute;ltima linha n&atilde;o &eacute; um "n&atilde;o
+        churnou": &eacute; um <strong>ainda n&atilde;o d&aacute; pra saber</strong> &mdash; a mesma censura que
+        qualquer modelo de sobreviv&ecirc;ncia precisa tratar, s&oacute; que aqui decidida por uma
+        regra simples de data, sem estat&iacute;stica nenhuma.
+      </p>
+
+      <div class="callout">
+        <span class="callout-title">O baseline usa a mesma l&oacute;gica causal</span>
+        <p>
+          Antes de treinar qualquer modelo, a Tarefa 8 j&aacute; calcula um <strong>baseline
+          sem aprendizado</strong>: pra cada compra, a m&eacute;dia dos <code class="mono">gap_dias</code>
+          <em>anteriores</em> do mesmo cliente (RFM simples, s&oacute; passado). Pra este cliente
+          ela come&ccedil;a em <span class="mono">101,99 dias</span> na 1&ordf; compra (n&atilde;o h&aacute;
+          hist&oacute;rico ainda &mdash; usa a m&eacute;dia global do TREINO como chute inicial), cai pra
+          <span class="mono">5,0</span> logo depois, e vai se ajustando compra a compra
+          (22,3 dias antes da compra <code class="mono">#13526</code> que churnou &mdash; o
+          baseline "n&atilde;o viu vindo", porque o hist&oacute;rico dele at&eacute; ali era de compras
+          frequentes). Essa mesma s&eacute;rie &eacute; o que o modelo da Etapa 8 (fus&atilde;o) precisa
+          superar &mdash; n&atilde;o "prever churn" no vazio, e sim ser mais preciso do que "esse
+          cliente costuma comprar a cada X dias".
+        </p>
+      </div>
+    </section>
+
+    <section class="stage" id="stage-8">
+      <div class="stage-num">8</div>
+      <p class="eyebrow">Etapa 8 &middot; Tarefa 13</p>
       <h2>Da sequ&ecirc;ncia &agrave; decis&atilde;o de neg&oacute;cio: fus&atilde;o DCNv2</h2>
       <p class="prose">
-        O backbone (Tarefa 12), <strong>congelado</strong>, virou fonte de features: o hidden
-        state causal em cada compra deste cliente (mesmas posi&ccedil;&otilde;es exploradas na
-        Etapa 6) &eacute; combinado com UF, sexo e idade via uma DCNv2 (Cross Network de baixo
-        posto + torre deep) e alimenta 3 cabe&ccedil;as de tarefa &mdash; churn, pr&oacute;xima
-        categoria, pr&oacute;ximo valor. S&oacute; 9.005 par&acirc;metros treinados sobre 73.065
-        exemplos (uma &acirc;ncora por transa&ccedil;&atilde;o rotulada, n&atilde;o por cliente).
+        O r&oacute;tulo (Etapa 7) responde <em>o qu&ecirc;</em> queremos prever. Esta etapa responde
+        <em>como</em> o modelo chega a uma previs&atilde;o &mdash; em 4 passos, pra cada
+        transa&ccedil;&atilde;o-&acirc;ncora:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Passo</th><th>O que acontece</th></tr></thead>
+          <tbody>
+            <tr><td class="mono num">1</td><td>Extrair o embedding</td>
+              <td>O backbone da Tarefa 12, <strong>congelado</strong> (pesos fixos), processa
+                a sequ&ecirc;ncia de tokens do cliente causalmente at&eacute; a posi&ccedil;&atilde;o desta
+                compra (mesmo hidden state explorado na Etapa 6) &mdash; mas aqui ele n&atilde;o
+                prev&ecirc; token nenhum: s&oacute; guardamos o vetor de 128 n&uacute;meros daquela
+                posi&ccedil;&atilde;o, um resumo de "tudo que o padr&atilde;o de compras deste cliente
+                sugere at&eacute; aqui".</td></tr>
+            <tr><td class="mono num">2</td><td>Combinar com dados cadastrais</td>
+              <td>Esse vetor de 128-d &eacute; concatenado com UF (convertida num vetor de 4
+                n&uacute;meros aprendido), sexo (0/1) e idade na data da compra (padronizada com
+                m&eacute;dia/desvio do TREINO) &mdash; 134 n&uacute;meros ao todo.</td></tr>
+            <tr><td class="mono num">3</td><td>Cruzar features (DCNv2)</td>
+              <td>Esse vetor passa por uma Cross Network de baixo posto (aprende
+                intera&ccedil;&otilde;es expl&iacute;citas entre os 134 n&uacute;meros de entrada) em
+                paralelo com uma torre <em>deep</em> simples &mdash; as duas sa&iacute;das s&atilde;o
+                concatenadas.</td></tr>
+            <tr><td class="mono num">4</td><td>Prever</td>
+              <td>O resultado alimenta 3 cabe&ccedil;as lineares independentes (churn, pr&oacute;xima
+                categoria, pr&oacute;ximo valor); cada uma vira uma probabilidade via sigmoid
+                (churn, bin&aacute;rio) ou softmax (categoria/valor, multiclasse).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose">
+        S&oacute; os passos 3 e 4 (DCNv2 + as 3 cabe&ccedil;as, ~9 mil par&acirc;metros) s&atilde;o
+        <strong>treinados</strong> aqui &mdash; o backbone inteiro (833 mil par&acirc;metros) fica
+        congelado, funcionando s&oacute; como extrator de caracter&iacute;sticas fixo (passo 1). &Eacute;
+        por isso que esta etapa roda inteira em CPU em segundos, mesmo o backbone tendo
+        precisado de GPU pra treinar (Tarefa 12): a parte cara j&aacute; foi feita antes, aqui
+        s&oacute; se reaproveita a sa&iacute;da dela.
       </p>
       <div class="stat-row">
         <div class="stat"><b>0,80</b><span>AUC churn (teste, geral)</span></div>
@@ -2869,8 +3220,8 @@
   </div>
 
   <p class="footer">
-    gerado a partir de pipeline/{splits,discretizacao,vocabulario,serializacao,pretreino,fusao}/ &middot;
-    tarefas 7, 4, 5, 3, 6, 11, 12, 13
+    gerado a partir de pipeline/{splits,discretizacao,vocabulario,serializacao,pretreino,rotulos_downstream,fusao}/ &middot;
+    tarefas 7, 4, 5, 3, 6, 11, 12, 8, 13
   </p>
 
 </div>
