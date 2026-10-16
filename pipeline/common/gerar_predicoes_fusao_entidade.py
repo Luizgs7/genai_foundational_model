@@ -34,7 +34,7 @@ def preparar_features(df, cat_estaticos, num_estaticos):
     for campo in num_estaticos:
         media = df.loc[df["split"] == "train", campo].mean()
         desvio = df.loc[df["split"] == "train", campo].std() or 1.0
-        df[f"{campo}_norm"] = (df[campo] - media) / desvio
+        df[f"{campo}_norm"] = ((df[campo] - media) / desvio).fillna(0.0)  # nulo -> média do treino
 
     return cardinalidades
 

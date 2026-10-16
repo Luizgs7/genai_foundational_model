@@ -58,6 +58,7 @@ LR = 2e-3
 WEIGHT_DECAY = 1e-4
 SEED = 0
 DESCONHECIDO = "__DESCONHECIDO__"
+DEV = "cpu"  # definido em main (--dispositivo); GPU acelera a fusão em bases grandes (H&M)
 
 
 def set_seed(seed):
@@ -160,7 +161,9 @@ def carregar_dados(config, emb_subpasta="fusao", sem_cadastro=False, sem_causais
 
 
 def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedding=False,
-         sem_cadastro=False, sem_causais=False, avaliar_teste=False):
+         sem_cadastro=False, sem_causais=False, avaliar_teste=False, dispositivo="cpu"):
+    global DEV
+    DEV = dispositivo if dispositivo != "auto" else ("cuda" if torch.cuda.is_available() else "cpu")
     set_seed(seed)
     t0 = time.time()
     config = carregar_config(config_path)
@@ -183,7 +186,7 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         media = df.loc[df["split"] == "train", campo].mean()
         desvio = df.loc[df["split"] == "train", campo].std() or 1.0
         stats_numericos[campo] = {"media": float(media), "desvio": float(desvio)}
-        df[f"{campo}_norm"] = (df[campo] - media) / desvio
+        df[f"{campo}_norm"] = ((df[campo] - media) / desvio).fillna(0.0)  # nulo -> média do treino
 
     # --- inferir tipo/classes de cada tarefa ativa a partir do rótulo real ---
     tarefas_info = []
@@ -214,7 +217,8 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
             dtype = torch.long if mapa_classes else torch.float32
             fill = -1 if mapa_classes else float("nan")
             alvos[nome] = torch.tensor(sub[col].fillna(fill).values, dtype=dtype)
-        return sub, emb_t, cat_ids, num_vals, alvos
+        return (sub, emb_t.to(DEV), [c.to(DEV) for c in cat_ids], num_vals.to(DEV) if num_vals is not None else None,
+                {k: v.to(DEV) for k, v in alvos.items()})
 
     sub_train, emb_tr, cat_tr, num_tr, alvos_tr = montar_tensores("train")
     sub_val, emb_val, cat_val, num_val, alvos_val = montar_tensores("val")
@@ -233,10 +237,10 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         y_validos = alvos_tr[nome][~torch.isnan(alvos_tr[nome])]
         n_pos = (y_validos == 1).sum().item()
         n_neg = (y_validos == 0).sum().item()
-        pos_weights[nome] = torch.tensor(n_neg / max(n_pos, 1), dtype=torch.float32)
+        pos_weights[nome] = torch.tensor(n_neg / max(n_pos, 1), dtype=torch.float32, device=DEV)
         print(f"  pos_weight[{nome}] = {pos_weights[nome].item():.2f}  (n_pos={n_pos} n_neg={n_neg})")
 
-    model = DCNv2Fusao(emb_dim, cardinalidades, len(num_estaticos), N_CROSS, CROSS_RANK, DEEP_HIDDEN, tarefas_modelo)
+    model = DCNv2Fusao(emb_dim, cardinalidades, len(num_estaticos), N_CROSS, CROSS_RANK, DEEP_HIDDEN, tarefas_modelo).to(DEV)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"DCNv2 + heads: {n_params} parâmetros treináveis (razão exemplos/parâmetro = {n_train/n_params:.2f})")
 
@@ -251,10 +255,10 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
                 mask = ~torch.isnan(y)
                 l = F.binary_cross_entropy_with_logits(
                     saidas[nome].squeeze(-1)[mask], y[mask], pos_weight=pos_weights[nome]
-                ) if mask.any() else torch.tensor(0.0)
+                ) if mask.any() else torch.tensor(0.0, device=DEV)
             else:
                 mask = y >= 0
-                l = F.cross_entropy(saidas[nome][mask], y[mask]) if mask.any() else torch.tensor(0.0)
+                l = F.cross_entropy(saidas[nome][mask], y[mask]) if mask.any() else torch.tensor(0.0, device=DEV)
             partes[nome] = l.item()
             total = total + l
         return total, partes
@@ -266,12 +270,12 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         model.train()
         resultado = {}
         for nome, tipo, _n in tarefas_modelo:
-            y = alvos[nome].numpy()
+            y = alvos[nome].cpu().numpy()
             if tipo == "binaria":
-                p = torch.sigmoid(saidas[nome].squeeze(-1)).numpy()
+                p = torch.sigmoid(saidas[nome].squeeze(-1)).float().cpu().numpy()
                 resultado[nome] = {"auc": auc_roc(pd.Series(y), pd.Series(p))}
             else:
-                pred = saidas[nome].argmax(dim=-1).numpy()
+                pred = saidas[nome].argmax(dim=-1).cpu().numpy()
                 y_nan = np.where(y < 0, np.nan, y)
                 pred_nan = np.where(y < 0, np.nan, pred)
                 resultado[nome] = {
@@ -307,7 +311,7 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         ordem = np.random.permutation(n_train)
         perdas = []
         for i in range(0, n_train, BATCH_SIZE):
-            idx = ordem[i:i + BATCH_SIZE]
+            idx = torch.from_numpy(ordem[i:i + BATCH_SIZE]).to(DEV)
             cat_batch = [c[idx] for c in cat_tr]
             num_batch = num_tr[idx] if num_tr is not None else None
             optimizer.zero_grad()
@@ -340,7 +344,7 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
 
     epoca_csv.close()
     print(f"\nMelhor época (por {metrica_chave} em val): {melhor_epoca} (score={melhor_score:.4f})")
-    model.load_state_dict(torch.load(os.path.join(out_dir, "tarefa13_fusao.pt")))
+    model.load_state_dict(torch.load(os.path.join(out_dir, "tarefa13_fusao.pt"), map_location=DEV))
 
     @torch.no_grad()
     def scores(emb_t, cat_ids, num_vals):
@@ -348,8 +352,8 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         saidas = model(emb_t, cat_ids, num_vals)
         out = {}
         for nome, tipo, _n in tarefas_modelo:
-            out[nome] = (torch.sigmoid(saidas[nome].squeeze(-1)).numpy() if tipo == "binaria"
-                         else torch.softmax(saidas[nome], dim=-1).numpy())
+            out[nome] = (torch.sigmoid(saidas[nome].squeeze(-1)).cpu().numpy() if tipo == "binaria"
+                         else torch.softmax(saidas[nome], dim=-1).cpu().numpy())
         return out
 
     def comparar(sub_s, metricas):
@@ -434,5 +438,7 @@ if __name__ == "__main__":
     ap.add_argument("--sem_cadastro", action="store_true")
     ap.add_argument("--sem_causais", action="store_true")
     ap.add_argument("--avaliar_teste", action="store_true")
+    ap.add_argument("--dispositivo", default="cpu", choices=["cpu", "cuda", "auto"])
     a = ap.parse_args()
-    main(a.config, a.emb, a.saida, a.seed, a.sem_embedding, a.sem_cadastro, a.sem_causais, a.avaliar_teste)
+    main(a.config, a.emb, a.saida, a.seed, a.sem_embedding, a.sem_cadastro, a.sem_causais, a.avaliar_teste,
+         a.dispositivo)

@@ -103,7 +103,7 @@ def main(config_base_path, nomes):
         sonda_fusao = os.path.join(run_dir(cfg, sub), "fusao", "tarefa13_relatorio.json")
         if not os.path.exists(sonda_fusao):
             rodar([py, "-u", "pipeline/common/tarefa13_treinar_fusao.py", path, "--emb", f"{sub}/embeddings",
-                   "--saida", f"{sub}/fusao"])
+                   "--saida", f"{sub}/fusao", "--dispositivo", "auto"])
 
         pre = json.load(open(rel_pre))
         gb = json.load(open(sonda_gbdt))
