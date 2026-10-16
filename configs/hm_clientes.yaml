@@ -80,7 +80,8 @@ pretreino:
   warmup_steps: 500
   weight_decay: 0.1
   val_a_cada_passos: 1000
-  val_amostra_entidades: 5000
+  val_amostra_entidades: 5000   # validação parcial a cada val_a_cada_passos
+  val_amostra_epoca: 100000     # validação por época (seleção do melhor checkpoint); a completa roda 1x no fim
   checkpoint_a_cada_passos: 500
   log_a_cada_n_passos: 50
 

@@ -287,6 +287,10 @@ def main(config_path, retomar=False, saida="pretreino"):
     scheduler = torch.optim.lr_scheduler.LambdaLR(
         optimizer, lr_lambda=lambda s: lr_lambda(s, cfg["warmup_steps"], total_steps))
 
+    val_epoca = val_ex
+    if cfg["val_amostra_epoca"] and len(val_ex) > cfg["val_amostra_epoca"]:
+        sel = np.random.RandomState(cfg["seed"] + 2).choice(len(val_ex), cfg["val_amostra_epoca"], replace=False)
+        val_epoca = [val_ex[k] for k in sorted(sel)]
     rng_val = np.random.RandomState(cfg["seed"] + 1)
     val_amostra = [val_ex[k] for k in sorted(rng_val.choice(len(val_ex), min(len(val_ex), cfg["val_amostra_entidades"]), replace=False))] if val_ex else []
 
@@ -405,7 +409,7 @@ def main(config_path, retomar=False, saida="pretreino"):
                 break
 
         loss_treino_media = float(np.mean(perdas_epoca)) if perdas_epoca else float("nan")
-        loss_val, ppl_val, n_tokens_val = avaliar(model, seqs, val_ex, "val", n_positions, pad_id, device, autocast)
+        loss_val, ppl_val, n_tokens_val = avaliar(model, seqs, val_epoca, "val", n_positions, pad_id, device, autocast)
         elapsed_epoca = time.time() - t0_epoca
         epoca_writer.writerow([epoca, f"{loss_treino_media:.6f}", f"{loss_val:.6f}", f"{ppl_val:.4f}", n_tokens_val,
                                f"{elapsed_epoca:.1f}"])
@@ -439,6 +443,11 @@ def main(config_path, retomar=False, saida="pretreino"):
 
     print(f"\nMelhor época (por loss de val): {estado['melhor_epoca']} (loss_val={estado['melhor_loss_val']:.4f})")
     model.carregar_pesos(torch.load(os.path.join(ckpt_dir, "melhor.pt"), map_location=device))
+    if val_epoca is not val_ex:
+        loss_val_full, ppl_val_full, n_tok_val_full = avaliar(model, seqs, val_ex, "val", n_positions, pad_id, device, autocast)
+        print(f"Loss de validação completa (melhor checkpoint): {loss_val_full:.4f}  ppl={ppl_val_full:.3f}")
+    else:
+        loss_val_full, ppl_val_full, n_tok_val_full = estado["melhor_loss_val"], math.exp(estado["melhor_loss_val"]), None
     loss_teste, ppl_teste, n_tokens_teste = avaliar(model, seqs, test_ex, "test", n_positions, pad_id, device, autocast)
     print(f"Loss de TESTE (melhor checkpoint, avaliação única): {loss_teste:.4f}  ppl={ppl_teste:.3f}")
 
@@ -456,6 +465,8 @@ def main(config_path, retomar=False, saida="pretreino"):
         "melhor_perplexidade_val": math.exp(estado["melhor_loss_val"]),
         "loss_val_ultima_epoca": historico[-1]["loss_val"],
         "loss_treino_ultima_epoca": historico[-1]["loss_treino"],
+        "loss_val_completa": loss_val_full, "perplexidade_val_completa": ppl_val_full,
+        "n_tokens_val_completa": n_tok_val_full, "n_entidades_val_epoca": len(val_epoca),
         "loss_teste": loss_teste, "perplexidade_teste": ppl_teste, "n_tokens_teste_avaliados": n_tokens_teste,
         "n_entidades_teste_frias_incluidas": n_test_frios, "tempo_total_segundos": tempo_total,
         "tokens_por_segundo_medio": estado["tokens_vistos"] / max(tempo_total, 1e-9),

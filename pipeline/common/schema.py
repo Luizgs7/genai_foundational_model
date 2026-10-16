@@ -145,6 +145,8 @@ def config_pretreino(config):
         "janelas_treino": "ultima",   # ultima (legado: últimos n_positions tokens) | todas
         "val_a_cada_passos": None,    # validação parcial periódica (amostra fixa)
         "val_amostra_entidades": 2000,
+        "val_amostra_epoca": None,    # entidades de val na avaliação por época (None = todas; legado);
+                                      # a val completa roda 1x no fim, no melhor checkpoint
         "checkpoint_a_cada_passos": None,
         "paciencia_epocas": None,     # early stopping por loss de validação
         "max_passos": None,           # orçamento de passos (ablações com budget fixo)
