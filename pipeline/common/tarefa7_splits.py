@@ -34,8 +34,8 @@ def main(config_path):
     val_cutoff = test_cutoff - timedelta(days=val_window)
 
     # vetorizado (antes: .map com função Python por linha) — mesma regra
-    df["split"] = np.where(df["data_evento"] < val_cutoff, "train",
-                           np.where(df["data_evento"] < test_cutoff, "val", "test"))
+    codigo = np.where(df["data_evento"] < val_cutoff, 0, np.where(df["data_evento"] < test_cutoff, 1, 2)).astype(np.int8)
+    df["split"] = pd.Categorical.from_codes(codigo, categories=["train", "val", "test"])  # category: leve em 30M+ linhas
 
     max_train = df.loc[df["split"] == "train", "data_evento"].max()
     min_val = df.loc[df["split"] == "val", "data_evento"].min()

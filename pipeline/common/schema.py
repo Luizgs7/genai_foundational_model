@@ -151,3 +151,41 @@ def config_pretreino(config):
     }
     padrao.update(config.get("pretreino", {}) or {})
     return padrao
+
+
+def juntar_por_evento(df, outro, colunas):
+    """Acrescenta `colunas` de `outro` em `df` casando por evento_id. Se os
+    dois já estão na mesma ordem de evento_id (o caso normal: splits e
+    discretizado são gerados na ordem da fonte), atribui as colunas direto —
+    sem a cópia inteira do DataFrame que um merge faz (memória em 30M+
+    linhas). Senão, cai num merge um-pra-um."""
+    import numpy as np
+
+    a, b = df["evento_id"].to_numpy(), outro["evento_id"].to_numpy()
+    if len(a) == len(b) and np.array_equal(a, b):
+        for c in colunas:
+            df[c] = outro[c].to_numpy() if not hasattr(outro[c], "cat") else outro[c].values
+        return df
+    return df.merge(outro[["evento_id"] + colunas], on="evento_id", validate="one_to_one")
+
+
+def reordenar(df, chaves):
+    """sort_values estável por `chaves`, mas reordenando coluna a coluna
+    (pico de memória = df + 1 coluna, em vez de df + cópia inteira)."""
+    import numpy as np
+
+    perm = np.lexsort([df[c].to_numpy() for c in reversed(chaves)])
+    for c in df.columns:
+        df[c] = df[c].values.take(perm) if hasattr(df[c].values, "take") else df[c].to_numpy()[perm]
+    df.index = np.arange(len(df))
+    return df
+
+
+def mem(etapa):
+    """Com DEBUG_MEM=1, imprime a memória residente do processo (diagnóstico
+    de pico em bases grandes; ver scripts/rodar_limitado.sh)."""
+    import os
+
+    if os.environ.get("DEBUG_MEM"):
+        rss = int(open("/proc/self/statm").read().split()[1]) * os.sysconf("SC_PAGE_SIZE") / 1e9
+        print(f"  [mem] {etapa}: {rss:.2f} GB", flush=True)

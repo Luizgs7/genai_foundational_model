@@ -1,0 +1,79 @@
+{
+  "churn": {
+    "n_linhas_determinaveis": 8561259,
+    "n_linhas_total": 9080179,
+    "taxa_determinabilidade": 0.9428513468732279,
+    "n_dias": 90,
+    "base_rate_geral": 0.23546221414397112,
+    "base_rate_por_split": {
+      "train": 0.24664405529504044,
+      "val": 0.30261354586756517,
+      "test": 0.16040477546702625
+    },
+    "baseline_auc_por_split": {
+      "train": 0.7096256320223585,
+      "val": 0.7338829206567589,
+      "test": 0.7435178750254436,
+      "geral": 0.7125955525424025
+    }
+  },
+  "next_category": {
+    "n_linhas_determinaveis": 7717898,
+    "n_linhas_total": 9080179,
+    "taxa_determinabilidade": 0.8499720104636703,
+    "baseline_accuracy_por_split": {
+      "train": 0.3583380707719701,
+      "val": 0.35580034584172643,
+      "test": 0.3301648887169837,
+      "geral": 0.3526061111458068
+    },
+    "baseline_f1_macro_por_split": {
+      "train": 0.13487362845595738,
+      "val": 0.13881102228052056,
+      "test": 0.1349100276280943,
+      "geral": 0.1361369186640453
+    }
+  },
+  "ltv_90d": {
+    "n_linhas_determinaveis": 7927907,
+    "n_linhas_total": 9080179,
+    "taxa_determinabilidade": 0.8731002990139292,
+    "horizonte_dias": 90,
+    "n_buckets": 10,
+    "baseline_accuracy_por_split": {
+      "train": 0.34872131405378326,
+      "val": 0.33481584182417656,
+      "test": 0.33860389216158837,
+      "geral": 0.3456843023007207
+    },
+    "baseline_f1_macro_por_split": {
+      "train": 0.2825375680115237,
+      "val": 0.25577884465296746,
+      "test": 0.259631700259299,
+      "geral": 0.2764245195259313
+    }
+  },
+  "proxima_online": {
+    "n_linhas_determinaveis": 7717898,
+    "n_linhas_total": 9080179,
+    "taxa_determinabilidade": 0.8499720104636703,
+    "base_rate_geral": 0.5957673967704679,
+    "base_rate_por_split": {
+      "train": 0.5796671969392386,
+      "val": 0.6671427008837768,
+      "test": 0.6151285047119174
+    },
+    "baseline_auc_por_split": {
+      "train": 0.7830065175022863,
+      "val": 0.800675606339848,
+      "test": 0.8034356833001237,
+      "geral": 0.7876901713102363
+    }
+  },
+  "_ancoras": {
+    "treino_amostradas": 2000000,
+    "treino_total": 5900276,
+    "val": 940523,
+    "test": 2239380
+  }
+}

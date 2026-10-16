@@ -33,11 +33,13 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, "pipeline/common")
-from schema import caminho_tabela, carregar_config, gravar_tabela, ler_fonte, ler_tabela, run_dir  # noqa: E402
+from schema import (caminho_tabela, carregar_config, gravar_tabela, juntar_por_evento, ler_fonte,  # noqa: E402
+                    ler_tabela, mem, reordenar, run_dir)
 
 RECENCIA_EDGES = [7, 15, 30, 60, 90, 180, 365]
 RECENCIA_LABELS = ["0-7", "8-15", "16-30", "31-60", "61-90", "91-180", "181-365", ">365"]
 SPLIT_ORDEM = {"train": 0, "val": 1, "test": 2}
+TAMANHO_PEDACO = 4_000_000  # eventos por pedaço da matriz de tokens
 
 
 def recencia_bucket(gap_dias):
@@ -60,14 +62,14 @@ def ids_por_valor(serie, token_de_valor, vocab, valor_nulo_id):
     calculando o token uma vez por valor distinto (vetorizado). Valor nulo ->
     `valor_nulo_id` (mesmo destino que o legado dava a f"..._nan")."""
     codigos, uniques = pd.factorize(serie)
-    ids_uniques = np.array([vocab.get(token_de_valor(v), vocab["UNK"]) for v in uniques], dtype=np.int64)
-    return np.where(codigos >= 0, ids_uniques[np.maximum(codigos, 0)], valor_nulo_id)
+    ids_uniques = np.array([vocab.get(token_de_valor(v), vocab["UNK"]) for v in uniques], dtype=np.int32)
+    return np.where(codigos >= 0, ids_uniques[np.maximum(codigos, 0)], valor_nulo_id).astype(np.int32)
 
 
 def matriz_tokens(config, df, vocab, top_n_mapa):
     """Matriz (n_eventos, n_posicoes_no_bloco) de ids de token; -1 marca
     posição ausente (recência do 1º evento da entidade)."""
-    colunas = [np.full(len(df), vocab["EVT"], dtype=np.int64)]
+    colunas = [np.full(len(df), vocab["EVT"], dtype=np.int32)]
 
     for campo_cfg in config["campos_categoricos"]:
         campo = campo_cfg["nome"]
@@ -94,10 +96,10 @@ def matriz_tokens(config, df, vocab, top_n_mapa):
             for k in np.unique(chave[chave >= 0]):
                 g, b = uniq_g[k // len(uniq_b)], uniq_b[k % len(uniq_b)]
                 ids_chave[k] = vocab.get(f"{campo.upper()}_BUCKET_{g}_{b}", vocab["UNK"])
-            lookup = np.full(len(uniq_g) * max(len(uniq_b), 1), vocab["UNK"], dtype=np.int64)
+            lookup = np.full(len(uniq_g) * max(len(uniq_b), 1), vocab["UNK"], dtype=np.int32)
             for k, v in ids_chave.items():
                 lookup[k] = v
-            colunas.append(np.where(chave >= 0, lookup[np.maximum(chave, 0)], vocab["UNK"]))
+            colunas.append(np.where(chave >= 0, lookup[np.maximum(chave, 0)], vocab["UNK"]).astype(np.int32))
         else:
             colunas.append(ids_por_valor(bucket, lambda b, c=campo: f"{c.upper()}_BUCKET_{b}", vocab, vocab["UNK"]))
 
@@ -105,8 +107,8 @@ def matriz_tokens(config, df, vocab, top_n_mapa):
         gap = df["_gap_dias"].to_numpy()
         primeiro = np.isnan(gap)
         idx_label = np.searchsorted(RECENCIA_EDGES, np.where(primeiro, 0, gap), side="left")
-        ids_label = np.array([vocab.get(f"RECENCIA_{l}", vocab["UNK"]) for l in RECENCIA_LABELS], dtype=np.int64)
-        colunas.append(np.where(primeiro, -1, ids_label[idx_label]))
+        ids_label = np.array([vocab.get(f"RECENCIA_{l}", vocab["UNK"]) for l in RECENCIA_LABELS], dtype=np.int32)
+        colunas.append(np.where(primeiro, -1, ids_label[idx_label]).astype(np.int32))
     if config.get("usa_mes", True):
         colunas.append(ids_por_valor(df["mes"], lambda m: f"MES_{m}", vocab, vocab["UNK"]))
 
@@ -118,17 +120,23 @@ def montar_sequencias(config, df, vocab, top_n_mapa):
 
     # ordem das entidades = 1ª aparição (mesma do legado groupby(sort=False));
     # dentro da entidade, ordem temporal com desempate por evento_id
-    df = df.copy()
     df["_ent"], uniques_ent = pd.factorize(df["entidade_id"])
-    df = df.sort_values(["_ent", "data_evento", "evento_id"], kind="stable").reset_index(drop=True)
+    df = reordenar(df, ["_ent", "data_evento", "evento_id"])
+    mem("reordenado")
 
     anterior = df.groupby("_ent", sort=False)["data_evento"].shift(1)
-    df["_gap_dias"] = (df["data_evento"] - anterior).dt.days.astype(float)
+    df["_gap_dias"] = (df["data_evento"] - anterior).dt.days.astype(np.float32)
+    del anterior
+    df.drop(columns=["data_evento"], inplace=True)  # não é mais usada (mês já extraído)
+    mem("gaps")
 
-    M = matriz_tokens(config, df, vocab, top_n_mapa)
-    presente = M >= 0
-    L = presente.sum(axis=1).astype(np.int64)            # tamanho de cada bloco
-    tokens_blocos = M[presente]                          # row-major = blocos em ordem
+    # tamanho de cada bloco sem materializar a matriz inteira:
+    # EVT + categóricos + numéricos + [recência, exceto no 1º evento] + [mês]
+    n_fixo = 1 + len(config["campos_categoricos"]) + len(config["campos_numericos"]) + int(config.get("usa_mes", True))
+    tem_recencia = config.get("usa_recencia", True)
+    L = np.full(len(df), n_fixo + int(tem_recencia), dtype=np.int64)
+    if tem_recencia:
+        L[np.isnan(df["_gap_dias"].to_numpy())] -= 1
 
     ent = df["_ent"].to_numpy()
     n_ent = len(uniques_ent)
@@ -136,23 +144,36 @@ def montar_sequencias(config, df, vocab, top_n_mapa):
     len_full = blocos_por_ent + 2
     offset = np.concatenate([[0], np.cumsum(len_full)[:-1]])
 
-    # posição de cada token de bloco no array global: k + 2*ent + 1
-    ent_por_token = np.repeat(ent, L)
     total = int(len_full.sum())
     vmax = max(vocab.values())
     dtype = np.int16 if vmax < np.iinfo(np.int16).max else np.int32
     tokens = np.empty(total, dtype=dtype)
-    tokens[np.arange(len(tokens_blocos)) + 2 * ent_por_token + 1] = tokens_blocos
     tokens[offset] = bos
     tokens[offset + len_full - 1] = eos
+    mem("tokens alocados")
+
+    # matriz de tokens em pedaços de eventos (memória limitada); o token k
+    # (contando só tokens de bloco, em ordem global) vai pra posição
+    # k + 2*ent + 1 do array final (cada entidade anterior somou BOS+EOS).
+    cum_L = np.cumsum(L)
+    for a in range(0, len(df), TAMANHO_PEDACO):
+        b = min(a + TAMANHO_PEDACO, len(df))
+        M = matriz_tokens(config, df.iloc[a:b], vocab, top_n_mapa)
+        presente = M >= 0
+        assert (presente.sum(axis=1) == L[a:b]).all()
+        k0 = int(cum_L[a - 1]) if a > 0 else 0
+        k = k0 + np.arange(int(L[a:b].sum()), dtype=np.int64)
+        tokens[k + 2 * np.repeat(ent[a:b], L[a:b]) + 1] = M[presente]
+        del M, presente
+        mem("pedaço")
 
     # pos_full = índice do último token do bloco dentro de seq_full
-    cum_L = np.cumsum(L)
     inicio_ent = np.concatenate([[0], np.cumsum(blocos_por_ent)[:-1]])
     pos_full = cum_L - inicio_ent[ent]
 
     # blocos de treino / treino+val precisam ser prefixo (splits por data)
-    split_rank = df["split"].map(SPLIT_ORDEM).to_numpy()
+    split = df["split"].astype("category")
+    split_rank = np.array([SPLIT_ORDEM[c] for c in split.cat.categories], dtype=np.int8)[split.cat.codes.to_numpy()]
     rank_max_ate_aqui = pd.Series(split_rank).groupby(ent).cummax().to_numpy()
     assert (split_rank == rank_max_ate_aqui).all(), "split fora de ordem temporal dentro de uma entidade"
     len_train = np.bincount(ent, weights=np.where(split_rank == 0, L, 0), minlength=n_ent).astype(np.int64)
@@ -184,20 +205,22 @@ def main(config_path):
     fonte["mes"] = fonte["data_evento"].dt.month
 
     splits = ler_tabela(caminho_tabela(config, "splits", "splits"), ["evento_id", "split"])
-    df = fonte.merge(splits, on="evento_id", validate="one_to_one")
-    del fonte, splits
+    df = juntar_por_evento(fonte, splits, ["split"])
+    del splits
 
     if config["campos_numericos"]:
         cols_bucket = ["evento_id"] + [f"{c['nome']}_bucket" for c in config["campos_numericos"]]
         disc = ler_tabela(caminho_tabela(config, "discretizacao", "discretizado"), cols_bucket)
-        df = df.merge(disc, on="evento_id", validate="one_to_one")
+        df = juntar_por_evento(df, disc, cols_bucket[1:])
         del disc
 
     with open(os.path.join(run_dir(config, "vocabulario"), "vocab.json"), encoding="utf-8") as f:
         vocab = json.load(f)
     top_n_mapa = carregar_top_n_mapa(config)
+    mem("entrada pronta")
 
     tokens, entidades, posicoes = montar_sequencias(config, df, vocab, top_n_mapa)
+    mem("montado")
 
     out_dir = run_dir(config, "serializacao")
     os.makedirs(out_dir, exist_ok=True)

@@ -26,7 +26,8 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, "pipeline/common")
-from schema import caminho_tabela, carregar_config, gravar_tabela, ler_fonte, ler_tabela, run_dir, tarefas_ativas  # noqa: E402
+from schema import (caminho_tabela, carregar_config, gravar_tabela, juntar_por_evento, ler_fonte,  # noqa: E402
+                    ler_tabela, mem, reordenar, run_dir, tarefas_ativas)
 
 
 # ---------------------------------------------------------------- métricas
@@ -174,6 +175,8 @@ def receita_campo_futuro(df, cfg):
 
     if rotulo.dtype == bool:
         rotulo = rotulo.astype(float)
+    if isinstance(rotulo.dtype, pd.CategoricalDtype):
+        rotulo = rotulo.astype(object).where(rotulo.notna(), None)  # comparações/métricas com o baseline
 
     # baseline: decidido pelo tipo do RÓTULO (já limiarizado, se houver
     # `limiar`) -> taxa histórica causal quando o alvo é booleano (mesma
@@ -235,6 +238,68 @@ def receita_ltv(df, cfg, dataset_end):
     return rotulo_bucket, baseline, {"horizonte_dias": horizonte, "n_buckets": n_buckets}
 
 
+# ---------------------------------------------------------------- âncora por cesta
+
+def agregar_cestas(df, config):
+    """`ancora: cesta` — uma linha por (entidade, dia), ancorada no ÚLTIMO
+    item da cesta (evento_id dele). Os campos das tarefas são agregados por
+    cesta conforme `agregacao_cesta` da tarefa (moda | max | soma | ultimo;
+    ltv sempre soma o campo de valor). Assim o "próximo" de cada receita é a
+    próxima cesta, e itens da mesma cesta não geram rótulos triviais
+    (gap de 0 dias). `df` precisa vir ordenado por entidade, data, evento_id."""
+    dia = df["data_evento"].dt.normalize().to_numpy()
+    ent = df["entidade_id"].to_numpy()
+    nova = np.r_[True, (ent[1:] != ent[:-1]) | (dia[1:] != dia[:-1])]
+    ultimo = np.r_[nova[1:], True]
+    mem("  cestas: chaves")
+    cesta = np.cumsum(nova) - 1
+
+    base = pd.DataFrame({
+        "evento_id": df["evento_id"].to_numpy()[ultimo],
+        "entidade_id": ent[ultimo],
+        "data_evento": dia[ultimo],
+        "split": df["split"].to_numpy()[ultimo],
+        "n_eventos_anteriores": df.groupby("entidade_id", sort=False).cumcount().to_numpy()[ultimo],
+        "itens_cesta": np.bincount(cesta),
+    })
+    base["split"] = base["split"].astype(df["split"].dtype)
+    mem("  cestas: base")
+
+    for t in tarefas_ativas(config):
+        if t["tipo"] == "ltv":
+            campo, agg = t["campo_valor"], "soma"
+        elif t["tipo"] == "campo_futuro":
+            campo, agg = t["campo_fonte"], t.get("agregacao_cesta", "ultimo")
+        else:
+            continue
+        if campo in base.columns:
+            continue
+        serie = df[campo]
+        inicios = np.flatnonzero(nova)  # cestas são contíguas -> reduceat
+        if agg == "ultimo":
+            base[campo] = serie.to_numpy()[ultimo]
+        elif agg in ("max", "soma"):
+            v = serie.to_numpy(dtype=float)
+            base[campo] = (np.maximum if agg == "max" else np.add).reduceat(v, inicios)
+        elif agg == "moda":
+            # valor mais frequente da cesta (contagem por cesta x categoria);
+            # empate -> categoria de menor código (ordem das categorias)
+            cat = serie.astype("category")
+            codigos = cat.cat.codes.to_numpy().astype(np.int64)
+            K = len(cat.cat.categories)
+            validos = codigos >= 0
+            cont = np.bincount(cesta[validos] * K + codigos[validos], minlength=len(base) * K).reshape(len(base), K)
+            moda = cont.argmax(axis=1)
+            sem_valor = cont.sum(axis=1) == 0
+            base[campo] = pd.Categorical.from_codes(np.where(sem_valor, -1, moda), categories=cat.cat.categories)
+            del cont
+        else:
+            raise ValueError(f"agregacao_cesta desconhecida: {agg}")
+    print(f"  âncora por cesta: {len(df):,} eventos -> {len(base):,} cestas "
+          f"({len(df)/len(base):.2f} eventos/cesta)")
+    return base
+
+
 # ---------------------------------------------------------------- runner
 
 def eh_binaria(rotulo):
@@ -259,24 +324,37 @@ def main(config_path):
     fonte["data_evento"] = pd.to_datetime(fonte["data_evento"])
 
     splits = ler_tabela(caminho_tabela(config, "splits", "splits"), ["evento_id", "split"])
-    df = fonte.merge(splits, on="evento_id", validate="one_to_one")
+    df = juntar_por_evento(fonte, splits, ["split"])
+    del splits
 
     if config["campos_numericos"]:
         cols_bucket = ["evento_id"] + [f"{c['nome']}_bucket" for c in config["campos_numericos"]]
         disc = ler_tabela(caminho_tabela(config, "discretizacao", "discretizado"), cols_bucket)
-        df = df.merge(disc, on="evento_id", validate="one_to_one")
+        df = juntar_por_evento(df, disc, cols_bucket[1:])
+        del disc
 
-    df = df.sort_values(["entidade_id", "data_evento", "evento_id"]).reset_index(drop=True)
+    df = reordenar(df, ["entidade_id", "data_evento", "evento_id"])
+    mem("reordenado")
+    modo_cesta = config.get("ancora", "evento") == "cesta"
+    if modo_cesta:
+        df = agregar_cestas(df, config)
+        mem("cestas")
     df["next_date"] = df.groupby("entidade_id")["data_evento"].shift(-1)
     df["gap_dias"] = (df["next_date"] - df["data_evento"]).dt.days
     dataset_end = df["data_evento"].max()
+    mem("gaps")
 
     relatorio = {}
     saida = df[["evento_id", "entidade_id", "split"]].copy()
     # Feature causal genérica (não amarrada a nenhuma tarefa): quantos
     # eventos essa entidade já teve ANTES deste. Consumida pela Tarefa 13
     # como sinal de "maturidade"/histórico disponível na cabeça DCNv2.
-    saida["n_eventos_anteriores"] = df.groupby("entidade_id").cumcount()
+    if modo_cesta:
+        saida["n_eventos_anteriores"] = df["n_eventos_anteriores"]
+        saida["n_cestas_anteriores"] = df.groupby("entidade_id", sort=False).cumcount()
+        saida["itens_cesta"] = df["itens_cesta"]
+    else:
+        saida["n_eventos_anteriores"] = df.groupby("entidade_id").cumcount()
 
     for tarefa_cfg in tarefas_ativas(config):
         nome = tarefa_cfg.get("nome", tarefa_cfg["tipo"])
@@ -293,6 +371,7 @@ def main(config_path):
 
         saida[f"{nome}_rotulo"] = rotulo
         saida[f"{nome}_baseline"] = baseline
+        mem("tarefa")
 
         determinavel = rotulo.notna()
         n_det = int(determinavel.sum())
@@ -329,6 +408,25 @@ def main(config_path):
                   f"baseline_accuracy_teste={info['baseline_accuracy_por_split']['test']:.4f}")
 
         relatorio[nome] = info
+
+    # amostra de âncoras de treino usadas downstream (val/teste completos);
+    # sorteio por âncora com semente fixa. Grava ancoras.parquet, que a
+    # extração de embeddings usa pra restringir os eventos processados.
+    max_treino = config.get("ancoras_treino_max")
+    if max_treino:
+        e_treino = (saida["split"] == "train").to_numpy()
+        idx_treino = np.flatnonzero(e_treino)
+        usar = ~e_treino
+        if len(idx_treino) > max_treino:
+            escolhidos = np.random.RandomState(0).choice(idx_treino, max_treino, replace=False)
+            usar[escolhidos] = True
+        else:
+            usar[idx_treino] = True
+        saida["usar_downstream"] = usar
+        gravar_tabela(saida.loc[usar, ["evento_id"]], config, "rotulos_downstream", "ancoras")
+        relatorio["_ancoras"] = {"treino_amostradas": int(usar[e_treino].sum()), "treino_total": int(e_treino.sum()),
+                                 "val": int((saida["split"] == "val").sum()), "test": int((saida["split"] == "test").sum())}
+        print(f"\nÂncoras downstream: {relatorio['_ancoras']}")
 
     out_dir = run_dir(config, "rotulos_downstream")
     rotulos_csv = gravar_tabela(saida, config, "rotulos_downstream", "rotulos")

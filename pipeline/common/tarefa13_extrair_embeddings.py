@@ -6,9 +6,12 @@ pela Tarefa 3 em `posicoes_evento.parquet`). Como a atenção é causal, esse
 vetor só depende do histórico até o próprio evento — sem vazamento.
 Backbone CONGELADO (checkpoint do pré-treino), só inferência.
 
-Uma passada por entidade: janela = últimos `n_positions` tokens de
-`seq_full[:-1]`; eventos cuja posição caiu fora da janela (entidades de
-cauda longa) ficam sem embedding — mesma limitação já documentada.
+Janela principal por entidade = últimos `n_positions` tokens de
+`seq_full[:-1]`. Âncoras anteriores a ela (entidades de cauda longa)
+recebem janelas extras terminando nelas, então TODAS as âncoras têm
+embedding — o mesmo conjunto de exemplos em qualquer n_positions, o que
+mantém justas as comparações downstream (H&M). O legado descartava essas
+âncoras (`--sem_janelas_extras` reproduz isso).
 
 Escala (experimento H&M):
   - lotes de várias entidades (preenchidas à direita, ordenadas por tamanho,
@@ -43,7 +46,7 @@ from sequencias_io import carregar_sequencias  # noqa: E402
 TOKENS_POR_LOTE = 65536
 
 
-def main(config_path, pretreino="pretreino", saida="fusao", dtype="float32", arquitetura=None):
+def main(config_path, pretreino="pretreino", saida="fusao", dtype="float32", arquitetura=None, janelas_extras=True):
     t0 = time.time()
     config = carregar_config(config_path)
     arch = arquitetura_efetiva(arquitetura or config.get("arquitetura", {}))
@@ -61,22 +64,46 @@ def main(config_path, pretreino="pretreino", saida="fusao", dtype="float32", arq
         posicoes = posicoes[posicoes["evento_id"].isin(ancoras["evento_id"])]
         print(f"Âncoras restritas por {ancoras_path}: {len(posicoes):,} eventos")
 
-    # posição de cada âncora dentro da janela da sua entidade
+    # janelas: a 1ª termina no fim da sequência (como no legado); âncoras que
+    # ficam antes dela (entidades de cauda longa) ganham janelas extras, cada
+    # uma terminando na âncora mais recente ainda não coberta. Com
+    # `--sem_janelas_extras` volta ao legado (âncora fora da janela é descartada).
     idx_ent = posicoes["entidade_id"].map({str(e): i for i, e in enumerate(seqs.ids)} if seqs.ids.dtype == object
                                           else pd.Series(np.arange(len(seqs.ids)), index=seqs.ids))
     if idx_ent.isna().any():
         raise ValueError("posicoes_evento tem entidades ausentes nas sequências")
-    idx_ent = idx_ent.to_numpy(dtype=np.int64)
-    total = seqs.len_full[idx_ent] - 1               # tamanho de seq_full[:-1]
-    offset_janela = np.maximum(0, total - n_positions)
-    pos_full = posicoes["pos_full"].to_numpy(dtype=np.int64)
-    dentro = (pos_full >= offset_janela) & (pos_full < total)
-    n_truncados = int((~dentro).sum())
+    posicoes = posicoes.assign(_ent=idx_ent.to_numpy(dtype=np.int64)).sort_values(["_ent", "pos_full"]).reset_index(drop=True)
+    ent_a = posicoes["_ent"].to_numpy()
+    pos_a = posicoes["pos_full"].to_numpy(dtype=np.int64)
+    total_a = seqs.len_full[ent_a] - 1                   # tamanho de seq_full[:-1]
 
-    pos_ok = posicoes[dentro].reset_index(drop=True)
-    idx_ent_ok = idx_ent[dentro]
-    local_ok = pos_full[dentro] - offset_janela[dentro]
-    row_idx = np.arange(len(pos_ok))
+    fim_janela = total_a.copy()                           # por padrão, a janela principal
+    ok = pos_a < total_a
+    fora = ok & (pos_a < total_a - n_positions)
+    if not janelas_extras:
+        ok &= ~fora
+    else:
+        # laço só nas entidades com alguma âncora fora da janela principal
+        inicio_ent = np.r_[0, np.flatnonzero(np.diff(ent_a)) + 1]
+        fim_ent = np.r_[inicio_ent[1:], len(ent_a)]
+        tem_fora = np.add.reduceat(fora.astype(np.int64), inicio_ent) > 0
+        for a, b in zip(inicio_ent[tem_fora], fim_ent[tem_fora]):
+            f = total_a[a]
+            for k in range(b - 1, a - 1, -1):
+                if pos_a[k] < f - n_positions:            # não coube: nova janela terminando nela
+                    f = pos_a[k] + 1
+                fim_janela[k] = f
+    n_truncados = int((~ok).sum())
+    posicoes, ent_a, pos_a, fim_janela = posicoes[ok].reset_index(drop=True), ent_a[ok], pos_a[ok], fim_janela[ok]
+    chave = ent_a * (int(fim_janela.max()) + 1) + fim_janela
+    chaves_unicas, janela_id = np.unique(chave, return_inverse=True)
+    janelas = pd.DataFrame({"ent": chaves_unicas // (int(fim_janela.max()) + 1),
+                            "fim": chaves_unicas % (int(fim_janela.max()) + 1)})
+    ini_janela = np.maximum(0, janelas["fim"].to_numpy() - n_positions)
+    local = pos_a - ini_janela[janela_id]
+    row_idx = np.arange(len(posicoes))
+    print(f"Âncoras: {len(posicoes):,} em {len(janelas):,} janelas "
+          f"({len(janelas) - janelas['ent'].nunique():,} janelas extras); descartadas: {n_truncados:,}")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = construir_modelo(arch, vocab).to(device)
@@ -87,25 +114,28 @@ def main(config_path, pretreino="pretreino", saida="fusao", dtype="float32", arq
     out_dir = run_dir(config, saida)
     os.makedirs(out_dir, exist_ok=True)
     emb = np.lib.format.open_memmap(os.path.join(out_dir, "embeddings_eventos.npy"), mode="w+",
-                                    dtype=np.dtype(dtype), shape=(len(pos_ok), arch["n_embd"]))
+                                    dtype=np.dtype(dtype), shape=(len(posicoes), arch["n_embd"]))
 
-    # agrupa as âncoras por entidade e processa entidades em lotes por orçamento
-    ordem_anc = np.argsort(idx_ent_ok, kind="stable")
-    ents, inicio = np.unique(idx_ent_ok[ordem_anc], return_index=True)
-    fim = np.r_[inicio[1:], len(ordem_anc)]
-    tam = np.minimum(seqs.len_full[ents] - 1, n_positions)
-    ordem_ents = np.argsort(tam, kind="stable")
+    # agrupa as âncoras por janela e processa janelas em lotes por orçamento
+    ordem_anc = np.argsort(janela_id, kind="stable")
+    jan_ord = janela_id[ordem_anc]
+    inicio = np.searchsorted(jan_ord, np.arange(len(janelas)), side="left")
+    fim = np.searchsorted(jan_ord, np.arange(len(janelas)), side="right")
+    ents = janelas["ent"].to_numpy()
+    fins = janelas["fim"].to_numpy()
+    tam = fins - ini_janela
+    ordem_jan = np.argsort(tam, kind="stable")
 
     autocast = torch.autocast(device_type=device, dtype=torch.bfloat16, enabled=device == "cuda")
 
     def rodar(lote):
-        janelas = []
+        seqs_lote = []
         for k in lote:
-            s = seqs.full(ents[k])[:-1]
-            janelas.append(s[max(0, len(s) - n_positions):])
-        T = max(len(s) for s in janelas)
-        ids = np.full((len(janelas), T), pad_id, dtype=np.int64)
-        for r, s in enumerate(janelas):
+            s = seqs.full(ents[k])
+            seqs_lote.append(s[ini_janela[k]:fins[k]])
+        T = max(len(s) for s in seqs_lote)
+        ids = np.full((len(seqs_lote), T), pad_id, dtype=np.int64)
+        for r, s in enumerate(seqs_lote):
             ids[r, :len(s)] = s
         ids_t = torch.from_numpy(ids).to(device)
         with torch.no_grad(), autocast:
@@ -114,24 +144,26 @@ def main(config_path, pretreino="pretreino", saida="fusao", dtype="float32", arq
         linhas, lin_lote, cols = [], [], []
         for r, k in enumerate(lote):
             a = ordem_anc[inicio[k]:fim[k]]
-            linhas.append(row_idx[a]); lin_lote.append(np.full(len(a), r)); cols.append(local_ok[a])
+            linhas.append(row_idx[a]); lin_lote.append(np.full(len(a), r)); cols.append(local[a])
         linhas, lin_lote, cols = np.concatenate(linhas), np.concatenate(lin_lote), np.concatenate(cols)
         vals = h[torch.from_numpy(lin_lote).to(device), torch.from_numpy(cols).to(device)].cpu().numpy()
         emb[linhas] = vals.astype(emb.dtype)
 
-    atual, maior, feitos = [], 0, 0
-    for k in ordem_ents:
+    atual, maior, feitos, t_ult = [], 0, 0, time.time()
+    for k in ordem_jan:
         novo_maior = max(maior, tam[k])
         if atual and (len(atual) + 1) * novo_maior > TOKENS_POR_LOTE:
             rodar(atual); feitos += len(atual)
             atual, novo_maior = [], tam[k]
+            if time.time() - t_ult > 60:
+                print(f"  {feitos:,}/{len(janelas):,} janelas ({time.time()-t0:.0f}s)", flush=True); t_ult = time.time()
         atual.append(k)
         maior = novo_maior
     if atual:
         rodar(atual)
     emb.flush()
 
-    index = pd.DataFrame({"evento_id": pos_ok["evento_id"], "entidade_id": pos_ok["entidade_id"], "row_idx": row_idx})
+    index = pd.DataFrame({"evento_id": posicoes["evento_id"], "entidade_id": posicoes["entidade_id"], "row_idx": row_idx})
     gravar_tabela(index, config, saida, "embeddings_eventos_index")
     legado = os.path.join(out_dir, "embeddings_eventos_index.csv")
     if os.path.exists(legado):
@@ -148,5 +180,6 @@ if __name__ == "__main__":
     ap.add_argument("--pretreino", default="pretreino")
     ap.add_argument("--saida", default="fusao")
     ap.add_argument("--dtype", default="float32", choices=["float16", "float32"])
+    ap.add_argument("--sem_janelas_extras", action="store_true", help="legado: descarta âncoras fora da última janela")
     a = ap.parse_args()
-    main(a.config, a.pretreino, a.saida, a.dtype)
+    main(a.config, a.pretreino, a.saida, a.dtype, janelas_extras=not a.sem_janelas_extras)
