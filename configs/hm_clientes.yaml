@@ -102,3 +102,15 @@ tarefas_downstream:
     nome: proxima_online
     campo_fonte: online                # 1 se a próxima cesta teve item online
     agregacao_cesta: max
+
+# Feature engineering do baseline tradicional (H5 — GBDT).
+features_tradicionais:
+  campo_valor: preco
+  campos_binarios: [online]
+  campos_composicao: [indice, grupo_produto]
+  max_categorias_composicao: 12
+  campo_item: artigo
+  campo_tipo: tipo_produto
+  campo_grupo_preco: grupo_produto
+  janelas_dias: [7, 30, 90, 180, 365]
+  estaticos_frequencia: [cep]

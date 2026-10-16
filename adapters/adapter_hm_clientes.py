@@ -15,7 +15,8 @@ Saída: runs/hm_clientes/eventos_canonicos.parquet com
   campos de rótulo: grupo_produto_alvo (grupo com classes <1% fundidas em
            "Outros"), online (0/1);
   campos estáticos do cliente (só fusão/GBDT): clube, newsletter, cep_top
-           (top-1000 CEPs + OUTROS), idade, fn, active.
+           (top-1000 CEPs + OUTROS), cep (código inteiro do CEP hasheado,
+           pro frequency encoding do GBDT), idade, fn, active.
 
 Uso: scripts/rodar_limitado.sh .venv/bin/python adapters/adapter_hm_clientes.py
 """
@@ -90,6 +91,7 @@ def main():
     saida["clube"] = categoria_por_indice(cus["club_member_status"].fillna("NA").to_numpy(), pos_cli)
     saida["newsletter"] = categoria_por_indice(cus["fashion_news_frequency"].fillna("NA").replace("None", "NONE").to_numpy(), pos_cli)
     saida["cep_top"] = categoria_por_indice(cep_top, pos_cli)
+    saida["cep"] = cus["postal_code"].to_numpy()[pos_cli]        # código int do CEP (frequency encoding no GBDT)
     saida["idade"] = cus["age"].to_numpy()[pos_cli]
     saida["fn"] = cus["FN"].fillna(0).to_numpy()[pos_cli]          # nulo = não assinou (convenção do dataset)
     saida["active"] = cus["Active"].fillna(0).to_numpy()[pos_cli]
