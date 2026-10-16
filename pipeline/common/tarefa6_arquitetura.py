@@ -1,114 +1,67 @@
-"""Motor genérico — Arquitetura e instanciação do modelo (Tarefa 6 generalizada).
+"""Motor genérico — Dimensionamento da arquitetura (Tarefa 6 generalizada).
 
-Versão schema-agnóstica de `pipeline/arquitetura/tarefa6_arquitetura.py`
-(branch `luiz_g`) — mesma lógica (n_positions derivado do p99 real de
-tokens, validação de batching sem GPU, instanciação real condicional a
-torch/transformers estarem disponíveis), parametrizada via config.
+Ferramenta de decisão, sem treino:
+  1. Cobertura de `n_positions` candidatos — por ENTIDADE (sequência inteira
+     cabe na janela) e por EVENTO (o evento ainda tem embedding, isto é, cai
+     dentro dos últimos n_positions tokens da sua entidade). A lição da Olist
+     é que olhar só por entidade engana: poucas entidades de cauda longa
+     concentram muitos eventos.
+  2. Parâmetros reais da arquitetura do config (instanciada via
+     `modelo_decoder.py`, CPU) e a razão tokens de treino / parâmetro.
 
-Uso: python3 pipeline/common/tarefa6_arquitetura.py <config.yaml>
+Uso: python3 pipeline/common/tarefa6_arquitetura.py <config.yaml> [n_positions candidatos...]
 """
 
 import json
-import math
 import sys
 
 import numpy as np
-import pandas as pd
 
 sys.path.insert(0, "pipeline/common")
-from schema import carregar_config, run_dir  # noqa: E402
+from modelo_decoder import arquitetura_efetiva, construir_modelo  # noqa: E402
+from schema import caminho_tabela, carregar_config, ler_tabela, run_dir  # noqa: E402
+from sequencias_io import carregar_sequencias  # noqa: E402
 
 
-def decidir_n_positions(seqs, margem_blocos=64):
-    comprimentos = pd.Series([len(s["seq_full"]) for s in seqs.values()])
-    p99 = comprimentos.quantile(0.99)
-    n_positions = int(math.ceil(p99 / margem_blocos) * margem_blocos)
-    print("--- Dimensionamento de n_positions (a partir de seq_full) ---")
-    print(comprimentos.describe(percentiles=[0.5, 0.9, 0.99]))
-    print(f"\nn_positions escolhido: {n_positions} (cobre p99={p99:.0f} tokens; "
-          f"máx observado={comprimentos.max()} tokens fica fora dessa janela)")
-    return n_positions
+def cobertura(seqs, posicoes, candidatos):
+    total = seqs.len_full - 1
+    idx = {e: i for i, e in enumerate(seqs.ids)} if seqs.ids.dtype == object else None
+    if idx is not None:
+        ent_evento = posicoes["entidade_id"].map(idx).to_numpy()
+    else:
+        ordem = np.argsort(seqs.ids)
+        ent_evento = ordem[np.searchsorted(seqs.ids[ordem], posicoes["entidade_id"].to_numpy())]
+    pos = posicoes["pos_full"].to_numpy()
+    print(f"{'n_positions':>12} {'% entidades inteiras':>22} {'% eventos com embedding':>25}")
+    for n in candidatos:
+        ent_ok = (total <= n).mean()
+        ev_ok = (pos >= np.maximum(0, total[ent_evento] - n)).mean()
+        print(f"{n:>12} {ent_ok:>21.1%} {ev_ok:>24.1%}")
 
 
-def montar_batch(seqs, pad_id, n_positions, batch_size=8, seed=0):
-    rng = np.random.default_rng(seed)
-    candidatos = [s["seq_train"] for s in seqs.values() if s["seq_train"]]
-    idx = rng.choice(len(candidatos), size=min(batch_size, len(candidatos)), replace=False)
-    escolhidos = [candidatos[i] for i in idx]
-
-    input_ids = np.full((len(escolhidos), n_positions), pad_id, dtype=np.int64)
-    attention_mask = np.zeros((len(escolhidos), n_positions), dtype=np.int64)
-    for i, seq in enumerate(escolhidos):
-        seq = seq[:n_positions]
-        input_ids[i, : len(seq)] = seq
-        attention_mask[i, : len(seq)] = 1
-
-    labels = input_ids.copy()
-    labels[attention_mask == 0] = -100
-    return input_ids, attention_mask, labels
-
-
-def parametros_estimados(vocab_size, n_embd, n_layer):
-    emb = vocab_size * n_embd
-    por_camada = 12 * n_embd**2
-    return emb + n_layer * por_camada
-
-
-def main(config_path):
+def main(config_path, candidatos):
     config = carregar_config(config_path)
-    arch = config.get("arquitetura", {})
-    n_embd, n_layer, n_head = arch.get("n_embd", 128), arch.get("n_layer", 4), arch.get("n_head", 4)
-
+    arch = arquitetura_efetiva(config.get("arquitetura", {}))
     with open(f"{run_dir(config, 'vocabulario')}/vocab.json", encoding="utf-8") as f:
         vocab = json.load(f)
-    with open(f"{run_dir(config, 'serializacao')}/sequencias.json", encoding="utf-8") as f:
-        seqs = json.load(f)
+    seqs = carregar_sequencias(config)
+    posicoes = ler_tabela(caminho_tabela(config, "serializacao", "posicoes_evento"), ["entidade_id", "pos_full"])
 
-    vocab_size = len(vocab)
-    pad_id = vocab["PAD"]
-    print(f"vocab_size = {vocab_size}")
-    n_positions = arch.get("n_positions") or decidir_n_positions(seqs)
+    comp = seqs.len_full
+    print(f"vocab_size={len(vocab)}  entidades={len(seqs):,}  tokens={int(comp.sum()):,}")
+    print("Comprimento de seq_full (tokens): " + "  ".join(
+        f"p{q}={np.percentile(comp, q):.0f}" for q in [50, 75, 90, 95, 99]) + f"  máx={comp.max()}")
+    tokens_treino = int(np.sum(seqs.len_train[seqs.len_train > 0] + 1))
+    print(f"Tokens de treino (alvos de NTP): {tokens_treino:,}\n")
 
-    total_params = parametros_estimados(vocab_size, n_embd, n_layer)
-    print(f"\nConfig: n_embd={n_embd}, n_layer={n_layer}, n_head={n_head}, n_positions={n_positions}")
-    print(f"Parâmetros estimados: ~{total_params/1e6:.2f}M")
+    cobertura(seqs, posicoes, candidatos or [256, 512, 1024, 2048, 4096])
 
-    print("\n--- Validação local (sem GPU): batching/padding/máscara ---")
-    input_ids, attention_mask, labels = montar_batch(seqs, pad_id, n_positions, batch_size=8)
-    assert (labels[attention_mask == 0] == -100).all()
-    assert (attention_mask.sum(axis=1) > 0).all()
-    print(f"OK: input_ids.shape={input_ids.shape}, padding mascarado corretamente.")
-
-    print("\n--- Instanciação real do modelo (requer torch/transformers + GPU) ---")
-    try:
-        import torch
-        from transformers import GPT2Config, GPT2LMHeadModel
-    except ImportError as e:
-        print(f"PULADO: {e}. Rodar no Colab (GPU) pra validar instanciação real.")
-        return
-
-    gpt2_config = GPT2Config(
-        vocab_size=vocab_size, n_positions=n_positions, n_embd=n_embd, n_layer=n_layer, n_head=n_head,
-        bos_token_id=vocab["BOS"], eos_token_id=vocab["EOS"],
-        attn_implementation=arch.get("attn_implementation", "flash_attention_2"),
-    )
-    model = GPT2LMHeadModel(gpt2_config).to(dtype=torch.bfloat16, device="cuda")
-    with torch.no_grad():
-        model.transformer.wpe.weight.zero_()
-    model.transformer.wpe.weight.requires_grad_(False)
-
-    n_params_real = sum(p.numel() for p in model.parameters())
-    print(f"Modelo instanciado. Parâmetros reais: {n_params_real/1e6:.2f}M")
-
-    batch = {
-        "input_ids": torch.from_numpy(input_ids).to("cuda"),
-        "attention_mask": torch.from_numpy(attention_mask).to("cuda"),
-        "labels": torch.from_numpy(labels).to("cuda"),
-    }
-    out = model(**batch)
-    print(f"Forward pass OK. logits.shape={tuple(out.logits.shape)}, loss={out.loss.item():.4f}")
-    print("\nOK.")
+    modelo = construir_modelo({**arch, "attn_implementation": "sdpa"}, vocab)
+    total, treinaveis = modelo.n_parametros()
+    print(f"\nArquitetura do config: {arch}")
+    print(f"Parâmetros: {total/1e6:.2f}M ({treinaveis/1e6:.2f}M treináveis) | "
+          f"tokens de treino por parâmetro treinável: {tokens_treino/treinaveis:.1f}")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], [int(x) for x in sys.argv[2:]])

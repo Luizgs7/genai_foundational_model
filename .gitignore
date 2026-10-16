@@ -17,9 +17,18 @@ pipeline/fusao/embeddings_eventos_index.csv
 dados_olist/
 
 # Runs gerados pelo motor genérico (recriáveis — ver pipeline/common/)
-runs/*/pretreino/checkpoints/
-runs/*/fusao/embeddings_eventos.npy
-runs/*/fusao/embeddings_eventos_index.csv
+runs/*/*/checkpoints/
+runs/*/*/embeddings_eventos.npy
+runs/*/*/embeddings_eventos_index.csv
+runs/*/*/embeddings_eventos_index.parquet
+
+# Experimento H&M (31,8M transações): dados brutos (mirror HuggingFace
+# einrafh/hnm-fashion-recommendations-data, baixados por adapters/baixar_hm.py)
+# e artefatos pesados do run — recriáveis rodando o pipeline.
+dados_hm/
+runs/hm_clientes/**/*.npy
+runs/hm_clientes/**/*.parquet
+runs/hm_clientes/**/*.pt
 
 # Ambientes virtuais / editores
 .venv/

@@ -11,12 +11,25 @@ Roda 100% em CPU — o backbone já foi congelado e usado só pra gerar os
 embeddings (Tarefa 13a); esta etapa só treina a DCNv2 + heads (poucos
 milhares de parâmetros) em cima deles.
 
-Uso: python3 pipeline/common/tarefa13_treinar_fusao.py <config.yaml>
+Ablações (H9 do experimento H&M): `--sem_embedding`, `--sem_cadastro`
+(campos estáticos da entidade, incl. idade) e `--sem_causais` (estatísticas
+causais/baselines expostas como feature) removem cada grupo de entrada.
+`--seed` e `--saida` permitem repetir com várias sementes sem sobrescrever.
 
-Gera runs/<nome>/fusao/{tarefa13_config.json, tarefa13_metricas_epoca.csv,
+Uso: python3 pipeline/common/tarefa13_treinar_fusao.py <config.yaml>
+         [--emb <subpasta dos embeddings>] [--saida <subpasta>] [--seed N]
+         [--sem_embedding] [--sem_cadastro] [--sem_causais] [--avaliar_teste]
+
+O teste só é avaliado com `--avaliar_teste` (protocolo do experimento H&M:
+escolhas na validação, teste uma única vez). Sem a flag, o relatório traz
+só métricas de validação. Os runs legados (synthetic_agro/olist) foram
+gerados no comportamento antigo, equivalente a `--avaliar_teste`.
+
+Gera runs/<nome>/<saida>/{tarefa13_config.json, tarefa13_metricas_epoca.csv,
 tarefa13_relatorio.json, tarefa13_loss_curve.png, tarefa13_fusao.pt}.
 """
 
+import argparse
 import json
 import math
 import os
@@ -30,7 +43,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 sys.path.insert(0, "pipeline/common")
-from schema import carregar_config, run_dir, tarefas_ativas  # noqa: E402
+from schema import caminho_tabela, carregar_config, ler_fonte, ler_tabela, run_dir, tarefas_ativas  # noqa: E402
 from tarefa8_rotulos import accuracy, auc_roc, f1_macro  # noqa: E402
 
 EMB_DIM_PADRAO = 128
@@ -97,24 +110,22 @@ class DCNv2Fusao(nn.Module):
         return {nome: head(combined) for nome, head in self.heads.items()}
 
 
-def carregar_dados(config):
-    fusao_dir = run_dir(config, "fusao")
-    emb = np.load(os.path.join(fusao_dir, "embeddings_eventos.npy"))
-    index = pd.read_csv(os.path.join(fusao_dir, "embeddings_eventos_index.csv"))
+def carregar_dados(config, emb_subpasta="fusao", sem_cadastro=False, sem_causais=False):
+    emb = np.load(os.path.join(run_dir(config, emb_subpasta), "embeddings_eventos.npy"), mmap_mode="r")
+    index = ler_tabela(caminho_tabela(config, emb_subpasta, "embeddings_eventos_index"))
 
-    rotulos_dir = run_dir(config, "rotulos_downstream")
-    rotulos = pd.read_csv(os.path.join(rotulos_dir, "rotulos.csv"))
+    rotulos = ler_tabela(caminho_tabela(config, "rotulos_downstream", "rotulos"))
 
     df = index.merge(rotulos, on=["evento_id", "entidade_id"], how="inner", validate="one_to_one")
 
-    cat_estaticos = config.get("campos_estaticos_categoricos", [])
-    num_estaticos = list(config.get("campos_estaticos_numericos", []))
-    campo_nascimento = config.get("campo_data_nascimento")
+    cat_estaticos = [] if sem_cadastro else list(config.get("campos_estaticos_categoricos", []))
+    num_estaticos = [] if sem_cadastro else list(config.get("campos_estaticos_numericos", []))
+    campo_nascimento = None if sem_cadastro else config.get("campo_data_nascimento")
 
     colunas_canonicas = {"evento_id", "entidade_id", "data_evento"} | set(cat_estaticos) | set(num_estaticos)
     if campo_nascimento:
         colunas_canonicas.add(campo_nascimento)
-    canonico = pd.read_csv(config["fonte_canonica"], usecols=list(colunas_canonicas))
+    canonico = ler_fonte(config, sorted(colunas_canonicas))
     canonico["data_evento"] = pd.to_datetime(canonico["data_evento"])
     if campo_nascimento:
         canonico[campo_nascimento] = pd.to_datetime(canonico[campo_nascimento])
@@ -137,8 +148,8 @@ def carregar_dados(config):
     # precisa redescobrir indiretamente um sinal que já está calculado em
     # tarefa8_rotulos.py. Só entram colunas numéricas (baseline categórico/
     # moda de texto, como next_category, fica de fora).
-    num_causais = [c for c in ["n_eventos_anteriores"] if c in df.columns]
-    for tarefa_cfg in tarefas_ativas(config):
+    num_causais = [c for c in ["n_eventos_anteriores"] if c in df.columns and not sem_causais]
+    for tarefa_cfg in ([] if sem_causais else tarefas_ativas(config)):
         nome = tarefa_cfg.get("nome", tarefa_cfg["tipo"])
         col = f"{nome}_baseline"
         if col in df.columns and pd.api.types.is_numeric_dtype(df[col]):
@@ -148,11 +159,13 @@ def carregar_dados(config):
     return emb, df, cat_estaticos, num_estaticos
 
 
-def main(config_path):
-    set_seed(SEED)
+def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedding=False,
+         sem_cadastro=False, sem_causais=False, avaliar_teste=False):
+    set_seed(seed)
     t0 = time.time()
     config = carregar_config(config_path)
-    emb, df, cat_estaticos, num_estaticos = carregar_dados(config)
+    emb, df, cat_estaticos, num_estaticos = carregar_dados(config, emb_subpasta, sem_cadastro, sem_causais)
+    emb_dim = 0 if sem_embedding else emb.shape[1]
 
     # --- codificação dos campos estáticos categóricos (id calibrado no treino) ---
     mapas_categoricos = {}
@@ -187,7 +200,9 @@ def main(config_path):
 
     def montar_tensores(split):
         sub = df[df["split"] == split].reset_index(drop=True)
-        emb_t = torch.tensor(emb[sub["row_idx"].values], dtype=torch.float32)
+        emb_t = (torch.zeros((len(sub), 0), dtype=torch.float32) if sem_embedding
+                 else torch.tensor(np.asarray(emb[sub["row_idx"].values]),
+                                   dtype=torch.float32))
         cat_ids = [torch.tensor(sub[f"{c}_id"].values, dtype=torch.long) for c in cat_estaticos]
         num_vals = (
             torch.tensor(sub[[f"{c}_norm" for c in num_estaticos]].values, dtype=torch.float32)
@@ -221,7 +236,7 @@ def main(config_path):
         pos_weights[nome] = torch.tensor(n_neg / max(n_pos, 1), dtype=torch.float32)
         print(f"  pos_weight[{nome}] = {pos_weights[nome].item():.2f}  (n_pos={n_pos} n_neg={n_neg})")
 
-    model = DCNv2Fusao(emb.shape[1], cardinalidades, len(num_estaticos), N_CROSS, CROSS_RANK, DEEP_HIDDEN, tarefas_modelo)
+    model = DCNv2Fusao(emb_dim, cardinalidades, len(num_estaticos), N_CROSS, CROSS_RANK, DEEP_HIDDEN, tarefas_modelo)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"DCNv2 + heads: {n_params} parâmetros treináveis (razão exemplos/parâmetro = {n_train/n_params:.2f})")
 
@@ -265,15 +280,17 @@ def main(config_path):
                 }
         return resultado
 
-    out_dir = run_dir(config, "fusao")
+    out_dir = run_dir(config, saida)
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "tarefa13_config.json"), "w", encoding="utf-8") as f:
         json.dump({
+            "emb_subpasta": emb_subpasta, "emb_dim": emb_dim, "sem_embedding": sem_embedding,
+            "sem_cadastro": sem_cadastro, "sem_causais": sem_causais,
             "n_params": n_params, "n_train": n_train, "n_val": len(sub_val), "n_test": len(sub_test),
             "tarefas": [{"nome": n, "tipo": t, "n_classes": c} for n, t, c in tarefas_modelo],
             "campos_estaticos_categoricos": cat_estaticos, "campos_estaticos_numericos": num_estaticos,
             "pos_weights": {k: v.item() for k, v in pos_weights.items()},
-            "batch_size": BATCH_SIZE, "n_epochs": N_EPOCHS, "lr": LR, "seed": SEED,
+            "batch_size": BATCH_SIZE, "n_epochs": N_EPOCHS, "lr": LR, "seed": seed,
         }, f, ensure_ascii=False, indent=2, default=str)
 
     epoca_csv = open(os.path.join(out_dir, "tarefa13_metricas_epoca.csv"), "w", encoding="utf-8")
@@ -324,27 +341,65 @@ def main(config_path):
     epoca_csv.close()
     print(f"\nMelhor época (por {metrica_chave} em val): {melhor_epoca} (score={melhor_score:.4f})")
     model.load_state_dict(torch.load(os.path.join(out_dir, "tarefa13_fusao.pt")))
-    test_metrics = avaliar(emb_test, cat_test, num_test, alvos_test)
 
-    comparacao = {}
-    for nome, tipo, _n, mapa_classes in tarefas_info:
-        sub_t = sub_test
-        if tipo == "binaria":
-            baseline_auc = auc_roc(sub_t[f"{nome}_rotulo"], sub_t[f"{nome}_baseline"])
-            comparacao[nome] = {"metrica": "auc", "modelo": test_metrics[nome]["auc"],
-                                 "baseline": baseline_auc, "delta": test_metrics[nome]["auc"] - baseline_auc}
-        else:
-            baseline_acc = accuracy(sub_t[f"{nome}_rotulo_id"], sub_t[f"{nome}_baseline_id"])
-            comparacao[nome] = {"metrica": "accuracy", "modelo": test_metrics[nome]["accuracy"],
-                                 "baseline": baseline_acc, "delta": test_metrics[nome]["accuracy"] - baseline_acc}
-        print(f"  {nome}: modelo={comparacao[nome]['modelo']:.4f}  baseline={comparacao[nome]['baseline']:.4f}  "
-              f"delta={comparacao[nome]['delta']:+.4f}")
+    @torch.no_grad()
+    def scores(emb_t, cat_ids, num_vals):
+        model.eval()
+        saidas = model(emb_t, cat_ids, num_vals)
+        out = {}
+        for nome, tipo, _n in tarefas_modelo:
+            out[nome] = (torch.sigmoid(saidas[nome].squeeze(-1)).numpy() if tipo == "binaria"
+                         else torch.softmax(saidas[nome], dim=-1).numpy())
+        return out
+
+    def comparar(sub_s, metricas):
+        comparacao = {}
+        for nome, tipo, _n, _mapa in tarefas_info:
+            if tipo == "binaria":
+                base = auc_roc(sub_s[f"{nome}_rotulo"], sub_s[f"{nome}_baseline"])
+                comparacao[nome] = {"metrica": "auc", "modelo": metricas[nome]["auc"], "baseline": base,
+                                    "delta": metricas[nome]["auc"] - base}
+            else:
+                base = accuracy(sub_s[f"{nome}_rotulo_id"], sub_s[f"{nome}_baseline_id"])
+                comparacao[nome] = {"metrica": "accuracy", "modelo": metricas[nome]["accuracy"], "baseline": base,
+                                    "delta": metricas[nome]["accuracy"] - base}
+        return comparacao
+
+    def gravar_predicoes(sub_s, sc, split):
+        cols = {"evento_id": sub_s["evento_id"].values, "entidade_id": sub_s["entidade_id"].values}
+        for nome, tipo, _n, mapa in tarefas_info:
+            if tipo == "binaria":
+                cols[f"{nome}_score"] = sc[nome]
+            else:
+                inv = {i: c for c, i in mapa.items()}
+                cols[f"{nome}_pred"] = [inv[i] for i in sc[nome].argmax(axis=1)]
+                for c, i in mapa.items():
+                    cols[f"{nome}_p_{c}"] = sc[nome][:, i]
+        pd.DataFrame(cols).to_parquet(os.path.join(out_dir, f"predicoes_{split}.parquet"), index=False)
+
+    val_metrics = avaliar(emb_val, cat_val, num_val, alvos_val)
+    comparacao_val = comparar(sub_val, val_metrics)
+    gravar_predicoes(sub_val, scores(emb_val, cat_val, num_val), "val")
+    print("Validação (melhor checkpoint):")
+    for nome, c in comparacao_val.items():
+        print(f"  {nome}: modelo={c['modelo']:.4f}  baseline={c['baseline']:.4f}  delta={c['delta']:+.4f}")
+
+    test_metrics, comparacao = None, None
+    if avaliar_teste:
+        test_metrics = avaliar(emb_test, cat_test, num_test, alvos_test)
+        comparacao = comparar(sub_test, test_metrics)
+        gravar_predicoes(sub_test, scores(emb_test, cat_test, num_test), "test")
+        print("TESTE (avaliação única):")
+        for nome, c in comparacao.items():
+            print(f"  {nome}: modelo={c['modelo']:.4f}  baseline={c['baseline']:.4f}  delta={c['delta']:+.4f}")
 
     tempo_total = time.time() - t0
     relatorio = {
         "n_params": n_params, "n_train": n_train, "n_val": len(sub_val), "n_test": len(sub_test),
-        "melhor_epoca": melhor_epoca, "metricas_teste": test_metrics,
-        "comparacao_com_baseline": comparacao, "tempo_total_segundos": tempo_total,
+        "melhor_epoca": melhor_epoca, "metricas_validacao": val_metrics,
+        "comparacao_com_baseline_validacao": comparacao_val,
+        "metricas_teste": test_metrics, "comparacao_com_baseline": comparacao,
+        "tempo_total_segundos": tempo_total,
     }
     with open(os.path.join(out_dir, "tarefa13_relatorio.json"), "w", encoding="utf-8") as f:
         json.dump(relatorio, f, ensure_ascii=False, indent=2, default=str)
@@ -370,4 +425,14 @@ def main(config_path):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    ap = argparse.ArgumentParser()
+    ap.add_argument("config")
+    ap.add_argument("--emb", default="fusao", help="subpasta com embeddings_eventos.npy")
+    ap.add_argument("--saida", default="fusao")
+    ap.add_argument("--seed", type=int, default=SEED)
+    ap.add_argument("--sem_embedding", action="store_true")
+    ap.add_argument("--sem_cadastro", action="store_true")
+    ap.add_argument("--sem_causais", action="store_true")
+    ap.add_argument("--avaliar_teste", action="store_true")
+    a = ap.parse_args()
+    main(a.config, a.emb, a.saida, a.seed, a.sem_embedding, a.sem_cadastro, a.sem_causais, a.avaliar_teste)

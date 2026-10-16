@@ -1,18 +1,27 @@
-# Dependências da Tarefa 6 (pipeline/arquitetura/tarefa6_arquitetura.py).
+# Dependências do motor genérico (pipeline/common/).
 #
-# torch + transformers: instalados aqui localmente (CPU, versões abaixo) para
-# validar a parte do script que não depende de GPU (batching/padding/máscara,
-# dimensionamento de n_positions). A instanciação real do modelo com
-# attn_implementation="flash_attention_2" só roda com CUDA — precisa ser
-# feita no runtime GPU do Colab Pro (ver ARQUITETURA.md, Estágio 3), não aqui.
-# No Colab, trocar por `torch` (build CUDA, já vem pré-instalado no runtime GPU).
-torch==2.13.0
-transformers==5.15.1
+# Local (CPU): preparação de dados, rótulos, features tradicionais, GBDT e
+# fusão DCNv2. GPU (Colab L4 via colab_ssh/): pré-treino e extração de
+# embeddings — no Colab o torch com CUDA já vem pré-instalado.
+#
+#   python3 -m venv .venv && .venv/bin/pip install -r pipeline/requirements.txt
+#   (torch CPU local: --index-url https://download.pytorch.org/whl/cpu)
 
-# flash-attn: compila kernels CUDA específicos da GPU no momento da instalação
-# — não instala (ou não serve de nada) numa máquina sem GPU/CUDA como este
-# ambiente local. Instalar direto no runtime do Colab Pro, com GPU Ampere+
-# (L4 recomendado — ver conversa/ROADMAP), depois de confirmar a GPU com
-# `!nvidia-smi`:
-#   pip install flash-attn --no-build-isolation
-flash-attn
+pandas>=3.0
+numpy>=2.0
+pyarrow>=20
+polars>=1.30
+pyyaml>=6.0
+datasets>=4.0          # download do H&M (adapters/baixar_hm.py)
+torch>=2.11
+transformers>=5.15     # GPT2LMHeadModel (arquitetura.tipo: gpt2_hf)
+scikit-learn>=1.6      # PCA dos embeddings, métricas de referência
+lightgbm>=4.6
+xgboost>=3.0
+optuna>=4.0
+shap>=0.48
+matplotlib>=3.9
+
+# flash-attn é opcional (attn_implementation: flash_attention_2 no gpt2_hf).
+# Os runs atuais usam sdpa (atenção nativa do PyTorch, sem compilação) —
+# compilar flash-attn no Colab custa ~2-3h a cada reinício do runtime.

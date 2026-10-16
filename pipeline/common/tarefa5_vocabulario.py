@@ -28,7 +28,7 @@ import sys
 import pandas as pd
 
 sys.path.insert(0, "pipeline/common")
-from schema import carregar_config, run_dir  # noqa: E402
+from schema import caminho_tabela, carregar_config, ler_fonte, ler_tabela, run_dir  # noqa: E402
 
 RECENCIA_LABELS = ["0-7", "8-15", "16-30", "31-60", "61-90", "91-180", "181-365", ">365"]
 ESTRUTURAIS = ["BOS", "EOS", "EVT", "PAD", "UNK"]
@@ -56,7 +56,7 @@ def construir_vocabulario(config, df_eventos, splits, buckets):
     tokens = list(ESTRUTURAIS)
     top_n_mapa = {}  # {campo: {valor_original: token}}
 
-    train_ids = set(splits.loc[splits["split"] == "train", "evento_id"])
+    train_ids = splits.loc[splits["split"] == "train", "evento_id"].to_numpy()
     df_train = df_eventos[df_eventos["evento_id"].isin(train_ids)]
 
     for campo_cfg in config["campos_categoricos"]:
@@ -104,10 +104,9 @@ def main(config_path):
     config = carregar_config(config_path)
 
     colunas = ["evento_id"] + [c["nome"] for c in config["campos_categoricos"]]
-    df_eventos = pd.read_csv(config["fonte_canonica"], usecols=colunas)
+    df_eventos = ler_fonte(config, colunas)
 
-    splits_csv = os.path.join(run_dir(config, "splits"), "splits.csv")
-    splits = pd.read_csv(splits_csv, usecols=["evento_id", "split"])
+    splits = ler_tabela(caminho_tabela(config, "splits", "splits"), ["evento_id", "split"])
 
     buckets_json = os.path.join(run_dir(config, "discretizacao"), "buckets.json")
     buckets = {}
@@ -137,9 +136,12 @@ def main(config_path):
         campo = campo_cfg["nome"]
         if campo_cfg["estrategia"] != "fechado":
             continue
-        tokens_gerados = df_eventos[campo].dropna().map(lambda v, c=campo: token_categorico(c, v))
-        faltando = (~tokens_gerados.isin(vocab)).sum()
-        print(f"  {campo}: {len(tokens_gerados)} valores, {faltando} fora do vocabulário")
+        serie = df_eventos[campo].dropna()
+        # checa por valor distinto (vetorizado) e pondera pela contagem
+        contagem = serie.value_counts()
+        fora = [v for v in contagem.index if token_categorico(campo, v) not in vocab]
+        faltando = int(contagem[fora].sum()) if fora else 0
+        print(f"  {campo}: {len(serie)} valores, {faltando} fora do vocabulário")
         assert faltando == 0, f"Campo fechado {campo!r} com valores fora do vocabulário"
 
     print("\n--- Cobertura (campos top_n_outros — taxa em OUTROS é esperada, não erro) ---")

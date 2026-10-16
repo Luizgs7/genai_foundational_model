@@ -12,10 +12,11 @@ import sys
 
 import torch
 import torch.nn.functional as F
-from transformers import GPT2Config, GPT2LMHeadModel
 
 sys.path.insert(0, "pipeline/common")
+from modelo_decoder import arquitetura_efetiva, construir_modelo  # noqa: E402
 from schema import carregar_config, run_dir  # noqa: E402
+from sequencias_io import carregar_sequencias  # noqa: E402
 
 
 def rotular_alvo(seq, boundary, n_positions):
@@ -32,35 +33,31 @@ def rotular_alvo(seq, boundary, n_positions):
 
 def main(config_path, entidade_id):
     config = carregar_config(config_path)
-    arch = config.get("arquitetura", {})
-    n_embd, n_layer, n_head = arch.get("n_embd", 128), arch.get("n_layer", 4), arch.get("n_head", 4)
-    n_positions = arch.get("n_positions", 512)
+    arch = arquitetura_efetiva(config.get("arquitetura", {}))
+    n_positions = arch["n_positions"]
 
     with open(f"{run_dir(config, 'vocabulario')}/vocab.json", encoding="utf-8") as f:
         vocab = json.load(f)
     id_to_token = {v: k for k, v in vocab.items()}
-    with open(f"{run_dir(config, 'serializacao')}/sequencias.json", encoding="utf-8") as f:
-        seqs = json.load(f)
-
-    s = seqs[entidade_id]
+    seqs = carregar_sequencias(config)
+    i_ent = seqs.indice(entidade_id)
+    if i_ent is None:
+        raise ValueError(f"entidade {entidade_id!r} não encontrada")
+    s = seqs.como_dict(i_ent)
     st, stv, sf = s["seq_train"], s["seq_train_val"], s["seq_full"]
     boundary_train = (len(st) - 1) if st else 0
     boundary_train_val = (len(stv) - 1) if stv else boundary_train
 
-    gpt2_config = GPT2Config(
-        vocab_size=len(vocab), n_positions=n_positions, n_embd=n_embd, n_layer=n_layer, n_head=n_head,
-        bos_token_id=vocab["BOS"], eos_token_id=vocab["EOS"], attn_implementation="sdpa",
-    )
-    model = GPT2LMHeadModel(gpt2_config).to(dtype=torch.bfloat16)
-    model.load_state_dict(torch.load(f"{run_dir(config, 'pretreino')}/checkpoints/melhor.pt", map_location="cpu"))
+    model = construir_modelo({**arch, "attn_implementation": "sdpa"}, vocab)
+    model.carregar_pesos(torch.load(f"{run_dir(config, 'pretreino')}/checkpoints/melhor.pt", map_location="cpu"))
     model.eval()
 
     def prever(seq, boundary, split_label):
         input_ids, labels, mask = rotular_alvo(seq, boundary, n_positions)
         ids_t = torch.tensor([input_ids], dtype=torch.long)
         with torch.no_grad():
-            out = model(input_ids=ids_t)
-        probs = F.softmax(out.logits[0].float(), dim=-1)
+            logits = model(ids_t)
+        probs = F.softmax(logits[0].float(), dim=-1)
         registros = []
         for i, m in enumerate(mask):
             if not m:
@@ -94,7 +91,7 @@ def main(config_path, entidade_id):
                   "perplexidade": round(math.exp(test_loss), 4) if test_regs else None,
                   "acertos_top1": sum(r["acertou_top1"] for r in test_regs), "previsoes": test_regs},
     }
-    out_path = f"{run_dir(config, 'relatorios')}/predicoes_{entidade_id[:16]}.json"
+    out_path = f"{run_dir(config, 'relatorios')}/predicoes_{str(entidade_id)[:16]}.json"
     import os
     os.makedirs(run_dir(config, "relatorios"), exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:

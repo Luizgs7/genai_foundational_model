@@ -57,7 +57,7 @@ def main(config_path, entidade_id):
     model.load_state_dict(torch.load(os.path.join(fusao_dir, "tarefa13_fusao.pt"), map_location="cpu"))
     model.eval()
 
-    sub = df[df["entidade_id"] == entidade_id].sort_values("data_evento").reset_index(drop=True)
+    sub = df[df["entidade_id"].astype(str) == str(entidade_id)].sort_values("data_evento").reset_index(drop=True)
     if len(sub) == 0:
         raise ValueError(f"entidade {entidade_id!r} não encontrada nos dados de fusão")
 
@@ -121,7 +121,7 @@ def main(config_path, entidade_id):
 
     out_dir = run_dir(config, "relatorios")
     os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, f"predicoes_fusao_{entidade_id[:16]}.json")
+    out_path = os.path.join(out_dir, f"predicoes_fusao_{str(entidade_id)[:16]}.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump({"entidade_id": entidade_id, "previsoes": registros}, f, ensure_ascii=False, indent=2, default=str)
     print(f"\nGravado {out_path}")

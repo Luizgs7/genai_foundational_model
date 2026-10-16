@@ -85,3 +85,69 @@ def tarefa_por_tipo(config, tipo):
         if t["tipo"] == tipo:
             return t
     return None
+
+
+# ---------------------------------------------------------------- I/O tabular
+#
+# A partir do experimento H&M (31,8M eventos) o motor grava os artefatos
+# tabulares em Parquet (bem mais rápido e compacto que CSV nessa escala). A
+# leitura aceita os dois formatos, então runs antigos em CSV continuam
+# legíveis.
+
+def ler_tabela(path, colunas=None):
+    import pandas as pd
+
+    if path.endswith(".parquet"):
+        return pd.read_parquet(path, columns=colunas)
+    return pd.read_csv(path, usecols=colunas)
+
+
+def ler_fonte(config, colunas=None):
+    """Lê o CSV/Parquet canônico do config (só as colunas pedidas)."""
+    return ler_tabela(config["fonte_canonica"], colunas)
+
+
+def caminho_tabela(config, subpasta, nome):
+    """Caminho do artefato tabular `nome` (sem extensão) de um run: prefere o
+    `.parquet` (formato atual); cai pro `.csv` se só existir o legado."""
+    import os
+
+    base = os.path.join(run_dir(config, subpasta), nome)
+    if os.path.exists(base + ".parquet") or not os.path.exists(base + ".csv"):
+        return base + ".parquet"
+    return base + ".csv"
+
+
+def gravar_tabela(df, config, subpasta, nome):
+    import os
+
+    out_dir = run_dir(config, subpasta)
+    os.makedirs(out_dir, exist_ok=True)
+    path = os.path.join(out_dir, nome + ".parquet")
+    df.to_parquet(path, index=False)
+    return path
+
+
+def config_pretreino(config):
+    """Hiperparâmetros do pré-treino (seção opcional `pretreino:` do YAML).
+    Os padrões reproduzem as constantes usadas nos runs synthetic_agro/olist."""
+    padrao = {
+        "batch_size": 32,             # nº de sequências por lote (se tokens_por_lote não for definido)
+        "tokens_por_lote": None,      # orçamento de tokens por lote (lotes agrupados por tamanho)
+        "n_epochs": 30,
+        "lr": 3e-4,
+        "warmup_steps": 100,
+        "weight_decay": 0.01,
+        "grad_clip": 1.0,
+        "seed": 0,
+        "log_a_cada_n_passos": 20,
+        "precisao": "bf16_autocast",  # bf16_autocast (pesos fp32) | bf16_puro (legado)
+        "janelas_treino": "ultima",   # ultima (legado: últimos n_positions tokens) | todas
+        "val_a_cada_passos": None,    # validação parcial periódica (amostra fixa)
+        "val_amostra_entidades": 2000,
+        "checkpoint_a_cada_passos": None,
+        "paciencia_epocas": None,     # early stopping por loss de validação
+        "max_passos": None,           # orçamento de passos (ablações com budget fixo)
+    }
+    padrao.update(config.get("pretreino", {}) or {})
+    return padrao

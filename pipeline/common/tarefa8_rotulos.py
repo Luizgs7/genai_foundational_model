@@ -15,7 +15,7 @@ evento em si (não um campo específico) é o alvo.
 
 Uso: python3 pipeline/common/tarefa8_rotulos.py <config.yaml>
 
-Gera runs/<nome>/rotulos_downstream/{rotulos.csv, relatorio.json}.
+Gera runs/<nome>/rotulos_downstream/{rotulos.parquet, relatorio.json}.
 """
 
 import json
@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, "pipeline/common")
-from schema import carregar_config, run_dir, tarefas_ativas  # noqa: E402
+from schema import caminho_tabela, carregar_config, gravar_tabela, ler_fonte, ler_tabela, run_dir, tarefas_ativas  # noqa: E402
 
 
 # ---------------------------------------------------------------- métricas
@@ -84,29 +84,42 @@ def metrica_por_split(df, mascara_valida, y_true_col, y_pred_col, metrica_fn, **
 def moda_causal_por_grupo(df, grupo_col, valor_col):
     """Moda de `valor_col` considerando só linhas ANTERIORES do mesmo grupo
     (causal). NaN em `valor_col` não contamina a contagem, mas a linha ainda
-    recebe o melhor palpite corrente."""
+    recebe o melhor palpite corrente.
 
-    def moda_causal(serie):
-        contagem, melhor, melhor_contagem = {}, None, 0
-        saida = []
-        for v in serie:
-            saida.append(melhor)
-            if pd.isna(v):
-                continue
-            contagem[v] = contagem.get(v, 0) + 1
-            if contagem[v] > melhor_contagem:
-                melhor, melhor_contagem = v, contagem[v]
-        return pd.Series(saida, index=serie.index)
+    Desempate: vence o valor que PRIMEIRO atingiu a contagem máxima corrente
+    (a versão original, com laço Python, só trocava a moda quando um valor
+    passava estritamente da contagem máxima). Vetorizado: a moda muda só nas
+    linhas "recorde" (contagem acumulada do próprio valor > máximo anterior
+    do grupo); a moda vigente é o valor do último recorde, deslocada 1
+    linha pra ser estritamente causal.
+    """
+    grupo = df[grupo_col]
+    valor = df[valor_col]
+    valido = valor.notna()
 
-    return df.groupby(grupo_col)[valor_col].apply(moda_causal).reset_index(level=0, drop=True)
+    contagem_valor = pd.Series(np.nan, index=df.index)
+    contagem_valor[valido] = df[valido].groupby([grupo_col, valor_col], sort=False, observed=True).cumcount() + 1
+    maximo = contagem_valor.fillna(0).groupby(grupo, sort=False).cummax()
+    maximo_anterior = maximo.groupby(grupo, sort=False).shift(1).fillna(0)
+    recorde = valido & (contagem_valor > maximo_anterior)
+
+    moda_apos = valor.where(recorde).groupby(grupo, sort=False).ffill()
+    saida = moda_apos.groupby(grupo, sort=False).shift(1)
+    if pd.api.types.is_numeric_dtype(valor):
+        return saida.astype(float)  # mesmo dtype que o legado produzia (float com NaN)
+    return saida.astype(object).where(saida.notna(), None)
 
 
 def media_expandida_causal(df, grupo_col, valor_col):
     """Média expandida (só passado) de `valor_col` por grupo — mesma lógica
     do RFM (`baseline_churn_score`), generalizada pra qualquer campo
-    numérico/booleano usado como taxa histórica."""
-    anterior = df.groupby(grupo_col)[valor_col].shift(1)
-    return anterior.groupby(df[grupo_col]).apply(lambda s: s.expanding(min_periods=1).mean()).reset_index(level=0, drop=True)
+    numérico/booleano usado como taxa histórica. Vetorizado via somas e
+    contagens acumuladas (antes: groupby.apply(expanding().mean()))."""
+    grupo = df[grupo_col]
+    anterior = df.groupby(grupo_col, sort=False)[valor_col].shift(1).astype(float)
+    soma = anterior.fillna(0.0).groupby(grupo, sort=False).cumsum()
+    n = anterior.notna().astype(np.int64).groupby(grupo, sort=False).cumsum()
+    return (soma / n).where(n > 0)
 
 
 # ---------------------------------------------------------------- receitas
@@ -182,29 +195,38 @@ def receita_campo_futuro(df, cfg):
 
 
 def receita_ltv(df, cfg, dataset_end):
+    """Soma de `campo_valor` dos eventos SEGUINTES da entidade com data em
+    (data_i, data_i + H] — mais os eventos posteriores de mesma data —, só
+    quando a janela já fechou até o fim do dataset. Vetorizado: soma
+    acumulada por entidade + searchsorted numa chave (entidade, segundos)
+    ordenada (df já vem ordenado por entidade, data, evento_id)."""
     campo_valor = cfg["campo_valor"]
     horizonte = cfg["horizonte_dias"]
-    rotulo = pd.Series(np.nan, index=df.index, dtype=float)
 
-    for _entidade_id, grupo in df.groupby("entidade_id", sort=False):
-        grupo = grupo.sort_values(["data_evento", "evento_id"])
-        datas = grupo["data_evento"].to_numpy()
-        valores = grupo[campo_valor].to_numpy(dtype=float)
-        cum = np.concatenate([[0.0], np.cumsum(valores)])
-        n = len(grupo)
-        for i in range(n):
-            dias_ate_fim = (dataset_end - grupo["data_evento"].iloc[i]).days
-            if dias_ate_fim < horizonte:
-                continue  # janela não fechou -> indeterminável
-            limite = grupo["data_evento"].iloc[i] + pd.Timedelta(days=horizonte)
-            j = int(np.searchsorted(datas, np.datetime64(limite), side="right"))
-            soma_futuro = cum[j] - cum[i + 1]
-            rotulo.loc[grupo.index[i]] = soma_futuro
+    ent_cod = pd.factorize(df["entidade_id"])[0].astype(np.int64)
+    segundos = df["data_evento"].to_numpy().astype("datetime64[s]").astype(np.int64)
+    assert (df["data_evento"].to_numpy().astype("datetime64[ns]").astype(np.int64) % 10**9 == 0).all(), \
+        "receita_ltv assume datas com resolução de segundos"
+    assert np.all(np.diff(ent_cod) >= 0), "df precisa estar ordenado por entidade"
+    deslocamento = int(segundos.max() - segundos.min()) + 1
+    chave = ent_cod * deslocamento + (segundos - segundos.min())
+    limite = chave + horizonte * 86400
+    j = np.searchsorted(chave, limite, side="right")      # 1º índice global fora da janela
+
+    valores = df[campo_valor].to_numpy(dtype=float)
+    assert not np.isnan(valores).any(), f"receita_ltv: {campo_valor} tem valores nulos"
+    cum_incl = pd.Series(valores).groupby(ent_cod).cumsum().to_numpy()
+    # soma das linhas i+1 .. j-1 (todas da mesma entidade, pela construção da chave)
+    soma_futuro = np.where(j - 1 > np.arange(len(df)), cum_incl[np.maximum(j - 1, 0)] - cum_incl, 0.0)
+
+    dias_ate_fim = (dataset_end - df["data_evento"]).dt.days.to_numpy()
+    rotulo = pd.Series(np.where(dias_ate_fim >= horizonte, soma_futuro, np.nan), index=df.index)
 
     n_buckets = cfg.get("n_buckets", 10)
     train_vals = rotulo[df["split"] == "train"].dropna()
     edges = np.quantile(train_vals.values, np.linspace(0, 100, n_buckets + 1)[1:-1] / 100) if len(train_vals) else []
-    rotulo_bucket = rotulo.apply(lambda v: np.nan if pd.isna(v) else int(np.searchsorted(edges, v, side="right")))
+    rotulo_bucket = pd.Series(np.searchsorted(edges, rotulo.to_numpy(), side="right"), index=df.index).astype(float)
+    rotulo_bucket = rotulo_bucket.where(rotulo.notna())
 
     baseline = moda_causal_por_grupo(df.assign(_ltv_bucket=rotulo_bucket), "entidade_id", "_ltv_bucket")
     fallback = rotulo_bucket[df["split"] == "train"].mode()
@@ -233,17 +255,15 @@ def main(config_path):
     # campos *_bucket vêm do merge com discretizado.csv, não do canônico
     colunas_extra = list(colunas_extra - colunas_bucket)
 
-    fonte = pd.read_csv(config["fonte_canonica"], usecols=["evento_id", "entidade_id", "data_evento"] + colunas_extra)
+    fonte = ler_fonte(config, ["evento_id", "entidade_id", "data_evento"] + colunas_extra)
     fonte["data_evento"] = pd.to_datetime(fonte["data_evento"])
 
-    splits_csv = os.path.join(run_dir(config, "splits"), "splits.csv")
-    splits = pd.read_csv(splits_csv, usecols=["evento_id", "split"])
+    splits = ler_tabela(caminho_tabela(config, "splits", "splits"), ["evento_id", "split"])
     df = fonte.merge(splits, on="evento_id", validate="one_to_one")
 
     if config["campos_numericos"]:
-        disc_csv = os.path.join(run_dir(config, "discretizacao"), "discretizado.csv")
         cols_bucket = ["evento_id"] + [f"{c['nome']}_bucket" for c in config["campos_numericos"]]
-        disc = pd.read_csv(disc_csv, usecols=cols_bucket)
+        disc = ler_tabela(caminho_tabela(config, "discretizacao", "discretizado"), cols_bucket)
         df = df.merge(disc, on="evento_id", validate="one_to_one")
 
     df = df.sort_values(["entidade_id", "data_evento", "evento_id"]).reset_index(drop=True)
@@ -311,9 +331,7 @@ def main(config_path):
         relatorio[nome] = info
 
     out_dir = run_dir(config, "rotulos_downstream")
-    os.makedirs(out_dir, exist_ok=True)
-    rotulos_csv = os.path.join(out_dir, "rotulos.csv")
-    saida.to_csv(rotulos_csv, index=False)
+    rotulos_csv = gravar_tabela(saida, config, "rotulos_downstream", "rotulos")
 
     def nan_para_none(obj):
         if isinstance(obj, dict):

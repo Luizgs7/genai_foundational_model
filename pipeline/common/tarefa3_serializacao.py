@@ -6,28 +6,38 @@ campos categóricos do config (na ordem declarada), os campos numéricos do
 config (bucket, na ordem declarada), [recência, se não for o 1º evento da
 entidade e usa_recencia], [mês, se usa_mes].
 
-Correção estrutural desta generalização (ver PLANO_PRODUTO.md): como o
-número de campos por bloco agora é configurável por empresa, a Tarefa 13
-não pode mais reconstruir a posição de âncora de um evento por fórmula
-aritmética fixa. Este script grava explicitamente, por evento, o índice do
-seu último token dentro de `seq_full` — `runs/<nome>/serializacao/posicoes_evento.csv`.
+Correção estrutural da generalização (ver GENERALIZACAO.md): como o número
+de campos por bloco é configurável por empresa, a Tarefa 13 não reconstrói a
+posição de âncora de um evento por fórmula fixa — este script grava, por
+evento, o índice do seu último token dentro de `seq_full`
+(`posicoes_evento.parquet`).
+
+Escala (experimento H&M, 31,8M eventos): a versão anterior montava cada
+bloco com `iterrows` e gravava todas as sequências num `sequencias.json` —
+inviável nessa escala (horas de CPU e dezenas de GB de RAM). Esta versão é
+vetorizada (uma matriz evento × posição-no-bloco de ids de token) e grava
+um único array de tokens + uma tabela de offsets por entidade. A semântica
+é idêntica — ver `pipeline/common/teste_regressao.py`, que compara contra
+os artefatos legados token a token. Leitura: `sequencias_io.py`.
 
 Uso: python3 pipeline/common/tarefa3_serializacao.py <config.yaml>
 
-Gera runs/<nome>/serializacao/{sequencias.json, posicoes_evento.csv}.
+Gera runs/<nome>/serializacao/{tokens.npy, entidades.parquet, posicoes_evento.parquet}.
 """
 
 import json
 import os
 import sys
 
+import numpy as np
 import pandas as pd
 
 sys.path.insert(0, "pipeline/common")
-from schema import carregar_config, run_dir  # noqa: E402
+from schema import caminho_tabela, carregar_config, gravar_tabela, ler_fonte, ler_tabela, run_dir  # noqa: E402
 
 RECENCIA_EDGES = [7, 15, 30, 60, 90, 180, 365]
 RECENCIA_LABELS = ["0-7", "8-15", "16-30", "31-60", "61-90", "91-180", "181-365", ">365"]
+SPLIT_ORDEM = {"train": 0, "val": 1, "test": 2}
 
 
 def recencia_bucket(gap_dias):
@@ -45,80 +55,120 @@ def carregar_top_n_mapa(config):
         return json.load(f)
 
 
-def montar_evento(config, vocab, top_n_mapa, row, gap_dias):
-    tokens = ["EVT"]
+def ids_por_valor(serie, token_de_valor, vocab, valor_nulo_id):
+    """Mapeia cada linha de `serie` pro id do token `token_de_valor(valor)`,
+    calculando o token uma vez por valor distinto (vetorizado). Valor nulo ->
+    `valor_nulo_id` (mesmo destino que o legado dava a f"..._nan")."""
+    codigos, uniques = pd.factorize(serie)
+    ids_uniques = np.array([vocab.get(token_de_valor(v), vocab["UNK"]) for v in uniques], dtype=np.int64)
+    return np.where(codigos >= 0, ids_uniques[np.maximum(codigos, 0)], valor_nulo_id)
+
+
+def matriz_tokens(config, df, vocab, top_n_mapa):
+    """Matriz (n_eventos, n_posicoes_no_bloco) de ids de token; -1 marca
+    posição ausente (recência do 1º evento da entidade)."""
+    colunas = [np.full(len(df), vocab["EVT"], dtype=np.int64)]
 
     for campo_cfg in config["campos_categoricos"]:
         campo = campo_cfg["nome"]
-        valor = row[campo]
         if campo_cfg["estrategia"] == "top_n_outros":
             info = top_n_mapa[campo]
-            tok = info["mapa"].get(str(valor), info["outros_token"])
+            outros = vocab.get(info["outros_token"], vocab["UNK"])
+            mapa = info["mapa"]
+            colunas.append(ids_por_valor(
+                df[campo], lambda v, m=mapa, o=info["outros_token"]: m.get(str(v), o), vocab, outros))
         else:
-            tok = f"{campo.upper()}_{valor}"
-        tokens.append(tok)
+            unk_nulo = vocab.get(f"{campo.upper()}_nan", vocab["UNK"])
+            colunas.append(ids_por_valor(df[campo], lambda v, c=campo: f"{c.upper()}_{v}", vocab, unk_nulo))
 
     for campo_cfg in config["campos_numericos"]:
         campo = campo_cfg["nome"]
-        bucket = row[f"{campo}_bucket"]
         agrupar_por = campo_cfg.get("agrupar_por")
+        bucket = df[f"{campo}_bucket"]
         if agrupar_por:
-            grupo = row[agrupar_por]
-            tokens.append(f"{campo.upper()}_BUCKET_{grupo}_{bucket}")
+            # combina (grupo, bucket) num código inteiro em vez de tuplas Python
+            cod_g, uniq_g = pd.factorize(df[agrupar_por])
+            cod_b, uniq_b = pd.factorize(bucket)
+            chave = np.where((cod_g >= 0) & (cod_b >= 0), cod_g.astype(np.int64) * len(uniq_b) + cod_b, -1)
+            ids_chave = {}
+            for k in np.unique(chave[chave >= 0]):
+                g, b = uniq_g[k // len(uniq_b)], uniq_b[k % len(uniq_b)]
+                ids_chave[k] = vocab.get(f"{campo.upper()}_BUCKET_{g}_{b}", vocab["UNK"])
+            lookup = np.full(len(uniq_g) * max(len(uniq_b), 1), vocab["UNK"], dtype=np.int64)
+            for k, v in ids_chave.items():
+                lookup[k] = v
+            colunas.append(np.where(chave >= 0, lookup[np.maximum(chave, 0)], vocab["UNK"]))
         else:
-            tokens.append(f"{campo.upper()}_BUCKET_{bucket}")
+            colunas.append(ids_por_valor(bucket, lambda b, c=campo: f"{c.upper()}_BUCKET_{b}", vocab, vocab["UNK"]))
 
-    if gap_dias is not None and config.get("usa_recencia", True):
-        tokens.append(f"RECENCIA_{recencia_bucket(gap_dias)}")
+    if config.get("usa_recencia", True):
+        gap = df["_gap_dias"].to_numpy()
+        primeiro = np.isnan(gap)
+        idx_label = np.searchsorted(RECENCIA_EDGES, np.where(primeiro, 0, gap), side="left")
+        ids_label = np.array([vocab.get(f"RECENCIA_{l}", vocab["UNK"]) for l in RECENCIA_LABELS], dtype=np.int64)
+        colunas.append(np.where(primeiro, -1, ids_label[idx_label]))
     if config.get("usa_mes", True):
-        tokens.append(f"MES_{row['mes']}")
+        colunas.append(ids_por_valor(df["mes"], lambda m: f"MES_{m}", vocab, vocab["UNK"]))
 
-    return [vocab.get(t, vocab["UNK"]) for t in tokens]
+    return np.stack(colunas, axis=1)
 
 
 def montar_sequencias(config, df, vocab, top_n_mapa):
     bos, eos = vocab["BOS"], vocab["EOS"]
-    sequencias = {}
-    posicoes = []  # linhas de posicoes_evento.csv
 
-    for entidade_id, grupo in df.groupby("entidade_id", sort=False):
-        grupo = grupo.sort_values(["data_evento", "evento_id"]).reset_index(drop=True)
-        blocos, splits_evento, evento_ids = [], [], []
-        data_anterior = None
-        for _, row in grupo.iterrows():
-            gap = None if data_anterior is None else (row["data_evento"] - data_anterior).days
-            blocos.append(montar_evento(config, vocab, top_n_mapa, row, gap))
-            splits_evento.append(row["split"])
-            evento_ids.append(row["evento_id"])
-            data_anterior = row["data_evento"]
+    # ordem das entidades = 1ª aparição (mesma do legado groupby(sort=False));
+    # dentro da entidade, ordem temporal com desempate por evento_id
+    df = df.copy()
+    df["_ent"], uniques_ent = pd.factorize(df["entidade_id"])
+    df = df.sort_values(["_ent", "data_evento", "evento_id"], kind="stable").reset_index(drop=True)
 
-        # pos_full[i] = índice (0-indexado) do último token do i-ésimo bloco
-        # dentro de `[bos] + blocos...` (sem contar o EOS final) — âncora
-        # explícita, não reconstruída por fórmula (ver docstring do módulo).
-        cursor = 1  # depois do bos
-        pos_full = []
-        for bloco in blocos:
-            cursor += len(bloco)
-            pos_full.append(cursor - 1)
-        for evento_id, split_evento, pos in zip(evento_ids, splits_evento, pos_full):
-            posicoes.append({"evento_id": evento_id, "entidade_id": entidade_id, "pos_full": pos})
+    anterior = df.groupby("_ent", sort=False)["data_evento"].shift(1)
+    df["_gap_dias"] = (df["data_evento"] - anterior).dt.days.astype(float)
 
-        seq_full = [bos] + [tid for bloco in blocos for tid in bloco] + [eos]
-        blocos_train = [b for b, s in zip(blocos, splits_evento) if s == "train"]
-        seq_train = [bos] + [tid for bloco in blocos_train for tid in bloco] + [eos] if blocos_train else None
-        blocos_train_val = [b for b, s in zip(blocos, splits_evento) if s in ("train", "val")]
-        seq_train_val = (
-            [bos] + [tid for bloco in blocos_train_val for tid in bloco] + [eos] if blocos_train_val else None
-        )
+    M = matriz_tokens(config, df, vocab, top_n_mapa)
+    presente = M >= 0
+    L = presente.sum(axis=1).astype(np.int64)            # tamanho de cada bloco
+    tokens_blocos = M[presente]                          # row-major = blocos em ordem
 
-        sequencias[entidade_id] = {
-            "n_eventos": len(grupo),
-            "seq_full": seq_full,
-            "seq_train": seq_train,
-            "seq_train_val": seq_train_val,
-        }
+    ent = df["_ent"].to_numpy()
+    n_ent = len(uniques_ent)
+    blocos_por_ent = np.bincount(ent, weights=L, minlength=n_ent).astype(np.int64)
+    len_full = blocos_por_ent + 2
+    offset = np.concatenate([[0], np.cumsum(len_full)[:-1]])
 
-    return sequencias, posicoes
+    # posição de cada token de bloco no array global: k + 2*ent + 1
+    ent_por_token = np.repeat(ent, L)
+    total = int(len_full.sum())
+    vmax = max(vocab.values())
+    dtype = np.int16 if vmax < np.iinfo(np.int16).max else np.int32
+    tokens = np.empty(total, dtype=dtype)
+    tokens[np.arange(len(tokens_blocos)) + 2 * ent_por_token + 1] = tokens_blocos
+    tokens[offset] = bos
+    tokens[offset + len_full - 1] = eos
+
+    # pos_full = índice do último token do bloco dentro de seq_full
+    cum_L = np.cumsum(L)
+    inicio_ent = np.concatenate([[0], np.cumsum(blocos_por_ent)[:-1]])
+    pos_full = cum_L - inicio_ent[ent]
+
+    # blocos de treino / treino+val precisam ser prefixo (splits por data)
+    split_rank = df["split"].map(SPLIT_ORDEM).to_numpy()
+    rank_max_ate_aqui = pd.Series(split_rank).groupby(ent).cummax().to_numpy()
+    assert (split_rank == rank_max_ate_aqui).all(), "split fora de ordem temporal dentro de uma entidade"
+    len_train = np.bincount(ent, weights=np.where(split_rank == 0, L, 0), minlength=n_ent).astype(np.int64)
+    len_train_val = np.bincount(ent, weights=np.where(split_rank <= 1, L, 0), minlength=n_ent).astype(np.int64)
+
+    entidades = pd.DataFrame({
+        "entidade_id": uniques_ent,
+        "offset": offset,
+        "len_full": len_full,
+        "n_eventos": np.bincount(ent, minlength=n_ent),
+        "len_blocos_train": len_train,
+        "len_blocos_train_val": len_train_val,
+    })
+    posicoes = pd.DataFrame({"evento_id": df["evento_id"].to_numpy(),
+                             "entidade_id": df["entidade_id"].to_numpy(), "pos_full": pos_full})
+    return tokens, entidades, posicoes
 
 
 def main(config_path):
@@ -129,44 +179,43 @@ def main(config_path):
         [c.get("agrupar_por") for c in config["campos_numericos"] if c.get("agrupar_por")]
     colunas = [c for c in dict.fromkeys(colunas) if c]  # dedup preservando ordem
 
-    fonte = pd.read_csv(config["fonte_canonica"], usecols=colunas)
+    fonte = ler_fonte(config, colunas)
     fonte["data_evento"] = pd.to_datetime(fonte["data_evento"])
     fonte["mes"] = fonte["data_evento"].dt.month
 
-    splits_csv = os.path.join(run_dir(config, "splits"), "splits.csv")
-    splits = pd.read_csv(splits_csv, usecols=["evento_id", "split"])
+    splits = ler_tabela(caminho_tabela(config, "splits", "splits"), ["evento_id", "split"])
     df = fonte.merge(splits, on="evento_id", validate="one_to_one")
+    del fonte, splits
 
     if config["campos_numericos"]:
-        disc_csv = os.path.join(run_dir(config, "discretizacao"), "discretizado.csv")
         cols_bucket = ["evento_id"] + [f"{c['nome']}_bucket" for c in config["campos_numericos"]]
-        disc = pd.read_csv(disc_csv, usecols=cols_bucket)
+        disc = ler_tabela(caminho_tabela(config, "discretizacao", "discretizado"), cols_bucket)
         df = df.merge(disc, on="evento_id", validate="one_to_one")
+        del disc
 
-    vocab_json = os.path.join(run_dir(config, "vocabulario"), "vocab.json")
-    with open(vocab_json, encoding="utf-8") as f:
+    with open(os.path.join(run_dir(config, "vocabulario"), "vocab.json"), encoding="utf-8") as f:
         vocab = json.load(f)
     top_n_mapa = carregar_top_n_mapa(config)
 
-    sequencias, posicoes = montar_sequencias(config, df, vocab, top_n_mapa)
+    tokens, entidades, posicoes = montar_sequencias(config, df, vocab, top_n_mapa)
 
     out_dir = run_dir(config, "serializacao")
     os.makedirs(out_dir, exist_ok=True)
-    seq_json = os.path.join(out_dir, "sequencias.json")
-    with open(seq_json, "w", encoding="utf-8") as f:
-        json.dump(sequencias, f)
+    np.save(os.path.join(out_dir, "tokens.npy"), tokens)
+    gravar_tabela(entidades, config, "serializacao", "entidades")
+    gravar_tabela(posicoes, config, "serializacao", "posicoes_evento")
+    legado = os.path.join(out_dir, "sequencias.json")
+    if os.path.exists(legado):
+        os.remove(legado)  # formato antigo — substituído por tokens.npy + entidades.parquet
 
-    pos_csv = os.path.join(out_dir, "posicoes_evento.csv")
-    pd.DataFrame(posicoes).to_csv(pos_csv, index=False)
+    print(f"Gravado {out_dir}/tokens.npy ({len(tokens):,} tokens, {tokens.dtype}) e "
+          f"entidades.parquet ({len(entidades):,} {config['entidade_label']}s)")
+    print(f"Gravado {out_dir}/posicoes_evento.parquet com {len(posicoes):,} posições de âncora.")
 
-    print(f"Gravado {seq_json} com {len(sequencias)} entidades ({config['entidade_label']}s).")
-    print(f"Gravado {pos_csv} com {len(posicoes)} posições de âncora.")
-
-    comprimentos = pd.Series({k: len(s["seq_full"]) for k, s in sequencias.items()})
     print("\n--- Distribuição do comprimento de sequência (em tokens, seq_full) ---")
-    print(comprimentos.describe(percentiles=[0.5, 0.9, 0.99]))
+    print(entidades["len_full"].describe(percentiles=[0.5, 0.9, 0.99]))
 
-    n_sem_train = sum(1 for s in sequencias.values() if s["seq_train"] is None)
+    n_sem_train = int((entidades["len_blocos_train"] == 0).sum())
     print(f"\nEntidades sem nenhum evento de treino (seq_train=null): {n_sem_train}")
 
 
