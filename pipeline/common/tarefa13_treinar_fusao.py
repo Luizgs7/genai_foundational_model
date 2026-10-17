@@ -157,6 +157,11 @@ def carregar_dados(config, emb_subpasta="fusao", sem_cadastro=False, sem_causais
             num_causais.append(col)
     num_estaticos = num_estaticos + num_causais
 
+    # Parquet traz campos de texto como `category`; map/fillna com valores novos
+    # (id de "desconhecido", classes) exige object
+    for c in df.columns:
+        if isinstance(df[c].dtype, pd.CategoricalDtype):
+            df[c] = df[c].astype(object)
     return emb, df, cat_estaticos, num_estaticos
 
 
