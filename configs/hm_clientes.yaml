@@ -104,6 +104,14 @@ tarefas_downstream:
     campo_fonte: online                # 1 se a próxima cesta teve item online
     agregacao_cesta: max
 
+# Fusão DCNv2: com 2M âncoras de treino, lote 256 x 40 épocas (padrão herdado
+# da base sintética, 73 mil âncoras) levaria ~6 h por execução; 8 épocas de
+# lote 2.048 dão ~7,8 mil passos — mais que os ~11 mil da base sintética.
+fusao:
+  batch_size: 2048
+  n_epochs: 8
+  lr: 3.0e-3
+
 # Feature engineering do baseline tradicional (H5 — GBDT).
 features_tradicionais:
   campo_valor: preco

@@ -174,6 +174,9 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
     config = carregar_config(config_path)
     emb, df, cat_estaticos, num_estaticos = carregar_dados(config, emb_subpasta, sem_cadastro, sem_causais)
     emb_dim = 0 if sem_embedding else emb.shape[1]
+    # hiperparâmetros de treino (seção opcional `fusao:` do YAML; padrões = runs antigos)
+    hp = {"batch_size": BATCH_SIZE, "n_epochs": N_EPOCHS, "lr": LR, **(config.get("fusao") or {})}
+    bs, n_epochs, lr = int(hp["batch_size"]), int(hp["n_epochs"]), float(hp["lr"])
 
     # --- codificação dos campos estáticos categóricos (id calibrado no treino) ---
     mapas_categoricos = {}
@@ -249,7 +252,7 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
     n_params = sum(p.numel() for p in model.parameters())
     print(f"DCNv2 + heads: {n_params} parâmetros treináveis (razão exemplos/parâmetro = {n_train/n_params:.2f})")
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=WEIGHT_DECAY)
 
     def perda_multitarefa(saidas, alvos, idx):
         total = 0.0
@@ -311,7 +314,7 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
             "tarefas": [{"nome": n, "tipo": t, "n_classes": c} for n, t, c in tarefas_modelo],
             "campos_estaticos_categoricos": cat_estaticos, "campos_estaticos_numericos": num_estaticos,
             "pos_weights": {k: v.item() for k, v in pos_weights.items()},
-            "batch_size": BATCH_SIZE, "n_epochs": N_EPOCHS, "lr": LR, "seed": seed,
+            "batch_size": bs, "n_epochs": n_epochs, "lr": lr, "seed": seed,
         }, f, ensure_ascii=False, indent=2, default=str)
 
     epoca_csv = open(os.path.join(out_dir, "tarefa13_metricas_epoca.csv"), "w", encoding="utf-8")
@@ -324,11 +327,11 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
     melhor_score, melhor_epoca = -1.0, -1
     historico = []
 
-    for epoca in range(1, N_EPOCHS + 1):
+    for epoca in range(1, n_epochs + 1):
         ordem = np.random.permutation(n_train)
         perdas = []
-        for i in range(0, n_train, BATCH_SIZE):
-            idx = torch.from_numpy(ordem[i:i + BATCH_SIZE])
+        for i in range(0, n_train, bs):
+            idx = torch.from_numpy(ordem[i:i + bs])
             cat_batch = [c[idx].to(DEV) for c in cat_tr]
             num_batch = num_tr[idx].to(DEV) if num_tr is not None else None
             optimizer.zero_grad()
@@ -355,8 +358,8 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
             melhor_score, melhor_epoca = score_chave, epoca
             torch.save(model.state_dict(), os.path.join(out_dir, "tarefa13_fusao.pt"))
 
-        if epoca == 1 or epoca % 5 == 0 or epoca == N_EPOCHS:
-            print(f"epoca {epoca:>2}/{N_EPOCHS}  loss={loss_media:.4f}  "
+        if epoca == 1 or epoca % 5 == 0 or epoca == n_epochs:
+            print(f"epoca {epoca:>2}/{n_epochs}  loss={loss_media:.4f}  "
                   f"{metrica_chave}={score_chave:.4f}" if score_chave is not None else "")
 
     epoca_csv.close()
