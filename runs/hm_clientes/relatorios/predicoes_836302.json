@@ -1,0 +1,1559 @@
+{
+  "entidade_id": "836302",
+  "validacao": {
+    "n_alvos": 99,
+    "loss_media": 1.8997,
+    "perplexidade": 6.684,
+    "acertos_top1": 62,
+    "previsoes": [
+      {
+        "split": "val",
+        "contexto_token": "MES_11",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Lingeries/Tights",
+        "top1_previsto": "INDICE_Menswear",
+        "top1_prob": 0.5535,
+        "acertou_top1": false,
+        "prob_alvo": 0.0928,
+        "loss_token": 2.3769
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Lingeries/Tights",
+        "alvo_real": "GRUPO_PRODUTO_Underwear",
+        "top1_previsto": "GRUPO_PRODUTO_Underwear",
+        "top1_prob": 0.7658,
+        "acertou_top1": true,
+        "prob_alvo": 0.7658,
+        "loss_token": 0.2668
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Underwear",
+        "alvo_real": "TIPO_PRODUTO_Underwear bottom",
+        "top1_previsto": "TIPO_PRODUTO_Bra",
+        "top1_prob": 0.5551,
+        "acertou_top1": false,
+        "prob_alvo": 0.3764,
+        "loss_token": 0.977
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Underwear bottom",
+        "alvo_real": "COR_Black",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.4443,
+        "acertou_top1": true,
+        "prob_alvo": 0.4443,
+        "loss_token": 0.8113
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Black",
+        "alvo_real": "LINHA_VESTUARIO_Under-, Nightwear",
+        "top1_previsto": "LINHA_VESTUARIO_Under-, Nightwear",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Under-, Nightwear",
+        "alvo_real": "CANAL_loja",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.5097,
+        "acertou_top1": false,
+        "prob_alvo": 0.4902,
+        "loss_token": 0.713
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_loja",
+        "alvo_real": "ARTIGO_486639003",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.4999,
+        "acertou_top1": false,
+        "prob_alvo": 0.0074,
+        "loss_token": 4.9089
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_486639003",
+        "alvo_real": "PRECO_BUCKET_Underwear_8",
+        "top1_previsto": "PRECO_BUCKET_Underwear_8",
+        "top1_prob": 0.5366,
+        "acertou_top1": true,
+        "prob_alvo": 0.5366,
+        "loss_token": 0.6224
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Underwear_8",
+        "alvo_real": "RECENCIA_31-60",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.6718,
+        "acertou_top1": false,
+        "prob_alvo": 0.0525,
+        "loss_token": 2.9478
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_31-60",
+        "alvo_real": "MES_1",
+        "top1_previsto": "MES_12",
+        "top1_prob": 0.9989,
+        "acertou_top1": false,
+        "prob_alvo": 0.0006,
+        "loss_token": 7.3422
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_1",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9998,
+        "acertou_top1": true,
+        "prob_alvo": 0.9998,
+        "loss_token": 0.0002
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Lingeries/Tights",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.5155,
+        "acertou_top1": true,
+        "prob_alvo": 0.5155,
+        "loss_token": 0.6627
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Lingeries/Tights",
+        "alvo_real": "GRUPO_PRODUTO_Underwear",
+        "top1_previsto": "GRUPO_PRODUTO_Underwear",
+        "top1_prob": 0.8925,
+        "acertou_top1": true,
+        "prob_alvo": 0.8925,
+        "loss_token": 0.1137
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Underwear",
+        "alvo_real": "TIPO_PRODUTO_Bra",
+        "top1_previsto": "TIPO_PRODUTO_Underwear bottom",
+        "top1_prob": 0.4929,
+        "acertou_top1": false,
+        "prob_alvo": 0.4472,
+        "loss_token": 0.8047
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Bra",
+        "alvo_real": "COR_Light Beige",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.6521,
+        "acertou_top1": false,
+        "prob_alvo": 0.0338,
+        "loss_token": 3.387
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Light Beige",
+        "alvo_real": "LINHA_VESTUARIO_Under-, Nightwear",
+        "top1_previsto": "LINHA_VESTUARIO_Under-, Nightwear",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Under-, Nightwear",
+        "alvo_real": "CANAL_loja",
+        "top1_previsto": "CANAL_loja",
+        "top1_prob": 0.804,
+        "acertou_top1": true,
+        "prob_alvo": 0.804,
+        "loss_token": 0.2182
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_loja",
+        "alvo_real": "ARTIGO_253448003",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.3233,
+        "acertou_top1": false,
+        "prob_alvo": 0.1431,
+        "loss_token": 1.9439
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_253448003",
+        "alvo_real": "PRECO_BUCKET_Underwear_7",
+        "top1_previsto": "PRECO_BUCKET_Underwear_7",
+        "top1_prob": 0.7738,
+        "acertou_top1": true,
+        "prob_alvo": 0.7738,
+        "loss_token": 0.2565
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Underwear_7",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9802,
+        "acertou_top1": true,
+        "prob_alvo": 0.9802,
+        "loss_token": 0.02
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_1",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.9906,
+        "acertou_top1": false,
+        "prob_alvo": 0.0,
+        "loss_token": 13.1955
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_1",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9999,
+        "acertou_top1": true,
+        "prob_alvo": 0.9999,
+        "loss_token": 0.0001
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Lingeries/Tights",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.5062,
+        "acertou_top1": true,
+        "prob_alvo": 0.5062,
+        "loss_token": 0.6808
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Lingeries/Tights",
+        "alvo_real": "GRUPO_PRODUTO_Swimwear",
+        "top1_previsto": "GRUPO_PRODUTO_Underwear",
+        "top1_prob": 0.9045,
+        "acertou_top1": false,
+        "prob_alvo": 0.008,
+        "loss_token": 4.8278
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Swimwear",
+        "alvo_real": "TIPO_PRODUTO_Swimwear bottom",
+        "top1_previsto": "TIPO_PRODUTO_Bikini top",
+        "top1_prob": 0.4265,
+        "acertou_top1": false,
+        "prob_alvo": 0.3701,
+        "loss_token": 0.9941
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Swimwear bottom",
+        "alvo_real": "COR_Black",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.4721,
+        "acertou_top1": true,
+        "prob_alvo": 0.4721,
+        "loss_token": 0.7505
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Black",
+        "alvo_real": "LINHA_VESTUARIO_Swimwear",
+        "top1_previsto": "LINHA_VESTUARIO_Swimwear",
+        "top1_prob": 0.9999,
+        "acertou_top1": true,
+        "prob_alvo": 0.9999,
+        "loss_token": 0.0001
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Swimwear",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.735,
+        "acertou_top1": true,
+        "prob_alvo": 0.735,
+        "loss_token": 0.3079
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.2818,
+        "acertou_top1": true,
+        "prob_alvo": 0.2818,
+        "loss_token": 1.2665
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Swimwear_7",
+        "top1_previsto": "PRECO_BUCKET_Swimwear_1",
+        "top1_prob": 0.4029,
+        "acertou_top1": false,
+        "prob_alvo": 0.0269,
+        "loss_token": 3.617
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Swimwear_7",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.431,
+        "acertou_top1": true,
+        "prob_alvo": 0.431,
+        "loss_token": 0.8416
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_1",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.7602,
+        "acertou_top1": false,
+        "prob_alvo": 0.0003,
+        "loss_token": 8.0487
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_1",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9999,
+        "acertou_top1": true,
+        "prob_alvo": 0.9999,
+        "loss_token": 0.0001
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Lingeries/Tights",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.738,
+        "acertou_top1": true,
+        "prob_alvo": 0.738,
+        "loss_token": 0.3038
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Lingeries/Tights",
+        "alvo_real": "GRUPO_PRODUTO_Underwear",
+        "top1_previsto": "GRUPO_PRODUTO_Swimwear",
+        "top1_prob": 0.8788,
+        "acertou_top1": false,
+        "prob_alvo": 0.1056,
+        "loss_token": 2.2484
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Underwear",
+        "alvo_real": "TIPO_PRODUTO_Underwear bottom",
+        "top1_previsto": "TIPO_PRODUTO_Bra",
+        "top1_prob": 0.5491,
+        "acertou_top1": false,
+        "prob_alvo": 0.403,
+        "loss_token": 0.9089
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Underwear bottom",
+        "alvo_real": "COR_Light Beige",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.5418,
+        "acertou_top1": false,
+        "prob_alvo": 0.2322,
+        "loss_token": 1.4602
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Light Beige",
+        "alvo_real": "LINHA_VESTUARIO_Under-, Nightwear",
+        "top1_previsto": "LINHA_VESTUARIO_Under-, Nightwear",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Under-, Nightwear",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.7702,
+        "acertou_top1": true,
+        "prob_alvo": 0.7702,
+        "loss_token": 0.2611
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.8754,
+        "acertou_top1": true,
+        "prob_alvo": 0.8754,
+        "loss_token": 0.1331
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Underwear_8",
+        "top1_previsto": "PRECO_BUCKET_Underwear_7",
+        "top1_prob": 0.4041,
+        "acertou_top1": false,
+        "prob_alvo": 0.0593,
+        "loss_token": 2.8255
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Underwear_8",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9907,
+        "acertou_top1": true,
+        "prob_alvo": 0.9907,
+        "loss_token": 0.0094
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_1",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.9845,
+        "acertou_top1": false,
+        "prob_alvo": 0.0,
+        "loss_token": 12.607
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_1",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9999,
+        "acertou_top1": true,
+        "prob_alvo": 0.9999,
+        "loss_token": 0.0001
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Ladies Accessories",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.7029,
+        "acertou_top1": false,
+        "prob_alvo": 0.0463,
+        "loss_token": 3.0723
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Ladies Accessories",
+        "alvo_real": "GRUPO_PRODUTO_Shoes",
+        "top1_previsto": "GRUPO_PRODUTO_Shoes",
+        "top1_prob": 0.5489,
+        "acertou_top1": true,
+        "prob_alvo": 0.5489,
+        "loss_token": 0.5998
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Shoes",
+        "alvo_real": "TIPO_PRODUTO_Boots",
+        "top1_previsto": "TIPO_PRODUTO_Boots",
+        "top1_prob": 0.6487,
+        "acertou_top1": true,
+        "prob_alvo": 0.6487,
+        "loss_token": 0.4327
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Boots",
+        "alvo_real": "COR_Dark Beige",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.9211,
+        "acertou_top1": false,
+        "prob_alvo": 0.0051,
+        "loss_token": 5.2827
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Dark Beige",
+        "alvo_real": "LINHA_VESTUARIO_Shoes",
+        "top1_previsto": "LINHA_VESTUARIO_Shoes",
+        "top1_prob": 0.9998,
+        "acertou_top1": true,
+        "prob_alvo": 0.9998,
+        "loss_token": 0.0002
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Shoes",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.9612,
+        "acertou_top1": true,
+        "prob_alvo": 0.9612,
+        "loss_token": 0.0396
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.9958,
+        "acertou_top1": true,
+        "prob_alvo": 0.9958,
+        "loss_token": 0.0042
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Shoes_9",
+        "top1_previsto": "PRECO_BUCKET_Shoes_9",
+        "top1_prob": 0.7823,
+        "acertou_top1": true,
+        "prob_alvo": 0.7823,
+        "loss_token": 0.2455
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Shoes_9",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9685,
+        "acertou_top1": true,
+        "prob_alvo": 0.9685,
+        "loss_token": 0.032
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_1",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.9407,
+        "acertou_top1": false,
+        "prob_alvo": 0.0,
+        "loss_token": 10.2955
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_1",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Lingeries/Tights",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.4974,
+        "acertou_top1": true,
+        "prob_alvo": 0.4974,
+        "loss_token": 0.6984
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Lingeries/Tights",
+        "alvo_real": "GRUPO_PRODUTO_Swimwear",
+        "top1_previsto": "GRUPO_PRODUTO_Swimwear",
+        "top1_prob": 0.5683,
+        "acertou_top1": true,
+        "prob_alvo": 0.5683,
+        "loss_token": 0.565
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Swimwear",
+        "alvo_real": "TIPO_PRODUTO_Swimwear set",
+        "top1_previsto": "TIPO_PRODUTO_Bikini top",
+        "top1_prob": 0.7276,
+        "acertou_top1": false,
+        "prob_alvo": 0.0011,
+        "loss_token": 6.8043
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Swimwear set",
+        "alvo_real": "COR_Black",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.4584,
+        "acertou_top1": true,
+        "prob_alvo": 0.4584,
+        "loss_token": 0.7799
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Black",
+        "alvo_real": "LINHA_VESTUARIO_Swimwear",
+        "top1_previsto": "LINHA_VESTUARIO_Swimwear",
+        "top1_prob": 0.9788,
+        "acertou_top1": true,
+        "prob_alvo": 0.9788,
+        "loss_token": 0.0214
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Swimwear",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.9713,
+        "acertou_top1": true,
+        "prob_alvo": 0.9713,
+        "loss_token": 0.0291
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.7907,
+        "acertou_top1": true,
+        "prob_alvo": 0.7907,
+        "loss_token": 0.2348
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Swimwear_7",
+        "top1_previsto": "PRECO_BUCKET_Swimwear_7",
+        "top1_prob": 0.4718,
+        "acertou_top1": true,
+        "prob_alvo": 0.4718,
+        "loss_token": 0.7512
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Swimwear_7",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9865,
+        "acertou_top1": true,
+        "prob_alvo": 0.9865,
+        "loss_token": 0.0135
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_1",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.9528,
+        "acertou_top1": false,
+        "prob_alvo": 0.0,
+        "loss_token": 11.5762
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_1",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Ladies Accessories",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.6105,
+        "acertou_top1": false,
+        "prob_alvo": 0.1118,
+        "loss_token": 2.1906
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Ladies Accessories",
+        "alvo_real": "GRUPO_PRODUTO_Shoes",
+        "top1_previsto": "GRUPO_PRODUTO_Shoes",
+        "top1_prob": 0.7803,
+        "acertou_top1": true,
+        "prob_alvo": 0.7803,
+        "loss_token": 0.248
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Shoes",
+        "alvo_real": "TIPO_PRODUTO_Sandals",
+        "top1_previsto": "TIPO_PRODUTO_Boots",
+        "top1_prob": 0.8324,
+        "acertou_top1": false,
+        "prob_alvo": 0.0159,
+        "loss_token": 4.1425
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Sandals",
+        "alvo_real": "COR_Light Beige",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.6985,
+        "acertou_top1": false,
+        "prob_alvo": 0.0104,
+        "loss_token": 4.5704
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Light Beige",
+        "alvo_real": "LINHA_VESTUARIO_Shoes",
+        "top1_previsto": "LINHA_VESTUARIO_Shoes",
+        "top1_prob": 0.9999,
+        "acertou_top1": true,
+        "prob_alvo": 0.9999,
+        "loss_token": 0.0001
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Shoes",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.9592,
+        "acertou_top1": true,
+        "prob_alvo": 0.9592,
+        "loss_token": 0.0416
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.9952,
+        "acertou_top1": true,
+        "prob_alvo": 0.9952,
+        "loss_token": 0.0049
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Shoes_6",
+        "top1_previsto": "PRECO_BUCKET_Shoes_5",
+        "top1_prob": 0.2662,
+        "acertou_top1": false,
+        "prob_alvo": 0.0913,
+        "loss_token": 2.3936
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Shoes_6",
+        "alvo_real": "RECENCIA_31-60",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9822,
+        "acertou_top1": false,
+        "prob_alvo": 0.0013,
+        "loss_token": 6.662
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_31-60",
+        "alvo_real": "MES_2",
+        "top1_previsto": "MES_12",
+        "top1_prob": 0.9851,
+        "acertou_top1": false,
+        "prob_alvo": 0.0001,
+        "loss_token": 9.3872
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_2",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Ladieswear",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.37,
+        "acertou_top1": false,
+        "prob_alvo": 0.2266,
+        "loss_token": 1.4844
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Ladieswear",
+        "alvo_real": "GRUPO_PRODUTO_Garment Upper body",
+        "top1_previsto": "GRUPO_PRODUTO_Garment Upper body",
+        "top1_prob": 0.5015,
+        "acertou_top1": true,
+        "prob_alvo": 0.5015,
+        "loss_token": 0.6902
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Garment Upper body",
+        "alvo_real": "TIPO_PRODUTO_Blazer",
+        "top1_previsto": "TIPO_PRODUTO_Sweater",
+        "top1_prob": 0.2491,
+        "acertou_top1": false,
+        "prob_alvo": 0.103,
+        "loss_token": 2.2734
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Blazer",
+        "alvo_real": "COR_Black",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.3494,
+        "acertou_top1": true,
+        "prob_alvo": 0.3494,
+        "loss_token": 1.0517
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Black",
+        "alvo_real": "LINHA_VESTUARIO_Dressed",
+        "top1_previsto": "LINHA_VESTUARIO_Dressed",
+        "top1_prob": 0.9923,
+        "acertou_top1": true,
+        "prob_alvo": 0.9923,
+        "loss_token": 0.0078
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Dressed",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.771,
+        "acertou_top1": true,
+        "prob_alvo": 0.771,
+        "loss_token": 0.26
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_568601006",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.5338,
+        "acertou_top1": false,
+        "prob_alvo": 0.1088,
+        "loss_token": 2.2183
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_568601006",
+        "alvo_real": "PRECO_BUCKET_Garment Upper body_9",
+        "top1_previsto": "PRECO_BUCKET_Garment Upper body_8",
+        "top1_prob": 0.5419,
+        "acertou_top1": false,
+        "prob_alvo": 0.4511,
+        "loss_token": 0.7961
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Garment Upper body_9",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9343,
+        "acertou_top1": true,
+        "prob_alvo": 0.9343,
+        "loss_token": 0.068
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_2",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.902,
+        "acertou_top1": false,
+        "prob_alvo": 0.0,
+        "loss_token": 10.2988
+      },
+      {
+        "split": "val",
+        "contexto_token": "MES_2",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Ladies Accessories",
+        "top1_previsto": "INDICE_Ladieswear",
+        "top1_prob": 0.5181,
+        "acertou_top1": false,
+        "prob_alvo": 0.1509,
+        "loss_token": 1.8909
+      },
+      {
+        "split": "val",
+        "contexto_token": "INDICE_Ladies Accessories",
+        "alvo_real": "GRUPO_PRODUTO_Shoes",
+        "top1_previsto": "GRUPO_PRODUTO_Shoes",
+        "top1_prob": 0.7012,
+        "acertou_top1": true,
+        "prob_alvo": 0.7012,
+        "loss_token": 0.3549
+      },
+      {
+        "split": "val",
+        "contexto_token": "GRUPO_PRODUTO_Shoes",
+        "alvo_real": "TIPO_PRODUTO_Boots",
+        "top1_previsto": "TIPO_PRODUTO_Boots",
+        "top1_prob": 0.4337,
+        "acertou_top1": true,
+        "prob_alvo": 0.4337,
+        "loss_token": 0.8355
+      },
+      {
+        "split": "val",
+        "contexto_token": "TIPO_PRODUTO_Boots",
+        "alvo_real": "COR_Black",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.7251,
+        "acertou_top1": true,
+        "prob_alvo": 0.7251,
+        "loss_token": 0.3215
+      },
+      {
+        "split": "val",
+        "contexto_token": "COR_Black",
+        "alvo_real": "LINHA_VESTUARIO_Shoes",
+        "top1_previsto": "LINHA_VESTUARIO_Shoes",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "val",
+        "contexto_token": "LINHA_VESTUARIO_Shoes",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.9816,
+        "acertou_top1": true,
+        "prob_alvo": 0.9816,
+        "loss_token": 0.0186
+      },
+      {
+        "split": "val",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.884,
+        "acertou_top1": true,
+        "prob_alvo": 0.884,
+        "loss_token": 0.1233
+      },
+      {
+        "split": "val",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Shoes_9",
+        "top1_previsto": "PRECO_BUCKET_Shoes_9",
+        "top1_prob": 0.71,
+        "acertou_top1": true,
+        "prob_alvo": 0.71,
+        "loss_token": 0.3424
+      },
+      {
+        "split": "val",
+        "contexto_token": "PRECO_BUCKET_Shoes_9",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9784,
+        "acertou_top1": true,
+        "prob_alvo": 0.9784,
+        "loss_token": 0.0219
+      },
+      {
+        "split": "val",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_2",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.951,
+        "acertou_top1": false,
+        "prob_alvo": 0.0,
+        "loss_token": 10.2331
+      }
+    ]
+  },
+  "teste": {
+    "n_alvos": 55,
+    "loss_media": 2.104,
+    "perplexidade": 8.1992,
+    "acertos_top1": 26,
+    "previsoes": [
+      {
+        "split": "test",
+        "contexto_token": "MES_2",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Lingeries/Tights",
+        "top1_previsto": "INDICE_Ladieswear",
+        "top1_prob": 0.3666,
+        "acertou_top1": false,
+        "prob_alvo": 0.2165,
+        "loss_token": 1.5303
+      },
+      {
+        "split": "test",
+        "contexto_token": "INDICE_Lingeries/Tights",
+        "alvo_real": "GRUPO_PRODUTO_Swimwear",
+        "top1_previsto": "GRUPO_PRODUTO_Swimwear",
+        "top1_prob": 0.5253,
+        "acertou_top1": true,
+        "prob_alvo": 0.5253,
+        "loss_token": 0.6438
+      },
+      {
+        "split": "test",
+        "contexto_token": "GRUPO_PRODUTO_Swimwear",
+        "alvo_real": "TIPO_PRODUTO_Bikini top",
+        "top1_previsto": "TIPO_PRODUTO_Bikini top",
+        "top1_prob": 0.5107,
+        "acertou_top1": true,
+        "prob_alvo": 0.5107,
+        "loss_token": 0.6719
+      },
+      {
+        "split": "test",
+        "contexto_token": "TIPO_PRODUTO_Bikini top",
+        "alvo_real": "COR_Black",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.787,
+        "acertou_top1": true,
+        "prob_alvo": 0.787,
+        "loss_token": 0.2396
+      },
+      {
+        "split": "test",
+        "contexto_token": "COR_Black",
+        "alvo_real": "LINHA_VESTUARIO_Swimwear",
+        "top1_previsto": "LINHA_VESTUARIO_Swimwear",
+        "top1_prob": 0.9995,
+        "acertou_top1": true,
+        "prob_alvo": 0.9995,
+        "loss_token": 0.0005
+      },
+      {
+        "split": "test",
+        "contexto_token": "LINHA_VESTUARIO_Swimwear",
+        "alvo_real": "CANAL_loja",
+        "top1_previsto": "CANAL_online",
+        "top1_prob": 0.9896,
+        "acertou_top1": false,
+        "prob_alvo": 0.0104,
+        "loss_token": 4.5667
+      },
+      {
+        "split": "test",
+        "contexto_token": "CANAL_loja",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.7619,
+        "acertou_top1": true,
+        "prob_alvo": 0.7619,
+        "loss_token": 0.272
+      },
+      {
+        "split": "test",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Swimwear_5",
+        "top1_previsto": "PRECO_BUCKET_Swimwear_7",
+        "top1_prob": 0.3761,
+        "acertou_top1": false,
+        "prob_alvo": 0.0973,
+        "loss_token": 2.3295
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_Swimwear_5",
+        "alvo_real": "RECENCIA_91-180",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.7474,
+        "acertou_top1": false,
+        "prob_alvo": 0.0004,
+        "loss_token": 7.949
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_91-180",
+        "alvo_real": "MES_6",
+        "top1_previsto": "MES_4",
+        "top1_prob": 0.2665,
+        "acertou_top1": false,
+        "prob_alvo": 0.0033,
+        "loss_token": 5.7276
+      },
+      {
+        "split": "test",
+        "contexto_token": "MES_6",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9999,
+        "acertou_top1": true,
+        "prob_alvo": 0.9999,
+        "loss_token": 0.0001
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Lingeries/Tights",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.5199,
+        "acertou_top1": true,
+        "prob_alvo": 0.5199,
+        "loss_token": 0.6541
+      },
+      {
+        "split": "test",
+        "contexto_token": "INDICE_Lingeries/Tights",
+        "alvo_real": "GRUPO_PRODUTO_Underwear",
+        "top1_previsto": "GRUPO_PRODUTO_Swimwear",
+        "top1_prob": 0.6096,
+        "acertou_top1": false,
+        "prob_alvo": 0.3287,
+        "loss_token": 1.1127
+      },
+      {
+        "split": "test",
+        "contexto_token": "GRUPO_PRODUTO_Underwear",
+        "alvo_real": "TIPO_PRODUTO_Bra",
+        "top1_previsto": "TIPO_PRODUTO_Bra",
+        "top1_prob": 0.546,
+        "acertou_top1": true,
+        "prob_alvo": 0.546,
+        "loss_token": 0.6051
+      },
+      {
+        "split": "test",
+        "contexto_token": "TIPO_PRODUTO_Bra",
+        "alvo_real": "COR_White",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.4438,
+        "acertou_top1": false,
+        "prob_alvo": 0.0905,
+        "loss_token": 2.4019
+      },
+      {
+        "split": "test",
+        "contexto_token": "COR_White",
+        "alvo_real": "LINHA_VESTUARIO_Under-, Nightwear",
+        "top1_previsto": "LINHA_VESTUARIO_Under-, Nightwear",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "test",
+        "contexto_token": "LINHA_VESTUARIO_Under-, Nightwear",
+        "alvo_real": "CANAL_loja",
+        "top1_previsto": "CANAL_loja",
+        "top1_prob": 0.5356,
+        "acertou_top1": true,
+        "prob_alvo": 0.5356,
+        "loss_token": 0.6243
+      },
+      {
+        "split": "test",
+        "contexto_token": "CANAL_loja",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.8613,
+        "acertou_top1": true,
+        "prob_alvo": 0.8613,
+        "loss_token": 0.1493
+      },
+      {
+        "split": "test",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Underwear_7",
+        "top1_previsto": "PRECO_BUCKET_Underwear_7",
+        "top1_prob": 0.256,
+        "acertou_top1": true,
+        "prob_alvo": 0.256,
+        "loss_token": 1.3626
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_Underwear_7",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9103,
+        "acertou_top1": true,
+        "prob_alvo": 0.9103,
+        "loss_token": 0.0939
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_6",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.8265,
+        "acertou_top1": false,
+        "prob_alvo": 0.0001,
+        "loss_token": 9.0648
+      },
+      {
+        "split": "test",
+        "contexto_token": "MES_6",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 0.9999,
+        "acertou_top1": true,
+        "prob_alvo": 0.9999,
+        "loss_token": 0.0001
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Ladies Accessories",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.5326,
+        "acertou_top1": false,
+        "prob_alvo": 0.1268,
+        "loss_token": 2.0654
+      },
+      {
+        "split": "test",
+        "contexto_token": "INDICE_Ladies Accessories",
+        "alvo_real": "GRUPO_PRODUTO_Shoes",
+        "top1_previsto": "GRUPO_PRODUTO_Accessories",
+        "top1_prob": 0.5823,
+        "acertou_top1": false,
+        "prob_alvo": 0.4151,
+        "loss_token": 0.8793
+      },
+      {
+        "split": "test",
+        "contexto_token": "GRUPO_PRODUTO_Shoes",
+        "alvo_real": "TIPO_PRODUTO_Heeled sandals",
+        "top1_previsto": "TIPO_PRODUTO_Boots",
+        "top1_prob": 0.5601,
+        "acertou_top1": false,
+        "prob_alvo": 0.0413,
+        "loss_token": 3.1877
+      },
+      {
+        "split": "test",
+        "contexto_token": "TIPO_PRODUTO_Heeled sandals",
+        "alvo_real": "COR_Black",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.5931,
+        "acertou_top1": true,
+        "prob_alvo": 0.5931,
+        "loss_token": 0.5224
+      },
+      {
+        "split": "test",
+        "contexto_token": "COR_Black",
+        "alvo_real": "LINHA_VESTUARIO_Shoes",
+        "top1_previsto": "LINHA_VESTUARIO_Shoes",
+        "top1_prob": 0.9995,
+        "acertou_top1": true,
+        "prob_alvo": 0.9995,
+        "loss_token": 0.0005
+      },
+      {
+        "split": "test",
+        "contexto_token": "LINHA_VESTUARIO_Shoes",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_loja",
+        "top1_prob": 0.5036,
+        "acertou_top1": false,
+        "prob_alvo": 0.4963,
+        "loss_token": 0.7006
+      },
+      {
+        "split": "test",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.9868,
+        "acertou_top1": true,
+        "prob_alvo": 0.9868,
+        "loss_token": 0.0133
+      },
+      {
+        "split": "test",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Shoes_3",
+        "top1_previsto": "PRECO_BUCKET_Shoes_6",
+        "top1_prob": 0.2569,
+        "acertou_top1": false,
+        "prob_alvo": 0.0553,
+        "loss_token": 2.8942
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_Shoes_3",
+        "alvo_real": "RECENCIA_0-7",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9506,
+        "acertou_top1": true,
+        "prob_alvo": 0.9506,
+        "loss_token": 0.0507
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_0-7",
+        "alvo_real": "MES_6",
+        "top1_previsto": "MES_11",
+        "top1_prob": 0.7226,
+        "acertou_top1": false,
+        "prob_alvo": 0.0006,
+        "loss_token": 7.4893
+      },
+      {
+        "split": "test",
+        "contexto_token": "MES_6",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Ladies Accessories",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.4687,
+        "acertou_top1": false,
+        "prob_alvo": 0.1893,
+        "loss_token": 1.6646
+      },
+      {
+        "split": "test",
+        "contexto_token": "INDICE_Ladies Accessories",
+        "alvo_real": "GRUPO_PRODUTO_Accessories",
+        "top1_previsto": "GRUPO_PRODUTO_Shoes",
+        "top1_prob": 0.6649,
+        "acertou_top1": false,
+        "prob_alvo": 0.3335,
+        "loss_token": 1.0983
+      },
+      {
+        "split": "test",
+        "contexto_token": "GRUPO_PRODUTO_Accessories",
+        "alvo_real": "TIPO_PRODUTO_Hat/brim",
+        "top1_previsto": "TIPO_PRODUTO_Bag",
+        "top1_prob": 0.2031,
+        "acertou_top1": false,
+        "prob_alvo": 0.0091,
+        "loss_token": 4.7013
+      },
+      {
+        "split": "test",
+        "contexto_token": "TIPO_PRODUTO_Hat/brim",
+        "alvo_real": "COR_Other",
+        "top1_previsto": "COR_Black",
+        "top1_prob": 0.7359,
+        "acertou_top1": false,
+        "prob_alvo": 0.0,
+        "loss_token": 10.3889
+      },
+      {
+        "split": "test",
+        "contexto_token": "COR_Other",
+        "alvo_real": "LINHA_VESTUARIO_Accessories",
+        "top1_previsto": "LINHA_VESTUARIO_Accessories",
+        "top1_prob": 0.5923,
+        "acertou_top1": true,
+        "prob_alvo": 0.5923,
+        "loss_token": 0.5238
+      },
+      {
+        "split": "test",
+        "contexto_token": "LINHA_VESTUARIO_Accessories",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_loja",
+        "top1_prob": 0.5284,
+        "acertou_top1": false,
+        "prob_alvo": 0.4715,
+        "loss_token": 0.7518
+      },
+      {
+        "split": "test",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.9997,
+        "acertou_top1": true,
+        "prob_alvo": 0.9997,
+        "loss_token": 0.0003
+      },
+      {
+        "split": "test",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Accessories_8",
+        "top1_previsto": "PRECO_BUCKET_Accessories_7",
+        "top1_prob": 0.3708,
+        "acertou_top1": false,
+        "prob_alvo": 0.2472,
+        "loss_token": 1.3976
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_Accessories_8",
+        "alvo_real": "RECENCIA_8-15",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9583,
+        "acertou_top1": false,
+        "prob_alvo": 0.0212,
+        "loss_token": 3.8542
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_8-15",
+        "alvo_real": "MES_7",
+        "top1_previsto": "MES_12",
+        "top1_prob": 0.862,
+        "acertou_top1": false,
+        "prob_alvo": 0.0003,
+        "loss_token": 8.274
+      },
+      {
+        "split": "test",
+        "contexto_token": "MES_7",
+        "alvo_real": "EVT",
+        "top1_previsto": "EVT",
+        "top1_prob": 1.0,
+        "acertou_top1": true,
+        "prob_alvo": 1.0,
+        "loss_token": 0.0
+      },
+      {
+        "split": "test",
+        "contexto_token": "EVT",
+        "alvo_real": "INDICE_Ladieswear",
+        "top1_previsto": "INDICE_Lingeries/Tights",
+        "top1_prob": 0.3469,
+        "acertou_top1": false,
+        "prob_alvo": 0.2538,
+        "loss_token": 1.3714
+      },
+      {
+        "split": "test",
+        "contexto_token": "INDICE_Ladieswear",
+        "alvo_real": "GRUPO_PRODUTO_Garment Upper body",
+        "top1_previsto": "GRUPO_PRODUTO_Garment Upper body",
+        "top1_prob": 0.5911,
+        "acertou_top1": true,
+        "prob_alvo": 0.5911,
+        "loss_token": 0.5257
+      },
+      {
+        "split": "test",
+        "contexto_token": "GRUPO_PRODUTO_Garment Upper body",
+        "alvo_real": "TIPO_PRODUTO_Hoodie",
+        "top1_previsto": "TIPO_PRODUTO_Blazer",
+        "top1_prob": 0.3547,
+        "acertou_top1": false,
+        "prob_alvo": 0.0038,
+        "loss_token": 5.5816
+      },
+      {
+        "split": "test",
+        "contexto_token": "TIPO_PRODUTO_Hoodie",
+        "alvo_real": "COR_Light Beige",
+        "top1_previsto": "COR_Off White",
+        "top1_prob": 0.3426,
+        "acertou_top1": false,
+        "prob_alvo": 0.1535,
+        "loss_token": 1.874
+      },
+      {
+        "split": "test",
+        "contexto_token": "COR_Light Beige",
+        "alvo_real": "LINHA_VESTUARIO_Jersey Fancy",
+        "top1_previsto": "LINHA_VESTUARIO_Jersey Basic",
+        "top1_prob": 0.6368,
+        "acertou_top1": false,
+        "prob_alvo": 0.3598,
+        "loss_token": 1.0223
+      },
+      {
+        "split": "test",
+        "contexto_token": "LINHA_VESTUARIO_Jersey Fancy",
+        "alvo_real": "CANAL_online",
+        "top1_previsto": "CANAL_loja",
+        "top1_prob": 0.5037,
+        "acertou_top1": false,
+        "prob_alvo": 0.4958,
+        "loss_token": 0.7017
+      },
+      {
+        "split": "test",
+        "contexto_token": "CANAL_online",
+        "alvo_real": "ARTIGO_OUTROS",
+        "top1_previsto": "ARTIGO_OUTROS",
+        "top1_prob": 0.9995,
+        "acertou_top1": true,
+        "prob_alvo": 0.9995,
+        "loss_token": 0.0005
+      },
+      {
+        "split": "test",
+        "contexto_token": "ARTIGO_OUTROS",
+        "alvo_real": "PRECO_BUCKET_Garment Upper body_8",
+        "top1_previsto": "PRECO_BUCKET_Garment Upper body_8",
+        "top1_prob": 0.721,
+        "acertou_top1": true,
+        "prob_alvo": 0.721,
+        "loss_token": 0.3272
+      },
+      {
+        "split": "test",
+        "contexto_token": "PRECO_BUCKET_Garment Upper body_8",
+        "alvo_real": "RECENCIA_31-60",
+        "top1_previsto": "RECENCIA_0-7",
+        "top1_prob": 0.9066,
+        "acertou_top1": false,
+        "prob_alvo": 0.005,
+        "loss_token": 5.3028
+      },
+      {
+        "split": "test",
+        "contexto_token": "RECENCIA_31-60",
+        "alvo_real": "MES_8",
+        "top1_previsto": "MES_12",
+        "top1_prob": 0.9857,
+        "acertou_top1": false,
+        "prob_alvo": 0.0002,
+        "loss_token": 8.557
+      }
+    ]
+  }
+}
