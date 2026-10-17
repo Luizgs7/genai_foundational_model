@@ -1,0 +1,43 @@
+{
+  "emb_subpasta": "fusao",
+  "emb_dim": 384,
+  "sem_embedding": false,
+  "sem_cadastro": true,
+  "sem_causais": true,
+  "n_params": 27236,
+  "n_train": 2000000,
+  "n_val": 940523,
+  "n_test": 2239380,
+  "tarefas": [
+    {
+      "nome": "churn",
+      "tipo": "binaria",
+      "n_classes": 1
+    },
+    {
+      "nome": "next_category",
+      "tipo": "multiclasse",
+      "n_classes": 10
+    },
+    {
+      "nome": "ltv_90d",
+      "tipo": "multiclasse",
+      "n_classes": 8
+    },
+    {
+      "nome": "proxima_online",
+      "tipo": "binaria",
+      "n_classes": 1
+    }
+  ],
+  "campos_estaticos_categoricos": [],
+  "campos_estaticos_numericos": [],
+  "pos_weights": {
+    "churn": 3.046092987060547,
+    "proxima_online": 0.7260067462921143
+  },
+  "batch_size": 2048,
+  "n_epochs": 8,
+  "lr": 0.003,
+  "seed": 1
+}

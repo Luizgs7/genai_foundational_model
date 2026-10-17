@@ -1,0 +1,170 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "val",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 940523,
+    "n_clientes": 468561,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/fusao_e_cad_caus_s*",
+    "b": "runs/hm_clientes/fusao_d_completo_s*",
+    "metrica_a": 0.7835992514454025,
+    "metrica_b": 0.7848223526345728,
+    "delta": 0.0012231011891702392,
+    "ic95": [
+      0.0008370717182897613,
+      0.001706295032717603
+    ],
+    "B": 200,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "val",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 940523,
+    "n_clientes": 468561,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/fusao_c_emb_caus_s*",
+    "b": "runs/hm_clientes/fusao_d_completo_s*",
+    "metrica_a": 0.785536423769889,
+    "metrica_b": 0.7848223526345728,
+    "delta": -0.0007140711353161855,
+    "ic95": [
+      -0.0009021553842923496,
+      -0.0005132134933368864
+    ],
+    "B": 200,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "val",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 813667,
+    "n_clientes": 370608,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/fusao_e_cad_caus_s*",
+    "b": "runs/hm_clientes/fusao_d_completo_s*",
+    "metrica_a": 0.807406457455463,
+    "metrica_b": 0.8232325933600069,
+    "delta": 0.015826135904543848,
+    "ic95": [
+      0.015418038390458074,
+      0.01630080266420797
+    ],
+    "B": 200,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "val",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 813667,
+    "n_clientes": 370608,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/fusao_c_emb_caus_s*",
+    "b": "runs/hm_clientes/fusao_d_completo_s*",
+    "metrica_a": 0.8209546373917334,
+    "metrica_b": 0.8232325933600069,
+    "delta": 0.002277955968273515,
+    "ic95": [
+      0.00209356793559671,
+      0.002493765801357556
+    ],
+    "B": 200,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "val",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 813667,
+    "n_clientes": 370608,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/fusao_e_cad_caus_s*",
+    "b": "runs/hm_clientes/fusao_d_completo_s*",
+    "metrica_a": 0.3738273765557654,
+    "metrica_b": 0.38538370119471477,
+    "delta": 0.011556324638949345,
+    "ic95": [
+      0.010847382710657502,
+      0.012225620801015706
+    ],
+    "B": 200,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "val",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 813667,
+    "n_clientes": 370608,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/fusao_c_emb_caus_s*",
+    "b": "runs/hm_clientes/fusao_d_completo_s*",
+    "metrica_a": 0.3763689568336924,
+    "metrica_b": 0.38538370119471477,
+    "delta": 0.009014744361022342,
+    "ic95": [
+      0.008316251492600542,
+      0.009681113743330881
+    ],
+    "B": 200,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "val",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 940523,
+    "n_clientes": 468561,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/fusao_e_cad_caus_s*",
+    "b": "runs/hm_clientes/fusao_d_completo_s*",
+    "metrica_a": 0.41496699176947294,
+    "metrica_b": 0.37240769231587106,
+    "delta": -0.04255929945360187,
+    "ic95": [
+      -0.0434788173560887,
+      -0.04159219861069044
+    ],
+    "B": 200,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "val",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 940523,
+    "n_clientes": 468561,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/fusao_c_emb_caus_s*",
+    "b": "runs/hm_clientes/fusao_d_completo_s*",
+    "metrica_a": 0.38071796224015786,
+    "metrica_b": 0.37240769231587106,
+    "delta": -0.008310269924286795,
+    "ic95": [
+      -0.008768951175067284,
+      -0.007743548900070647
+    ],
+    "B": 200,
+    "significativo": true
+  }
+]

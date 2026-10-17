@@ -32,7 +32,17 @@ from schema import caminho_tabela, carregar_config, ler_tabela, run_dir  # noqa:
 
 
 def carregar_predicoes(base_dir, tarefa, split):
-    """-> DataFrame evento_id, entidade_id e `score` (binária) ou colunas p_<classe>."""
+    """-> DataFrame evento_id, entidade_id e `score` (binária) ou colunas p_<classe>.
+    `base_dir` com '*' (ex. runs/x/fusao_d_completo_s*) junta várias pastas
+    (uma por semente) e promedia as predições."""
+    if "*" in base_dir:
+        partes = [carregar_predicoes(d, tarefa, split)[0] for d in sorted(glob.glob(base_dir))]
+        if not partes:
+            raise FileNotFoundError(f"nenhuma pasta para {base_dir}")
+        out = partes[0][["evento_id", "entidade_id"]].copy()
+        for c in [c for c in partes[0].columns if c not in ("evento_id", "entidade_id")]:
+            out[c] = np.mean([p.set_index("evento_id").loc[out["evento_id"], c].to_numpy() for p in partes], axis=0)
+        return out, len(partes)
     gbdt = sorted(glob.glob(os.path.join(base_dir, f"predicoes_{split}_{tarefa}_seed*.parquet")))
     if gbdt:
         dfs = [pd.read_parquet(f) for f in gbdt]

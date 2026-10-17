@@ -1,0 +1,460 @@
+{
+  "features": "emb_pca",
+  "modelo": "lgbm",
+  "n_features": 16,
+  "sem_cadastro": false,
+  "emb": "fusao",
+  "pca_k": 16,
+  "tarefas": {
+    "churn": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 2000000,
+      "n_val": 940523,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.1,
+        "num_leaves": 63,
+        "min_child_samples": 200,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "lambda_l1": 0.0,
+        "lambda_l2": 1.0
+      },
+      "hpo_melhor_valor": null,
+      "val_resumo": {
+        "auc": {
+          "media": 0.7182325362331764,
+          "desvio": 0.0
+        },
+        "pr_auc": {
+          "media": 0.5269709126247573,
+          "desvio": 0.0
+        }
+      },
+      "baseline_causal_val_auc": 0.7338829206567589,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 6,
+          "val": {
+            "auc": 0.7182325362331764,
+            "pr_auc": 0.5269709126247573
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 1.0,
+      "top_importancia": [
+        [
+          "emb_pca_9",
+          0.42344923667365264
+        ],
+        [
+          "emb_pca_7",
+          0.197733606237575
+        ],
+        [
+          "emb_pca_0",
+          0.12846632558365467
+        ],
+        [
+          "emb_pca_5",
+          0.06312364432158912
+        ],
+        [
+          "emb_pca_11",
+          0.06079328434304239
+        ],
+        [
+          "emb_pca_14",
+          0.035218578780281
+        ],
+        [
+          "emb_pca_4",
+          0.03108818821016826
+        ],
+        [
+          "emb_pca_8",
+          0.02152957242281104
+        ],
+        [
+          "emb_pca_3",
+          0.01362258858499478
+        ],
+        [
+          "emb_pca_1",
+          0.009512628834270008
+        ],
+        [
+          "emb_pca_6",
+          0.006289320304829038
+        ],
+        [
+          "emb_pca_2",
+          0.004719954388421707
+        ],
+        [
+          "emb_pca_10",
+          0.0018348973308493777
+        ],
+        [
+          "emb_pca_13",
+          0.0017768530043868122
+        ],
+        [
+          "emb_pca_12",
+          0.0008413209794741918
+        ],
+        [
+          "emb_pca_15",
+          0.0
+        ]
+      ],
+      "tempo_segundos": 14.826016902923584
+    },
+    "next_category": {
+      "tipo": "multiclasse",
+      "classes": [
+        "Accessories",
+        "Garment Full body",
+        "Garment Lower body",
+        "Garment Upper body",
+        "Nightwear",
+        "Outros",
+        "Shoes",
+        "Socks & Tights",
+        "Swimwear",
+        "Underwear"
+      ],
+      "n_treino": 1832598,
+      "n_val": 813667,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.1,
+        "num_leaves": 63,
+        "min_child_samples": 200,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "lambda_l1": 0.0,
+        "lambda_l2": 1.0
+      },
+      "hpo_melhor_valor": null,
+      "val_resumo": {
+        "accuracy": {
+          "media": 0.3740178721762097,
+          "desvio": 0.0
+        },
+        "f1_macro": {
+          "media": 0.055064556049479206,
+          "desvio": 0.0
+        },
+        "log_loss": {
+          "media": 1.7212907080515936,
+          "desvio": 0.0
+        }
+      },
+      "baseline_causal_val_auc": null,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 24,
+          "val": {
+            "accuracy": 0.3740178721762097,
+            "f1_macro": 0.055064556049479206,
+            "log_loss": 1.7212907080515936
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.9999999999999998,
+      "top_importancia": [
+        [
+          "emb_pca_1",
+          0.2160884740305806
+        ],
+        [
+          "emb_pca_2",
+          0.12108271102878493
+        ],
+        [
+          "emb_pca_12",
+          0.09299507211131952
+        ],
+        [
+          "emb_pca_4",
+          0.06818623056007415
+        ],
+        [
+          "emb_pca_0",
+          0.06757986662455545
+        ],
+        [
+          "emb_pca_3",
+          0.05848737754648786
+        ],
+        [
+          "emb_pca_11",
+          0.05619602334156951
+        ],
+        [
+          "emb_pca_10",
+          0.05609953596093442
+        ],
+        [
+          "emb_pca_8",
+          0.05558436498026124
+        ],
+        [
+          "emb_pca_5",
+          0.04280005428564463
+        ],
+        [
+          "emb_pca_9",
+          0.04213177925583947
+        ],
+        [
+          "emb_pca_6",
+          0.02988414180016005
+        ],
+        [
+          "emb_pca_7",
+          0.029756891972902696
+        ],
+        [
+          "emb_pca_13",
+          0.025523314907554332
+        ],
+        [
+          "emb_pca_15",
+          0.019940455990811314
+        ],
+        [
+          "emb_pca_14",
+          0.017663705602519807
+        ]
+      ],
+      "tempo_segundos": 74.80131506919861
+    },
+    "ltv_90d": {
+      "tipo": "multiclasse",
+      "classes": [
+        "2.0",
+        "3.0",
+        "4.0",
+        "5.0",
+        "6.0",
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "n_treino": 2000000,
+      "n_val": 940523,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.1,
+        "num_leaves": 63,
+        "min_child_samples": 200,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "lambda_l1": 0.0,
+        "lambda_l2": 1.0
+      },
+      "hpo_melhor_valor": null,
+      "val_resumo": {
+        "accuracy": {
+          "media": 0.3618667486068921,
+          "desvio": 0.0
+        },
+        "f1_macro": {
+          "media": 0.10308251269627022,
+          "desvio": 0.0
+        },
+        "log_loss": {
+          "media": 1.875276882550023,
+          "desvio": 0.0
+        }
+      },
+      "baseline_causal_val_auc": null,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 5,
+          "val": {
+            "accuracy": 0.3618667486068921,
+            "f1_macro": 0.10308251269627022,
+            "log_loss": 1.875276882550023
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 1.0,
+      "top_importancia": [
+        [
+          "emb_pca_9",
+          0.4729641628726601
+        ],
+        [
+          "emb_pca_7",
+          0.1494384663269341
+        ],
+        [
+          "emb_pca_11",
+          0.08447762123754383
+        ],
+        [
+          "emb_pca_0",
+          0.06875170098702568
+        ],
+        [
+          "emb_pca_5",
+          0.05323626048982481
+        ],
+        [
+          "emb_pca_3",
+          0.03216627505642407
+        ],
+        [
+          "emb_pca_4",
+          0.023790142834926874
+        ],
+        [
+          "emb_pca_14",
+          0.023453681319098845
+        ],
+        [
+          "emb_pca_1",
+          0.02131618106436512
+        ],
+        [
+          "emb_pca_10",
+          0.01488758957567771
+        ],
+        [
+          "emb_pca_2",
+          0.012832947250274153
+        ],
+        [
+          "emb_pca_8",
+          0.011187464179890881
+        ],
+        [
+          "emb_pca_15",
+          0.010665005154662083
+        ],
+        [
+          "emb_pca_13",
+          0.009186522072808961
+        ],
+        [
+          "emb_pca_6",
+          0.006967845659253907
+        ],
+        [
+          "emb_pca_12",
+          0.004678133918628869
+        ]
+      ],
+      "tempo_segundos": 63.55080199241638
+    },
+    "proxima_online": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 1832598,
+      "n_val": 813667,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.1,
+        "num_leaves": 63,
+        "min_child_samples": 200,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "lambda_l1": 0.0,
+        "lambda_l2": 1.0
+      },
+      "hpo_melhor_valor": null,
+      "val_resumo": {
+        "auc": {
+          "media": 0.743067200563488,
+          "desvio": 0.0
+        },
+        "pr_auc": {
+          "media": 0.8278394393815517,
+          "desvio": 0.0
+        }
+      },
+      "baseline_causal_val_auc": 0.800675606339848,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 57,
+          "val": {
+            "auc": 0.743067200563488,
+            "pr_auc": 0.8278394393815517
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 1.0,
+      "top_importancia": [
+        [
+          "emb_pca_8",
+          0.28061119831458053
+        ],
+        [
+          "emb_pca_5",
+          0.23240360640587554
+        ],
+        [
+          "emb_pca_10",
+          0.19369076637131782
+        ],
+        [
+          "emb_pca_9",
+          0.09905444486918742
+        ],
+        [
+          "emb_pca_7",
+          0.047044841128359785
+        ],
+        [
+          "emb_pca_12",
+          0.0292579464912555
+        ],
+        [
+          "emb_pca_11",
+          0.02081360858380903
+        ],
+        [
+          "emb_pca_3",
+          0.018199989324104285
+        ],
+        [
+          "emb_pca_0",
+          0.01819817977883606
+        ],
+        [
+          "emb_pca_13",
+          0.014528024189451637
+        ],
+        [
+          "emb_pca_1",
+          0.011403345649797288
+        ],
+        [
+          "emb_pca_6",
+          0.00955126046019199
+        ],
+        [
+          "emb_pca_14",
+          0.008980379441676544
+        ],
+        [
+          "emb_pca_4",
+          0.006215430964100521
+        ],
+        [
+          "emb_pca_15",
+          0.005341467511753994
+        ],
+        [
+          "emb_pca_2",
+          0.00470551051570207
+        ]
+      ],
+      "tempo_segundos": 13.429709196090698
+    }
+  }
+}
