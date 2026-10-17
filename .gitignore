@@ -35,3 +35,6 @@ runs/hm_clientes/**/*.pt
 venv/
 .vscode/
 .DS_Store
+
+# logs de execução local
+logs/
