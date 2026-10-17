@@ -222,8 +222,8 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
             dtype = torch.long if mapa_classes else torch.float32
             fill = -1 if mapa_classes else float("nan")
             alvos[nome] = torch.tensor(sub[col].fillna(fill).values, dtype=dtype)
-        return (sub, emb_t.to(DEV), [c.to(DEV) for c in cat_ids], num_vals.to(DEV) if num_vals is not None else None,
-                {k: v.to(DEV) for k, v in alvos.items()})
+        # dados ficam na CPU; só cada lote vai pro dispositivo (cabe ao lado de outro job na GPU)
+        return sub, emb_t, cat_ids, num_vals, alvos
 
     sub_train, emb_tr, cat_tr, num_tr, alvos_tr = montar_tensores("train")
     sub_val, emb_val, cat_val, num_val, alvos_val = montar_tensores("val")
@@ -255,7 +255,7 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         total = 0.0
         partes = {}
         for nome, tipo, _n in tarefas_modelo:
-            y = alvos[nome][idx]
+            y = alvos[nome][idx].to(DEV)
             if tipo == "binaria":
                 mask = ~torch.isnan(y)
                 l = F.binary_cross_entropy_with_logits(
@@ -269,10 +269,22 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         return total, partes
 
     @torch.no_grad()
-    def avaliar(emb_t, cat_ids, num_vals, alvos):
+    def prever_em_pedacos(emb_t, cat_ids, num_vals, pedaco=131072):
+        """forward em pedaços (memória da GPU); saídas voltam pra CPU"""
         model.eval()
-        saidas = model(emb_t, cat_ids, num_vals)
+        partes = {nome: [] for nome, _t, _n in tarefas_modelo}
+        for a in range(0, len(emb_t), pedaco):
+            sl = slice(a, a + pedaco)
+            out = model(emb_t[sl].to(DEV), [c[sl].to(DEV) for c in cat_ids],
+                        num_vals[sl].to(DEV) if num_vals is not None else None)
+            for nome in partes:
+                partes[nome].append(out[nome].float().cpu())
         model.train()
+        return {nome: torch.cat(v) for nome, v in partes.items()}
+
+    @torch.no_grad()
+    def avaliar(emb_t, cat_ids, num_vals, alvos):
+        saidas = prever_em_pedacos(emb_t, cat_ids, num_vals)
         resultado = {}
         for nome, tipo, _n in tarefas_modelo:
             y = alvos[nome].cpu().numpy()
@@ -316,11 +328,11 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         ordem = np.random.permutation(n_train)
         perdas = []
         for i in range(0, n_train, BATCH_SIZE):
-            idx = torch.from_numpy(ordem[i:i + BATCH_SIZE]).to(DEV)
-            cat_batch = [c[idx] for c in cat_tr]
-            num_batch = num_tr[idx] if num_tr is not None else None
+            idx = torch.from_numpy(ordem[i:i + BATCH_SIZE])
+            cat_batch = [c[idx].to(DEV) for c in cat_tr]
+            num_batch = num_tr[idx].to(DEV) if num_tr is not None else None
             optimizer.zero_grad()
-            saidas = model(emb_tr[idx], cat_batch, num_batch)
+            saidas = model(emb_tr[idx].to(DEV), cat_batch, num_batch)
             loss, _partes = perda_multitarefa(saidas, alvos_tr, idx)
             loss.backward()
             optimizer.step()
@@ -353,8 +365,7 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
 
     @torch.no_grad()
     def scores(emb_t, cat_ids, num_vals):
-        model.eval()
-        saidas = model(emb_t, cat_ids, num_vals)
+        saidas = prever_em_pedacos(emb_t, cat_ids, num_vals)
         out = {}
         for nome, tipo, _n in tarefas_modelo:
             out[nome] = (torch.sigmoid(saidas[nome].squeeze(-1)).cpu().numpy() if tipo == "binaria"
