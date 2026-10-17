@@ -5,7 +5,7 @@
 # relatorio.json do conjunto features+modelo.
 set -euo pipefail
 C=configs/hm_clientes.yaml
-PY=".venv/bin/python pipeline/common/tarefa14_gbdt.py $C --features trad"
+PY=".venv/bin/python -u pipeline/common/tarefa14_gbdt.py $C --features trad"
 for M in ${MODELOS:-lgbm xgb}; do
   scripts/rodar_limitado.sh -m 7G $PY --modelo $M --tarefas churn,proxima_online --n_trials 40
   scripts/rodar_limitado.sh -m 7G $PY --modelo $M --tarefas next_category,ltv_90d --n_trials 25
