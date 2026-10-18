@@ -1,0 +1,23 @@
+{
+  "_nota": "Resultados lidos no Colab e reportados no chat em 2026-10-17/18; os arquivos originais se perderam quando o runtime do Colab foi reciclado (a ref.json original está em ref.json). Transcritos manualmente — validação, 1 época por ablação, 1 semente. Checkpoints destas ablações NÃO existem mais.",
+  "colunas": "params_M, loss_val_completa, tempo_pretreino_s, sonda_gbdt_val (PCA-32, LightGBM fixo), sonda_fusao_val (DCNv2)",
+  "ablacoes": {
+    "ref":           {"params_M": 11.58, "loss_val": 1.5878, "tempo_s": 2035, "tokens_s": 112055, "vram_gb": 8.6, "gbdt": {"churn_auc": 0.6824, "next_category_acc": 0.3756}, "fusao": {"churn": 0.7782, "next_category": 0.3638, "ltv_90d": 0.3847, "proxima_online": 0.8137}},
+    "moderna":       {"params_M": 10.37, "loss_val": 0.9534, "tempo_s": 2588, "tokens_s": 88135, "vram_gb": 9.4, "gbdt": {"churn_auc": 0.7164, "next_category_acc": 0.3780}, "fusao": {"churn": 0.7851, "next_category": 0.3782, "ltv_90d": 0.3823, "proxima_online": 0.8163}},
+    "tam_128x4":     {"params_M": 1.10, "loss_val": 1.6105, "tempo_s": 582, "tokens_s": 391609, "gbdt": {"churn_auc": 0.7190, "next_category_acc": 0.3762}, "fusao": {"churn": 0.7746, "next_category": 0.3757, "ltv_90d": 0.4093, "proxima_online": 0.8083}},
+    "tam_256x6":     {"params_M": 5.36, "loss_val": 1.5763, "tempo_s": 1272, "gbdt": {"churn_auc": 0.7351, "next_category_acc": 0.3745}, "fusao": {"churn": 0.7797, "next_category": 0.3548, "ltv_90d": 0.4067, "proxima_online": 0.8206}},
+    "tam_512x8":     {"params_M": 26.46, "loss_val": 1.5482, "tempo_s": 3559, "vram_gb": 13.6, "gbdt": {"churn_auc": 0.6943, "next_category_acc": 0.3742}, "fusao": {"churn": 0.7758, "next_category": 0.3250, "ltv_90d": 0.3712, "proxima_online": 0.8149}},
+    "ctx_512":       {"params_M": 11.58, "loss_val": 1.4433, "tempo_s": 1754, "vram_gb": 8.6, "gbdt": {"churn_auc": 0.6831, "next_category_acc": 0.3760}, "fusao": {"churn": 0.7900, "next_category": 0.3767, "ltv_90d": 0.4103, "proxima_online": 0.8202}},
+    "ctx_2048":      {"params_M": 11.58, "loss_val": 1.6593, "tempo_s": 2104, "vram_gb": 8.6, "gbdt": {"churn_auc": 0.7296, "next_category_acc": 0.3788}, "fusao": {"churn": 0.7863, "next_category": 0.3615, "ltv_90d": 0.4026, "proxima_online": 0.8224}},
+    "pos_rope":      {"params_M": 11.58, "loss_val": 0.9106, "tempo_s": 2515, "gbdt": {"churn_auc": 0.7385, "next_category_acc": 0.3791}, "fusao": {"churn": 0.7871, "next_category": 0.3826, "ltv_90d": 0.3888, "proxima_online": 0.8214}},
+    "pos_aprendida": {"params_M": 11.97, "loss_val": 1.4626, "tempo_s": 1977, "gbdt": {"churn_auc": 0.6850, "next_category_acc": 0.3779}, "fusao": {"churn": 0.7843, "next_category": 0.3730, "ltv_90d": 0.4131, "proxima_online": 0.8218}}
+  },
+  "pendentes_h8": ["ffn_swiglu", "norm_rms", "drop_0", "attn_gqa2", "attn_mqa"],
+  "verificacao_loss_moderna": "Avaliação independente (rotular_alvo legado, 400 clientes, 34.111 tokens): ref 1,6635; moderna 0,9435. Teste de causalidade (mudar tokens a partir da posição 60 não altera logits anteriores) passou para ref, moderna, pos_rope e attn_gqa2.",
+  "gbdt_h6_h7_transcritos": {
+    "trad_lgbm_orcamento_h7": {"churn_auc": 0.7996, "proxima_online_auc": 0.8294, "next_category_acc": 0.3932, "ltv_90d_acc": 0.4237, "_nota": "HPO 20/12 tentativas; igual ao trad_lgbm com 40/25"},
+    "emb_pca_lgbm (só embedding H3, PCA-32, HPO)": {"churn_auc": 0.7391, "proxima_online_auc": 0.7683},
+    "emb_bruto_lgbm (só embedding H3, 384 dims, HPO)": {"proxima_online_auc": 0.7633},
+    "hibrido_lgbm": "iniciado, não concluído"
+  }
+}
