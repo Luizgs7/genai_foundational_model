@@ -23,7 +23,7 @@ features de embedding) e predições de val/teste para bootstrap.
 
 Uso: python3 pipeline/common/tarefa14_gbdt.py <config.yaml> --features trad --modelo lgbm
          [--tarefas churn,next_category] [--n_trials 40] [--amostra_hpo 500000]
-         [--seeds 0,1,2] [--emb fusao] [--pca_k 32] [--saida <nome>] [--sem_cadastro] [--avaliar_teste]
+         [--seeds 0,1,2] [--emb fusao] [--pca_k 32] [--saida <nome>] [--sem_cadastro] [--avaliar_teste] [--params_de <saida>]
 Gera runs/<nome>/gbdt/<saida>/{relatorio.json, predicoes_<split>_<tarefa>.parquet}.
 """
 
@@ -237,7 +237,12 @@ def main(args):
             m = metricas(tipo, yva_h, prever(Xva_h))
             return m["auc"] if tipo == "binaria" else m["log_loss"]
 
-        if args.n_trials > 0:
+        if args.params_de:
+            # H10: hiperparâmetros congelados (escolhidos na validação por outra execução)
+            origem = json.load(open(os.path.join(run_dir(config, "gbdt"), args.params_de, "relatorio.json"), encoding="utf-8"))
+            melhores, melhor_valor = origem["tarefas"][nome]["melhores_hiperparametros"], origem["tarefas"][nome]["hpo_melhor_valor"]
+            print(f"  hiperparâmetros congelados de {args.params_de}")
+        elif args.n_trials > 0:
             estudo = optuna.create_study(direction="maximize" if tipo == "binaria" else "minimize",
                                          sampler=optuna.samplers.TPESampler(seed=0))
             estudo.optimize(objetivo, n_trials=args.n_trials)
@@ -321,4 +326,5 @@ if __name__ == "__main__":
     ap.add_argument("--threads", type=int, default=10)
     ap.add_argument("--sem_cadastro", action="store_true")
     ap.add_argument("--avaliar_teste", action="store_true")
+    ap.add_argument("--params_de", default=None, help="saida de outra execução cujos melhores hiperparâmetros são reusados (sem HPO)")
     main(ap.parse_args())

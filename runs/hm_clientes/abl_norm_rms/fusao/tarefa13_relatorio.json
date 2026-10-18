@@ -1,0 +1,52 @@
+{
+  "n_params": 32614,
+  "n_train": 2000000,
+  "n_val": 940523,
+  "n_test": 2239380,
+  "melhor_epoca": 4,
+  "metricas_validacao": {
+    "churn": {
+      "auc": 0.7824386465522517
+    },
+    "next_category": {
+      "accuracy": 0.3777220902408479,
+      "f1_macro": 0.10256264193352271
+    },
+    "ltv_90d": {
+      "accuracy": 0.3962763271073647,
+      "f1_macro": 0.20674140412806027
+    },
+    "proxima_online": {
+      "auc": 0.8207656777132989
+    }
+  },
+  "comparacao_com_baseline_validacao": {
+    "churn": {
+      "metrica": "auc",
+      "modelo": 0.7824386465522517,
+      "baseline": 0.7338829206567589,
+      "delta": 0.04855572589549284
+    },
+    "next_category": {
+      "metrica": "accuracy",
+      "modelo": 0.3777220902408479,
+      "baseline": 0.35580034584172643,
+      "delta": 0.02192174439912148
+    },
+    "ltv_90d": {
+      "metrica": "accuracy",
+      "modelo": 0.3962763271073647,
+      "baseline": 0.33481584182417656,
+      "delta": 0.06146048528318815
+    },
+    "proxima_online": {
+      "metrica": "auc",
+      "modelo": 0.8207656777132989,
+      "baseline": 0.800675606339848,
+      "delta": 0.02009007137345087
+    }
+  },
+  "metricas_teste": null,
+  "comparacao_com_baseline": null,
+  "tempo_total_segundos": 170.26770067214966
+}
