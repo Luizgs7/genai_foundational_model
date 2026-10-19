@@ -266,4 +266,4 @@ A Olist tinha 112 mil eventos; a H&M tem 31,8M.
 
    O embedding como feature extra (híbrido) também não ajudou de forma consistente.
 3. **O embedding carrega sinal sequencial real,** com +0,025 de AUC em online e +0,026 de accuracy em categoria na fusão. Esse sinal, porém, já está nas features de composição e RFM do GBDT. Para o produto, a proposta de valor precisa ser **custo de construção** (um modelo para N tarefas, sem feature engineering por tarefa), não **acurácia superior**, até que um caso de uso demonstre o contrário.
-4. **A loss de pré-treino é um mau critério de seleção.** O RoPE reduziu a loss de 1,6 para 0,9 sem ganho downstream, provavelmente por cópia intra-cesta. Toda escolha de backbone precisa de sonda downstream.
+4. **A loss de pré-treino é um mau critério de seleção.** O RoPE reduziu a loss de 1,6 para 0,9 sem ganho downstream. A diferença é quase toda o token de mês do calendário, que o modelo NoPE não extrapola para fora da janela de treino. Toda escolha de backbone precisa de sonda downstream.

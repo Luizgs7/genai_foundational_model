@@ -1,0 +1,171 @@
+{
+ "val": {
+  "nope_h3": {
+   "n_tokens_mes": 2044,
+   "nll_mes": 8.423146980436814,
+   "massa_em_tokens_mes": 0.998432883836052,
+   "acerto_argmax": 0.2226027397260274,
+   "meses_reais": {
+    "MES_1": 768,
+    "MES_2": 600,
+    "MES_3": 571,
+    "MES_12": 105
+   },
+   "meses_previstos_argmax": {
+    "MES_12": 965,
+    "MES_11": 349,
+    "MES_10": 170,
+    "MES_3": 164,
+    "MES_2": 94,
+    "MES_1": 92,
+    "MES_9": 71,
+    "MES_7": 57,
+    "MES_6": 35,
+    "MES_8": 24,
+    "MES_4": 15,
+    "MES_5": 6,
+    "RECENCIA_0-7": 2
+   }
+  },
+  "nope_drop0_1ep": {
+   "n_tokens_mes": 2044,
+   "nll_mes": 8.053957693365161,
+   "massa_em_tokens_mes": 0.9974378724591606,
+   "acerto_argmax": 0.24168297455968688,
+   "meses_reais": {
+    "MES_1": 768,
+    "MES_2": 600,
+    "MES_3": 571,
+    "MES_12": 105
+   },
+   "meses_previstos_argmax": {
+    "MES_12": 951,
+    "MES_11": 311,
+    "MES_10": 182,
+    "MES_3": 173,
+    "MES_1": 117,
+    "MES_2": 99,
+    "MES_9": 81,
+    "MES_7": 58,
+    "MES_6": 38,
+    "MES_4": 16,
+    "MES_8": 13,
+    "MES_5": 5
+   }
+  },
+  "rope_final_s0": {
+   "n_tokens_mes": 2044,
+   "nll_mes": 0.7017651907490521,
+   "massa_em_tokens_mes": 0.9984151712252436,
+   "acerto_argmax": 0.8957925636007827,
+   "meses_reais": {
+    "MES_1": 768,
+    "MES_2": 600,
+    "MES_3": 571,
+    "MES_12": 105
+   },
+   "meses_previstos_argmax": {
+    "MES_1": 641,
+    "MES_2": 546,
+    "MES_3": 539,
+    "MES_12": 235,
+    "MES_11": 29,
+    "MES_10": 23,
+    "MES_4": 12,
+    "MES_9": 6,
+    "MES_6": 6,
+    "MES_8": 3,
+    "MES_7": 2,
+    "ARTIGO_OUTROS": 1,
+    "MES_5": 1
+   }
+  }
+ },
+ "test": {
+  "nope_h3": {
+   "n_tokens_mes": 3328,
+   "nll_mes": 5.247312772936202,
+   "massa_em_tokens_mes": 0.9942643817720147,
+   "acerto_argmax": 0.4606370192307692,
+   "meses_reais": {
+    "MES_6": 703,
+    "MES_7": 580,
+    "MES_8": 536,
+    "MES_4": 532,
+    "MES_5": 530,
+    "MES_9": 341,
+    "MES_3": 106
+   },
+   "meses_previstos_argmax": {
+    "MES_12": 1329,
+    "MES_7": 294,
+    "MES_11": 290,
+    "MES_4": 262,
+    "MES_6": 260,
+    "MES_5": 244,
+    "MES_8": 227,
+    "MES_9": 219,
+    "MES_10": 155,
+    "MES_3": 27,
+    "RECENCIA_0-7": 10,
+    "MES_2": 9,
+    "MES_1": 2
+   }
+  },
+  "nope_drop0_1ep": {
+   "n_tokens_mes": 3328,
+   "nll_mes": 5.592303621543526,
+   "massa_em_tokens_mes": 0.9983818197819906,
+   "acerto_argmax": 0.5075120192307693,
+   "meses_reais": {
+    "MES_6": 703,
+    "MES_7": 580,
+    "MES_8": 536,
+    "MES_4": 532,
+    "MES_5": 530,
+    "MES_9": 341,
+    "MES_3": 106
+   },
+   "meses_previstos_argmax": {
+    "MES_12": 1199,
+    "MES_6": 315,
+    "MES_7": 315,
+    "MES_8": 292,
+    "MES_11": 282,
+    "MES_5": 255,
+    "MES_4": 254,
+    "MES_9": 236,
+    "MES_10": 158,
+    "MES_3": 22
+   }
+  },
+  "rope_final_s0": {
+   "n_tokens_mes": 3328,
+   "nll_mes": 0.36980364871706467,
+   "massa_em_tokens_mes": 0.9995973211748955,
+   "acerto_argmax": 0.9636418269230769,
+   "meses_reais": {
+    "MES_6": 703,
+    "MES_7": 580,
+    "MES_8": 536,
+    "MES_4": 532,
+    "MES_5": 530,
+    "MES_9": 341,
+    "MES_3": 106
+   },
+   "meses_previstos_argmax": {
+    "MES_6": 667,
+    "MES_7": 572,
+    "MES_8": 553,
+    "MES_5": 509,
+    "MES_4": 501,
+    "MES_9": 317,
+    "MES_3": 105,
+    "MES_10": 47,
+    "MES_12": 32,
+    "MES_11": 24,
+    "MES_1": 1
+   }
+  }
+ }
+}

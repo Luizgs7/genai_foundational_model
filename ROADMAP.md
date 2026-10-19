@@ -215,7 +215,7 @@ Detalhes em `EXPERIMENTOS_HM.md`.
 
 **Próximos passos sugeridos**:
 - fine-tuning conjunto do backbone com as cabeças (Estágio 4 do ARQUITETURA, nunca testado);
-- objetivo de pré-treino em nível de cesta/evento, e não de token, para matar a cópia intra-cesta;
+- objetivo de pré-treino em nível de cesta/evento, e não de token, sem o token de mês absoluto no alvo (ele domina quase metade da loss do NoPE; ver EXPERIMENTOS_HM.md, H8);
 - tarefas onde a sequência é decisiva (recomendação do próximo artigo, cold-start de categoria);
 - teste numa base com cadastro rico (a base da empresa).
 

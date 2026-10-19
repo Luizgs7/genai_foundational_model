@@ -15,7 +15,7 @@ Números consolidados em `runs/hm_clientes/resultados_consolidados.json`
 | H6 | O embedding sozinho alimenta bem um GBDT? | **Não.** Fica acima do baseline causal em churn, mas muito abaixo do GBDT tradicional (churn 0,768 vs 0,824). |
 | H5 | Quanto entrega o GBDT tradicional (97 features + HPO)? | É o **melhor modelo** nas 4 tarefas: churn 0,824, online 0,845, categoria 0,373, LTV 0,399. |
 | H7 | Híbrido (features + embedding) ganha do tradicional? | **Não de forma consistente.** Com LightGBM perde nas 4 tarefas, por pouco; com XGBoost ganha só em churn (+0,007), porque o XGBoost tradicional é o mais fraco ali. |
-| H8 | Quais escolhas de arquitetura importam? | **RoPE** domina a loss de pré-treino (0,91 vs 1,59); o resto é ±1–2%. **A loss não se traduz em downstream**: o backbone final (5M, 4× mais barato) empata na validação e perde no teste. |
+| H8 | Quais escolhas de arquitetura importam? | **RoPE** domina a loss de pré-treino (0,91 vs 1,59), mas a diferença é quase toda o token de mês do calendário, que o NoPE não extrapola; o resto é ±1–2%. **A loss não se traduz em downstream**: o backbone final (5M, 4× mais barato) empata na validação e perde no teste. |
 | H9 | Qual o efeito do cadastro na fusão? | **Pequeno**: +0,007 em categoria, ≈0 em online, −0,003 em churn e −0,002 em LTV no teste. O **embedding** pesa mais: +0,025 em online e +0,026 em categoria, mas −0,004 em churn e −0,008 em LTV. |
 
 Conclusão operacional: **nesta base, o modelo fundacional não supera o ML
@@ -182,16 +182,35 @@ A sonda GBDT é um LightGBM com parâmetros fixos sobre o PCA-32. A sonda de fus
   | Fusão val | churn 0,784, categoria 0,377, LTV 0,389, online 0,819 |
   | Fusão teste | **pior que a H3** nas 4 tarefas, de −0,006 a −0,014 |
 
-**Leitura crítica.** A queda enorme da loss com RoPE vem, quase certamente, de
-uma **cópia intra-cesta**:
-- itens da mesma cesta repetem data, recência, canal e, muitas vezes, grupo e faixa de preço;
-- com RoPE, o modelo aprende a olhar "11 tokens atrás", o mesmo campo do item anterior, e acerta esses tokens quase de graça.
+**Leitura crítica: a diferença de loss é o token de mês.** Ela foi decomposta
+por campo em `pipeline/common/diagnostico_copia.py` (2.000 clientes de validação,
+mesmos alvos) e `pipeline/common/diagnostico_mes.py`. Os resultados estão em
+`runs/hm_clientes/relatorios/diagnostico_{copia,mes}.json`.
 
-Isso melhora a perplexidade, mas **não ensina comportamento de longo prazo do
-cliente**, que é o que as tarefas downstream exigem. É também por isso que o
-modelo sobreajusta a partir da 2ª época. Foram descartados como causa:
-- **Vazamento:** o teste de causalidade passou, ou seja, alterar tokens futuros não muda os logits passados.
-- **Bug de avaliação:** uma avaliação independente com o rotulador legado reproduziu 0,94 contra 1,66.
+| Modelo | Loss total | Contribuição do token MES | Loss sem MES |
+|---|---|---|---|
+| NoPE H3 (3 épocas) | 1,655 | 0,786 | 0,955 |
+| NoPE dropout 0 (1 época) | 1,589 | 0,736 | 0,939 |
+| NoPE GQA kv=2 (1 época) | 1,604 | 0,743 | 0,947 |
+| RoPE final, sementes 0/1/2 | 0,915–0,920 | 0,066–0,072 | 0,932–0,938 |
+
+- **Fora o mês, NoPE e RoPE empatam**, inclusive nos campos que repetem o valor do item anterior. A hipótese de "cópia intra-cesta", levantada antes desta análise, está **refutada**.
+- **Mecanismo.** Sem posição, a atenção não distingue o último token MES do histórico dos anteriores. O NoPE aprendeu a prever os meses em que as sequências de treino terminam:
+
+  | Split | Meses reais | O NoPE prevê | O RoPE prevê | Loss no MES (NoPE / RoPE) |
+  |---|---|---|---|---|
+  | Validação | jan–mar | dez/nov/out | jan–mar | 8,4 / 0,7 |
+  | Teste | abr–ago | dez | abr–ago | 5,2 / 0,4 |
+
+  O RoPE copia o mês do evento anterior pela distância relativa.
+- **Mesma falha no decoder próprio com NoPE:** não é uma particularidade do GPT-2 da HF.
+- **Consequências.**
+  - A melhora de 43% na loss é calendário, sem informação de comportamento, e não havia por que melhorar o downstream.
+  - Isso explica a loss de teste da H3 abaixo da de validação, pelo erro menor no MES.
+  - O token de mês absoluto é um defeito de desenho da tokenização: domina quase metade da loss da referência. Deve sair do alvo ou virar codificação relativa, e a loss reportada deve ser decomposta por campo.
+- **Também descartados como causa:**
+  - **Vazamento:** o teste de causalidade passou, ou seja, alterar tokens futuros não muda os logits passados.
+  - **Bug de avaliação:** uma avaliação independente com o rotulador legado reproduziu 0,94 contra 1,66.
 
 **Implicação:** a loss de pré-treino **não serve como critério de seleção** de
 backbone para estas tarefas. É preciso uma sonda downstream, e ela tem que ser

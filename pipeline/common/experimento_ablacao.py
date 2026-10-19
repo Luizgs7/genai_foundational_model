@@ -15,6 +15,7 @@ Etapas já concluídas são puladas (dá pra retomar depois de queda do Colab;
 o pré-treino retoma do último checkpoint).
 
 Uso: python3 pipeline/common/experimento_ablacao.py <config_base.yaml> <ablacao> [<ablacao> ...]
+     (sementes extras do pré-treino: <ablacao>@s<N>, ex. pos_rope@s1 -> abl_pos_rope_s1)
      python3 pipeline/common/experimento_ablacao.py <config_base.yaml> --listar
 """
 
@@ -63,11 +64,21 @@ PRETREINO_ABLACAO = {"n_epochs": 1, "paciencia_epocas": None, "val_a_cada_passos
                      "checkpoint_a_cada_passos": 500}
 
 
+def separar_semente(nome):
+    """'pos_rope@s1' -> ('pos_rope', 1); sem sufixo -> semente 0 (as rodadas originais)."""
+    if "@s" in nome:
+        base, s = nome.split("@s", 1)
+        return base, int(s)
+    return nome, 0
+
+
 def config_ablacao(config_base_path, nome, extra=None):
     base = yaml.safe_load(open(config_base_path, encoding="utf-8"))
     cfg = copy.deepcopy(base)
-    cfg["arquitetura"] = {**REFERENCIA, **ABLACOES.get(nome, {}), **(extra or {})}
-    cfg["pretreino"] = {**base.get("pretreino", {}), **PRETREINO_ABLACAO}
+    ablacao, semente = separar_semente(nome)
+    cfg["arquitetura"] = {**REFERENCIA, **ABLACOES.get(ablacao, {}), **(extra or {})}
+    cfg["pretreino"] = {**base.get("pretreino", {}), **PRETREINO_ABLACAO, "seed": semente}
+    nome = nome.replace("@", "_")
     os.makedirs(run_dir(cfg, "ablacoes"), exist_ok=True)
     path = os.path.join(run_dir(cfg, "ablacoes"), f"{nome}.yaml")
     with open(path, "w", encoding="utf-8") as f:
@@ -84,6 +95,7 @@ def main(config_base_path, nomes):
     py = sys.executable
     for nome in nomes:
         path, cfg = config_ablacao(config_base_path, nome)
+        nome = nome.replace("@", "_")   # pos_rope@s1 -> pos_rope_s1 (pastas e relatórios)
         sub = f"abl_{nome}"
         pre_dir = os.path.join(run_dir(cfg, sub), "pretreino")
         emb_dir = os.path.join(run_dir(cfg, sub), "embeddings")

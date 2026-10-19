@@ -191,7 +191,7 @@ sobre dados reais. Em particular:
 Ver `EXPERIMENTOS_HM.md`, seção "Limitações deste experimento". Resumo dos riscos que valem para o produto:
 
 - **Sem vantagem de acurácia sobre o GBDT tradicional** em churn, próxima categoria, LTV e próximo canal. A tese de produto precisa se apoiar em reuso, custo e tempo de entrega, ou em tarefas onde o histórico sequencial é decisivo, ainda não demonstradas.
-- **A loss de pré-treino não prediz qualidade downstream.** O RoPE derruba a perplexidade por cópia intra-cesta (itens da mesma cesta repetem data, canal, grupo e preço) e sobreajusta a partir da 2ª época.
+- **A loss de pré-treino não prediz qualidade downstream.** A diferença de perplexidade entre NoPE e RoPE é quase toda o token de mês absoluto: o NoPE não consegue extrapolar o calendário para fora da janela de treino. Fora esse token, os dois empatam. A loss agregada precisa ser decomposta por campo, e o token de mês deveria sair do alvo.
 - **Deslocamento temporal.** A janela de teste coincide com a COVID; a ordem entre modelos muda entre validação e teste em alguns pares.
 - **O IC por cliente não cobre a variância entre sementes de pré-treino nem a variação temporal.** Diferenças menores que ~0,005 não orientam decisão.
 - **O cadastro da H&M é pobre.** O efeito incremental pequeno do cadastro não se generaliza para bases com cadastro rico.
