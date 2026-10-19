@@ -17,5 +17,6 @@ for t in churn proxima_online next_category ltv_90d; do
   $A --tarefa $t --a "h10_fusao_c_emb_caus_s*" --b "h10_fusao_d_completo_s*"
   $A --tarefa $t --a "h10_fusao_d_completo_s*" --b "h10_final_fusao_s*"
   $A --tarefa $t --a gbdt/h10_hibrido_lgbm_sem_cadastro --b gbdt/h10_hibrido_lgbm
+  $A --tarefa $t --a gbdt/h10_trad_xgb --b gbdt/h10_hibrido_xgb
 done
 echo "bootstrap H10 concluído"

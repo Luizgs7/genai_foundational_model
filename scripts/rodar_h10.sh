@@ -14,12 +14,23 @@ T=${THREADS:-6}
 G="python3 -u pipeline/common/tarefa14_gbdt.py $C --avaliar_teste --seeds 0,1,2 --threads $T"
 F="python3 -u pipeline/common/tarefa13_treinar_fusao.py $C --avaliar_teste --dispositivo auto"
 
-if [ "${CPU:-0}" = 1 ]; then
-  gb() {  # $1=origem dos hiperparâmetros $2=features $3=--emb  [extras]
+gb() { :; }
+if [ "${CPU:-0}" = 1 ] || [ "${XGB:-0}" = 1 ]; then
+  gb() {  # $1=origem dos hiperparâmetros $2=features $3=--emb  [extras]   (modelo: $M, padrão lgbm)
     local o=$1 f=$2 e=$3; shift 3
     [ -f $R/gbdt/h10_$o/relatorio.json ] && python3 -c "import json,sys;r=json.load(open('$R/gbdt/h10_$o/relatorio.json'));sys.exit(0 if len(r['tarefas'])==4 else 1)" && return
-    $G --features $f --modelo lgbm --emb $e --pca_k 32 --params_de $o --saida h10_$o "$@"
+    until python3 -c "import json,sys;sys.exit(0 if len(json.load(open('$R/gbdt/$o/relatorio.json'))['tarefas'])==4 else 1)" 2>/dev/null; do
+      sleep 300   # origem dos hiperparâmetros ainda rodando
+    done
+    $G --features $f --modelo ${M:-lgbm} --emb $e --pca_k 32 --params_de $o --saida h10_$o "$@"
   }
+fi
+if [ "${XGB:-0}" = 1 ]; then   # XGBoost na GPU (XGB_DEVICE=cuda)
+  M=xgb gb trad_xgb trad fusao
+  M=xgb gb hibrido_xgb hibrido fusao
+  echo "H10 XGBoost concluída"
+fi
+if [ "${CPU:-0}" = 1 ]; then
   gb trad_lgbm trad fusao                       # H5
   gb hibrido_lgbm hibrido fusao                 # H7 (backbone H3)
   gb emb_pca_lgbm emb_pca fusao                 # H6 (backbone H3)
