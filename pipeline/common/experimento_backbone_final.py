@@ -5,7 +5,7 @@ o orçamento COMPLETO da H3 (3 épocas, paciência 1) em várias sementes:
   1. pré-treino            -> runs/<nome>/final_s<S>/pretreino/
   2. extração (fp16)       -> runs/<nome>/final_s<S>/embeddings/
   3. fusão completa (d)    -> runs/<nome>/final_s<S>/fusao/          (H4)
-  4. só na semente 0: GBDT só-embedding (PCA-k) e híbrido, com o mesmo
+  4. só na semente 0 (e sem --sem_gbdt): GBDT só-embedding (PCA-k) e híbrido, com o mesmo
      orçamento de HPO da H6/H7 -> runs/<nome>/gbdt/final_{emb_pca,hibrido}_lgbm/
 A variante (e) da fusão (sem embedding) não depende do backbone e não é refeita.
 
@@ -50,6 +50,7 @@ def main():
     ap.add_argument("--seeds", nargs="+", type=int, default=[0, 1, 2])
     ap.add_argument("--pca_k", type=int, default=32)
     ap.add_argument("--threads", type=int, default=6)
+    ap.add_argument("--sem_gbdt", action="store_true", help="só GPU (pré-treino, extração, fusão); GBDT em outro processo")
     args = ap.parse_args()
 
     base = yaml.safe_load(open(args.config, encoding="utf-8"))
@@ -74,7 +75,7 @@ def main():
         if not os.path.exists(os.path.join(run_dir(cfg, sub), "fusao", "tarefa13_relatorio.json")):
             rodar([py, "-u", "pipeline/common/tarefa13_treinar_fusao.py", path, "--emb", f"{sub}/embeddings",
                    "--saida", f"{sub}/fusao", "--seed", str(s), "--dispositivo", "auto"])
-        if s != args.seeds[0]:
+        if args.sem_gbdt or s != 0:
             continue
         for feats, saida in (("emb_pca", "final_emb_pca_lgbm"), ("hibrido", "final_hibrido_lgbm")):
             rel = os.path.join(run_dir(cfg, "gbdt"), saida, "relatorio.json")

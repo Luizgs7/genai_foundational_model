@@ -151,6 +151,8 @@ def treinar(modelo, tipo, n_classes, params, X_tr, y_tr, X_va, y_va, cat_idx, se
     p = {"objective": "binary:logistic" if tipo == "binaria" else "multi:softprob",
          "eval_metric": "auc" if tipo == "binaria" else "mlogloss", "tree_method": "hist", "max_bin": 256,
          "seed": seed, "nthread": threads, **params}
+    if os.environ.get("XGB_DEVICE"):   # ex. XGB_DEVICE=cuda: treino na GPU (libera a CPU para os LightGBM)
+        p["device"] = os.environ["XGB_DEVICE"]
     if tipo != "binaria":
         p["num_class"] = n_classes
     ft = ["c" if i in set(cat_idx) else "q" for i in range(X_tr.shape[1])]

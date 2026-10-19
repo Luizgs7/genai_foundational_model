@@ -1,0 +1,3 @@
+epoch,loss_treino_media,loss_val,perplexidade_val,n_tokens_val,elapsed_s
+1,1.015836,0.917585,2.5032,7229229,1139.7
+2,0.776634,0.936804,2.5518,7229229,1145.6
