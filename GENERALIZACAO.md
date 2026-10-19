@@ -229,3 +229,41 @@ loss, ou crescer a cabeça agora que ela tem mais sinal pra usar).
   https://claude.ai/code/artifact/38eb86d0-17fb-4d2c-9f3d-2fa9b806eeeb
 - Dados brutos da Olist em `dados_olist/` (git-ignorado — dados de
   terceiros, baixados via `kagglehub`).
+
+## Terceira base: H&M (31,8M eventos) — escala e confronto com ML tradicional
+
+Detalhes completos em `EXPERIMENTOS_HM.md`.
+
+### O que precisou mudar no motor para escalar 300×
+
+A Olist tinha 112 mil eventos; a H&M tem 31,8M.
+
+- **Serialização vetorizada** (`tarefa3_serializacao.py`). A saída virou `tokens.npy` em memmap + `entidades.parquet` + `posicoes_evento.parquet`, lidos por `sequencias_io.Sequencias`, no lugar do `sequencias.json`.
+- **Rótulos vetorizados** (`tarefa8_rotulos.py`): cumsum/bincount/reduceat no lugar de `groupby.apply`. Ganhou a opção `ancora: cesta`.
+- **Pré-treino.**
+  - Lotes por orçamento de tokens; janelas de todas as sequências longas.
+  - Pesos fp32 com autocast bf16.
+  - Checkpoint periódico e `--retomar`.
+  - Validação por amostra a cada época e completa no fim.
+- **Decoder próprio configurável** (`modelo_decoder.py`): RoPE/NoPE/aprendida, LayerNorm/RMSNorm, GELU/SwiGLU, MHA/GQA/MQA, dropout. A configuração equivalente ao GPT-2 + NoPE reproduz a referência.
+- **Baseline tradicional de verdade.**
+  - `features_tradicionais.py`: 97 features causais com teste de vazamento.
+  - `tarefa14_gbdt.py`: LightGBM/XGBoost com Optuna e 3 sementes; `--params_de` para congelar hiperparâmetros.
+  - `avaliacao.py`: bootstrap por cliente.
+- **Disciplina de memória local** (15 GB): `scripts/rodar_limitado.sh` (cgroup), `ARROW_DEFAULT_MEMORY_POOL=system`, joins por posição e lexsort coluna a coluna. Um OOM já tinha derrubado o VS Code.
+
+### O que a H&M ensinou sobre o produto
+
+1. **O motor generaliza.** O mesmo YAML-driven pipeline rodou numa base real de varejo de moda, com âncora por cesta, 4 tarefas e cadastro, sem código específico de empresa além do adapter.
+2. **O modelo fundacional, nesta base, não superou o GBDT tradicional bem-feito em nenhuma tarefa.** No teste, o LightGBM com 97 features ganhou da fusão completa (H4) por:
+
+   | Tarefa | Vantagem do LightGBM |
+   |---|---|
+   | Churn | +0,014 |
+   | Online | +0,009 |
+   | Categoria | +0,022 |
+   | LTV | +0,031 |
+
+   O embedding como feature extra (híbrido) também não ajudou de forma consistente.
+3. **O embedding carrega sinal sequencial real,** com +0,025 de AUC em online e +0,026 de accuracy em categoria na fusão. Esse sinal, porém, já está nas features de composição e RFM do GBDT. Para o produto, a proposta de valor precisa ser **custo de construção** (um modelo para N tarefas, sem feature engineering por tarefa), não **acurácia superior**, até que um caso de uso demonstre o contrário.
+4. **A loss de pré-treino é um mau critério de seleção.** O RoPE reduziu a loss de 1,6 para 0,9 sem ganho downstream, provavelmente por cópia intra-cesta. Toda escolha de backbone precisa de sonda downstream.

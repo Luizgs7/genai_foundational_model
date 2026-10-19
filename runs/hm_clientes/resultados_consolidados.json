@@ -472,15 +472,29 @@
      "media": 0.8296862366433904,
      "desvio": 0.00012620486870486614,
      "n": 3
+    },
+    "next_category": {
+     "media": 0.39211905279842163,
+     "desvio": 9.462710092618776e-05,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.41669262739986157,
+     "desvio": 0.0003120068282975507,
+     "n": 3
     }
    },
    "test": {
     "churn": null,
-    "proxima_online": null
+    "proxima_online": null,
+    "next_category": null,
+    "ltv_90d": null
    },
    "participacao_embedding": {
     "churn": 0.042881577909965815,
-    "proxima_online": 0.01256780860392491
+    "proxima_online": 0.01256780860392491,
+    "next_category": 0.09085569460873953,
+    "ltv_90d": 0.03588732648128097
    }
   },
   "gbdt_hibrido_xgb": {
@@ -525,13 +539,70 @@
      "media": 0.7987770003243246,
      "desvio": 0.0002916029938606746,
      "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8296932027291558,
+     "desvio": 0.0001455553004871347,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.39248734433128046,
+     "desvio": 4.703516764730469e-05,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.4199418833989174,
+     "desvio": 0.0010747254138863652,
+     "n": 3
     }
    },
    "test": {
-    "churn": null
+    "churn": null,
+    "proxima_online": null,
+    "next_category": null,
+    "ltv_90d": null
    },
    "participacao_embedding": {
-    "churn": 0.04199336125100801
+    "churn": 0.04199336125100801,
+    "proxima_online": 0.015452103905867473,
+    "next_category": 0.10077308766453998,
+    "ltv_90d": 0.032840852301078034
+   }
+  },
+  "gbdt_hibrido_lgbm_sem_cadastro": {
+   "val": {
+    "churn": {
+     "media": 0.7944584518648865,
+     "desvio": 0.0002519291522648944,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8282313753489512,
+     "desvio": 4.544624971558823e-05,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.39281630773604764,
+     "desvio": 0.00013898918993974005,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.41838601147092275,
+     "desvio": 0.000866186331368888,
+     "n": 3
+    }
+   },
+   "test": {
+    "churn": null,
+    "proxima_online": null,
+    "next_category": null,
+    "ltv_90d": null
+   },
+   "participacao_embedding": {
+    "churn": 0.05233187295262495,
+    "proxima_online": 0.006927873571010505,
+    "next_category": 0.12282875425368953,
+    "ltv_90d": 0.03697417002588446
    }
   },
   "fusao_d_completo": {
@@ -714,6 +785,58 @@
     "ltv_90d": null
    }
   },
+  "h10_gbdt_trad_lgbm": {
+   "val": {
+    "churn": {
+     "media": 0.7999812334836433,
+     "desvio": 0.00025246613795467136,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8295288467433138,
+     "desvio": 7.92771056813032e-05,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.3931972989769361,
+     "desvio": 4.616360369428592e-05,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.42433199400758936,
+     "desvio": 0.000497396279047798,
+     "n": 3
+    }
+   },
+   "test": {
+    "churn": {
+     "media": 0.824183002761409,
+     "desvio": 0.00018017062175238336,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8447144961166595,
+     "desvio": 2.507117204283356e-05,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.3727127644295163,
+     "desvio": 4.487553332778721e-05,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.39874480425741204,
+     "desvio": 0.00017274224846123472,
+     "n": 3
+    }
+   },
+   "participacao_embedding": {
+    "churn": 0.0,
+    "proxima_online": 0.0,
+    "next_category": 0.0,
+    "ltv_90d": 0.0
+   }
+  },
   "h10_gbdt_trad_xgb": {
    "val": {
     "churn": {
@@ -766,6 +889,110 @@
     "ltv_90d": 0.0
    }
   },
+  "h10_gbdt_emb_pca_lgbm": {
+   "val": {
+    "churn": {
+     "media": 0.7391234933652094,
+     "desvio": 0.003355949890977619,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.768345566198009,
+     "desvio": 0.0003963853217166808,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.3782644906741128,
+     "desvio": 0.00024827976430839984,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.3641654696376378,
+     "desvio": 0.0059944409661314094,
+     "n": 3
+    }
+   },
+   "test": {
+    "churn": {
+     "media": 0.767609176811065,
+     "desvio": 0.005106356078023424,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.7880396608949829,
+     "desvio": 0.0003184617149776999,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.3429034656491303,
+     "desvio": 0.0009177047015335635,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.3138872433404348,
+     "desvio": 0.008379938600311054,
+     "n": 3
+    }
+   },
+   "participacao_embedding": {
+    "churn": 1.0,
+    "proxima_online": 1.0,
+    "next_category": 0.9999999999999999,
+    "ltv_90d": 1.0
+   }
+  },
+  "h10_gbdt_hibrido_lgbm": {
+   "val": {
+    "churn": {
+     "media": 0.795548383637677,
+     "desvio": 0.000118090927365617,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8296862366433904,
+     "desvio": 0.00012620486870486614,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.39211905279842163,
+     "desvio": 9.462710092618776e-05,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.41669262739986157,
+     "desvio": 0.0003120068282975507,
+     "n": 3
+    }
+   },
+   "test": {
+    "churn": {
+     "media": 0.820540934240911,
+     "desvio": 0.0003462480550988223,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8450419775770086,
+     "desvio": 3.6385113108685176e-05,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.36975964667689637,
+     "desvio": 5.074160208965556e-05,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.39176665673205113,
+     "desvio": 0.00029336203972066613,
+     "n": 3
+    }
+   },
+   "participacao_embedding": {
+    "churn": 0.042881577909965815,
+    "proxima_online": 0.01256780860392491,
+    "next_category": 0.09085569460873953,
+    "ltv_90d": 0.03588732648128097
+   }
+  },
   "h10_gbdt_hibrido_xgb": {
    "val": {
     "churn": {
@@ -816,6 +1043,110 @@
     "proxima_online": 0.011126485642479398,
     "next_category": 0.10874394363321939,
     "ltv_90d": 0.048656777305759395
+   }
+  },
+  "h10_gbdt_final_hibrido_lgbm": {
+   "val": {
+    "churn": {
+     "media": 0.7987770003243246,
+     "desvio": 0.0002916029938606746,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8296932027291558,
+     "desvio": 0.0001455553004871347,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.39248734433128046,
+     "desvio": 4.703516764730469e-05,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.4199418833989174,
+     "desvio": 0.0010747254138863652,
+     "n": 3
+    }
+   },
+   "test": {
+    "churn": {
+     "media": 0.8186657171675666,
+     "desvio": 0.0004541184439784223,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8445055875718112,
+     "desvio": 0.00014783392544499832,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.37194297645856117,
+     "desvio": 0.00014199936457686308,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.395280260409576,
+     "desvio": 0.0003545747538408051,
+     "n": 3
+    }
+   },
+   "participacao_embedding": {
+    "churn": 0.04199336125100801,
+    "proxima_online": 0.015452103905867473,
+    "next_category": 0.10077308766453998,
+    "ltv_90d": 0.032840852301078034
+   }
+  },
+  "h10_gbdt_hibrido_lgbm_sem_cadastro": {
+   "val": {
+    "churn": {
+     "media": 0.7944584518648865,
+     "desvio": 0.0002519291522648944,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8282313753489512,
+     "desvio": 4.544624971558823e-05,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.39281630773604764,
+     "desvio": 0.00013898918993974005,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.41838601147092275,
+     "desvio": 0.000866186331368888,
+     "n": 3
+    }
+   },
+   "test": {
+    "churn": {
+     "media": 0.8195289758105825,
+     "desvio": 0.00017786679167679828,
+     "n": 3
+    },
+    "proxima_online": {
+     "media": 0.8437792314647671,
+     "desvio": 7.043522716831291e-05,
+     "n": 3
+    },
+    "next_category": {
+     "media": 0.3703728940219963,
+     "desvio": 0.00029318596987734717,
+     "n": 3
+    },
+    "ltv_90d": {
+     "media": 0.3915032667714094,
+     "desvio": 0.00011024228560128243,
+     "n": 3
+    }
+   },
+   "participacao_embedding": {
+    "churn": 0.05233187295262495,
+    "proxima_online": 0.006927873571010505,
+    "next_category": 0.12282875425368953,
+    "ltv_90d": 0.03697417002588446
    }
   },
   "h10_fusao_d_completo": {
@@ -1003,7 +1334,176 @@
    }
   }
  },
- "bootstrap_teste": null,
+ "bootstrap_teste": [
+  {
+   "tarefa": "churn",
+   "split": "test",
+   "tipo": "binaria",
+   "metrica": "auc",
+   "n_ancoras": 1720460,
+   "n_clientes": 596734,
+   "sementes_a": 3,
+   "sementes_b": 3,
+   "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+   "b": "runs/hm_clientes/gbdt/h10_hibrido_lgbm",
+   "metrica_a": 0.8243675529784246,
+   "metrica_b": 0.8206407054547878,
+   "delta": -0.0037268475236367227,
+   "ic95": [
+    -0.003872058531791675,
+    -0.0035730906614233836
+   ],
+   "B": 300,
+   "significativo": true
+  },
+  {
+   "tarefa": "churn",
+   "split": "test",
+   "tipo": "binaria",
+   "metrica": "auc",
+   "n_ancoras": 1720460,
+   "n_clientes": 596734,
+   "sementes_a": 3,
+   "sementes_b": 3,
+   "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+   "b": "runs/hm_clientes/gbdt/h10_emb_pca_lgbm",
+   "metrica_a": 0.8243675529784246,
+   "metrica_b": 0.7702037112749262,
+   "delta": -0.05416384170349842,
+   "ic95": [
+    -0.054706602973091295,
+    -0.053553811472755945
+   ],
+   "B": 300,
+   "significativo": true
+  },
+  {
+   "tarefa": "churn",
+   "split": "test",
+   "tipo": "binaria",
+   "metrica": "auc",
+   "n_ancoras": 1720460,
+   "n_clientes": 596734,
+   "sementes_a": 3,
+   "sementes_b": 3,
+   "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+   "b": "runs/hm_clientes/gbdt/h10_final_hibrido_lgbm",
+   "metrica_a": 0.8243675529784246,
+   "metrica_b": 0.8188206823225164,
+   "delta": -0.005546870655908198,
+   "ic95": [
+    -0.005618705850093361,
+    -0.005473461493370602
+   ],
+   "B": 300,
+   "significativo": true
+  },
+  {
+   "tarefa": "churn",
+   "split": "test",
+   "tipo": "binaria",
+   "metrica": "auc",
+   "n_ancoras": 1720460,
+   "n_clientes": 596734,
+   "sementes_a": 3,
+   "sementes_b": 3,
+   "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+   "b": "runs/hm_clientes/h10_fusao_d_completo_s*",
+   "metrica_a": 0.8243675529784246,
+   "metrica_b": 0.8132787813305888,
+   "delta": -0.011088771647835727,
+   "ic95": [
+    -0.011531400859093276,
+    -0.01070490908794998
+   ],
+   "B": 300,
+   "significativo": true
+  },
+  {
+   "tarefa": "churn",
+   "split": "test",
+   "tipo": "binaria",
+   "metrica": "auc",
+   "n_ancoras": 1720460,
+   "n_clientes": 596734,
+   "sementes_a": 3,
+   "sementes_b": 3,
+   "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+   "b": "runs/hm_clientes/h10_final_fusao_s*",
+   "metrica_a": 0.8243675529784246,
+   "metrica_b": 0.8075369657475758,
+   "delta": -0.016830587230848737,
+   "ic95": [
+    -0.017183102620447057,
+    -0.016479220836963918
+   ],
+   "B": 300,
+   "significativo": true
+  },
+  {
+   "tarefa": "churn",
+   "split": "test",
+   "tipo": "binaria",
+   "metrica": "auc",
+   "n_ancoras": 1720460,
+   "n_clientes": 596734,
+   "sementes_a": 3,
+   "sementes_b": 3,
+   "a": "runs/hm_clientes/h10_fusao_e_cad_caus_s*",
+   "b": "runs/hm_clientes/h10_fusao_d_completo_s*",
+   "metrica_a": 0.8174761636191731,
+   "metrica_b": 0.8132787813305888,
+   "delta": -0.004197382288584239,
+   "ic95": [
+    -0.004640146938278239,
+    -0.003721316400299152
+   ],
+   "B": 300,
+   "significativo": true
+  },
+  {
+   "tarefa": "churn",
+   "split": "test",
+   "tipo": "binaria",
+   "metrica": "auc",
+   "n_ancoras": 1720460,
+   "n_clientes": 596734,
+   "sementes_a": 3,
+   "sementes_b": 3,
+   "a": "runs/hm_clientes/h10_fusao_c_emb_caus_s*",
+   "b": "runs/hm_clientes/h10_fusao_d_completo_s*",
+   "metrica_a": 0.815792709180981,
+   "metrica_b": 0.8132787813305888,
+   "delta": -0.0025139278503921725,
+   "ic95": [
+    -0.002740492881718176,
+    -0.0022889325046586777
+   ],
+   "B": 300,
+   "significativo": true
+  },
+  {
+   "tarefa": "churn",
+   "split": "test",
+   "tipo": "binaria",
+   "metrica": "auc",
+   "n_ancoras": 1720460,
+   "n_clientes": 596734,
+   "sementes_a": 3,
+   "sementes_b": 3,
+   "a": "runs/hm_clientes/h10_fusao_d_completo_s*",
+   "b": "runs/hm_clientes/h10_final_fusao_s*",
+   "metrica_a": 0.8132787813305888,
+   "metrica_b": 0.8075369657475758,
+   "delta": -0.00574181558301301,
+   "ic95": [
+    -0.006044909820330116,
+    -0.005438867680573711
+   ],
+   "B": 300,
+   "significativo": true
+  }
+ ],
  "bootstrap_validacao_h9": [
   {
    "tarefa": "churn",

@@ -200,6 +200,27 @@ O modelo menor generaliza melhor (loss de teste ~4% menor), quase não sobreajus
 
 ---
 
+## ✅ Experimento H&M — H0–H10 (concluído, 2026-10-19)
+
+**Objetivo**: testar o motor genérico numa base real grande (H&M, 31,8M itens, 1,36M clientes) e confrontar o modelo fundacional com ML tradicional (GBDT + feature engineering + HPO), com híbridos, ablações de arquitetura e efeito do cadastro.
+
+**Resultado** (teste, avaliação única, 3 sementes, IC por bootstrap por cliente):
+- o **GBDT tradicional** (LightGBM, 97 features) é o melhor nas 4 tarefas;
+- o **híbrido** (features + embedding) não ganha de forma consistente;
+- o **embedding** agrega sinal na fusão (online +0,025, categoria +0,026), mas a fusão fica abaixo do GBDT;
+- o **cadastro** tem efeito pequeno;
+- nas ablações, o **RoPE** domina a loss sem efeito downstream, e o backbone final (5M, 4× mais barato) empata na validação e perde no teste.
+
+Detalhes em `EXPERIMENTOS_HM.md`.
+
+**Próximos passos sugeridos**:
+- fine-tuning conjunto do backbone com as cabeças (Estágio 4 do ARQUITETURA, nunca testado);
+- objetivo de pré-treino em nível de cesta/evento, e não de token, para matar a cópia intra-cesta;
+- tarefas onde a sequência é decisiva (recomendação do próximo artigo, cold-start de categoria);
+- teste numa base com cadastro rico (a base da empresa).
+
+---
+
 ## Tarefa 10 — Perguntas para o time / plano de validação com dados reais
 
 **Objetivo**: `PERGUNTAS_ABERTAS.md` com decisões que só podem ser validadas com dados reais.
@@ -211,7 +232,7 @@ O modelo menor generaliza melhor (loss de teste ~4% menor), quase não sobreajus
 
 ## Ordem de execução recomendada
 
-`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (✅) → 8 (✅) → 9 (✅) → 11 (✅) → 12 (✅) → 13 (✅) → 10`
+`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (✅) → 8 (✅) → 9 (✅) → 11 (✅) → 12 (✅) → 13 (✅) → H&M H0–H10 (✅) → 10`
 
 ## Protocolo de execução
 

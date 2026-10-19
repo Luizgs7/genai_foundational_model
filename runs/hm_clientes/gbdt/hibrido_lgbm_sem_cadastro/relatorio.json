@@ -319,6 +319,354 @@
         ]
       ],
       "tempo_segundos": 2176.036381959915
+    },
+    "next_category": {
+      "tipo": "multiclasse",
+      "classes": [
+        "Accessories",
+        "Garment Full body",
+        "Garment Lower body",
+        "Garment Upper body",
+        "Nightwear",
+        "Outros",
+        "Shoes",
+        "Socks & Tights",
+        "Swimwear",
+        "Underwear"
+      ],
+      "n_treino": 1832598,
+      "n_val": 813667,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.023554075015043426,
+        "num_leaves": 19,
+        "min_child_samples": 21,
+        "feature_fraction": 0.8995719073287628,
+        "bagging_fraction": 0.8890783754749252,
+        "lambda_l1": 0.6762532016190338,
+        "lambda_l2": 6.42044426233932
+      },
+      "hpo_melhor_valor": 1.6362964583641513,
+      "val_resumo": {
+        "accuracy": {
+          "media": 0.3928163077360476,
+          "desvio": 0.00013898918993974005
+        },
+        "f1_macro": {
+          "media": 0.10763572880032986,
+          "desvio": 0.0005082726282168194
+        },
+        "log_loss": {
+          "media": 1.6307245560217396,
+          "desvio": 0.00012071431484882436
+        }
+      },
+      "baseline_causal_val_auc": null,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 458,
+          "val": {
+            "accuracy": 0.3927331451318537,
+            "f1_macro": 0.10737556242204585,
+            "log_loss": 1.6305553527877399
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 542,
+          "val": {
+            "accuracy": 0.3927036490357849,
+            "f1_macro": 0.10718551319695238,
+            "log_loss": 1.6307895204821936
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 714,
+          "val": {
+            "accuracy": 0.3930121290405043,
+            "f1_macro": 0.10834611078199137,
+            "log_loss": 1.6308287947952849
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.12282875425368953,
+      "top_importancia": [
+        [
+          "ultima_cesta_grupo_dominante",
+          0.10217481073076816
+        ],
+        [
+          "mes",
+          0.09612943621093135
+        ],
+        [
+          "grupo_produto_16_share",
+          0.08134839461717995
+        ],
+        [
+          "grupo_produto_5_share",
+          0.07313446075543176
+        ],
+        [
+          "grupo_produto_6_share",
+          0.05342363629623782
+        ],
+        [
+          "grupo_produto_7_share",
+          0.04522520726057776
+        ],
+        [
+          "grupo_produto_0_share",
+          0.03399959909177181
+        ],
+        [
+          "grupo_produto_5_share_90d",
+          0.03324280414225148
+        ],
+        [
+          "grupo_produto_13_share",
+          0.0296203459409166
+        ],
+        [
+          "grupo_produto_12_share",
+          0.026886172112764097
+        ],
+        [
+          "indice_7_share",
+          0.02226978246033
+        ],
+        [
+          "grupo_produto_15_share_90d",
+          0.02202388188519824
+        ],
+        [
+          "emb_pca_1",
+          0.01949499318869623
+        ],
+        [
+          "online_share",
+          0.016763338613206193
+        ],
+        [
+          "grupo_produto_15_share",
+          0.016714494470543014
+        ],
+        [
+          "grupo_produto_7_share_90d",
+          0.015239896046524357
+        ],
+        [
+          "ltv_90d_baseline_feat",
+          0.014669610123957408
+        ],
+        [
+          "grupo_produto_6_share_90d",
+          0.0130466725989912
+        ],
+        [
+          "online_ultima_cesta",
+          0.010230056131643009
+        ],
+        [
+          "indice_6_share",
+          0.009795252510050166
+        ],
+        [
+          "grupo_produto_12_share_90d",
+          0.009549083056857848
+        ],
+        [
+          "grupo_produto_11_share",
+          0.009058823842742801
+        ],
+        [
+          "emb_pca_24",
+          0.008727562584346298
+        ],
+        [
+          "proxima_online_baseline_feat",
+          0.008476743378348646
+        ],
+        [
+          "emb_pca_2",
+          0.0076269777471221255
+        ]
+      ],
+      "tempo_segundos": 11948.8136677742
+    },
+    "ltv_90d": {
+      "tipo": "multiclasse",
+      "classes": [
+        "2.0",
+        "3.0",
+        "4.0",
+        "5.0",
+        "6.0",
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "n_treino": 2000000,
+      "n_val": 940523,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.023554075015043426,
+        "num_leaves": 19,
+        "min_child_samples": 21,
+        "feature_fraction": 0.8995719073287628,
+        "bagging_fraction": 0.8890783754749252,
+        "lambda_l1": 0.6762532016190338,
+        "lambda_l2": 6.42044426233932
+      },
+      "hpo_melhor_valor": 1.6715418848489025,
+      "val_resumo": {
+        "accuracy": {
+          "media": 0.41838601147092275,
+          "desvio": 0.000866186331368888
+        },
+        "f1_macro": {
+          "media": 0.21444110534235694,
+          "desvio": 0.0006451789137812117
+        },
+        "log_loss": {
+          "media": 1.675271919445762,
+          "desvio": 0.0005026923442753266
+        }
+      },
+      "baseline_causal_val_auc": null,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 76,
+          "val": {
+            "accuracy": 0.4194325922917356,
+            "f1_macro": 0.21369999103901377,
+            "log_loss": 1.6749437852545235
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 86,
+          "val": {
+            "accuracy": 0.41731143204366083,
+            "f1_macro": 0.21527258107492647,
+            "log_loss": 1.6748898223225839
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 77,
+          "val": {
+            "accuracy": 0.41841401007737183,
+            "f1_macro": 0.21435074391313053,
+            "log_loss": 1.6759821507601789
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.03697417002588446,
+      "top_importancia": [
+        [
+          "ltv_90d_baseline_feat",
+          0.66924189329024
+        ],
+        [
+          "valor_180d",
+          0.06471759033141024
+        ],
+        [
+          "cestas_180d",
+          0.03170309904320187
+        ],
+        [
+          "valor_total",
+          0.028378189105977256
+        ],
+        [
+          "ultima_cesta_valor",
+          0.019015926056637825
+        ],
+        [
+          "valor_medio_cesta",
+          0.015935121832253044
+        ],
+        [
+          "gap_max",
+          0.015828660299604717
+        ],
+        [
+          "gap_medio",
+          0.014326434687535215
+        ],
+        [
+          "gap_desvio",
+          0.014246036187649838
+        ],
+        [
+          "valor_365d",
+          0.013336787147057726
+        ],
+        [
+          "cestas_365d",
+          0.013223451806913667
+        ],
+        [
+          "emb_pca_1",
+          0.011823114167187806
+        ],
+        [
+          "valor_90d",
+          0.010057221346407035
+        ],
+        [
+          "emb_pca_9",
+          0.007144795573488534
+        ],
+        [
+          "n_cestas",
+          0.006674299214580985
+        ],
+        [
+          "churn_baseline_feat",
+          0.006332454105937181
+        ],
+        [
+          "tempo_cliente_dias",
+          0.006123396688768224
+        ],
+        [
+          "emb_pca_11",
+          0.005916234482642549
+        ],
+        [
+          "tendencia_90_365",
+          0.005122405797206393
+        ],
+        [
+          "mes",
+          0.004906621574571681
+        ],
+        [
+          "valor_30d",
+          0.0044262817394059425
+        ],
+        [
+          "online_share",
+          0.004129980291947371
+        ],
+        [
+          "gap_ultimo",
+          0.004123726024917618
+        ],
+        [
+          "emb_pca_0",
+          0.004006895319507707
+        ],
+        [
+          "valor_7d",
+          0.0031927063663519726
+        ]
+      ],
+      "tempo_segundos": 1771.6308941841125
     }
   }
 }

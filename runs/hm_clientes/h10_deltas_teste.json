@@ -1,0 +1,354 @@
+[
+ {
+  "comparacao": "H7: híbrido − tradicional (LightGBM)",
+  "tarefa": "churn",
+  "delta": -0.0037268475236367227,
+  "ic95": [
+   -0.003872058531791675,
+   -0.0035730906614233836
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H7: híbrido − tradicional (LightGBM)",
+  "tarefa": "proxima_online",
+  "delta": 0.0003274814603491105,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H7: híbrido − tradicional (LightGBM)",
+  "tarefa": "next_category",
+  "delta": -0.002953117752619916,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H7: híbrido − tradicional (LightGBM)",
+  "tarefa": "ltv_90d",
+  "delta": -0.0069781475253609115,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H7: híbrido − tradicional (XGBoost)",
+  "tarefa": "churn",
+  "delta": 0.006803083413821187,
+  "ic95": [
+   0.006558794254372671,
+   0.007018661883916166
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H7: híbrido − tradicional (XGBoost)",
+  "tarefa": "proxima_online",
+  "delta": 0.00038092233056452596,
+  "ic95": [
+   0.0003265371538016287,
+   0.00043678305052026185
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H7: híbrido − tradicional (XGBoost)",
+  "tarefa": "next_category",
+  "delta": -0.003038179657423201,
+  "ic95": [
+   -0.0033599497786974547,
+   -0.0026751095209747
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H7: híbrido − tradicional (XGBoost)",
+  "tarefa": "ltv_90d",
+  "delta": -0.010045000128782067,
+  "ic95": [
+   -0.010583065560683317,
+   -0.009540242933965878
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H7: híbrido backbone final − tradicional (LightGBM)",
+  "tarefa": "churn",
+  "delta": -0.005546870655908198,
+  "ic95": [
+   -0.005618705850093361,
+   -0.005473461493370602
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H7: híbrido backbone final − tradicional (LightGBM)",
+  "tarefa": "proxima_online",
+  "delta": -0.00020890854484834076,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H7: híbrido backbone final − tradicional (LightGBM)",
+  "tarefa": "next_category",
+  "delta": -0.0007697879709551159,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H7: híbrido backbone final − tradicional (LightGBM)",
+  "tarefa": "ltv_90d",
+  "delta": -0.0034645438478360657,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H6: só embedding − tradicional (LightGBM)",
+  "tarefa": "churn",
+  "delta": -0.05416384170349842,
+  "ic95": [
+   -0.054706602973091295,
+   -0.053553811472755945
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H6: só embedding − tradicional (LightGBM)",
+  "tarefa": "proxima_online",
+  "delta": -0.0566748352216766,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H6: só embedding − tradicional (LightGBM)",
+  "tarefa": "next_category",
+  "delta": -0.029809298780385962,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H6: só embedding − tradicional (LightGBM)",
+  "tarefa": "ltv_90d",
+  "delta": -0.08485756091697727,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H4: fusão completa − GBDT tradicional LightGBM",
+  "tarefa": "churn",
+  "delta": -0.011088771647835727,
+  "ic95": [
+   -0.011531400859093276,
+   -0.01070490908794998
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H4: fusão completa − GBDT tradicional LightGBM",
+  "tarefa": "proxima_online",
+  "delta": -0.00918509944304513,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H4: fusão completa − GBDT tradicional LightGBM",
+  "tarefa": "next_category",
+  "delta": -0.021679206617370828,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H4: fusão completa − GBDT tradicional LightGBM",
+  "tarefa": "ltv_90d",
+  "delta": -0.03100182625216019,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H4: fusão completa − GBDT tradicional XGBoost",
+  "tarefa": "churn",
+  "delta": -0.0023182768052578684,
+  "ic95": [
+   -0.0028253022325700925,
+   -0.001910717277463142
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H4: fusão completa − GBDT tradicional XGBoost",
+  "tarefa": "proxima_online",
+  "delta": -0.006968008421684768,
+  "ic95": [
+   -0.007208375117869798,
+   -0.006748158109205679
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H4: fusão completa − GBDT tradicional XGBoost",
+  "tarefa": "next_category",
+  "delta": -0.01520960299916696,
+  "ic95": [
+   -0.015749550804999804,
+   -0.014604002938153738
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H4: fusão completa − GBDT tradicional XGBoost",
+  "tarefa": "ltv_90d",
+  "delta": -0.023911147742450622,
+  "ic95": [
+   -0.024797763890000456,
+   -0.022978310526295814
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do embedding na fusão (d − e)",
+  "tarefa": "churn",
+  "delta": -0.004197382288584239,
+  "ic95": [
+   -0.004640146938278239,
+   -0.003721316400299152
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do embedding na fusão (d − e)",
+  "tarefa": "proxima_online",
+  "delta": 0.0249215724023214,
+  "ic95": [
+   0.0246149206949407,
+   0.02531406833521433
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do embedding na fusão (d − e)",
+  "tarefa": "next_category",
+  "delta": 0.025582701882295278,
+  "ic95": [
+   0.0248305885535074,
+   0.02623138965536504
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do embedding na fusão (d − e)",
+  "tarefa": "ltv_90d",
+  "delta": -0.008324839850318455,
+  "ic95": [
+   -0.008984292446396185,
+   -0.007578045966923847
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do cadastro na fusão (d − c)",
+  "tarefa": "churn",
+  "delta": -0.0025139278503921725,
+  "ic95": [
+   -0.002740492881718176,
+   -0.0022889325046586777
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do cadastro na fusão (d − c)",
+  "tarefa": "proxima_online",
+  "delta": 0.0003499684944552328,
+  "ic95": [
+   0.00019173228111140362,
+   0.0005016160377525946
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do cadastro na fusão (d − c)",
+  "tarefa": "next_category",
+  "delta": 0.006886674161912021,
+  "ic95": [
+   0.00637069101572727,
+   0.007400254648494961
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do cadastro na fusão (d − c)",
+  "tarefa": "ltv_90d",
+  "delta": -0.001600576943597165,
+  "ic95": [
+   -0.0020628104381343925,
+   -0.0011590874824999565
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H9: efeito do cadastro no GBDT híbrido",
+  "tarefa": "churn",
+  "delta": 0.00101195843032853,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H9: efeito do cadastro no GBDT híbrido",
+  "tarefa": "proxima_online",
+  "delta": 0.0012627461122415307,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H9: efeito do cadastro no GBDT híbrido",
+  "tarefa": "next_category",
+  "delta": -0.0006132473450999321,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H9: efeito do cadastro no GBDT híbrido",
+  "tarefa": "ltv_90d",
+  "delta": 0.0002633899606417356,
+  "ic95": null,
+  "fonte": "media_sementes"
+ },
+ {
+  "comparacao": "H8: backbone final − referência H3 (fusão)",
+  "tarefa": "churn",
+  "delta": -0.00574181558301301,
+  "ic95": [
+   -0.006044909820330116,
+   -0.005438867680573711
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H8: backbone final − referência H3 (fusão)",
+  "tarefa": "proxima_online",
+  "delta": -0.007337932274984027,
+  "ic95": [
+   -0.007525750559683475,
+   -0.007143289822754845
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H8: backbone final − referência H3 (fusão)",
+  "tarefa": "next_category",
+  "delta": -0.01372391444197496,
+  "ic95": [
+   -0.014284186534280575,
+   -0.013119546520235096
+  ],
+  "fonte": "bootstrap"
+ },
+ {
+  "comparacao": "H8: backbone final − referência H3 (fusão)",
+  "tarefa": "ltv_90d",
+  "delta": -0.01103110270552693,
+  "ic95": [
+   -0.011752717600706312,
+   -0.010325653139449857
+  ],
+  "fonte": "bootstrap"
+ }
+]
