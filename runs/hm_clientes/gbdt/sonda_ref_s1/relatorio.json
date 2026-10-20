@@ -1,0 +1,308 @@
+{
+  "features": "emb_pca",
+  "modelo": "lgbm",
+  "n_features": 32,
+  "sem_cadastro": false,
+  "emb": "abl_ref_s1/embeddings",
+  "pca_k": 32,
+  "tarefas": {
+    "churn": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 2000000,
+      "n_val": 940523,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.1,
+        "num_leaves": 63,
+        "min_child_samples": 200,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "lambda_l1": 0.0,
+        "lambda_l2": 1.0
+      },
+      "hpo_melhor_valor": null,
+      "val_resumo": {
+        "auc": {
+          "media": 0.7204971870442546,
+          "desvio": 0.0
+        },
+        "pr_auc": {
+          "media": 0.5242488334300516,
+          "desvio": 0.0
+        }
+      },
+      "baseline_causal_val_auc": 0.7338829206567589,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 10,
+          "val": {
+            "auc": 0.7204971870442546,
+            "pr_auc": 0.5242488334300516
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 1.0000000000000002,
+      "top_importancia": [
+        [
+          "emb_pca_6",
+          0.40725144153472026
+        ],
+        [
+          "emb_pca_0",
+          0.14590378385218705
+        ],
+        [
+          "emb_pca_2",
+          0.10036347242320448
+        ],
+        [
+          "emb_pca_11",
+          0.09799554667775334
+        ],
+        [
+          "emb_pca_24",
+          0.031600857064996955
+        ],
+        [
+          "emb_pca_9",
+          0.024294983328213296
+        ],
+        [
+          "emb_pca_7",
+          0.02132812627201252
+        ],
+        [
+          "emb_pca_14",
+          0.02113650997423383
+        ],
+        [
+          "emb_pca_10",
+          0.019601989917729115
+        ],
+        [
+          "emb_pca_5",
+          0.0190858600175696
+        ],
+        [
+          "emb_pca_8",
+          0.016778022438635933
+        ],
+        [
+          "emb_pca_4",
+          0.015910484455732336
+        ],
+        [
+          "emb_pca_1",
+          0.014085625075556472
+        ],
+        [
+          "emb_pca_19",
+          0.010737473426452824
+        ],
+        [
+          "emb_pca_3",
+          0.008436484967654692
+        ],
+        [
+          "emb_pca_26",
+          0.007971053029336685
+        ],
+        [
+          "emb_pca_28",
+          0.0076484992599915765
+        ],
+        [
+          "emb_pca_31",
+          0.007535889590596191
+        ],
+        [
+          "emb_pca_25",
+          0.0060012181016665025
+        ],
+        [
+          "emb_pca_12",
+          0.003490828767307713
+        ],
+        [
+          "emb_pca_22",
+          0.003425399776902414
+        ],
+        [
+          "emb_pca_21",
+          0.002498136321659915
+        ],
+        [
+          "emb_pca_16",
+          0.0022755471494490032
+        ],
+        [
+          "emb_pca_27",
+          0.00140044799571145
+        ],
+        [
+          "emb_pca_29",
+          0.0010706522861261782
+        ]
+      ],
+      "tempo_segundos": 151.276433467865
+    },
+    "next_category": {
+      "tipo": "multiclasse",
+      "classes": [
+        "Accessories",
+        "Garment Full body",
+        "Garment Lower body",
+        "Garment Upper body",
+        "Nightwear",
+        "Outros",
+        "Shoes",
+        "Socks & Tights",
+        "Swimwear",
+        "Underwear"
+      ],
+      "n_treino": 1832598,
+      "n_val": 813667,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.1,
+        "num_leaves": 63,
+        "min_child_samples": 200,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "lambda_l1": 0.0,
+        "lambda_l2": 1.0
+      },
+      "hpo_melhor_valor": null,
+      "val_resumo": {
+        "accuracy": {
+          "media": 0.3794672759249177,
+          "desvio": 0.0
+        },
+        "f1_macro": {
+          "media": 0.07608140957381822,
+          "desvio": 0.0
+        },
+        "log_loss": {
+          "media": 1.6794864986022646,
+          "desvio": 0.0
+        }
+      },
+      "baseline_causal_val_auc": null,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 68,
+          "val": {
+            "accuracy": 0.3794672759249177,
+            "f1_macro": 0.07608140957381822,
+            "log_loss": 1.6794864986022646
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 1.0,
+      "top_importancia": [
+        [
+          "emb_pca_1",
+          0.10736267438763435
+        ],
+        [
+          "emb_pca_13",
+          0.06395537409376549
+        ],
+        [
+          "emb_pca_14",
+          0.05363158722662287
+        ],
+        [
+          "emb_pca_8",
+          0.04666627025180964
+        ],
+        [
+          "emb_pca_16",
+          0.04500032151747451
+        ],
+        [
+          "emb_pca_4",
+          0.04448404890182547
+        ],
+        [
+          "emb_pca_15",
+          0.0414989250563726
+        ],
+        [
+          "emb_pca_17",
+          0.03904406279591111
+        ],
+        [
+          "emb_pca_21",
+          0.036536793825167564
+        ],
+        [
+          "emb_pca_0",
+          0.03627442628565143
+        ],
+        [
+          "emb_pca_7",
+          0.035953616756563465
+        ],
+        [
+          "emb_pca_12",
+          0.03433672577188773
+        ],
+        [
+          "emb_pca_20",
+          0.03405239096691116
+        ],
+        [
+          "emb_pca_6",
+          0.02998809745861968
+        ],
+        [
+          "emb_pca_9",
+          0.029699788403695034
+        ],
+        [
+          "emb_pca_26",
+          0.029275331114969484
+        ],
+        [
+          "emb_pca_22",
+          0.025809946007284222
+        ],
+        [
+          "emb_pca_11",
+          0.024953580418881693
+        ],
+        [
+          "emb_pca_31",
+          0.024122318914214215
+        ],
+        [
+          "emb_pca_5",
+          0.023558260664523347
+        ],
+        [
+          "emb_pca_29",
+          0.02354141087852565
+        ],
+        [
+          "emb_pca_30",
+          0.020687537145334476
+        ],
+        [
+          "emb_pca_23",
+          0.020385830529313698
+        ],
+        [
+          "emb_pca_19",
+          0.017841152910871013
+        ],
+        [
+          "emb_pca_2",
+          0.016947965363991315
+        ]
+      ],
+      "tempo_segundos": 3172.323665857315
+    }
+  }
+}
