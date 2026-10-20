@@ -51,7 +51,8 @@ P=python3
       *) [ "$(ls $R/${1}/predicoes_test.parquet 2>/dev/null | wc -l)" -ge 3 ] ;;
     esac
   }
-  comp() {  # $1 tarefa, $2 A, $3 B
+  comp() {  # $1 tarefa, $2 A, $3 B   (pula a comparação se já estiver no json)
+    python3 -c "import json,sys,os;f='$R/h10_bootstrap_v2.json';r=json.load(open(f)) if os.path.exists(f) else [];sys.exit(0 if any(x['tarefa']=='$1' and x['a'].endswith('$2') and x['b'].endswith('$3') for x in r) else 1)" && return
     until pronto "$2" "$1" && pronto "$3" "$1"; do sleep 300; done
     $P pipeline/common/avaliacao.py $C --split test --B 300 --saida $R/h10_bootstrap_v2.json --tarefa $1 --a "$2" --b "$3"
   }

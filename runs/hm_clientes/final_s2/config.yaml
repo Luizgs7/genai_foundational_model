@@ -1,0 +1,110 @@
+nome: hm_clientes
+entidade_label: cliente
+fonte_canonica: runs/hm_clientes/eventos_canonicos.parquet
+campos_categoricos:
+- nome: indice
+  estrategia: fechado
+- nome: grupo_produto
+  estrategia: fechado
+- nome: tipo_produto
+  estrategia: fechado
+- nome: cor
+  estrategia: fechado
+- nome: linha_vestuario
+  estrategia: fechado
+- nome: canal
+  estrategia: fechado
+- nome: artigo
+  estrategia: top_n_outros
+  top_n: 2000
+campos_numericos:
+- nome: preco
+  agrupar_por: grupo_produto
+  n_buckets: 10
+campos_estaticos_categoricos:
+- clube
+- newsletter
+- cep_top
+campos_estaticos_numericos:
+- idade
+- fn
+- active
+campo_data_nascimento: null
+usa_recencia: true
+usa_mes: true
+ancora: cesta
+ancoras_treino_max: 2000000
+splits:
+  val_window_days: 90
+  test_window_days: 180
+arquitetura:
+  tipo: decoder
+  n_embd: 256
+  n_layer: 6
+  n_head: 4
+  n_kv_heads: 2
+  n_positions: 1024
+  posicao: rope
+  norm: layernorm
+  ffn: swiglu
+  dropout: 0.1
+  bias: true
+pretreino:
+  tokens_por_lote: 65536
+  janelas_treino: todas
+  n_epochs: 3
+  paciencia_epocas: 1
+  lr: 0.0006
+  warmup_steps: 500
+  weight_decay: 0.1
+  val_a_cada_passos: 1000
+  val_amostra_entidades: 5000
+  val_amostra_epoca: 100000
+  checkpoint_a_cada_passos: 500
+  log_a_cada_n_passos: 50
+  seed: 2
+tarefas_downstream:
+- tipo: churn
+  candidatos_dias:
+  - 30
+  - 45
+  - 60
+  - 90
+  - 120
+  dias_escolhido: 90
+- tipo: campo_futuro
+  nome: next_category
+  campo_fonte: grupo_produto_alvo
+  agregacao_cesta: moda
+- tipo: ltv
+  nome: ltv_90d
+  campo_valor: preco
+  horizonte_dias: 90
+  n_buckets: 10
+- tipo: campo_futuro
+  nome: proxima_online
+  campo_fonte: online
+  agregacao_cesta: max
+fusao:
+  batch_size: 2048
+  n_epochs: 8
+  lr: 0.003
+features_tradicionais:
+  campo_valor: preco
+  campos_binarios:
+  - online
+  campos_composicao:
+  - indice
+  - grupo_produto
+  max_categorias_composicao: 12
+  campo_item: artigo
+  campo_tipo: tipo_produto
+  campo_grupo_preco: grupo_produto
+  janelas_dias:
+  - 7
+  - 30
+  - 90
+  - 180
+  - 365
+  estaticos_frequencia:
+  - cep
