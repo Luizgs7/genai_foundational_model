@@ -29,6 +29,7 @@ dados_hm/
 runs/hm_clientes/**/*.npy
 runs/hm_clientes/**/*.parquet
 runs/hm_clientes/**/*.pt
+runs/hm_clientes/caches/
 
 # Ambientes virtuais / editores
 .venv/
