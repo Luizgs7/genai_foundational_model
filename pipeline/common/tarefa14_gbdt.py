@@ -77,6 +77,15 @@ def carregar(config, args, splits):
     nomes_X = nomes if usar_trad else []
     categoricas = categoricas if usar_trad else []
 
+    cache = getattr(args, "pca_cache", None)
+    if usar_emb and cache and os.path.exists(cache) and args.features in ("emb_pca", "hibrido"):
+        # projeção PCA já calculada (ex.: no Colab) — permite rodar o GBDT sem os embeddings brutos
+        z = np.load(cache)
+        if not np.array_equal(z["evento_id"], meta["evento_id"].to_numpy()):
+            raise ValueError(f"cache PCA {cache} não corresponde às âncoras/ordem atuais")
+        nomes_e = [f"emb_pca_{i}" for i in range(z["E"].shape[1])]
+        print(f"PCA lida do cache {cache} ({z['E'].shape})")
+        return np.hstack([X_trad, z["E"]]), nomes_X + nomes_e, categoricas, meta
     if usar_emb:
         edir = run_dir(config, args.emb)
         emb = np.load(os.path.join(edir, "embeddings_eventos.npy"), mmap_mode="r")
@@ -98,6 +107,9 @@ def carregar(config, args, splits):
             pca = PCA(n_components=args.pca_k, svd_solver="randomized", random_state=0).fit(E[amostra])
             E = pca.transform(E).astype(np.float32)
             print(f"PCA k={args.pca_k}: variância explicada {pca.explained_variance_ratio_.sum():.3f}")
+            if cache and not os.path.exists(cache):
+                np.savez(cache, E=E, evento_id=meta["evento_id"].to_numpy())
+                print(f"PCA gravada em {cache}")
             nomes_e = [f"emb_pca_{i}" for i in range(args.pca_k)]
         else:
             nomes_e = [f"emb_{i}" for i in range(E.shape[1])]
@@ -328,5 +340,6 @@ if __name__ == "__main__":
     ap.add_argument("--threads", type=int, default=10)
     ap.add_argument("--sem_cadastro", action="store_true")
     ap.add_argument("--avaliar_teste", action="store_true")
+    ap.add_argument("--pca_cache", default=None, help="arquivo .npz com a projeção PCA (grava se não existir; lê se existir)")
     ap.add_argument("--params_de", default=None, help="saida de outra execução cujos melhores hiperparâmetros são reusados (sem HPO)")
     main(ap.parse_args())
