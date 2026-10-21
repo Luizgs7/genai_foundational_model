@@ -173,7 +173,7 @@
           0.0037205901579321424
         ]
       ],
-      "tempo_segundos": 472.5595006942749
+      "tempo_segundos": 1365.5486416816711
     },
     "next_category": {
       "tipo": "multiclasse",
@@ -363,7 +363,7 @@
           0.007928835535707461
         ]
       ],
-      "tempo_segundos": 8522.515579462051
+      "tempo_segundos": 12238.689006567001
     },
     "ltv_90d": {
       "tipo": "multiclasse",
@@ -551,7 +551,7 @@
           0.006594442395586098
         ]
       ],
-      "tempo_segundos": 4272.443133831024
+      "tempo_segundos": 20878.192454338074
     },
     "proxima_online": {
       "tipo": "binaria",
@@ -720,7 +720,7 @@
           0.001025487407769466
         ]
       ],
-      "tempo_segundos": 810.736487865448
+      "tempo_segundos": 4501.549789905548
     }
   }
 }

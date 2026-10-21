@@ -255,14 +255,14 @@ A Olist tinha 112 mil eventos; a H&M tem 31,8M.
 ### O que a H&M ensinou sobre o produto
 
 1. **O motor generaliza.** O mesmo YAML-driven pipeline rodou numa base real de varejo de moda, com âncora por cesta, 4 tarefas e cadastro, sem código específico de empresa além do adapter.
-2. **O modelo fundacional, nesta base, não superou o GBDT tradicional bem-feito em nenhuma tarefa.** No teste, o LightGBM com 97 features ganhou da fusão completa (H4) por:
+2. **O modelo fundacional, nesta base, não superou o GBDT tradicional bem-feito em nenhuma tarefa.** No teste, o LightGBM com 97 features ganhou da fusão completa (H4) por (ensemble de 3 sementes, IC 95% excluindo o zero):
 
    | Tarefa | Vantagem do LightGBM |
    |---|---|
-   | Churn | +0,014 |
-   | Online | +0,009 |
-   | Categoria | +0,022 |
-   | LTV | +0,031 |
+   | Churn | +0,011 |
+   | Online | +0,007 |
+   | Categoria | +0,014 |
+   | LTV | +0,025 |
 
    O embedding como feature extra (híbrido) também não ajudou de forma consistente.
 3. **O embedding carrega sinal sequencial real,** com +0,025 de AUC em online e +0,026 de accuracy em categoria na fusão. Esse sinal, porém, já está nas features de composição e RFM do GBDT. Para o produto, a proposta de valor precisa ser **custo de construção** (um modelo para N tarefas, sem feature engineering por tarefa), não **acurácia superior**, até que um caso de uso demonstre o contrário.

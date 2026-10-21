@@ -1,0 +1,827 @@
+{
+ "n_entidades": 5000,
+ "modelos": {
+  "nope_s0": {
+   "pasta": "abl_ref/pretreino",
+   "arquitetura": {
+    "tipo": "decoder",
+    "n_positions": 1024,
+    "n_embd": 384,
+    "n_layer": 6,
+    "n_head": 6,
+    "attn_implementation": "sdpa",
+    "n_kv_heads": 6,
+    "posicao": "nope",
+    "norm": "layernorm",
+    "ffn": "gelu",
+    "dropout": 0.1,
+    "bias": true
+   },
+   "loss_media": 1.5973358393739954,
+   "n_tokens": 354553,
+   "loss_repete": 1.5518439289618813,
+   "loss_nao_repete": 1.636355533769488,
+   "frac_tokens_repete": 0.4617081226220057,
+   "soma_loss_repete": 254036.85117105997,
+   "soma_loss_nao_repete": 312303.3626865081,
+   "por_campo": {
+    "GRUPO_PRODUTO": {
+     "repete": {
+      "n": 15101,
+      "loss": 0.4091563112141365
+     },
+     "nao_repete": {
+      "n": 17206,
+      "loss": 1.369228195039421
+     }
+    },
+    "TIPO_PRODUTO": {
+     "repete": {
+      "n": 9010,
+      "loss": 0.37143964985587485
+     },
+     "nao_repete": {
+      "n": 23297,
+      "loss": 1.5497159386613966
+     }
+    },
+    "LINHA_VESTUARIO": {
+     "repete": {
+      "n": 11206,
+      "loss": 0.1766840967024318
+     },
+     "nao_repete": {
+      "n": 21101,
+      "loss": 0.6210219289918149
+     }
+    },
+    "PRECO_BUCKET": {
+     "repete": {
+      "n": 6694,
+      "loss": 0.5381958878133968
+     },
+     "nao_repete": {
+      "n": 25613,
+      "loss": 1.6660915055277836
+     }
+    },
+    "INDICE": {
+     "repete": {
+      "n": 16951,
+      "loss": 0.5599025949988736
+     },
+     "nao_repete": {
+      "n": 15356,
+      "loss": 1.9950453086990758
+     }
+    },
+    "COR": {
+     "repete": {
+      "n": 9430,
+      "loss": 0.7533851958279946
+     },
+     "nao_repete": {
+      "n": 22877,
+      "loss": 2.7832365996842365
+     }
+    },
+    "CANAL": {
+     "repete": {
+      "n": 28892,
+      "loss": 0.06123258372914404
+     },
+     "nao_repete": {
+      "n": 3415,
+      "loss": 1.6393611956507752
+     }
+    },
+    "ARTIGO": {
+     "repete": {
+      "n": 22440,
+      "loss": 0.2763440329660455
+     },
+     "nao_repete": {
+      "n": 9867,
+      "loss": 1.4525169510171332
+     }
+    },
+    "RECENCIA": {
+     "repete": {
+      "n": 18709,
+      "loss": 0.15556505839689094
+     },
+     "nao_repete": {
+      "n": 12774,
+      "loss": 2.5053093377218985
+     }
+    },
+    "MES": {
+     "repete": {
+      "n": 25267,
+      "loss": 8.368734528778711
+     },
+     "nao_repete": {
+      "n": 7040,
+      "loss": 7.189986342958053
+     }
+    },
+    "OUTRO": {
+     "nao_repete": {
+      "n": 32307,
+      "loss": 0.0001286612885424264
+     }
+    }
+   }
+  },
+  "nope_s1": {
+   "pasta": "abl_ref_s1/pretreino",
+   "arquitetura": {
+    "tipo": "decoder",
+    "n_positions": 1024,
+    "n_embd": 384,
+    "n_layer": 6,
+    "n_head": 6,
+    "attn_implementation": "sdpa",
+    "n_kv_heads": 6,
+    "posicao": "nope",
+    "norm": "layernorm",
+    "ffn": "gelu",
+    "dropout": 0.1,
+    "bias": true
+   },
+   "loss_media": 1.626555247702122,
+   "n_tokens": 354553,
+   "loss_repete": 1.6267090839212826,
+   "loss_nao_repete": 1.6264232980388915,
+   "frac_tokens_repete": 0.4617081226220057,
+   "soma_loss_repete": 266292.27703791397,
+   "soma_loss_nao_repete": 310407.7657006166,
+   "por_campo": {
+    "GRUPO_PRODUTO": {
+     "repete": {
+      "n": 15101,
+      "loss": 0.4029435143057578
+     },
+     "nao_repete": {
+      "n": 17206,
+      "loss": 1.3813758324475562
+     }
+    },
+    "TIPO_PRODUTO": {
+     "repete": {
+      "n": 9010,
+      "loss": 0.36125962115144045
+     },
+     "nao_repete": {
+      "n": 23297,
+      "loss": 1.5600479046995626
+     }
+    },
+    "LINHA_VESTUARIO": {
+     "repete": {
+      "n": 11206,
+      "loss": 0.18473555119918122
+     },
+     "nao_repete": {
+      "n": 21101,
+      "loss": 0.6233389180881896
+     }
+    },
+    "PRECO_BUCKET": {
+     "repete": {
+      "n": 6694,
+      "loss": 0.5442922832223097
+     },
+     "nao_repete": {
+      "n": 25613,
+      "loss": 1.6804781040959864
+     }
+    },
+    "INDICE": {
+     "repete": {
+      "n": 16951,
+      "loss": 0.5384543126494151
+     },
+     "nao_repete": {
+      "n": 15356,
+      "loss": 2.0203932067842714
+     }
+    },
+    "COR": {
+     "repete": {
+      "n": 9430,
+      "loss": 0.7485574877522155
+     },
+     "nao_repete": {
+      "n": 22877,
+      "loss": 2.784750698240841
+     }
+    },
+    "CANAL": {
+     "repete": {
+      "n": 28892,
+      "loss": 0.06201805127273792
+     },
+     "nao_repete": {
+      "n": 3415,
+      "loss": 1.6528503470572795
+     }
+    },
+    "ARTIGO": {
+     "repete": {
+      "n": 22440,
+      "loss": 0.284943431440264
+     },
+     "nao_repete": {
+      "n": 9867,
+      "loss": 1.442071702591488
+     }
+    },
+    "RECENCIA": {
+     "repete": {
+      "n": 18709,
+      "loss": 0.1709173102203494
+     },
+     "nao_repete": {
+      "n": 12774,
+      "loss": 2.446970165814819
+     }
+    },
+    "MES": {
+     "repete": {
+      "n": 25267,
+      "loss": 8.852216505804112
+     },
+     "nao_repete": {
+      "n": 7040,
+      "loss": 6.851394795542828
+     }
+    },
+    "OUTRO": {
+     "nao_repete": {
+      "n": 32307,
+      "loss": 0.00010819359591175574
+     }
+    }
+   },
+   "queda_vs_nope_s0": {
+    "total": -0.029219408328127187,
+    "de_tokens_que_repetem": -0.03456585014611073,
+    "de_tokens_que_nao_repetem": 0.005346441817983544,
+    "frac_da_queda_em_repeticao": 1.1829757042970972
+   }
+  },
+  "nope_s2": {
+   "pasta": "abl_ref_s2/pretreino",
+   "arquitetura": {
+    "tipo": "decoder",
+    "n_positions": 1024,
+    "n_embd": 384,
+    "n_layer": 6,
+    "n_head": 6,
+    "attn_implementation": "sdpa",
+    "n_kv_heads": 6,
+    "posicao": "nope",
+    "norm": "layernorm",
+    "ffn": "gelu",
+    "dropout": 0.1,
+    "bias": true
+   },
+   "loss_media": 1.5956792810465221,
+   "n_tokens": 354553,
+   "loss_repete": 1.5396924374060434,
+   "loss_nao_repete": 1.6437007756206001,
+   "frac_tokens_repete": 0.4617081226220057,
+   "soma_loss_repete": 252047.6520033693,
+   "soma_loss_nao_repete": 313705.2241295184,
+   "por_campo": {
+    "GRUPO_PRODUTO": {
+     "repete": {
+      "n": 15101,
+      "loss": 0.39080345747256884
+     },
+     "nao_repete": {
+      "n": 17206,
+      "loss": 1.3890358661535807
+     }
+    },
+    "TIPO_PRODUTO": {
+     "repete": {
+      "n": 9010,
+      "loss": 0.3612683515414601
+     },
+     "nao_repete": {
+      "n": 23297,
+      "loss": 1.5538544286554274
+     }
+    },
+    "LINHA_VESTUARIO": {
+     "repete": {
+      "n": 11206,
+      "loss": 0.1769179995372959
+     },
+     "nao_repete": {
+      "n": 21101,
+      "loss": 0.6088664199023927
+     }
+    },
+    "PRECO_BUCKET": {
+     "repete": {
+      "n": 6694,
+      "loss": 0.5056223531529561
+     },
+     "nao_repete": {
+      "n": 25613,
+      "loss": 1.667859924119664
+     }
+    },
+    "INDICE": {
+     "repete": {
+      "n": 16951,
+      "loss": 0.5185879638515143
+     },
+     "nao_repete": {
+      "n": 15356,
+      "loss": 2.037279277236457
+     }
+    },
+    "COR": {
+     "repete": {
+      "n": 9430,
+      "loss": 0.7325174777798181
+     },
+     "nao_repete": {
+      "n": 22877,
+      "loss": 2.7816496368199775
+     }
+    },
+    "CANAL": {
+     "repete": {
+      "n": 28892,
+      "loss": 0.05076102714871507
+     },
+     "nao_repete": {
+      "n": 3415,
+      "loss": 1.7435892317351362
+     }
+    },
+    "ARTIGO": {
+     "repete": {
+      "n": 22440,
+      "loss": 0.282629806071931
+     },
+     "nao_repete": {
+      "n": 9867,
+      "loss": 1.4319190698205375
+     }
+    },
+    "RECENCIA": {
+     "repete": {
+      "n": 18709,
+      "loss": 0.16028136740719967
+     },
+     "nao_repete": {
+      "n": 12774,
+      "loss": 2.523679779808229
+     }
+    },
+    "MES": {
+     "repete": {
+      "n": 25267,
+      "loss": 8.35153334672497
+     },
+     "nao_repete": {
+      "n": 7040,
+      "loss": 7.2151982324538535
+     }
+    },
+    "OUTRO": {
+     "nao_repete": {
+      "n": 32307,
+      "loss": 8.966336840802266e-05
+     }
+    }
+   },
+   "queda_vs_nope_s0": {
+    "total": 0.0016565583274726235,
+    "de_tokens_que_repetem": 0.005610442353303107,
+    "de_tokens_que_nao_repetem": -0.003953884025830483,
+    "frac_da_queda_em_repeticao": 3.386806404736042
+   }
+  },
+  "rope_s0": {
+   "pasta": "abl_pos_rope/pretreino",
+   "arquitetura": {
+    "tipo": "decoder",
+    "n_positions": 1024,
+    "n_embd": 384,
+    "n_layer": 6,
+    "n_head": 6,
+    "attn_implementation": "sdpa",
+    "n_kv_heads": 6,
+    "posicao": "rope",
+    "norm": "layernorm",
+    "ffn": "gelu",
+    "dropout": 0.1,
+    "bias": true
+   },
+   "loss_media": 0.9105954850651022,
+   "n_tokens": 354553,
+   "loss_repete": 0.2571628613959784,
+   "loss_nao_repete": 1.4710630726567862,
+   "frac_tokens_repete": 0.4617081226220057,
+   "soma_loss_repete": 42097.56041052166,
+   "soma_loss_nao_repete": 280756.8006057656,
+   "por_campo": {
+    "GRUPO_PRODUTO": {
+     "repete": {
+      "n": 15101,
+      "loss": 0.39731136327776556
+     },
+     "nao_repete": {
+      "n": 17206,
+      "loss": 1.3530105474752165
+     }
+    },
+    "TIPO_PRODUTO": {
+     "repete": {
+      "n": 9010,
+      "loss": 0.3397840304789204
+     },
+     "nao_repete": {
+      "n": 23297,
+      "loss": 1.530720119767421
+     }
+    },
+    "LINHA_VESTUARIO": {
+     "repete": {
+      "n": 11206,
+      "loss": 0.16388432764257918
+     },
+     "nao_repete": {
+      "n": 21101,
+      "loss": 0.6010712690411034
+     }
+    },
+    "PRECO_BUCKET": {
+     "repete": {
+      "n": 6694,
+      "loss": 0.3836292917640882
+     },
+     "nao_repete": {
+      "n": 25613,
+      "loss": 1.6797594593096576
+     }
+    },
+    "INDICE": {
+     "repete": {
+      "n": 16951,
+      "loss": 0.5409121698248872
+     },
+     "nao_repete": {
+      "n": 15356,
+      "loss": 1.9837437548416765
+     }
+    },
+    "COR": {
+     "repete": {
+      "n": 9430,
+      "loss": 0.6829041715897521
+     },
+     "nao_repete": {
+      "n": 22877,
+      "loss": 2.7532112971646394
+     }
+    },
+    "CANAL": {
+     "repete": {
+      "n": 28892,
+      "loss": 0.057571487722654
+     },
+     "nao_repete": {
+      "n": 3415,
+      "loss": 1.6422477607856645
+     }
+    },
+    "ARTIGO": {
+     "repete": {
+      "n": 22440,
+      "loss": 0.29070176786200114
+     },
+     "nao_repete": {
+      "n": 9867,
+      "loss": 1.4470052019413822
+     }
+    },
+    "RECENCIA": {
+     "repete": {
+      "n": 18709,
+      "loss": 0.1876570730166728
+     },
+     "nao_repete": {
+      "n": 12774,
+      "loss": 2.3834402282078138
+     }
+    },
+    "MES": {
+     "repete": {
+      "n": 25267,
+      "loss": 0.05245725026514126
+     },
+     "nao_repete": {
+      "n": 7040,
+      "loss": 3.171413253615819
+     }
+    },
+    "OUTRO": {
+     "nao_repete": {
+      "n": 32307,
+      "loss": 7.90992833092218e-05
+     }
+    }
+   },
+   "queda_vs_nope_s0": {
+    "total": 0.6867403543088927,
+    "de_tokens_que_repetem": 0.5977647651001072,
+    "de_tokens_que_nao_repetem": 0.08897558920878543,
+    "frac_da_queda_em_repeticao": 0.8704378028020112
+   }
+  },
+  "rope_s1": {
+   "pasta": "abl_pos_rope_s1/pretreino",
+   "arquitetura": {
+    "tipo": "decoder",
+    "n_positions": 1024,
+    "n_embd": 384,
+    "n_layer": 6,
+    "n_head": 6,
+    "attn_implementation": "sdpa",
+    "n_kv_heads": 6,
+    "posicao": "rope",
+    "norm": "layernorm",
+    "ffn": "gelu",
+    "dropout": 0.1,
+    "bias": true
+   },
+   "loss_media": 0.9185180479806028,
+   "n_tokens": 354553,
+   "loss_repete": 0.26561355315935187,
+   "loss_nao_repete": 1.4785326445666604,
+   "frac_tokens_repete": 0.4617081226220057,
+   "soma_loss_repete": 43480.938652185905,
+   "soma_loss_nao_repete": 282182.39081348083,
+   "por_campo": {
+    "GRUPO_PRODUTO": {
+     "repete": {
+      "n": 15101,
+      "loss": 0.40298540235599
+     },
+     "nao_repete": {
+      "n": 17206,
+      "loss": 1.3476611295764556
+     }
+    },
+    "TIPO_PRODUTO": {
+     "repete": {
+      "n": 9010,
+      "loss": 0.347395008536529
+     },
+     "nao_repete": {
+      "n": 23297,
+      "loss": 1.5270984872994533
+     }
+    },
+    "LINHA_VESTUARIO": {
+     "repete": {
+      "n": 11206,
+      "loss": 0.16275310400452378
+     },
+     "nao_repete": {
+      "n": 21101,
+      "loss": 0.6002348716247258
+     }
+    },
+    "PRECO_BUCKET": {
+     "repete": {
+      "n": 6694,
+      "loss": 0.4073999153699362
+     },
+     "nao_repete": {
+      "n": 25613,
+      "loss": 1.68901553688168
+     }
+    },
+    "INDICE": {
+     "repete": {
+      "n": 16951,
+      "loss": 0.5425572546701024
+     },
+     "nao_repete": {
+      "n": 15356,
+      "loss": 1.9791597229086288
+     }
+    },
+    "COR": {
+     "repete": {
+      "n": 9430,
+      "loss": 0.7074169493825269
+     },
+     "nao_repete": {
+      "n": 22877,
+      "loss": 2.7559418992036444
+     }
+    },
+    "CANAL": {
+     "repete": {
+      "n": 28892,
+      "loss": 0.06428769234834948
+     },
+     "nao_repete": {
+      "n": 3415,
+      "loss": 1.6024123907348313
+     }
+    },
+    "ARTIGO": {
+     "repete": {
+      "n": 22440,
+      "loss": 0.2933284013357952
+     },
+     "nao_repete": {
+      "n": 9867,
+      "loss": 1.462456456072096
+     }
+    },
+    "RECENCIA": {
+     "repete": {
+      "n": 18709,
+      "loss": 0.22297450431004778
+     },
+     "nao_repete": {
+      "n": 12774,
+      "loss": 2.36619283077949
+     }
+    },
+    "MES": {
+     "repete": {
+      "n": 25267,
+      "loss": 0.048891105248044874
+     },
+     "nao_repete": {
+      "n": 7040,
+      "loss": 3.397823854866626
+     }
+    },
+    "OUTRO": {
+     "nao_repete": {
+      "n": 32307,
+      "loss": 9.366790297473457e-05
+     }
+    }
+   },
+   "queda_vs_nope_s0": {
+    "total": 0.678817791393392,
+    "de_tokens_que_repetem": 0.5938630120711827,
+    "de_tokens_que_nao_repetem": 0.0849547793222093,
+    "frac_da_queda_em_repeticao": 0.8748489205802564
+   }
+  },
+  "rope_s2": {
+   "pasta": "abl_pos_rope_s2/pretreino",
+   "arquitetura": {
+    "tipo": "decoder",
+    "n_positions": 1024,
+    "n_embd": 384,
+    "n_layer": 6,
+    "n_head": 6,
+    "attn_implementation": "sdpa",
+    "n_kv_heads": 6,
+    "posicao": "rope",
+    "norm": "layernorm",
+    "ffn": "gelu",
+    "dropout": 0.1,
+    "bias": true
+   },
+   "loss_media": 0.9267403614226138,
+   "n_tokens": 354553,
+   "loss_repete": 0.257232972022375,
+   "loss_nao_repete": 1.5009957288772473,
+   "frac_tokens_repete": 0.4617081226220057,
+   "soma_loss_repete": 42109.03752006278,
+   "soma_loss_nao_repete": 286469.5378434093,
+   "por_campo": {
+    "GRUPO_PRODUTO": {
+     "repete": {
+      "n": 15101,
+      "loss": 0.38841670834537134
+     },
+     "nao_repete": {
+      "n": 17206,
+      "loss": 1.361100277819816
+     }
+    },
+    "TIPO_PRODUTO": {
+     "repete": {
+      "n": 9010,
+      "loss": 0.33629075714547574
+     },
+     "nao_repete": {
+      "n": 23297,
+      "loss": 1.5332269104048515
+     }
+    },
+    "LINHA_VESTUARIO": {
+     "repete": {
+      "n": 11206,
+      "loss": 0.15737569463598985
+     },
+     "nao_repete": {
+      "n": 21101,
+      "loss": 0.5981857500999893
+     }
+    },
+    "PRECO_BUCKET": {
+     "repete": {
+      "n": 6694,
+      "loss": 0.4105765482749374
+     },
+     "nao_repete": {
+      "n": 25613,
+      "loss": 1.6789279331658713
+     }
+    },
+    "INDICE": {
+     "repete": {
+      "n": 16951,
+      "loss": 0.5213795504639067
+     },
+     "nao_repete": {
+      "n": 15356,
+      "loss": 2.0007510782045044
+     }
+    },
+    "COR": {
+     "repete": {
+      "n": 9430,
+      "loss": 0.7063474630925622
+     },
+     "nao_repete": {
+      "n": 22877,
+      "loss": 2.7481918857604004
+     }
+    },
+    "CANAL": {
+     "repete": {
+      "n": 28892,
+      "loss": 0.05919885537431393
+     },
+     "nao_repete": {
+      "n": 3415,
+      "loss": 1.6198339646624873
+     }
+    },
+    "ARTIGO": {
+     "repete": {
+      "n": 22440,
+      "loss": 0.289408079285059
+     },
+     "nao_repete": {
+      "n": 9867,
+      "loss": 1.427504738784615
+     }
+    },
+    "RECENCIA": {
+     "repete": {
+      "n": 18709,
+      "loss": 0.20874334773306566
+     },
+     "nao_repete": {
+      "n": 12774,
+      "loss": 2.408080782557599
+     }
+    },
+    "MES": {
+     "repete": {
+      "n": 25267,
+      "loss": 0.04324986658366176
+     },
+     "nao_repete": {
+      "n": 7040,
+      "loss": 3.9391983322595148
+     }
+    },
+    "OUTRO": {
+     "nao_repete": {
+      "n": 32307,
+      "loss": 7.85810086154757e-05
+     }
+    }
+   },
+   "queda_vs_nope_s0": {
+    "total": 0.670595477951381,
+    "de_tokens_que_repetem": 0.5977323944544177,
+    "de_tokens_que_nao_repetem": 0.07286308349696327,
+    "frac_da_queda_em_repeticao": 0.8913456981255607
+   }
+  }
+ }
+}

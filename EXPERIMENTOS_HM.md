@@ -82,23 +82,24 @@ dele diferem um pouco destes.
 
 ### Deltas no teste com IC 95% (bootstrap por cliente, B = 300)
 
-Fonte: `runs/hm_clientes/h10_bootstrap.json`. Todos os deltas abaixo têm IC que exclui o zero.
+Fonte: `runs/hm_clientes/h10_bootstrap_final.json`.
 Com ~600 mil clientes no teste, o IC tem largura de ±0,0005. A pergunta relevante passa a ser a **magnitude** do efeito, não a significância.
 
 | Comparação (B − A) | Churn | Online | Categoria | LTV |
 |---|---|---|---|---|
-| H7: híbrido − tradicional (LightGBM) | -0.0037 [-0.0039, -0.0036] | +0.0003 † | -0.0030 † | -0.0070 † |
-| H7: híbrido − tradicional (XGBoost) | +0.0068 [+0.0066, +0.0070] | +0.0004 [+0.0003, +0.0004] | -0.0030 [-0.0034, -0.0027] | -0.0100 [-0.0106, -0.0095] |
-| H7: híbrido backbone final − tradicional (LightGBM) | -0.0055 [-0.0056, -0.0055] | -0.0002 † | -0.0008 † | -0.0035 † |
-| H6: só embedding − tradicional (LightGBM) | -0.0542 [-0.0547, -0.0536] | -0.0567 † | -0.0298 † | -0.0849 † |
-| H4: fusão completa − GBDT tradicional LightGBM | -0.0111 [-0.0115, -0.0107] | -0.0092 † | -0.0217 † | -0.0310 † |
+| H4: fusão completa − GBDT tradicional LightGBM | -0.0111 [-0.0115, -0.0107] | -0.0068 [-0.0071, -0.0066] | -0.0143 [-0.0148, -0.0137] | -0.0245 [-0.0254, -0.0236] |
 | H4: fusão completa − GBDT tradicional XGBoost | -0.0023 [-0.0028, -0.0019] | -0.0070 [-0.0072, -0.0067] | -0.0152 [-0.0157, -0.0146] | -0.0239 [-0.0248, -0.0230] |
+| H8: fusão com backbone final − GBDT tradicional LightGBM | -0.0168 [-0.0172, -0.0165] | -0.0142 [-0.0144, -0.0139] | -0.0280 [-0.0286, -0.0273] | -0.0355 [-0.0365, -0.0345] |
+| H6: só embedding − tradicional (LightGBM) | -0.0542 [-0.0547, -0.0536] | -0.0564 [-0.0571, -0.0558] | -0.0298 [-0.0306, -0.0291] | -0.0876 [-0.0888, -0.0865] |
+| H7: híbrido − tradicional (LightGBM) | -0.0037 [-0.0039, -0.0036] | +0.0003 [+0.0003, +0.0003] | -0.0029 [-0.0032, -0.0026] | -0.0073 [-0.0078, -0.0068] |
+| H7: híbrido − tradicional (XGBoost) | +0.0068 [+0.0066, +0.0070] | +0.0004 [+0.0003, +0.0004] | -0.0030 [-0.0034, -0.0027] | -0.0100 [-0.0106, -0.0095] |
+| H7: híbrido backbone final − tradicional (LightGBM) | -0.0055 [-0.0056, -0.0055] | -0.0001 [-0.0002, -0.0001] | -0.0006 [-0.0009, -0.0004] | -0.0034 [-0.0038, -0.0031] |
 | H9: efeito do embedding na fusão (d − e) | -0.0042 [-0.0046, -0.0037] | +0.0249 [+0.0246, +0.0253] | +0.0256 [+0.0248, +0.0262] | -0.0083 [-0.0090, -0.0076] |
 | H9: efeito do cadastro na fusão (d − c) | -0.0025 [-0.0027, -0.0023] | +0.0003 [+0.0002, +0.0005] | +0.0069 [+0.0064, +0.0074] | -0.0016 [-0.0021, -0.0012] |
-| H9: efeito do cadastro no GBDT híbrido | +0.0010 † | +0.0013 † | -0.0006 † | +0.0003 † |
+| H9: efeito do cadastro no GBDT híbrido | +0.0008 [+0.0007, +0.0009] | +0.0013 [+0.0012, +0.0014] | -0.0006 [-0.0008, -0.0003] | +0.0003 [+0.0001, +0.0005] |
 | H8: backbone final − referência H3 (fusão) | -0.0057 [-0.0060, -0.0054] | -0.0073 [-0.0075, -0.0071] | -0.0137 [-0.0143, -0.0131] | -0.0110 [-0.0118, -0.0103] |
 
-† Sem IC: o bootstrap dessas comparações se perdeu com o runtime do Colab (2026-10-19). O delta mostrado é a diferença das médias das 3 sementes. Nas 36 comparações com bootstrap, a largura do IC foi ≤ ±0,001, então deltas de |Δ| ≥ 0,002 devem ser lidos como significativos.
+Todas as 52 comparações calculadas têm IC excluindo o zero (`runs/hm_clientes/h10_bootstrap_final.json`). Os deltas usam o **ensemble** das 3 sementes; a diferença para as médias por semente é maior na fusão, que ganha mais com o ensemble (categoria: −0,014 contra −0,022). O bootstrap foi fechado em parte localmente (`scripts/certeza_local.sh`, com a projeção PCA baixada do Colab via `--pca_cache`); as reexecuções reproduziram exatamente as métricas originais.
 
 ## Resultados na validação (seleção)
 
@@ -162,6 +163,17 @@ A sonda GBDT é um LightGBM com parâmetros fixos sobre o PCA-32. A sonda de fus
 - Os números de ref, tam_\*, ctx_\*, pos_\* e "moderna" foram lidos no Colab antes de uma queda do runtime. Estão transcritos em `ablacoes/resultados_transcritos.json`, e os checkpoints dessas ablações se perderam. As de atenção, FFN, RMSNorm e dropout têm o JSON original.
 - Com 1 semente, o ruído da fusão é de ~±0,005. Diferenças menores que isso não discriminam.
 - A **loss de contexto não é comparável** entre `ctx_*`, porque o conjunto de tokens avaliados muda com a janela.
+
+**Repetição com 3 sementes (NoPE × RoPE, 1 época, validação; média ± desvio):**
+
+| | Loss val | Sonda GBDT churn | Fusão churn | Fusão online | Fusão categoria | Fusão LTV |
+|---|---|---|---|---|---|---|
+| NoPE (`ref`, `ref_s1`, `ref_s2`) | 1,601 ± 0,015 | 0,724 ± 0,003 | 0,783 ± 0,004 | 0,823 ± 0,002 | 0,381 ± 0,004 | 0,400 ± 0,008 |
+| RoPE (`pos_rope`, `_s1`, `_s2`) | 0,916 ± 0,007 | 0,713 ± 0,008 | 0,786 ± 0,002 | 0,816 ± 0,002 | 0,382 ± 0,001 | 0,385 ± 0,018 |
+
+O RoPE não melhora nenhuma tarefa. A sonda GBDT de 1 semente oscila até ±0,04 entre execuções (a `ref` original deu 0,682 e as três novas, ~0,724), então ela não serve para ranquear ablações; o `ref.json` atual é a reexecução da semente 0.
+
+**Diagnóstico pareado** (`relatorios/diagnostico_copia_pareado.json`; 384×6, 1 época, 3 sementes por lado, 5.000 clientes): a contribuição do token MES é de 0,74–0,77 no NoPE e de 0,07–0,08 no RoPE. A loss sem MES fica em 0,943–0,946 no NoPE e em 0,928–0,933 no RoPE. Fora o mês, sobra ~0,014 nats, cerca de 2% da diferença total.
 
 **Backbone final** (escolhido na validação):
 - **Arquitetura:** RoPE + SwiGLU + GQA (4 cabeças, kv=2) + LayerNorm + dropout 0,1, em 256×6, com 4,99M parâmetros.

@@ -313,5 +313,215 @@
     ],
     "B": 300,
     "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/h10_fusao_d_completo_s*",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8379908325796172,
+    "delta": -0.0068499238160874,
+    "ic95": [
+      -0.0070772220288268985,
+      -0.006629155709794804
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/h10_final_fusao_s*",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8306529003046331,
+    "delta": -0.014187856091071427,
+    "ic95": [
+      -0.014447591768431443,
+      -0.013947717383042981
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/h10_fusao_d_completo_s*",
+    "metrica_a": 0.37272545691269376,
+    "metrica_b": 0.35847380238070903,
+    "delta": -0.014251654531984737,
+    "ic95": [
+      -0.014834851488284756,
+      -0.01365011062300389
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/h10_final_fusao_s*",
+    "metrica_a": 0.37272545691269376,
+    "metrica_b": 0.34474988793873407,
+    "delta": -0.027975568973959697,
+    "ic95": [
+      -0.0285659098758235,
+      -0.027269037406430333
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/h10_fusao_d_completo_s*",
+    "metrica_a": 0.39913789614279355,
+    "metrica_b": 0.3746591874956306,
+    "delta": -0.02447870864716295,
+    "ic95": [
+      -0.02538748272727962,
+      -0.023556455110881558
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/h10_final_fusao_s*",
+    "metrica_a": 0.39913789614279355,
+    "metrica_b": 0.36362808479010367,
+    "delta": -0.03550981135268988,
+    "ic95": [
+      -0.036455461742448035,
+      -0.03445177347786815
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1720460,
+    "n_clientes": 596734,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/h10_final_hibrido_lgbm",
+    "metrica_a": 0.8243675529784246,
+    "metrica_b": 0.8188206823225164,
+    "delta": -0.005546870655908198,
+    "ic95": [
+      -0.005618705850093361,
+      -0.005473461493370602
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/h10_final_hibrido_lgbm",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8447366200876794,
+    "delta": -0.00010413630802519336,
+    "ic95": [
+      -0.00015010454467722089,
+      -6.134512474439136e-05
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/h10_final_hibrido_lgbm",
+    "metrica_a": 0.37272545691269376,
+    "metrica_b": 0.3721135456184546,
+    "delta": -0.0006119112942391536,
+    "ic95": [
+      -0.0008533032685031347,
+      -0.0003517184842727658
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/h10_final_hibrido_lgbm",
+    "metrica_a": 0.39913789614279355,
+    "metrica_b": 0.39569205635502636,
+    "delta": -0.003445839787767191,
+    "ic95": [
+      -0.0038482876054879616,
+      -0.00311983456328174
+    ],
+    "B": 300,
+    "significativo": true
   }
 ]
