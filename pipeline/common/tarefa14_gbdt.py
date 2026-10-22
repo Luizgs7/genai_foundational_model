@@ -38,7 +38,7 @@ import pandas as pd
 import polars as pl
 
 sys.path.insert(0, "pipeline/common")
-from schema import caminho_tabela, carregar_config, ler_tabela, mem, run_dir, tarefas_ativas  # noqa: E402
+from schema import amostra_clientes, caminho_tabela, carregar_config, ler_tabela, mem, run_dir, tarefas_ativas  # noqa: E402
 from tarefa8_rotulos import accuracy, auc_roc, f1_macro  # noqa: E402
 
 CADASTRO_SUFIXOS = ("_cod", "_freq")
@@ -74,6 +74,14 @@ def carregar(config, args, splits):
     X_trad = feats.select(nomes).to_numpy().astype(np.float32) if usar_trad else np.zeros((feats.height, 0), np.float32)
     meta = feats.select(["evento_id", "entidade_id", "split"] + [c for c in feats.columns if c.endswith(("_rotulo", "_baseline"))]).to_pandas()
     del feats
+    # tarefa nova (F2-H6): se o rótulo não está na tabela de features, busca em
+    # rotulos_downstream — uma pergunta de negócio nova não exige recalcular features
+    faltam = [c for t in tarefas_ativas(config) for c in (f"{t.get('nome', t['tipo'])}_rotulo", f"{t.get('nome', t['tipo'])}_baseline")
+              if c not in meta.columns]
+    if faltam:
+        extra = ler_tabela(caminho_tabela(config, "rotulos_downstream", "rotulos"), ["evento_id"] + faltam)
+        meta = meta.merge(extra, on="evento_id", how="left", validate="one_to_one")
+        print(f"rótulos lidos de rotulos_downstream: {faltam}")
     nomes_X = nomes if usar_trad else []
     categoricas = categoricas if usar_trad else []
 
@@ -227,6 +235,13 @@ def main(args):
                       "sem_cadastro": args.sem_cadastro, "emb": args.emb, "pca_k": args.pca_k})
     relatorio.setdefault("tarefas", {})
     split = meta["split"].to_numpy()
+    no_treino = np.ones(len(meta), dtype=bool)
+    if args.frac_treino < 1.0:
+        # F2-H1: só uma fração dos CLIENTES de treino tem rótulo (amostra aninhada, igual à da fusão)
+        no_treino = amostra_clientes(meta["entidade_id"].to_numpy(), args.frac_treino, args.semente_amostra)
+        print(f"F2-H1: frac_treino={args.frac_treino} semente_amostra={args.semente_amostra} -> "
+              f"{int((no_treino & (split == 'train')).sum()):,} âncoras de treino")
+    relatorio.update({"frac_treino": args.frac_treino, "semente_amostra": args.semente_amostra})
     rng = np.random.RandomState(0)
 
     for nome in tarefas:
@@ -236,7 +251,7 @@ def main(args):
         y = y_bruto.map(mapa).to_numpy(dtype=float) if mapa else y_bruto.to_numpy(dtype=float)
         n_classes = len(mapa) if mapa else 1
         valido = ~np.isnan(y)
-        itr = np.flatnonzero(valido & (split == "train"))
+        itr = np.flatnonzero(valido & (split == "train") & no_treino)
         iva = np.flatnonzero(valido & (split == "val"))
         print(f"\n=== {nome} ({tipo}{'' if not mapa else f', {n_classes} classes'}): treino={len(itr):,} val={len(iva):,}")
 
@@ -340,6 +355,8 @@ if __name__ == "__main__":
     ap.add_argument("--threads", type=int, default=10)
     ap.add_argument("--sem_cadastro", action="store_true")
     ap.add_argument("--avaliar_teste", action="store_true")
+    ap.add_argument("--frac_treino", type=float, default=1.0, help="F2-H1: fração dos clientes de treino com rótulo")
+    ap.add_argument("--semente_amostra", type=int, default=0, help="F2-H1: semente da amostra de clientes")
     ap.add_argument("--pca_cache", default=None, help="arquivo .npz com a projeção PCA (grava se não existir; lê se existir)")
     ap.add_argument("--params_de", default=None, help="saida de outra execução cujos melhores hiperparâmetros são reusados (sem HPO)")
     main(ap.parse_args())

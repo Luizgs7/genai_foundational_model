@@ -191,3 +191,20 @@ def mem(etapa):
     if os.environ.get("DEBUG_MEM"):
         rss = int(open("/proc/self/statm").read().split()[1]) * os.sysconf("SC_PAGE_SIZE") / 1e9
         print(f"  [mem] {etapa}: {rss:.2f} GB", flush=True)
+
+
+def amostra_clientes(entidades, frac, semente=0):
+    """F2-H1 (eficiência de rótulos): máscara booleana das linhas cujos clientes
+    entram na amostra de treino. Amostragem por CLIENTE (todas as âncoras de um
+    cliente entram ou saem juntas), determinística e ANINHADA: cada cliente
+    recebe um sorteio u ~ U(0,1) fixo pela semente e entra se u < frac, então a
+    amostra de 1% está contida na de 5%, que está na de 10%, e assim por diante.
+    O sorteio é feito sobre os ids únicos ordenados, logo GBDT e fusão veem
+    exatamente os mesmos clientes."""
+    import numpy as np
+    import pandas as pd
+    ent = pd.Series(entidades)
+    unicos = np.sort(ent.unique())
+    u = np.random.RandomState(semente).rand(len(unicos))
+    escolhidos = set(unicos[u < frac].tolist())
+    return ent.isin(escolhidos).to_numpy()

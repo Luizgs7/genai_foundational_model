@@ -1,0 +1,92 @@
+# F2-H6 — fusão de TAREFA ÚNICA para a pergunta nova (proxima_cesta_alta).
+# Igual a configs/hm_clientes_f2h6.yaml, só que com uma tarefa ativa: a fusão
+# escolhe a melhor época pela 1ª tarefa ativa, e aqui ela é a própria tarefa nova.
+nome: hm_clientes
+entidade_label: cliente
+fonte_canonica: runs/hm_clientes/eventos_canonicos.parquet
+campos_categoricos:
+- nome: indice
+  estrategia: fechado
+- nome: grupo_produto
+  estrategia: fechado
+- nome: tipo_produto
+  estrategia: fechado
+- nome: cor
+  estrategia: fechado
+- nome: linha_vestuario
+  estrategia: fechado
+- nome: canal
+  estrategia: fechado
+- nome: artigo
+  estrategia: top_n_outros
+  top_n: 2000
+campos_numericos:
+- nome: preco
+  agrupar_por: grupo_produto
+  n_buckets: 10
+campos_estaticos_categoricos:
+- clube
+- newsletter
+- cep_top
+campos_estaticos_numericos:
+- idade
+- fn
+- active
+campo_data_nascimento: null
+usa_recencia: true
+usa_mes: true
+ancora: cesta
+ancoras_treino_max: 2000000
+splits:
+  val_window_days: 90
+  test_window_days: 180
+arquitetura:
+  tipo: gpt2_hf
+  n_positions: 1024
+  n_embd: 384
+  n_layer: 6
+  n_head: 6
+  attn_implementation: sdpa
+pretreino:
+  tokens_por_lote: 65536
+  janelas_treino: todas
+  n_epochs: 3
+  paciencia_epocas: 1
+  lr: 0.0006
+  warmup_steps: 500
+  weight_decay: 0.1
+  val_a_cada_passos: 1000
+  val_amostra_entidades: 5000
+  val_amostra_epoca: 100000
+  checkpoint_a_cada_passos: 500
+  log_a_cada_n_passos: 50
+tarefas_downstream:
+- tipo: campo_futuro
+  nome: proxima_cesta_alta
+  campo_fonte: preco
+  agregacao_cesta: soma
+  limiar: 0.1186
+  operador: '>'
+fusao:
+  batch_size: 2048
+  n_epochs: 8
+  lr: 0.003
+features_tradicionais:
+  campo_valor: preco
+  campos_binarios:
+  - online
+  campos_composicao:
+  - indice
+  - grupo_produto
+  max_categorias_composicao: 12
+  campo_item: artigo
+  campo_tipo: tipo_produto
+  campo_grupo_preco: grupo_produto
+  janelas_dias:
+  - 7
+  - 30
+  - 90
+  - 180
+  - 365
+  estaticos_frequencia:
+  - cep

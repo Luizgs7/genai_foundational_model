@@ -70,6 +70,23 @@
       "geral": 0.7876901713102363
     }
   },
+  "proxima_cesta_alta": {
+    "n_linhas_determinaveis": 7717898,
+    "n_linhas_total": 9080179,
+    "taxa_determinabilidade": 0.8499720104636703,
+    "base_rate_geral": 0.24081090473079586,
+    "base_rate_por_split": {
+      "train": 0.24525944827734156,
+      "val": 0.25366396818354436,
+      "test": 0.21775558151947727
+    },
+    "baseline_auc_por_split": {
+      "train": 0.6843841173977905,
+      "val": 0.7159282937217069,
+      "test": 0.7163430808624921,
+      "geral": 0.692889575172228
+    }
+  },
   "_ancoras": {
     "treino_amostradas": 2000000,
     "treino_total": 5900276,

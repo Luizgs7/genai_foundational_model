@@ -221,6 +221,23 @@ Detalhes em `EXPERIMENTOS_HM.md`.
 
 ---
 
+## Fase 2 do experimento H&M — hipóteses priorizadas (em andamento, 2026-10-22)
+
+Prefixo F2 para não confundir com as etapas H0–H10 da fase 1. Toda hipótese responde a uma das duas hipóteses macro do projeto:
+- **M1:** um modelo fundacional próprio de clientes traz benefício real para uma empresa?
+- **M2:** a forma de treino é flexível para a base de qualquer empresa?
+
+| # | Hipótese | Macro | Status |
+|---|---|---|---|
+| F2-H1 | Eficiência de rótulos: com 1–25% dos rótulos, o embedding vence o GBDT? | M1 | em andamento |
+| F2-H2 | Ajuste fino conjunto do backbone com a fusão DCNv2 (receita do Nubank) | M1 | em andamento |
+| F2-H6 | Custo para colocar uma tarefa nova em produção (só configuração) | M1, M2 | em andamento |
+| F2-H7 | Clientes com pouco histórico (1–3 cestas) | M1 | em andamento |
+
+**Adiadas** (retomar depois da fase 2): F2-H3 recomendação/tarefas sequenciais · F2-H4 objetivo de pré-treino alinhado · F2-H5 semântica de produtos · F2-H8 transferência entre empresas · F2-H9 base da empresa · F2-H10 LLM open source com ajuste fino · F2-H11 modelo tabular pré-treinado como régua. Pesquisa de modelos e análise de impacto: https://claude.ai/artifact/JiMFj6SQn89ixNTJLhMPUn
+
+---
+
 ## Tarefa 10 — Perguntas para o time / plano de validação com dados reais
 
 **Objetivo**: `PERGUNTAS_ABERTAS.md` com decisões que só podem ser validadas com dados reais.

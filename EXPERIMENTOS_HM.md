@@ -269,3 +269,20 @@ python3 pipeline/relatorios/consolidar_hm.py
 ```
 
 Para não perder resultados quando o Colab cair, rode `scripts/sincronizar_colab.sh <host>` em segundo plano na máquina local.
+
+## Fase 2 — hipóteses priorizadas (em andamento, 2026-10-22)
+
+Todas respondem às duas hipóteses macro do projeto:
+- **M1:** um modelo fundacional próprio traz benefício real para a empresa?
+- **M2:** a forma de treino é flexível para a base de qualquer empresa?
+
+O prefixo F2 evita confusão com as etapas H0–H10. Os critérios de sucesso foram escritos antes dos resultados (artigo, seção 11).
+
+| Hipótese | Pergunta | Macro | Código |
+|---|---|---|---|
+| F2-H7 | Em clientes com pouco histórico (1–3 cestas), o embedding vence o GBDT? | M1 | `pipeline/common/analise_segmentos.py` |
+| F2-H1 | Com 1–25% dos clientes rotulados, o embedding vence o GBDT? | M1 | `--frac_treino/--semente_amostra` em `tarefa13_treinar_fusao.py` e `tarefa14_gbdt.py`; `schema.amostra_clientes`; `scripts/f2_h1_local.sh` |
+| F2-H6 | Custo (tempo, mudanças) e qualidade de uma pergunta nova (`proxima_cesta_alta`) | M1, M2 | `configs/hm_clientes_f2h6*.yaml`; `scripts/f2_h6_local.sh` |
+| F2-H2 | Ajuste fino conjunto do backbone com a fusão DCNv2 (receita nuFormer) | M1 | `pipeline/common/tarefa15_ajuste_conjunto.py` |
+
+Adiadas (ver ROADMAP): F2-H3, H4, H5, H8, H9, H10 (LLM open source) e H11 (TabPFN). A fila de GPU está em `scripts/fila_colab_fase2_base.sh` e `scripts/fila_colab_fase2.sh`.

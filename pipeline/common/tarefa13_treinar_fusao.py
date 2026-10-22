@@ -43,7 +43,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 sys.path.insert(0, "pipeline/common")
-from schema import caminho_tabela, carregar_config, ler_fonte, ler_tabela, run_dir, tarefas_ativas  # noqa: E402
+from schema import amostra_clientes, caminho_tabela, carregar_config, ler_fonte, ler_tabela, run_dir, tarefas_ativas  # noqa: E402
 from tarefa8_rotulos import accuracy, auc_roc, f1_macro  # noqa: E402
 
 EMB_DIM_PADRAO = 128
@@ -166,7 +166,8 @@ def carregar_dados(config, emb_subpasta="fusao", sem_cadastro=False, sem_causais
 
 
 def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedding=False,
-         sem_cadastro=False, sem_causais=False, avaliar_teste=False, dispositivo="cpu"):
+         sem_cadastro=False, sem_causais=False, avaliar_teste=False, dispositivo="cpu",
+         frac_treino=1.0, semente_amostra=0, min_passos=0):
     global DEV
     DEV = dispositivo if dispositivo != "auto" else ("cuda" if torch.cuda.is_available() else "cpu")
     set_seed(seed)
@@ -228,6 +229,14 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
         # dados ficam na CPU; só cada lote vai pro dispositivo (cabe ao lado de outro job na GPU)
         return sub, emb_t, cat_ids, num_vals, alvos
 
+    if frac_treino < 1.0:
+        # F2-H1: só uma fração dos CLIENTES de treino tem rótulo (amostra aninhada, igual à do GBDT);
+        # validação e teste continuam completos. Codificações e padronizações acima seguem
+        # calibradas no treino completo de features — os rótulos é que são escassos.
+        fora = (df["split"] == "train") & ~amostra_clientes(df["entidade_id"], frac_treino, semente_amostra)
+        df = df[~fora].reset_index(drop=True)
+        print(f"F2-H1: frac_treino={frac_treino} semente_amostra={semente_amostra} -> "
+              f"{int((df['split'] == 'train').sum()):,} âncoras de treino")
     sub_train, emb_tr, cat_tr, num_tr, alvos_tr = montar_tensores("train")
     sub_val, emb_val, cat_val, num_val, alvos_val = montar_tensores("val")
     sub_test, emb_test, cat_test, num_test, alvos_test = montar_tensores("test")
@@ -253,6 +262,12 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
     print(f"DCNv2 + heads: {n_params} parâmetros treináveis (razão exemplos/parâmetro = {n_train/n_params:.2f})")
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=WEIGHT_DECAY)
+    if min_passos:
+        # com poucos rótulos, 8 épocas de lote 2.048 são poucos passos: garante um mínimo de
+        # passos de otimização (a melhor época continua escolhida pela validação)
+        passos_por_epoca = max(1, math.ceil(n_train / bs))
+        n_epochs = max(n_epochs, min(400, math.ceil(min_passos / passos_por_epoca)))
+        print(f"min_passos={min_passos}: {n_epochs} épocas de {passos_por_epoca} passos")
 
     def perda_multitarefa(saidas, alvos, idx):
         total = 0.0
@@ -315,6 +330,7 @@ def main(config_path, emb_subpasta="fusao", saida="fusao", seed=SEED, sem_embedd
             "campos_estaticos_categoricos": cat_estaticos, "campos_estaticos_numericos": num_estaticos,
             "pos_weights": {k: v.item() for k, v in pos_weights.items()},
             "batch_size": bs, "n_epochs": n_epochs, "lr": lr, "seed": seed,
+            "frac_treino": frac_treino, "semente_amostra": semente_amostra, "min_passos": min_passos,
         }, f, ensure_ascii=False, indent=2, default=str)
 
     epoca_csv = open(os.path.join(out_dir, "tarefa13_metricas_epoca.csv"), "w", encoding="utf-8")
@@ -458,6 +474,9 @@ if __name__ == "__main__":
     ap.add_argument("--sem_causais", action="store_true")
     ap.add_argument("--avaliar_teste", action="store_true")
     ap.add_argument("--dispositivo", default="cpu", choices=["cpu", "cuda", "auto"])
+    ap.add_argument("--frac_treino", type=float, default=1.0, help="F2-H1: fração dos clientes de treino com rótulo")
+    ap.add_argument("--semente_amostra", type=int, default=0, help="F2-H1: semente da amostra de clientes")
+    ap.add_argument("--min_passos", type=int, default=0, help="mínimo de passos de otimização (poucos rótulos)")
     a = ap.parse_args()
     main(a.config, a.emb, a.saida, a.seed, a.sem_embedding, a.sem_cadastro, a.sem_causais, a.avaliar_teste,
-         a.dispositivo)
+         a.dispositivo, a.frac_treino, a.semente_amostra, a.min_passos)
