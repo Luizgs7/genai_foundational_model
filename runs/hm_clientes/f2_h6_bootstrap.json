@@ -1,0 +1,44 @@
+[
+  {
+    "tarefa": "proxima_cesta_alta",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/f2h6_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/f2h6_hibrido_lgbm",
+    "metrica_a": 0.7577217155210346,
+    "metrica_b": 0.7562619284056777,
+    "delta": -0.0014597871153568809,
+    "ic95": [
+      -0.0015938474646077228,
+      -0.0013331803426402389
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_cesta_alta",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/f2h6_trad_lgbm",
+    "b": "runs/hm_clientes/f2h6_fusao_s*",
+    "metrica_a": 0.7577217155210346,
+    "metrica_b": 0.7414983468929166,
+    "delta": -0.016223368628118018,
+    "ic95": [
+      -0.01670912208050835,
+      -0.015720003080098358
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]

@@ -1,0 +1,181 @@
+{
+  "features": "trad",
+  "modelo": "lgbm",
+  "n_features": 97,
+  "sem_cadastro": false,
+  "emb": "fusao",
+  "pca_k": 32,
+  "tarefas": {
+    "proxima_cesta_alta": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 1832598,
+      "n_val": 813667,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.022232797492742595,
+        "num_leaves": 81,
+        "min_child_samples": 1576,
+        "feature_fraction": 0.4426571345234047,
+        "bagging_fraction": 0.9720812728023297,
+        "lambda_l1": 4.626242659377569e-07,
+        "lambda_l2": 0.3133125217492449
+      },
+      "hpo_melhor_valor": 0.7563499232806811,
+      "val_resumo": {
+        "auc": {
+          "media": 0.7567269798463587,
+          "desvio": 3.307991663234238e-05
+        },
+        "pr_auc": {
+          "media": 0.5134658861771125,
+          "desvio": 5.648712538670476e-05
+        }
+      },
+      "baseline_causal_val_auc": 0.7159282937217069,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 1608,
+          "val": {
+            "auc": 0.7566972053988288,
+            "pr_auc": 0.5134530848519314
+          },
+          "test": {
+            "auc": 0.7573873960162114,
+            "pr_auc": 0.4663797239558106
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 1789,
+          "val": {
+            "auc": 0.7567106175416101,
+            "pr_auc": 0.5135405751077796
+          },
+          "test": {
+            "auc": 0.757440520728246,
+            "pr_auc": 0.4661772060644003
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 1622,
+          "val": {
+            "auc": 0.7567731165986372,
+            "pr_auc": 0.5134039985716267
+          },
+          "test": {
+            "auc": 0.7574830173758142,
+            "pr_auc": 0.4665017915627935
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.0,
+      "top_importancia": [
+        [
+          "valor_medio_cesta",
+          0.31867999474258835
+        ],
+        [
+          "itens_medio_cesta",
+          0.11926259420208728
+        ],
+        [
+          "ltv_90d_baseline_feat",
+          0.07830587657699223
+        ],
+        [
+          "ultima_cesta_valor",
+          0.04874893738195949
+        ],
+        [
+          "online_share",
+          0.037773441425851366
+        ],
+        [
+          "valor_7d",
+          0.02601841359291559
+        ],
+        [
+          "valor_30d",
+          0.02341948499256215
+        ],
+        [
+          "preco_medio_item",
+          0.01980892896228943
+        ],
+        [
+          "idade",
+          0.019194627376563207
+        ],
+        [
+          "valor_365d",
+          0.017653219461688963
+        ],
+        [
+          "preco_relativo_medio",
+          0.01553120146277951
+        ],
+        [
+          "n_cestas",
+          0.014744507677365083
+        ],
+        [
+          "cestas_90d",
+          0.013510819393515214
+        ],
+        [
+          "mes",
+          0.01335685726167061
+        ],
+        [
+          "gap_medio",
+          0.013085993545353367
+        ],
+        [
+          "valor_90d",
+          0.0126198847313931
+        ],
+        [
+          "proxima_online_baseline_feat",
+          0.012060618878750935
+        ],
+        [
+          "valor_total",
+          0.011506375218275602
+        ],
+        [
+          "valor_180d",
+          0.011108784287753392
+        ],
+        [
+          "online_share_90d",
+          0.011016726508126459
+        ],
+        [
+          "cestas_365d",
+          0.008719701793503402
+        ],
+        [
+          "gap_desvio",
+          0.00810732644375228
+        ],
+        [
+          "churn_baseline_feat",
+          0.007976681779219905
+        ],
+        [
+          "cestas_30d",
+          0.007864367257528997
+        ],
+        [
+          "gap_ultimo",
+          0.006643191344701578
+        ]
+      ],
+      "tempo_segundos": 3086.882639169693
+    }
+  },
+  "frac_treino": 1.0,
+  "semente_amostra": 0
+}
