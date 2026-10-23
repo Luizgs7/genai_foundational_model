@@ -286,3 +286,19 @@ O prefixo F2 evita confusão com as etapas H0–H10. Os critérios de sucesso fo
 | F2-H2 | Ajuste fino conjunto do backbone com a fusão DCNv2 (receita nuFormer) | M1 | `pipeline/common/tarefa15_ajuste_conjunto.py` |
 
 Adiadas (ver ROADMAP): F2-H3, H4, H5, H8, H9, H10 (LLM open source) e H11 (TabPFN). A fila de GPU está em `scripts/fila_colab_fase2_base.sh` e `scripts/fila_colab_fase2.sh`.
+
+### Resultados da fase 2 (teste, avaliação única, 3 sementes/amostras)
+
+| Hipótese | Resultado | Critério | Macro |
+|---|---|---|---|
+| F2-H7 clientes novos | Na 1ª compra, o híbrido ganha +0,004 em canal e +0,002 em categoria; a fusão perde em todas as faixas; o churn na 1ª compra é quase imprevisível (AUC 0,576) | formalmente atingido, sem relevância prática | M1: não sustenta |
+| F2-H1 poucos rótulos | GBDT com 1% dos clientes rotulados fica a ≤0,017 do máximo; o valor do embedding na fusão é **negativo** com 1% e só aparece a partir de 5% | não atingido | M1: não sustenta |
+| F2-H6 pergunta nova (`proxima_cesta_alta`) | Só configuração nos três caminhos. AUC no teste: tradicional 0,757, híbrido 0,756, fusão 0,739. Treino: 52 / 43 / 10 min | M2 atingido; M1 não | **M2 confirmada** |
+| F2-H2 ajuste fino conjunto | Contra a fusão congelada: +0,010 em categoria e +0,017 em LTV. Contra o GBDT: −0,013 em churn, −0,003 em canal, −0,005 em categoria, −0,007 em LTV | não atingido, por pouco | M1: mais promissor |
+
+Arquivos: `f2_h7_segmentos.json`, `f2_h1_curvas.json`, `f2_h6_bootstrap.json`, `f2_h2_bootstrap_3sementes.json` e `f2_h2_rodada1/`.
+
+**Balanço:** M2 confirmada; M1 sem confirmação nesta base. O ajuste fino conjunto passa a ser o modo padrão do modelo fundacional. Próximos testes com chance real para M1:
+- ajuste fino conjunto com poucos rótulos e com dados recentes;
+- tarefas sequenciais sem features prontas (F2-H3);
+- a base da empresa (F2-H9).
