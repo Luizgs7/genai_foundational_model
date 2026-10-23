@@ -1,0 +1,144 @@
+{
+  "metodo": "ajuste fino conjunto backbone + DCNv2 (F2-H2)",
+  "pretreino": "pretreino",
+  "seed": 0,
+  "epocas": 1,
+  "lr_backbone": 5e-05,
+  "lr_cabeca": 0.003,
+  "passos": 9226,
+  "frac_treino": 1.0,
+  "semente_amostra": 0,
+  "n_train": 2000000,
+  "n_val": 940523,
+  "n_test": 2239380,
+  "metricas_validacao": {
+    "churn": {
+      "auc": 0.7936550250621837
+    },
+    "next_category": {
+      "accuracy": 0.3918285981857443,
+      "f1_macro": 0.10663009589947114
+    },
+    "ltv_90d": {
+      "accuracy": 0.41850013237315836,
+      "f1_macro": 0.22552055228429382
+    },
+    "proxima_online": {
+      "auc": 0.8280211049895311
+    }
+  },
+  "metricas_teste": {
+    "churn": {
+      "auc": 0.8062860030598955
+    },
+    "next_category": {
+      "accuracy": 0.3692724334629971,
+      "f1_macro": 0.12626450123142546
+    },
+    "ltv_90d": {
+      "accuracy": 0.3915489537378071,
+      "f1_macro": 0.23265869911668294
+    },
+    "proxima_online": {
+      "auc": 0.8414749202833108
+    }
+  },
+  "historico_val_amostra": [
+    {
+      "passo": 2000,
+      "val_amostra": {
+        "churn": {
+          "auc": 0.7873606787444485
+        },
+        "next_category": {
+          "accuracy": 0.3802067203468566,
+          "f1_macro": 0.10249035696144157
+        },
+        "ltv_90d": {
+          "accuracy": 0.4167330209791382,
+          "f1_macro": 0.19878949966049053
+        },
+        "proxima_online": {
+          "auc": 0.8234743360138487
+        }
+      }
+    },
+    {
+      "passo": 4000,
+      "val_amostra": {
+        "churn": {
+          "auc": 0.7821425972375744
+        },
+        "next_category": {
+          "accuracy": 0.38968140291111797,
+          "f1_macro": 0.11415605278470162
+        },
+        "ltv_90d": {
+          "accuracy": 0.4118633129101744,
+          "f1_macro": 0.21411561539957027
+        },
+        "proxima_online": {
+          "auc": 0.8244397088898734
+        }
+      }
+    },
+    {
+      "passo": 6000,
+      "val_amostra": {
+        "churn": {
+          "auc": 0.7897870841488701
+        },
+        "next_category": {
+          "accuracy": 0.39100727779498295,
+          "f1_macro": 0.11219544537894759
+        },
+        "ltv_90d": {
+          "accuracy": 0.40491496869473387,
+          "f1_macro": 0.22193090687290587
+        },
+        "proxima_online": {
+          "auc": 0.825603116087832
+        }
+      }
+    },
+    {
+      "passo": 8000,
+      "val_amostra": {
+        "churn": {
+          "auc": 0.7905048122211474
+        },
+        "next_category": {
+          "accuracy": 0.39045563641994424,
+          "f1_macro": 0.10096778072605321
+        },
+        "ltv_90d": {
+          "accuracy": 0.41635584909772105,
+          "f1_macro": 0.22744446329296736
+        },
+        "proxima_online": {
+          "auc": 0.8258956260714598
+        }
+      }
+    },
+    {
+      "passo": 9226,
+      "val_amostra": {
+        "churn": {
+          "auc": 0.791205243653406
+        },
+        "next_category": {
+          "accuracy": 0.3912976153607928,
+          "f1_macro": 0.10741944940796053
+        },
+        "ltv_90d": {
+          "accuracy": 0.4172023904315684,
+          "f1_macro": 0.22466209597985784
+        },
+        "proxima_online": {
+          "auc": 0.8258682660068337
+        }
+      }
+    }
+  ],
+  "tempo_total_segundos": 6222.492577314377
+}

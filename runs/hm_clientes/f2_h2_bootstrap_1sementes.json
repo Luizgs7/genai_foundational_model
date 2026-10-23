@@ -1,0 +1,170 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1720460,
+    "n_clientes": 596734,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/f2_h2_conjunto_s*",
+    "metrica_a": 0.8132787813305888,
+    "metrica_b": 0.8062860030598955,
+    "delta": -0.006992778270693334,
+    "ic95": [
+      -0.007515625806970311,
+      -0.006530757538408974
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1720460,
+    "n_clientes": 596734,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/f2_h2_conjunto_s*",
+    "metrica_a": 0.8243675529784246,
+    "metrica_b": 0.8062860030598955,
+    "delta": -0.01808154991852906,
+    "ic95": [
+      -0.018484093965967757,
+      -0.017609493818173443
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/f2_h2_conjunto_s*",
+    "metrica_a": 0.8379908325796172,
+    "metrica_b": 0.8414749202833108,
+    "delta": 0.0034840877036936835,
+    "ic95": [
+      0.0032240066872371324,
+      0.003712295581549518
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/f2_h2_conjunto_s*",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8414749202833108,
+    "delta": -0.0033658361123937164,
+    "ic95": [
+      -0.003626083350968498,
+      -0.003154274068519672
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/f2_h2_conjunto_s*",
+    "metrica_a": 0.35847380238070903,
+    "metrica_b": 0.3692724334629971,
+    "delta": 0.010798631082288068,
+    "ic95": [
+      0.010232740533095,
+      0.01130380184124326
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/f2_h2_conjunto_s*",
+    "metrica_a": 0.37272545691269376,
+    "metrica_b": 0.3692724334629971,
+    "delta": -0.0034530234496966683,
+    "ic95": [
+      -0.003960919998659875,
+      -0.0029599626410745598
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/f2_h2_conjunto_s*",
+    "metrica_a": 0.3746591874956306,
+    "metrica_b": 0.3915489537378071,
+    "delta": 0.01688976624217653,
+    "ic95": [
+      0.01612797185763155,
+      0.01764261610476502
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/f2_h2_conjunto_s*",
+    "metrica_a": 0.39913789614279355,
+    "metrica_b": 0.3915489537378071,
+    "delta": -0.007588942404986421,
+    "ic95": [
+      -0.008357185393501321,
+      -0.006887646899246494
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]
