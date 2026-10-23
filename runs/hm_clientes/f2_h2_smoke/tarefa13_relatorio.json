@@ -1,0 +1,53 @@
+{
+  "metodo": "ajuste fino conjunto backbone + DCNv2 (F2-H2)",
+  "pretreino": "pretreino",
+  "seed": 0,
+  "epocas": 1,
+  "lr_backbone": 5e-05,
+  "lr_cabeca": 0.003,
+  "passos": 88,
+  "frac_treino": 0.01,
+  "semente_amostra": 0,
+  "n_train": 19627,
+  "n_val": 940523,
+  "n_test": 2239380,
+  "metricas_validacao": {
+    "churn": {
+      "auc": 0.7545352386760358
+    },
+    "next_category": {
+      "accuracy": 0.36491974473022626,
+      "f1_macro": 0.05523092529728653
+    },
+    "ltv_90d": {
+      "accuracy": 0.3461473896256505,
+      "f1_macro": 0.1845732214388096
+    },
+    "proxima_online": {
+      "auc": 0.8186857557634555
+    }
+  },
+  "metricas_teste": null,
+  "historico_val_amostra": [
+    {
+      "passo": 88,
+      "val_amostra": {
+        "churn": {
+          "auc": 0.7545352386760358
+        },
+        "next_category": {
+          "accuracy": 0.36491974473022626,
+          "f1_macro": 0.05523092529728653
+        },
+        "ltv_90d": {
+          "accuracy": 0.3461473896256505,
+          "f1_macro": 0.1845732214388096
+        },
+        "proxima_online": {
+          "auc": 0.8186857557634555
+        }
+      }
+    }
+  ],
+  "tempo_total_segundos": 134.59181141853333
+}

@@ -1,0 +1,92 @@
+{
+  "n_params": 5734,
+  "n_train": 201495,
+  "n_val": 940523,
+  "n_test": 2239380,
+  "melhor_epoca": 30,
+  "metricas_validacao": {
+    "churn": {
+      "auc": 0.7807976314443836
+    },
+    "next_category": {
+      "accuracy": 0.3738101704997253,
+      "f1_macro": 0.054500362283817605
+    },
+    "ltv_90d": {
+      "accuracy": 0.41208774267083315,
+      "f1_macro": 0.21077675569668375
+    },
+    "proxima_online": {
+      "auc": 0.8051864004214466
+    }
+  },
+  "comparacao_com_baseline_validacao": {
+    "churn": {
+      "metrica": "auc",
+      "modelo": 0.7807976314443836,
+      "baseline": 0.7338829206567589,
+      "delta": 0.04691471078762477
+    },
+    "next_category": {
+      "metrica": "accuracy",
+      "modelo": 0.3738101704997253,
+      "baseline": 0.35580034584172643,
+      "delta": 0.018009824657998885
+    },
+    "ltv_90d": {
+      "metrica": "accuracy",
+      "modelo": 0.41208774267083315,
+      "baseline": 0.33481584182417656,
+      "delta": 0.07727190084665658
+    },
+    "proxima_online": {
+      "metrica": "auc",
+      "modelo": 0.8051864004214466,
+      "baseline": 0.800675606339848,
+      "delta": 0.004510794081598601
+    }
+  },
+  "metricas_teste": {
+    "churn": {
+      "auc": 0.8129949844723633
+    },
+    "next_category": {
+      "accuracy": 0.33265862764863735,
+      "f1_macro": 0.05023638597108497
+    },
+    "ltv_90d": {
+      "accuracy": 0.38093639270431273,
+      "f1_macro": 0.20076615432749648
+    },
+    "proxima_online": {
+      "auc": 0.8108837718800098
+    }
+  },
+  "comparacao_com_baseline": {
+    "churn": {
+      "metrica": "auc",
+      "modelo": 0.8129949844723633,
+      "baseline": 0.7435178750254436,
+      "delta": 0.06947710944691965
+    },
+    "next_category": {
+      "metrica": "accuracy",
+      "modelo": 0.33265862764863735,
+      "baseline": 0.3301648887169837,
+      "delta": 0.0024937389316536662
+    },
+    "ltv_90d": {
+      "metrica": "accuracy",
+      "modelo": 0.38093639270431273,
+      "baseline": 0.33860389216158837,
+      "delta": 0.04233250054272436
+    },
+    "proxima_online": {
+      "metrica": "auc",
+      "modelo": 0.8108837718800098,
+      "baseline": 0.8034356833001237,
+      "delta": 0.007448088579886103
+    }
+  },
+  "tempo_total_segundos": 183.12095069885254
+}

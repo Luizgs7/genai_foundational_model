@@ -1,0 +1,58 @@
+{
+  "emb_subpasta": "fusao",
+  "emb_dim": 384,
+  "sem_embedding": false,
+  "sem_cadastro": false,
+  "sem_causais": false,
+  "n_params": 32614,
+  "n_train": 203201,
+  "n_val": 940523,
+  "n_test": 2239380,
+  "tarefas": [
+    {
+      "nome": "churn",
+      "tipo": "binaria",
+      "n_classes": 1
+    },
+    {
+      "nome": "next_category",
+      "tipo": "multiclasse",
+      "n_classes": 10
+    },
+    {
+      "nome": "ltv_90d",
+      "tipo": "multiclasse",
+      "n_classes": 8
+    },
+    {
+      "nome": "proxima_online",
+      "tipo": "binaria",
+      "n_classes": 1
+    }
+  ],
+  "campos_estaticos_categoricos": [
+    "clube",
+    "newsletter",
+    "cep_top"
+  ],
+  "campos_estaticos_numericos": [
+    "idade",
+    "fn",
+    "active",
+    "n_eventos_anteriores",
+    "churn_baseline",
+    "ltv_90d_baseline",
+    "proxima_online_baseline"
+  ],
+  "pos_weights": {
+    "churn": 3.0719194412231445,
+    "proxima_online": 0.7185303568840027
+  },
+  "batch_size": 2048,
+  "n_epochs": 40,
+  "lr": 0.003,
+  "seed": 2,
+  "frac_treino": 0.1,
+  "semente_amostra": 2,
+  "min_passos": 4000
+}
