@@ -1,0 +1,642 @@
+[
+ {
+  "frac": 0.01,
+  "modelo": "trad",
+  "tarefa": "churn",
+  "media": 0.8196776792436614,
+  "desvio": 0.0019077002124387446,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "trad",
+  "tarefa": "proxima_online",
+  "media": 0.840429667501635,
+  "desvio": 0.002081963678463846,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "trad",
+  "tarefa": "next_category",
+  "media": 0.35572398703407176,
+  "desvio": 0.004117966003811095,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "trad",
+  "tarefa": "ltv_90d",
+  "media": 0.38543609895858244,
+  "desvio": 0.0017121127163656257,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "hib",
+  "tarefa": "churn",
+  "media": 0.8178516730280759,
+  "desvio": 0.0036826193344967834,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "hib",
+  "tarefa": "proxima_online",
+  "media": 0.8417194312117994,
+  "desvio": 0.00033116733010391805,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "hib",
+  "tarefa": "next_category",
+  "media": 0.3589964209424191,
+  "desvio": 0.0035200123956470116,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "hib",
+  "tarefa": "ltv_90d",
+  "media": 0.3864022709795163,
+  "desvio": 0.0015092185848749682,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "fus_d",
+  "tarefa": "churn",
+  "media": 0.7991534321548899,
+  "desvio": 0.006658837566823983,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "fus_d",
+  "tarefa": "proxima_online",
+  "media": 0.8010533663565534,
+  "desvio": 0.019751639602716534,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "fus_d",
+  "tarefa": "next_category",
+  "media": 0.3301740183978657,
+  "desvio": 0.009604859112029417,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "fus_d",
+  "tarefa": "ltv_90d",
+  "media": 0.3631537375618001,
+  "desvio": 0.006088839151189167,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "fus_e",
+  "tarefa": "churn",
+  "media": 0.8061112425037745,
+  "desvio": 0.0020044622538807804,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "fus_e",
+  "tarefa": "proxima_online",
+  "media": 0.8079470019227747,
+  "desvio": 0.003767658185986985,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "fus_e",
+  "tarefa": "next_category",
+  "media": 0.3315114053095107,
+  "desvio": 0.0005519896282714962,
+  "n": 3
+ },
+ {
+  "frac": 0.01,
+  "modelo": "fus_e",
+  "tarefa": "ltv_90d",
+  "media": 0.37465060202543504,
+  "desvio": 0.002219253259620946,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "trad",
+  "tarefa": "churn",
+  "media": 0.821206797663241,
+  "desvio": 0.0008054964277490688,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "trad",
+  "tarefa": "proxima_online",
+  "media": 0.8435714580675685,
+  "desvio": 0.0004971237607420085,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "trad",
+  "tarefa": "next_category",
+  "media": 0.36639213048228986,
+  "desvio": 0.0008686869291625098,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "trad",
+  "tarefa": "ltv_90d",
+  "media": 0.39128954988832754,
+  "desvio": 0.0008993715439912619,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "hib",
+  "tarefa": "churn",
+  "media": 0.8209654418657473,
+  "desvio": 0.001822416762894025,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "hib",
+  "tarefa": "proxima_online",
+  "media": 0.8436860791417312,
+  "desvio": 0.0006003520136483593,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "hib",
+  "tarefa": "next_category",
+  "media": 0.36409323230116725,
+  "desvio": 0.0014001236136028572,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "hib",
+  "tarefa": "ltv_90d",
+  "media": 0.39023936290905165,
+  "desvio": 0.0007831916026766891,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "fus_d",
+  "tarefa": "churn",
+  "media": 0.8078787844189208,
+  "desvio": 0.005347464087343342,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "fus_d",
+  "tarefa": "proxima_online",
+  "media": 0.8302118001147387,
+  "desvio": 0.0023403658656001945,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "fus_d",
+  "tarefa": "next_category",
+  "media": 0.3414605307194834,
+  "desvio": 0.012207193515262544,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "fus_d",
+  "tarefa": "ltv_90d",
+  "media": 0.36605225362460153,
+  "desvio": 0.0007584104877169528,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "fus_e",
+  "tarefa": "churn",
+  "media": 0.8074342821764546,
+  "desvio": 0.003976567380889749,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "fus_e",
+  "tarefa": "proxima_online",
+  "media": 0.8098870306733058,
+  "desvio": 0.0012757129504909009,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "fus_e",
+  "tarefa": "next_category",
+  "media": 0.33255397033120926,
+  "desvio": 0.00010476764928896298,
+  "n": 3
+ },
+ {
+  "frac": 0.05,
+  "modelo": "fus_e",
+  "tarefa": "ltv_90d",
+  "media": 0.3785888798537036,
+  "desvio": 0.0028799578674099475,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "trad",
+  "tarefa": "churn",
+  "media": 0.8234515463924351,
+  "desvio": 0.0013286392756275513,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "trad",
+  "tarefa": "proxima_online",
+  "media": 0.8439695299804055,
+  "desvio": 0.0002526079407738129,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "trad",
+  "tarefa": "next_category",
+  "media": 0.3671242863539996,
+  "desvio": 0.0006989836952150627,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "trad",
+  "tarefa": "ltv_90d",
+  "media": 0.3926776364445851,
+  "desvio": 0.0004735550330569368,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "hib",
+  "tarefa": "churn",
+  "media": 0.8201658528871943,
+  "desvio": 0.000254348598767878,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "hib",
+  "tarefa": "proxima_online",
+  "media": 0.844236630271412,
+  "desvio": 0.0003193410148577223,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "hib",
+  "tarefa": "next_category",
+  "media": 0.3659467801953618,
+  "desvio": 0.0003945719346957939,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "hib",
+  "tarefa": "ltv_90d",
+  "media": 0.39083329347222173,
+  "desvio": 0.0007276486406200177,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "fus_d",
+  "tarefa": "churn",
+  "media": 0.811512974008733,
+  "desvio": 0.0013283170186034012,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "fus_d",
+  "tarefa": "proxima_online",
+  "media": 0.8353242792701471,
+  "desvio": 0.001491531983957525,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "fus_d",
+  "tarefa": "next_category",
+  "media": 0.34789495166502,
+  "desvio": 0.0025341854998291334,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "fus_d",
+  "tarefa": "ltv_90d",
+  "media": 0.3706516126579267,
+  "desvio": 0.00638548843173917,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "fus_e",
+  "tarefa": "churn",
+  "media": 0.8104179691428981,
+  "desvio": 0.004077353659233017,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "fus_e",
+  "tarefa": "proxima_online",
+  "media": 0.8114273795947085,
+  "desvio": 0.000387171481276646,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "fus_e",
+  "tarefa": "next_category",
+  "media": 0.33276506636721315,
+  "desvio": 9.359404748776632e-05,
+  "n": 3
+ },
+ {
+  "frac": 0.1,
+  "modelo": "fus_e",
+  "tarefa": "ltv_90d",
+  "media": 0.3800680337188209,
+  "desvio": 0.0006360623651598126,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "trad",
+  "tarefa": "churn",
+  "media": 0.8217952015201142,
+  "desvio": 0.00038836568503517426,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "trad",
+  "tarefa": "proxima_online",
+  "media": 0.8441662399914046,
+  "desvio": 0.00024366532974458776,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "trad",
+  "tarefa": "next_category",
+  "media": 0.3704049592426551,
+  "desvio": 0.00027012541673647104,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "trad",
+  "tarefa": "ltv_90d",
+  "media": 0.3954007636162491,
+  "desvio": 0.00026455480464484735,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "hib",
+  "tarefa": "churn",
+  "media": 0.8197850733433837,
+  "desvio": 0.0004930193611898334,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "hib",
+  "tarefa": "proxima_online",
+  "media": 0.8444627455809761,
+  "desvio": 0.00014495867644392853,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "hib",
+  "tarefa": "next_category",
+  "media": 0.36858793007198865,
+  "desvio": 0.00035537878570716746,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "hib",
+  "tarefa": "ltv_90d",
+  "media": 0.3911101748860279,
+  "desvio": 0.00018902115962563846,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "fus_d",
+  "tarefa": "churn",
+  "media": 0.8130926582551703,
+  "desvio": 0.0020407535606358006,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "fus_d",
+  "tarefa": "proxima_online",
+  "media": 0.8356877540936251,
+  "desvio": 0.0015189330667565847,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "fus_d",
+  "tarefa": "next_category",
+  "media": 0.35383837391921835,
+  "desvio": 0.002346652741935891,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "fus_d",
+  "tarefa": "ltv_90d",
+  "media": 0.3672882547088238,
+  "desvio": 0.005991199908024082,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "fus_e",
+  "tarefa": "churn",
+  "media": 0.8115066011323826,
+  "desvio": 0.005215858826025031,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "fus_e",
+  "tarefa": "proxima_online",
+  "media": 0.812332889004025,
+  "desvio": 0.0005301551635551359,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "fus_e",
+  "tarefa": "next_category",
+  "media": 0.33282630203166574,
+  "desvio": 9.482667456658044e-05,
+  "n": 3
+ },
+ {
+  "frac": 0.25,
+  "modelo": "fus_e",
+  "tarefa": "ltv_90d",
+  "media": 0.3801998820111096,
+  "desvio": 0.0015982853745203486,
+  "n": 3
+ },
+ {
+  "frac": 1.0,
+  "modelo": "trad",
+  "tarefa": "churn",
+  "media": 0.824183002761409,
+  "desvio": 0.0,
+  "n": 1
+ },
+ {
+  "frac": 1.0,
+  "modelo": "trad",
+  "tarefa": "proxima_online",
+  "media": 0.8447144961166595,
+  "desvio": 0.0,
+  "n": 1
+ },
+ {
+  "frac": 1.0,
+  "modelo": "trad",
+  "tarefa": "next_category",
+  "media": 0.3727127644295163,
+  "desvio": 0.0,
+  "n": 1
+ },
+ {
+  "frac": 1.0,
+  "modelo": "trad",
+  "tarefa": "ltv_90d",
+  "media": 0.39874480425741204,
+  "desvio": 0.0,
+  "n": 1
+ },
+ {
+  "frac": 1.0,
+  "modelo": "hib",
+  "tarefa": "churn",
+  "media": 0.820540934240911,
+  "desvio": 0.0,
+  "n": 1
+ },
+ {
+  "frac": 1.0,
+  "modelo": "hib",
+  "tarefa": "proxima_online",
+  "media": 0.8450419775770086,
+  "desvio": 0.0,
+  "n": 1
+ },
+ {
+  "frac": 1.0,
+  "modelo": "hib",
+  "tarefa": "next_category",
+  "media": 0.36975964667689637,
+  "desvio": 0.0,
+  "n": 1
+ },
+ {
+  "frac": 1.0,
+  "modelo": "hib",
+  "tarefa": "ltv_90d",
+  "media": 0.39176665673205113,
+  "desvio": 0.0,
+  "n": 1
+ },
+ {
+  "frac": 1.0,
+  "modelo": "fus_d",
+  "tarefa": "churn",
+  "media": 0.8098348846320877,
+  "desvio": 0.003894161516850338,
+  "n": 3
+ },
+ {
+  "frac": 1.0,
+  "modelo": "fus_d",
+  "tarefa": "proxima_online",
+  "media": 0.8355293966736144,
+  "desvio": 0.0006278105564421233,
+  "n": 3
+ },
+ {
+  "frac": 1.0,
+  "modelo": "fus_d",
+  "tarefa": "next_category",
+  "media": 0.35103355781214546,
+  "desvio": 0.004125007731318424,
+  "n": 3
+ },
+ {
+  "frac": 1.0,
+  "modelo": "fus_d",
+  "tarefa": "ltv_90d",
+  "media": 0.36774297800525185,
+  "desvio": 0.00949530237259309,
+  "n": 3
+ },
+ {
+  "frac": 1.0,
+  "modelo": "fus_e",
+  "tarefa": "churn",
+  "media": 0.8157139195822961,
+  "desvio": 0.0007293920888879936,
+  "n": 3
+ },
+ {
+  "frac": 1.0,
+  "modelo": "fus_e",
+  "tarefa": "proxima_online",
+  "media": 0.8115987127231786,
+  "desvio": 0.0014565787941960768,
+  "n": 3
+ },
+ {
+  "frac": 1.0,
+  "modelo": "fus_e",
+  "tarefa": "next_category",
+  "media": 0.33274881108174026,
+  "desvio": 0.0001510594430246461,
+  "n": 3
+ },
+ {
+  "frac": 1.0,
+  "modelo": "fus_e",
+  "tarefa": "ltv_90d",
+  "media": 0.3817517057489535,
+  "desvio": 0.0015059464303513368,
+  "n": 3
+ }
+]
