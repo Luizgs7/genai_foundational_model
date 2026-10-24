@@ -39,3 +39,10 @@ venv/
 
 # logs de execução local
 logs/
+# fase 2b: candidatos, pontuações e embeddings (pesados); só os .json vão pro git
+runs/hm_clientes/f2h3/*/
+runs/hm_clientes/f2h10/textos.parquet
+runs/hm_clientes/f2h11/*.parquet
+runs/hm_clientes/gbdt/f2h1*_*/predicoes_*.parquet
+runs/hm_clientes/gbdt/f2h10_*/predicoes_*.parquet
+runs/hm_clientes/gbdt/f2h11_*/predicoes_*.parquet

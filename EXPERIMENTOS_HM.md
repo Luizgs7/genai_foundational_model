@@ -302,3 +302,35 @@ Arquivos: `f2_h7_segmentos.json`, `f2_h1_curvas.json`, `f2_h6_bootstrap.json`, `
 - ajuste fino conjunto com poucos rótulos e com dados recentes;
 - tarefas sequenciais sem features prontas (F2-H3);
 - a base da empresa (F2-H9).
+
+## Fase 2, segunda rodada — F2-H3, F2-H10, F2-H11 (2026-10-23)
+
+Desenhos e critérios registrados no artigo (seção 12) antes de rodar.
+
+### F2-H3 — recomendação do próximo artigo (MAP@12)
+
+Semana-alvo de validação 05–11/03/2020 (antes da COVID); teste 16–22/09/2020
+(última semana, a da competição). Ranqueador treinado nas 2 semanas anteriores
+a cada alvo (40 mil clientes por semana). Candidatos iguais para todos os braços
+(recompra 8 semanas, 100 populares, variantes de cor, comprados junto, 50
+populares da faixa etária): ~125 por cliente, cobertura 11,7% (val) e 16,2% (teste).
+O backbone (final_s0..s2, congelado) pontua cada candidato pelo log da
+probabilidade do bloco de tokens do artigo depois do histórico; todos os
+candidatos de um cliente numa passada, com máscara de atenção
+(`f2h3_pontuar_fm.py`; idêntico à pontuação isolada até a 4ª casa).
+
+| Braço | MAP@12 val | MAP@12 teste | vs R2 (teste) | IC 95% |
+| --- | --- | --- | --- | --- |
+| R0 populares | 0,0062 | 0,0087 | −73% | [−0,0248; −0,0227] |
+| R1 recompra + populares | 0,0198 | 0,0229 | −29% | [−0,0101; −0,0089] |
+| R2 LightGBM LambdaRank tradicional | 0,0283 | 0,0324 | — | — |
+| R3 backbone sozinho | 0,0182 | 0,0192 | −41% | [−0,0139; −0,0126] |
+| R4 híbrido | 0,0287 | 0,0329 | +1,6% | [+0,0002; +0,0008] |
+| R5 LightGBM só com o backbone | 0,0209 | 0,0216 | −33% | [−0,0114; −0,0101] |
+
+Critério (ganho ≥ 2% relativo com IC excluindo zero; forma forte R3/R5 ≥ R2):
+**não confirmada** — ganho real mas de 1,6%. 90% dos artigos comprados no teste
+caem no token ARTIGO_OUTROS (fora do top-2000 do treino), e os pesos do backbone
+são de até 12/2019. Arquivos: `runs/hm_clientes/f2h3/resultado_{val,test}.json`.
+Reprodução: `f2h3_candidatos.py` (local, 6 semanas) → `f2h3_pontuar_fm.py`
+(Colab, 6 semanas × 3 sementes, ~1h40) → `f2h3_ranquear.py --fase val` → `--fase test`.

@@ -22,7 +22,7 @@ Escala (experimento H&M):
     (coluna evento_id, gerada pela Tarefa 8), extrai só esses eventos.
 
 Uso: python3 pipeline/common/tarefa13_extrair_embeddings.py <config.yaml>
-         [--pretreino <subpasta>] [--saida <subpasta>] [--dtype float16|float32]
+         [--pretreino <subpasta>] [--saida <subpasta>] [--dtype float16|float32] [--arch_de <run>/config.yaml]
 
 Gera runs/<nome>/<saida>/{embeddings_eventos.npy, embeddings_eventos_index.parquet}
 (saida padrão: fusao).
@@ -181,5 +181,9 @@ if __name__ == "__main__":
     ap.add_argument("--saida", default="fusao")
     ap.add_argument("--dtype", default="float32", choices=["float16", "float32"])
     ap.add_argument("--sem_janelas_extras", action="store_true", help="legado: descarta âncoras fora da última janela")
+    ap.add_argument("--arch_de", default=None, help="config.yaml (relativo a runs/<nome>) cuja arquitetura usar")
     a = ap.parse_args()
-    main(a.config, a.pretreino, a.saida, a.dtype, janelas_extras=not a.sem_janelas_extras)
+    arquitetura = None
+    if a.arch_de:
+        arquitetura = carregar_config(os.path.join(run_dir(carregar_config(a.config), ""), a.arch_de))["arquitetura"]
+    main(a.config, a.pretreino, a.saida, a.dtype, arquitetura=arquitetura, janelas_extras=not a.sem_janelas_extras)

@@ -1,0 +1,44 @@
+{
+ "R2": {
+  "0": {
+   "num_leaves": 127,
+   "n_estimators": 129
+  },
+  "1": {
+   "num_leaves": 31,
+   "n_estimators": 137
+  },
+  "2": {
+   "num_leaves": 127,
+   "n_estimators": 121
+  }
+ },
+ "R4": {
+  "0": {
+   "num_leaves": 31,
+   "n_estimators": 234
+  },
+  "1": {
+   "num_leaves": 31,
+   "n_estimators": 234
+  },
+  "2": {
+   "num_leaves": 127,
+   "n_estimators": 124
+  }
+ },
+ "R5": {
+  "0": {
+   "num_leaves": 31,
+   "n_estimators": 181
+  },
+  "1": {
+   "num_leaves": 31,
+   "n_estimators": 117
+  },
+  "2": {
+   "num_leaves": 31,
+   "n_estimators": 175
+  }
+ }
+}

@@ -49,9 +49,12 @@ class RoPE(nn.Module):
         self.register_buffer("cos", freqs.cos(), persistent=False)
         self.register_buffer("sin", freqs.sin(), persistent=False)
 
-    def forward(self, x):  # x: (B, H, T, D)
-        T = x.shape[-2]
-        cos, sin = self.cos[:T].to(x.dtype), self.sin[:T].to(x.dtype)
+    def forward(self, x, posicoes=None):  # x: (B, H, T, D); posicoes: (B, T) opcional
+        if posicoes is None:
+            T = x.shape[-2]
+            cos, sin = self.cos[:T].to(x.dtype), self.sin[:T].to(x.dtype)
+        else:
+            cos, sin = self.cos[posicoes].unsqueeze(1).to(x.dtype), self.sin[posicoes].unsqueeze(1).to(x.dtype)
         x1, x2 = x[..., 0::2], x[..., 1::2]
         rot = torch.stack([x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1)
         return rot.flatten(-2)
@@ -70,16 +73,18 @@ class Atencao(nn.Module):
         self.resid_drop = nn.Dropout(dropout)
         self.rope = rope
 
-    def forward(self, x):
+    def forward(self, x, posicoes=None, mascara=None):
         B, T, C = x.shape
         q = self.q(x).view(B, T, self.n_head, self.hd).transpose(1, 2)
         k, v = self.kv(x).view(B, T, 2, self.n_kv, self.hd).permute(2, 0, 3, 1, 4)
         if self.rope is not None:
-            q, k = self.rope(q), self.rope(k)
+            q, k = self.rope(q, posicoes), self.rope(k, posicoes)
         if self.n_kv != self.n_head:
             rep = self.n_head // self.n_kv
             k, v = k.repeat_interleave(rep, dim=1), v.repeat_interleave(rep, dim=1)
-        y = F.scaled_dot_product_attention(q, k, v, is_causal=True,
+        # mascara (B, 1, T, T) booleana substitui a causal (ex.: vários blocos-candidato
+        # que veem o mesmo histórico mas não uns aos outros — F2-H3)
+        y = F.scaled_dot_product_attention(q, k, v, attn_mask=mascara, is_causal=mascara is None,
                                            dropout_p=self.dropout if self.training else 0.0)
         y = y.transpose(1, 2).contiguous().view(B, T, C)
         return self.resid_drop(self.proj(y))
@@ -127,8 +132,8 @@ class Bloco(nn.Module):
         self.ln2 = norma(norm, n_embd, bias)
         self.mlp = FFN(n_embd, ffn, dropout, bias)
 
-    def forward(self, x):
-        x = x + self.attn(self.ln1(x))
+    def forward(self, x, posicoes=None, mascara=None):
+        x = x + self.attn(self.ln1(x), posicoes, mascara)
         return x + self.mlp(self.ln2(x))
 
 
@@ -159,13 +164,13 @@ class DecoderCausal(nn.Module):
         elif isinstance(m, nn.Embedding):
             nn.init.normal_(m.weight, 0.0, 0.02)
 
-    def estados(self, input_ids):
+    def estados(self, input_ids, posicoes=None, mascara=None):
         x = self.wte(input_ids)
         if self.wpe is not None:
-            x = x + self.wpe(torch.arange(input_ids.shape[1], device=input_ids.device))
+            x = x + self.wpe(torch.arange(input_ids.shape[1], device=input_ids.device) if posicoes is None else posicoes)
         x = self.drop(x)
         for bloco in self.blocos:
-            x = bloco(x)
+            x = bloco(x, posicoes, mascara)
         return self.ln_f(x)
 
     def forward(self, input_ids):
