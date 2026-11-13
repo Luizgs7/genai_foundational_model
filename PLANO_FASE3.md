@@ -50,6 +50,10 @@ fase 3 usam o prefixo **F3-**.
   com centenas de SKUs estoura a janela; um cliente com milhares de pedidos
   perde quase todo o histórico. Catálogo grande e várias fontes de evento
   também ficam de fora.
+- **A base da empresa não entra nos experimentos.** Decisão de 2026-11-13: a
+  estratégia e a arquitetura são validadas e estressadas em bases públicas e
+  sintéticas. Para a empresa vai só o código, no fim. O perfil da base dela
+  (seção 1) serve de especificação do que o motor precisa suportar.
 
 ## 2. Hipóteses macro, com critério explícito
 
@@ -106,8 +110,8 @@ informa é o resultado de E, o dos problemas sem features prontas
 - O empate é declarado quando o limite inferior do IC 95% da diferença
   (solução única menos régua) fica acima de menos a margem.
 
-As margens valem para toda a fase 3 e só mudam antes de um resultado, com
-registro aqui.
+As margens foram confirmadas pelo responsável pelo projeto em 2026-11-13.
+Valem para toda a fase 3 e só mudam antes de um resultado, com registro aqui.
 
 ### Protocolo
 
@@ -129,6 +133,23 @@ Para cada problema e cada braço:
 | Tempo até o primeiro modelo | Horas de CPU e de GPU, e tempo de parede |
 | Peças a manter | Número de pipelines e de modelos distintos |
 | Custo fixo | Pré-treino e geração de features, contados à parte |
+
+### Bases de dados
+
+Só bases públicas e sintéticas. Cada uma cobre uma parte do perfil da base da
+empresa:
+
+| Base | O que tem | O que estressa | O que não cobre |
+|---|---|---|---|
+| H&M (31,8 milhões de itens, 1,36 milhão de clientes) | Compras e cadastro | Escala, catálogo de 105 mil artigos e os 4 problemas | Outras fontes de evento; pedidos grandes |
+| Olist (112 mil itens; entidade = vendedor) | 9 tabelas: itens, pagamentos, avaliações e entregas | Vários tipos de evento na mesma linha do tempo; históricos longos (um vendedor tem 2.025 vendas); rótulos reais | Volume |
+| Sintética B2B (gerador próprio, a estender) | O que for gerado: pedidos, navegação, crédito e incentivos | Formas extremas (centenas de itens por pedido, milhares de pedidos por cliente) e estrutura plantada, com gabarito | Não é dado real: não serve de evidência de valor de negócio |
+| Synerise, do RecSys Challenge 2025 (proposta; ainda não baixada) | Compra, carrinho, visita de página e busca de um varejista real | Navegação em dado real e em volume; placar público de representações universais | Licença CC BY-NC 4.0: só para pesquisa |
+
+A base sintética serve para duas coisas: testar formas que nenhuma base
+pública tem e conferir se o modelo recupera uma estrutura que nós mesmos
+plantamos (segmentos, regras de compra conjunta, sensibilidade a desconto).
+A evidência de valor vem das bases reais.
 
 ## 4. Etapas e hipóteses
 
@@ -219,7 +240,7 @@ embedding sozinho.
 ### Etapa 2 — motor v2: evento composto
 
 Um redesenho do que entra e do que sai do backbone. Corrige os diagnósticos 2
-e 3 da seção 1 e é pré-requisito para a base da empresa. O desenho detalhado
+e 3 da seção 1 e é pré-requisito para as formas da base da empresa. O desenho detalhado
 (formato dos dados, cabeças e perdas) é escrito antes da primeira execução.
 
 Princípios:
@@ -299,34 +320,52 @@ Princípios:
     a manter.
 - **O que decide.** O veredito de M1 na H&M pelo critério da seção 2.
 
-### Etapa 3 — várias fontes de evento
+### Etapa 3 — estresse e generalização
 
-#### F3-H7 — navegação e compra na mesma linha do tempo
+#### F3-H7 — várias fontes de evento na mesma linha do tempo
 
 - **Pergunta.** O motor v2 ingere várias fontes só com configuração, e a
   navegação melhora a representação sem engenharia de features?
 - **Por que importa (M2 e M1).** A base da empresa tem navegação, crédito e
   incentivos; a H&M só tem compras.
-- **Desenho.** Segunda base pública com compra e navegação. Primeira
-  candidata: os dados do RecSys Challenge 2025 (compra, carrinho, visita de
-  página e busca; tarefas de churn e de propensão por categoria e por SKU), se
-  continuarem disponíveis. Alternativa: o MBD (transações, geolocalização e
-  diálogos de atendimento).
+- **Desenho.** Em duas bases:
+  - Olist, como teste funcional: vendas, pagamentos, avaliações e entregas do
+    vendedor entram como tipos de evento.
+  - Uma base real com navegação e compra em volume. Proposta: a base da
+    Synerise usada no RecSys Challenge 2025 (compra, carrinho, visita de
+    página e busca; tarefas de churn e de propensão por categoria e por SKU).
+    Depende de aprovação, porque é uma base nova.
 - **Critério.**
-  - M2: a bateria roda com adapter e YAML, sem mudança no motor.
+  - M2: a bateria roda nas duas bases com adapter e YAML, sem mudança no motor.
   - M1: incluir a navegação melhora E em pelo menos um problema por mais que a
     margem, e E ou H empata com T (que também recebe agregados da navegação).
 
-### Etapa 4 — base da empresa
+#### F3-H8 — estresse no perfil da base da empresa, com a base sintética B2B
 
-#### F3-H8 — a bateria com os problemas e os rótulos reais (antiga F2-H9)
+- **Pergunta.** O motor v2 aguenta as formas da base da empresa e recupera
+  estrutura conhecida?
+- **Por que importa (M2).** Nenhuma base pública tem pedidos com centenas de
+  itens nem clientes com milhares de pedidos. Sem esse teste, o primeiro
+  contato com essas formas seria na empresa.
+- **Desenho.** O gerador sintético é estendido para o perfil B2B:
+  - pedidos de 2 a centenas de itens e clientes de 1 a milhares de pedidos;
+  - catálogo de dezenas de milhares de SKUs;
+  - eventos de navegação, crédito e incentivo;
+  - estrutura plantada: segmentos latentes, regras de compra conjunta,
+    sensibilidade a desconto e um padrão que depende da ordem dos eventos.
+- **Critério.**
+  - Forma: 100% dos eventos entram no contexto, sem truncamento, e o custo de
+    pré-treino por pedido não cresce com o tamanho do pedido além do linear.
+  - Estrutura: os segmentos do braço E recuperam os segmentos plantados pelo
+    menos tão bem quanto os de T (ARI contra o gabarito, margem de 5%), e a
+    recomendação direta recupera as regras de compra conjunta acima do R1.
+  - Custo: o tempo medido permite projetar o treino para o volume da empresa.
+- **Quando.** A parte de forma roda logo depois da F3-H3.
 
-- **Pergunta.** Na base da empresa, a solução única empata com os modelos que
-  a empresa já usa, com menos esforço?
-- **Desenho.** Os 4 problemas com os rótulos reais; T são os modelos em
-  produção ou a melhor reprodução deles.
-- **Critério.** O mesmo da F3-H6.
-- **Pré-requisitos.** Seção 7.
+### Etapa 4 — entrega do código
+
+Não é um experimento. A empresa recebe o código e roda no ambiente dela, com
+os dados dela. O pacote só sai quando os critérios da seção 7 forem atendidos.
 
 ## 5. O que sai da fila
 
@@ -336,7 +375,9 @@ Princípios:
   etapa 0.
 - **F2-H4 e F2-H5** deixam de existir como hipóteses separadas: viram a
   F3-H5 e a F3-H4.
-- **F2-H8 (transferência entre empresas)** continua adiada até a etapa 4.
+- **F2-H8 (transferência entre empresas)** continua adiada.
+- **F2-H9 (base da empresa)** sai dos experimentos: a empresa recebe o código
+  no fim (etapa 4).
 - **Fusão conjunta com as 97 features** (sugerida na avaliação de 13/11) vira
   o braço J da bateria, e não uma hipótese própria.
 
@@ -347,8 +388,8 @@ Princípios:
 | 0 | F2-H10 e F2-H11 | 9 a 10 h de L4 | Continuar ou parar a linha de LLM |
 | 1 | F3-H1 e F3-H2 | CPU local; 15 min de L4 | Onde o motor atual já empata |
 | 2 | Motor v2; F3-H3, F3-H4, F3-H5, F3-H6 | Implementação; menos de 1 h de L4 por pré-treino | Veredito de M1 na H&M |
-| 3 | F3-H7 | A estimar com a base escolhida | Motor pronto para várias fontes |
-| 4 | F3-H8 | Depende do ambiente da empresa | Uso interno |
+| 3 | F3-H7 e F3-H8 | A estimar com as bases | Motor pronto para várias fontes e para as formas da empresa |
+| 4 | Entrega do código | Sem GPU | Levar para a empresa |
 
 Os custos da etapa 2 em diante são estimativas, sem medição.
 
@@ -359,26 +400,29 @@ Pontos de decisão:
 2. **Depois da F3-H4.** Se a recomendação direta não superar nem o R1, a
    promessa da solução única exclui recomendação, que segue com o ranqueador
    específico.
-3. **Depois da F3-H6.** Veredito de M1 na H&M. Os pré-requisitos da etapa 4
-   correm em paralelo desde já, porque dependem da empresa.
+3. **Depois da F3-H6.** Veredito de M1 na H&M. Se a solução única não empatar
+   nem como híbrida, a estratégia é revista antes das etapas 3 e 4.
 
-## 7. Pré-requisitos da base da empresa
+## 7. Quando o código está pronto para ir à empresa
 
-1. **Ambiente aprovado para os dados.** A base da empresa não deve ir para o
-   Colab pelo túnel sem aprovação de segurança e de LGPD. É preciso definir
-   onde o treino roda (nuvem da empresa, com GPU).
-2. **Dicionário de dados** das tabelas de pedidos, itens, cadastro, crédito,
-   navegação e incentivos, com volumes. Basta o esquema; não precisa de dados.
-3. **Definição dos 4 problemas com os donos de cada um:** rótulo, população,
-   data de corte e o modelo que está em produção hoje.
-4. **Motor v2 validado** (F3-H3), porque o v1 não comporta a base.
+1. **M1 julgada em bases reais.** Veredito da F3-H6 na H&M e da F3-H7 na
+   segunda base real, pelo critério de empate.
+2. **M2 demonstrada.** O mesmo código roda nas 4 bases só com adapter e YAML,
+   incluindo várias fontes de evento.
+3. **Formas da empresa testadas.** F3-H8 atendida na base sintética B2B, com a
+   projeção de custo para o volume da empresa.
+4. **Reprodutibilidade.** Testes de regressão, de vazamento e de causalidade
+   do motor v2 passando; sementes e configurações versionadas.
+5. **Independência do Colab.** O pipeline roda de ponta a ponta com um único
+   comando por etapa, com retomada, em qualquer máquina com GPU.
+6. **Roteiro de implantação.** Modelo de adapter e de YAML, o registro de
+   esforço e um guia para definir os 4 problemas com os donos de cada um.
 
 ## 8. Decisões em aberto
 
-1. **Margens de empate.** Valem as da seção 3, salvo indicação em contrário
-   antes do primeiro resultado.
-2. **Ambiente para a base da empresa** (pré-requisito 1).
-3. **Persistência no Colab.** Montar o Google Drive no notebook evita refazer
+1. **Base nova com navegação (F3-H7).** A da Synerise é pública, com licença
+   CC BY-NC 4.0 (só pesquisa, como a H&M). Não será baixada sem aprovação.
+2. **Persistência no Colab.** Montar o Google Drive no notebook evita refazer
    horas de GPU quando o runtime cai (`scripts/colab_persistencia.sh`).
-4. **Licença do TabPFN-3.5,** ainda não aceita na conta da Prior Labs; sem
+3. **Licença do TabPFN-3.5,** ainda não aceita na conta da Prior Labs; sem
    ela a F2-H11 fecha só com o TabICL.

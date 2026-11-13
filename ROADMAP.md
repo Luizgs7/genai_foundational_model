@@ -237,7 +237,7 @@ Prefixo F2 para não confundir com as etapas H0–H10 da fase 1. Toda hipótese 
 | F2-H10 | LLM open source com ajuste fino | M1, M2 | em execução no Colab |
 | F2-H11 | Modelo tabular pré-treinado como régua | M1 | em execução no Colab |
 
-Resultados em `EXPERIMENTOS_HM.md`. As demais hipóteses da fase 2 foram reorganizadas na fase 3: F2-H4 e F2-H5 viraram a F3-H5 e a F3-H4, a F2-H9 virou a F3-H8, e a F2-H8 (transferência entre empresas) segue adiada. Pesquisa de modelos e análise de impacto: https://claude.ai/artifact/JiMFj6SQn89ixNTJLhMPUn
+Resultados em `EXPERIMENTOS_HM.md`. As demais hipóteses da fase 2 foram reorganizadas na fase 3: F2-H4 e F2-H5 viraram a F3-H5 e a F3-H4, a F2-H9 (base da empresa) saiu dos experimentos, porque a empresa recebe só o código no fim, e a F2-H8 (transferência entre empresas) segue adiada. Pesquisa de modelos e análise de impacto: https://claude.ai/artifact/JiMFj6SQn89ixNTJLhMPUn
 
 ---
 
@@ -252,8 +252,8 @@ Plano completo, com pergunta, desenho e critério de cada hipótese: **`PLANO_FA
 | 0. Encerrar a rodada atual | F2-H10, F2-H11 | em execução |
 | 1. Placar do motor atual nos 4 problemas | F3-H1 propensão a desconto · F3-H2 clusterização | a iniciar |
 | 2. Motor v2 (evento composto) | F3-H3 qualidade e custo · F3-H4 recomendação direta · F3-H5 pré-treino alinhado · F3-H6 teste central | planejada |
-| 3. Várias fontes de evento | F3-H7 | planejada |
-| 4. Base da empresa | F3-H8 | depende de ambiente e acesso |
+| 3. Estresse e generalização | F3-H7 várias fontes de evento · F3-H8 perfil da empresa com base sintética B2B | planejada |
+| 4. Entrega do código | sem experimento com dados da empresa | depois das etapas 2 e 3 |
 
 ---
 
