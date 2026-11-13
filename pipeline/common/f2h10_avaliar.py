@@ -9,7 +9,7 @@ da diferença na MÉDIA das 4 tarefas (critério principal da F2-H10).
 
 Uso: python3 pipeline/common/f2h10_avaliar.py configs/hm_clientes.yaml \\
         --braco T=gbdt/f2h10_trad --braco "E0=f2h10_fusao_e0_s*" ... --ref E0 --ref T [--B 500]
-Gera runs/<nome>/f2h10/resultado_test.json
+Gera runs/<nome>/<--saida> (padrão f2h10/resultado_test.json)
 """
 
 import argparse
@@ -43,6 +43,7 @@ def main():
     ap.add_argument("--braco", action="append", required=True, help="NOME=subpasta (glob com * junta sementes)")
     ap.add_argument("--ref", action="append", required=True)
     ap.add_argument("--B", type=int, default=500)
+    ap.add_argument("--saida", default="f2h10/resultado_test.json", help="relativo a runs/<nome>")
     a = ap.parse_args()
     config = carregar_config(a.config)
     base = run_dir(config, "")
@@ -120,8 +121,9 @@ def main():
                           "significativo": bool(lo > 0 or hi < 0)}
             res["deltas"][f"{nome}-{r}"] = d
     res["n_clientes"] = n_cli
-    os.makedirs(run_dir(config, "f2h10"), exist_ok=True)
-    with open(os.path.join(run_dir(config, "f2h10"), "resultado_test.json"), "w") as f:
+    destino = os.path.join(base, a.saida)
+    os.makedirs(os.path.dirname(destino), exist_ok=True)
+    with open(destino, "w") as f:
         json.dump(res, f, indent=1)
     for nome in bracos:
         print(f"{nome:6s} " + "  ".join(f"{t}={res['tarefas'][t]['modelos'][nome]:.4f}" for t in TAREFAS) + f"  média={res['media'][nome]:.4f}")

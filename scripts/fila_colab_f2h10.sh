@@ -10,6 +10,12 @@ Q=Qwen/Qwen3-Embedding-0.6B
 F="python3 -u pipeline/common/tarefa13_treinar_fusao.py"
 t() { echo "== $* $(date)"; }
 
+export LD_LIBRARY_PATH=/usr/lib64-nvidia:${LD_LIBRARY_PATH:-}
+
+# embeddings do backbone H3 para todas as âncoras (insumo do E0 e índice do E1); runtime novo não os tem
+[ -f $R/fusao/embeddings_eventos_index.parquet ] || { t extracao H3; python3 -u pipeline/common/tarefa13_extrair_embeddings.py $C \
+    --pretreino pretreino --saida fusao --dtype float16; }
+
 # E0: backbone H3 (embeddings da fase 2), recortado para a amostra
 [ -f $R/f2h10_e0/embeddings_eventos_index.parquet ] || { t E0; python3 -u pipeline/common/f2h10_subamostra.py $C --de fusao --para f2h10_e0; }
 

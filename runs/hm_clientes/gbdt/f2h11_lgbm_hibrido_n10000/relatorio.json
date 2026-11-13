@@ -1,0 +1,28 @@
+{
+ "modelo": "lgbm",
+ "n": 10000,
+ "features": 129,
+ "tarefas": {
+  "churn": {
+   "n_contexto": 10000,
+   "segundos": 2.3,
+   "n_arvores": 69
+  },
+  "proxima_online": {
+   "n_contexto": 10000,
+   "segundos": 3.1,
+   "n_arvores": 280
+  },
+  "next_category": {
+   "n_contexto": 10000,
+   "segundos": 9.8,
+   "n_arvores": 96
+  },
+  "ltv_90d": {
+   "n_contexto": 10000,
+   "segundos": 11.3,
+   "n_arvores": 59
+  }
+ },
+ "segundos": 26.6
+}
