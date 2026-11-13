@@ -230,9 +230,22 @@ def treinar(a, config):
     out_dir = run_dir(config, a.saida)
     os.makedirs(out_dir, exist_ok=True)
     ordem = rng.permutation(len(hist))
-    log, p0, perdas = [], 0, []
+    log, p0, perdas, ini = [], 0, [], 0
+    # estado completo a cada N passos (o Colab cai): pesos treináveis, otimizador, agenda de lr e geradores
+    est_path = os.path.join(out_dir, "estado_treino.pt")
+    treinaveis = {n: p for n, p in m.named_parameters() if p.requires_grad}
+    if a.retomar and os.path.exists(est_path):
+        est = torch.load(est_path, map_location="cuda", weights_only=False)
+        with torch.no_grad():
+            for n, v in est["params"].items():
+                treinaveis[n].copy_(v)
+        opt.load_state_dict(est["opt"]); sched.load_state_dict(est["sched"])
+        rng.set_state(est["rng"]); torch.set_rng_state(est["torch_rng"]); torch.cuda.set_rng_state_all(est["cuda_rng"])
+        ordem, p0, log, perdas, ini = est["ordem"], est["p0"], est["log"], est["perdas"], est["passo"]
+        t0 -= est["segundos"]
+        print(f"retomando do passo {ini}", flush=True)
     m.train()
-    for passo in range(passos):
+    for passo in range(ini, passos):
         if p0 + a.lote > len(ordem):
             ordem, p0 = rng.permutation(len(hist)), 0
         lote = [hist[i] for i in ordem[p0:p0 + a.lote]]
@@ -267,9 +280,18 @@ def treinar(a, config):
             print(json.dumps(reg), flush=True)
         if (passo + 1) % 500 == 0 or passo == passos - 1:
             m.save_pretrained(os.path.join(out_dir, "adaptador"))
+        if a.estado_a_cada and (passo + 1) % a.estado_a_cada == 0 and passo != passos - 1:
+            est = {"passo": passo + 1, "params": {n: p.detach().clone() for n, p in treinaveis.items()},
+                   "opt": opt.state_dict(), "sched": sched.state_dict(), "rng": rng.get_state(),
+                   "torch_rng": torch.get_rng_state(), "cuda_rng": torch.cuda.get_rng_state_all(),
+                   "ordem": ordem, "p0": p0, "log": log, "perdas": perdas[-50:], "segundos": time.time() - t0}
+            torch.save(est, est_path + ".tmp")
+            os.replace(est_path + ".tmp", est_path)
     rel = {"modo": a.modo, "modelo": a.modelo, "passos": passos, "lote": a.lote, "lr": a.lr, "tau": a.tau,
            "max_tokens": a.max_tokens, "n_clientes": len(hist), "segundos": round(time.time() - t0, 1), "log": log}
     json.dump(rel, open(os.path.join(out_dir, f"relatorio_{a.modo}.json"), "w"), indent=1)
+    if os.path.exists(est_path):
+        os.remove(est_path)
 
 
 def main():
@@ -290,6 +312,8 @@ def main():
     ap.add_argument("--tau", type=float, default=0.05)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--max_clientes", type=int, default=0, help="só para teste rápido")
+    ap.add_argument("--retomar", action="store_true", help="continua de <saida>/estado_treino.pt, se existir")
+    ap.add_argument("--estado_a_cada", type=int, default=100, help="passos entre gravações do estado de treino (0 = não grava)")
     a = ap.parse_args()
     config = carregar_config(a.config)
     a.config_obj = config

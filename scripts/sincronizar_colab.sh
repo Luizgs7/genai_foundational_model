@@ -14,7 +14,9 @@ while true; do
     && timeout 300 ssh -o ConnectTimeout=180 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR "$H" 'mv /content/.ultimo_sync_novo /content/.ultimo_sync' 2>/dev/null \
     && echo "[$(date +%H:%M)] sincronizado" || echo "[$(date +%H:%M)] falha de conexão"
   for f in /content/h4_h9.log /content/h6_h7.log /content/h8.log /content/fila.log /content/hibrido.log /content/extracao.log /content/h5_xgb_ltv.log /content/final.log /content/final_gbdt.log /content/h10_gpu.log /content/h10_cpu.log /content/h7_xgb.log /content/h7_resto.log /content/h10_xgb.log /content/h10_boot.log /content/certeza_gpu.log /content/certeza_cpu.log /content/fase2_base.log /content/fase2.log /content/certeza_cpu1.log /content/certeza_cpu2.log /content/certeza_boot.log /content/fila_certeza.log /content/f2h10.log /content/f2h11.log; do
-    timeout 300 ssh -o ConnectTimeout=180 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR "$H" "cat $f 2>/dev/null" > "logs/colab_$(basename $f)" 2>/dev/null || true
+    # grava num temporário: se a conexão falhar, a última cópia boa do log fica intacta
+    d="logs/colab_$(basename $f)"
+    timeout 300 ssh -o ConnectTimeout=180 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR "$H" "cat $f 2>/dev/null" > "$d.tmp" 2>/dev/null && [ -s "$d.tmp" ] && mv "$d.tmp" "$d" || rm -f "$d.tmp"
   done
   sleep "$INT"
 done

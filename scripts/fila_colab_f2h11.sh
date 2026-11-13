@@ -3,7 +3,9 @@
 # amostra (trad e híbrido). Espera a fila da F2-H10 liberar a GPU. TabPFN só roda
 # com TABPFN_TOKEN em /content/tabpfn_token (licença aceita em ux.priorlabs.ai).
 cd /content/genai_model
+source scripts/colab_persistencia.sh
 until grep -q "^FIM" /content/f2h10.log 2>/dev/null; do sleep 120; done
+restaurar
 R=runs/hm_clientes/gbdt
 for M in tabicl tabpfn; do
   if [ $M = tabpfn ]; then
@@ -22,6 +24,7 @@ sys.exit(0 if b.check_license_accepted(os.environ['TABPFN_TOKEN'], settings.tabp
     nome=f2h11_${M}_$([ -n "$H" ] && echo hibrido || echo trad)_n$N
     [ -f $R/$nome/relatorio.json ] && continue
     echo "== $nome $(date)"; python3 -u pipeline/common/f2h11_tabular.py configs/hm_clientes.yaml --modelo $M --n $N $H
+    persistir
   done; done
 done
 
@@ -33,6 +36,7 @@ A="python3 -u pipeline/common/f2h10_avaliar.py configs/hm_clientes.yaml"
 BR="--braco T=gbdt/f2h10_trad"
 for d in $R/f2h11_*; do [ -f $d/relatorio.json ] && BR="$BR --braco $(basename $d | sed 's/^f2h11_//')=gbdt/$(basename $d)"; done
 REFS=$(for d in $R/f2h11_lgbm_*; do echo -n " --ref $(basename $d | sed 's/^f2h11_//')"; done)
-ls -d $R/f2h11_tabpfn_* >/dev/null 2>&1 || [ -f /content/sem_tabpfn ] || { echo "F2-H11: aguardando TabPFN para avaliar"; echo "FIM $(date)"; exit 0; }
+ls -d $R/f2h11_tabpfn_* >/dev/null 2>&1 || [ -f /content/sem_tabpfn ] || { persistir; echo "F2-H11: aguardando TabPFN para avaliar"; echo "FIM $(date)"; exit 0; }
 [ -f runs/hm_clientes/f2h11/resultado_test.json ] || { echo "== avaliacao F2-H11 $(date)"; $A --saida f2h11/resultado_test.json --B 300 $BR --ref T $REFS; }
+persistir
 echo "FIM $(date)"

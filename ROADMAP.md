@@ -221,7 +221,7 @@ Detalhes em `EXPERIMENTOS_HM.md`.
 
 ---
 
-## Fase 2 do experimento H&M — hipóteses priorizadas (em andamento, 2026-10-22)
+## Fase 2 do experimento H&M — hipóteses priorizadas (desde 2026-10-22; falta fechar F2-H10 e F2-H11)
 
 Prefixo F2 para não confundir com as etapas H0–H10 da fase 1. Toda hipótese responde a uma das duas hipóteses macro do projeto:
 - **M1:** um modelo fundacional próprio de clientes traz benefício real para uma empresa?
@@ -229,12 +229,31 @@ Prefixo F2 para não confundir com as etapas H0–H10 da fase 1. Toda hipótese 
 
 | # | Hipótese | Macro | Status |
 |---|---|---|---|
-| F2-H1 | Eficiência de rótulos: com 1–25% dos rótulos, o embedding vence o GBDT? | M1 | em andamento |
-| F2-H2 | Ajuste fino conjunto do backbone com a fusão DCNv2 (receita do Nubank) | M1 | em andamento |
-| F2-H6 | Custo para colocar uma tarefa nova em produção (só configuração) | M1, M2 | em andamento |
-| F2-H7 | Clientes com pouco histórico (1–3 cestas) | M1 | em andamento |
+| F2-H1 | Eficiência de rótulos: com 1–25% dos rótulos, o embedding vence o GBDT? | M1 | concluída; não atingida |
+| F2-H2 | Ajuste fino conjunto do backbone com a fusão DCNv2 (receita do Nubank) | M1 | concluída; não atingida, por pouco |
+| F2-H6 | Custo para colocar uma tarefa nova em produção (só configuração) | M1, M2 | concluída; M2 confirmada |
+| F2-H7 | Clientes com pouco histórico (1–3 cestas) | M1 | concluída; sem relevância prática |
+| F2-H3 | Recomendação do próximo artigo (MAP@12) | M1 | concluída; não confirmada (híbrido +1,6%) |
+| F2-H10 | LLM open source com ajuste fino | M1, M2 | em execução no Colab |
+| F2-H11 | Modelo tabular pré-treinado como régua | M1 | em execução no Colab |
 
-**Adiadas** (retomar depois da fase 2): F2-H3 recomendação/tarefas sequenciais · F2-H4 objetivo de pré-treino alinhado · F2-H5 semântica de produtos · F2-H8 transferência entre empresas · F2-H9 base da empresa · F2-H10 LLM open source com ajuste fino · F2-H11 modelo tabular pré-treinado como régua. Pesquisa de modelos e análise de impacto: https://claude.ai/artifact/JiMFj6SQn89ixNTJLhMPUn
+Resultados em `EXPERIMENTOS_HM.md`. As demais hipóteses da fase 2 foram reorganizadas na fase 3: F2-H4 e F2-H5 viraram a F3-H5 e a F3-H4, a F2-H9 virou a F3-H8, e a F2-H8 (transferência entre empresas) segue adiada. Pesquisa de modelos e análise de impacto: https://claude.ai/artifact/JiMFj6SQn89ixNTJLhMPUn
+
+---
+
+## Fase 3 — uma solução, vários problemas (planejada em 2026-11-13)
+
+Reestruturação dos experimentos a partir do balanço das fases 1 e 2 e do critério de sucesso explicitado para M1: **empatar com os modelos tradicionais específicos, com menos esforço, já é sucesso**; acurácia maior é bônus. A avaliação passa a espelhar os 4 problemas da empresa (recomendação, churn em 90 dias, clusterização e propensão a desconto).
+
+Plano completo, com pergunta, desenho e critério de cada hipótese: **`PLANO_FASE3.md`**.
+
+| Etapa | Hipóteses | Status |
+|---|---|---|
+| 0. Encerrar a rodada atual | F2-H10, F2-H11 | em execução |
+| 1. Placar do motor atual nos 4 problemas | F3-H1 propensão a desconto · F3-H2 clusterização | a iniciar |
+| 2. Motor v2 (evento composto) | F3-H3 qualidade e custo · F3-H4 recomendação direta · F3-H5 pré-treino alinhado · F3-H6 teste central | planejada |
+| 3. Várias fontes de evento | F3-H7 | planejada |
+| 4. Base da empresa | F3-H8 | depende de ambiente e acesso |
 
 ---
 
@@ -249,7 +268,7 @@ Prefixo F2 para não confundir com as etapas H0–H10 da fase 1. Toda hipótese 
 
 ## Ordem de execução recomendada
 
-`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (✅) → 8 (✅) → 9 (✅) → 11 (✅) → 12 (✅) → 13 (✅) → H&M H0–H10 (✅) → 10`
+`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (✅) → 8 (✅) → 9 (✅) → 11 (✅) → 12 (✅) → 13 (✅) → H&M H0–H10 (✅) → fase 2 → fase 3 → 10`
 
 ## Protocolo de execução
 
