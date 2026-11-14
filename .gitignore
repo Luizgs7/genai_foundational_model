@@ -47,3 +47,4 @@ runs/hm_clientes/gbdt/f2h1*_*/predicoes_*.parquet
 runs/hm_clientes/gbdt/f2h10_*/predicoes_*.parquet
 runs/hm_clientes/gbdt/f2h11_*/predicoes_*.parquet
 runs/hm_clientes/**/*.safetensors
+dados_beleza_b2b/
