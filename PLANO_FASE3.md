@@ -276,6 +276,14 @@ embedding sozinho.
   - Estabilidade: ARI entre dois ajustes em metades disjuntas dos clientes de
     treino, aplicados ao mesmo teste.
   - O código é desenvolvido na validação; o teste roda uma vez.
+  - **Refinamento de 2026-11-14, feito na validação e antes do teste.** Nos
+    espaços reduzidos por PCA (T2, E e H), padronizar dimensão a dimensão dá
+    peso igual a componentes de pouca variância; na validação isso derrubou o
+    T2 (índice de 0,016 contra 0,049 sem essa padronização). Para a régua não
+    ficar artificialmente fraca, cada espaço tem duas formas (padronizado por
+    dimensão, ou só posto na mesma escala por bloco) e a forma de cada espaço
+    é escolhida na validação pelo índice principal. O teste usa essas
+    escolhas, fixas.
 - **Critério, escrito antes de rodar.**
   - Empate: o índice de E ou de H é pelo menos 95% do melhor entre T1 e T2, e
     o ARI não fica mais de 0,05 abaixo.
