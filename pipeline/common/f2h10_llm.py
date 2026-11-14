@@ -68,11 +68,15 @@ def tokenizar(tok, t):
 def montar_modelo(a, treino):
     from transformers import AutoModel, AutoModelForCausalLM, AutoTokenizer
     tok = AutoTokenizer.from_pretrained(a.modelo)
-    cls = AutoModelForCausalLM if a.modo == "lm" else AutoModel
+    # um adaptador treinado no modo `lm` tem os nomes de camada do modelo com cabeça de linguagem:
+    # a extração precisa carregar a mesma classe (--causal_lm), senão o LoRA não casa com nada
+    cls = AutoModelForCausalLM if (a.modo == "lm" or a.causal_lm) else AutoModel
     m = cls.from_pretrained(a.modelo, torch_dtype=torch.bfloat16, attn_implementation="sdpa")
     if a.adaptador:
         from peft import PeftModel
         m = PeftModel.from_pretrained(m, os.path.join(run_dir(a.config_obj, ""), a.adaptador))
+        carregado = sum(float(p.detach().float().abs().sum()) for n, p in m.named_parameters() if "lora_B" in n)
+        assert carregado > 0, "o adaptador LoRA não foi aplicado (pesos lora_B zerados): classe do modelo diferente da do treino?"
         m = m.merge_and_unload()
     if treino:
         from peft import LoraConfig, get_peft_model
@@ -303,6 +307,7 @@ def main():
     ap.add_argument("--saida", required=True)
     ap.add_argument("--pooling", default="ultimo", choices=["ultimo", "media"])
     ap.add_argument("--sem_instrucao", dest="instrucao", action="store_false")
+    ap.add_argument("--causal_lm", action="store_true", help="na extração: carrega o modelo com cabeça de linguagem (adaptador treinado no modo lm)")
     ap.add_argument("--max_tokens", type=int, default=2048)
     ap.add_argument("--tokens_por_lote", type=int, default=65536)
     ap.add_argument("--lote", type=int, default=32)

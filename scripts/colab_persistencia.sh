@@ -15,7 +15,7 @@ persistir() {
   [ -d /content/drive/MyDrive ] || return 0
   mkdir -p $DRIVE
   local d rel
-  for d in $RUNS/f2h10_e0 $RUNS/f2h10_e2 $RUNS/f2h10_e3a0 $RUNS/f2h10_e3a $RUNS/f2h10_fusao_* $RUNS/f2h10_e1_s* \
+  for d in $RUNS/f2h10_e0 $RUNS/f2h10_e2 $RUNS/f2h10_e3a0 $RUNS/f2h10_e3a $RUNS/f2h10_e3b $RUNS/f2h10_fusao_* $RUNS/f2h10_e1_s* \
            $RUNS/gbdt/f2h11_tabicl_* $RUNS/gbdt/f2h11_tabpfn_* $RUNS/f2h10/resultado*.json $RUNS/f2h11/resultado*.json; do
     [ -e "$d" ] || continue
     rel=$(dirname "${d#$RUNS/}")

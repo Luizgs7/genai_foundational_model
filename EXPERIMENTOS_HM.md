@@ -335,6 +335,52 @@ são de até 12/2019. Arquivos: `runs/hm_clientes/f2h3/resultado_{val,test}.json
 Reprodução: `f2h3_candidatos.py` (local, 6 semanas) → `f2h3_pontuar_fm.py`
 (Colab, 6 semanas × 3 sementes, ~1h40) → `f2h3_ranquear.py --fase val` → `--fase test`.
 
+### F2-H10 — LLM open source como codificador de clientes
+
+Amostra de 10% dos clientes (111.143 clientes; 199.146 âncoras de treino).
+Todos os braços usam a mesma fusão DCNv2 (variante d), 3 sementes, e são
+avaliados uma vez no teste, com o rótulo de churn já corrigido (59.541
+clientes; 108.839 âncoras em churn e LTV e 149.064 em online e categoria).
+AUC em churn e online; accuracy em categoria e LTV.
+
+| Braço | Churn | Online | Categoria | LTV | Média | Média − E0 (IC 95%) |
+| --- | --- | --- | --- | --- | --- | --- |
+| T — GBDT tradicional | 0,8241 | 0,8432 | 0,3645 | 0,3945 | 0,6066 | +0,0118 [+0,0110; +0,0127] |
+| E0 — nosso backbone (H3), congelado | 0,8125 | 0,8372 | 0,3551 | 0,3741 | 0,5947 | — |
+| E1 — ajuste fino conjunto | 0,8118 | 0,8400 | 0,3641 | 0,3785 | 0,5986 | +0,0039 [+0,0031; +0,0046] |
+| E2 — CoLES nos nossos tokens, só com a amostra | 0,8065 | 0,8359 | 0,3549 | 0,3680 | 0,5913 | −0,0034 [−0,0042; −0,0025] |
+| E3a0 — Qwen3-Embedding-0.6B sem ajuste | 0,8029 | 0,8331 | 0,3411 | 0,3828 | 0,5900 | −0,0048 [−0,0057; −0,0038] |
+| E3a — Qwen3-Embedding-0.6B com LoRA contrastivo | 0,8111 | 0,8322 | 0,3476 | 0,3842 | 0,5938 | −0,0009 [−0,0017; −0,0001] |
+
+Critérios escritos antes de rodar:
+
+- **Principal (algum braço com LLM supera o E0 por 0,005 na média): não
+  atingido pelo E3a,** que empata com o E0 (−0,0009). O E3b ainda vai rodar: o
+  desenho mandava rodá-lo se o E3a ficasse a menos de 0,005 do E0.
+- **Secundário (algum braço supera o GBDT em uma tarefa, ou empata em todas):
+  não atingido.** O mais próximo é o ajuste fino conjunto, que empata com o
+  GBDT em categoria (−0,0004 [−0,0019; +0,0011]) e fica a 0,003 em online, mas
+  a 0,012 em churn e a 0,016 em LTV.
+- **Custo.** Gerar os embeddings com o LLM levou 76 min para 111 mil clientes,
+  ou cerca de 11,5 h de L4 por milhão de clientes. O nosso backbone leva cerca
+  de 20 min para 1,18 milhão. O treino do LoRA levou 2,4 h.
+
+Leitura:
+
+1. **O LLM "de prateleira", sem ver nenhum dado nosso no treino, fica a 0,005
+   do nosso backbone** e ganha dele em LTV (+0,009). O texto dos produtos
+   carrega informação que os nossos tokens não carregam.
+2. **O ajuste com LoRA soma 0,004 e leva o LLM ao empate com o nosso
+   backbone,** a um custo de geração de embeddings cerca de 35 vezes maior.
+3. **O CoLES nos nossos tokens perde 0,003 para o E0,** mas treinou só com a
+   amostra, e o E0 com a base inteira. O teste não separa o efeito do objetivo
+   do efeito da quantidade de dados.
+4. **O ajuste fino conjunto segue o melhor caminho com modelo fundacional:**
+   +0,004 sobre o E0 e a 0,008 do GBDT na média.
+
+Arquivos: `runs/hm_clientes/f2h10/resultado_test.json`. Reprodução:
+`scripts/fila_colab_f2h10.sh` e `f2h10_avaliar.py`.
+
 ## Fase 3 — uma solução, vários problemas (desde 2026-11-13)
 
 Plano, margens de empate e critérios em `PLANO_FASE3.md`, escritos antes dos resultados.
