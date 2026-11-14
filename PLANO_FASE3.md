@@ -143,13 +143,58 @@ empresa:
 |---|---|---|---|
 | H&M (31,8 milhões de itens, 1,36 milhão de clientes) | Compras e cadastro | Escala, catálogo de 105 mil artigos e os 4 problemas | Outras fontes de evento; pedidos grandes |
 | Olist (112 mil itens; entidade = vendedor) | 9 tabelas: itens, pagamentos, avaliações e entregas | Vários tipos de evento na mesma linha do tempo; históricos longos (um vendedor tem 2.025 vendas); rótulos reais | Volume |
-| Sintética B2B (gerador próprio, a estender) | O que for gerado: pedidos, navegação, crédito e incentivos | Formas extremas (centenas de itens por pedido, milhares de pedidos por cliente) e estrutura plantada, com gabarito | Não é dado real: não serve de evidência de valor de negócio |
-| Synerise, do RecSys Challenge 2025 (proposta; ainda não baixada) | Compra, carrinho, visita de página e busca de um varejista real | Navegação em dado real e em volume; placar público de representações universais | Licença CC BY-NC 4.0: só para pesquisa |
+| Sintética de beleza B2B (gerador próprio, a construir) | Uma empresa de perfumaria e beleza com todos os tipos de dado do mesmo cliente: pedidos, navegação, crédito, incentivos e cadastro | Vários tipos de dado juntos, formas extremas (centenas de itens por pedido, milhares de pedidos por cliente) e estrutura plantada, com gabarito | Não é dado real: não serve de evidência de valor de negócio |
+| Synerise, do RecSys Challenge 2025 (aprovada em 2026-11-13; a baixar na etapa 3) | Compra, carrinho, visita de página e busca de um varejista real | Navegação em dado real e em volume; placar público de representações universais | Só eventos de site; licença CC BY-NC 4.0, só para pesquisa |
 
-A base sintética serve para duas coisas: testar formas que nenhuma base
-pública tem e conferir se o modelo recupera uma estrutura que nós mesmos
-plantamos (segmentos, regras de compra conjunta, sensibilidade a desconto).
-A evidência de valor vem das bases reais.
+Nenhuma base pública reúne, para o mesmo cliente de uma mesma empresa, todos
+os tipos de dado da seção 1. Por isso a validação dessa hipótese combina três
+bases: a sintética (todos os tipos, com gabarito), a Synerise (navegação real)
+e a Olist (tabelas heterogêneas reais, em volume pequeno).
+
+#### Base sintética de beleza B2B: especificação
+
+Uma empresa fictícia de perfumaria e beleza que vende para revendedores e
+lojas. O gerador é novo (`gerar_dados_sinteticos_beleza_b2b.py`), com semente
+fixa e dois tamanhos: um pequeno, para desenvolvimento, e um grande, para
+estresse.
+
+- **Clientes.** Revendedores pequenos, revendedores líderes e lojas. Cada um
+  tem variáveis latentes: segmento, porte, cadência de compra, sensibilidade a
+  desconto, engajamento digital e risco de crédito.
+- **Catálogo.** Dezenas de milhares de SKUs em categorias de beleza
+  (perfumaria, maquiagem, cabelos, corpo e banho, cuidados com a pele,
+  masculino, infantil, kits e presentes), com marca, linha, variante e preço
+  de lista. Há lançamentos e descontinuações a cada ciclo de campanha.
+- **Calendário comercial.** Ciclos de campanha de cerca de 3 semanas, com SKUs
+  em promoção, e picos sazonais (Dia das Mães, Dia dos Namorados, Dia dos
+  Pais, Black Friday e Natal).
+- **Tipos de dado, todos do mesmo cliente:**
+
+  | Tipo | Conteúdo | Natureza |
+  |---|---|---|
+  | Pedidos | Cabeçalho (canal, valor, pagamento) e linhas (SKU, quantidade, preço, desconto); de 2 a centenas de linhas | Evento com itens |
+  | Navegação | Busca, visualização de produto, visualização de campanha, carrinho e abandono, no aplicativo e no site | Evento simples, de alta frequência |
+  | Crédito | Limite, valor disponível, atraso de pagamento e bloqueio | Estado que muda no tempo |
+  | Incentivo | Adesão ao programa, nível, pontos no ciclo e meta atingida | Estado e eventos |
+  | Cadastro | Tipo de cliente, região, data de cadastro e canal de aquisição | Atributo fixo |
+
+- **Estrutura plantada, com gabarito:**
+  - segmentos latentes, que definem o mix de categorias e a faixa de preço;
+  - reposição periódica e regras de compra conjunta (perfume e loção da mesma
+    linha; xampu e condicionador);
+  - navegação que antecede a compra: ver uma categoria ou um SKU aumenta a
+    chance de comprá-lo no pedido seguinte;
+  - crédito: pouco limite disponível reduz o pedido, e atraso de pagamento
+    aumenta o risco de churn;
+  - incentivo: quem está perto da meta no fim do ciclo faz um pedido de
+    complemento. É um padrão que depende da ordem e do momento dos eventos;
+  - sensibilidade a desconto, que define quem compra em promoção.
+- **Regra.** As variáveis latentes nunca entram no motor nem na régua
+  tradicional. Servem só para avaliar.
+
+A base sintética prova capacidade: que o motor aproveita cada tipo de dado
+quando há sinal, e que aguenta as formas extremas. A evidência de valor de
+negócio vem das bases reais (H&M e Synerise).
 
 ## 4. Etapas e hipóteses
 
@@ -322,37 +367,50 @@ Princípios:
 
 ### Etapa 3 — estresse e generalização
 
-#### F3-H7 — várias fontes de evento na mesma linha do tempo
+#### F3-H7 — vários tipos de dado do mesmo cliente, numa empresa só
 
-- **Pergunta.** O motor v2 ingere várias fontes só com configuração, e a
-  navegação melhora a representação sem engenharia de features?
-- **Por que importa (M2 e M1).** A base da empresa tem navegação, crédito e
-  incentivos; a H&M só tem compras.
-- **Desenho.** Em duas bases:
-  - Olist, como teste funcional: vendas, pagamentos, avaliações e entregas do
-    vendedor entram como tipos de evento.
-  - Uma base real com navegação e compra em volume. Proposta: a base da
-    Synerise usada no RecSys Challenge 2025 (compra, carrinho, visita de
-    página e busca; tarefas de churn e de propensão por categoria e por SKU).
-    Depende de aprovação, porque é uma base nova.
-- **Critério.**
-  - M2: a bateria roda nas duas bases com adapter e YAML, sem mudança no motor.
-  - M1: incluir a navegação melhora E em pelo menos um problema por mais que a
-    margem, e E ou H empata com T (que também recebe agregados da navegação).
+- **Pergunta.** O motor v2 recebe, só com configuração, todos os tipos de dado
+  que uma empresa tem sobre o mesmo cliente, e a representação aproveita cada
+  um deles sem engenharia de features?
+- **Por que importa (M2 e M1).** É o contexto real do produto: uma empresa,
+  um cliente, e vendas, cadastro, crédito, navegação e incentivos ao mesmo
+  tempo. A H&M só tem compras e cadastro.
+- **Desenho.** Três camadas de evidência:
+  1. **Base sintética de beleza B2B: todos os tipos, com gabarito.** A bateria
+     dos 4 problemas roda com todas as fontes e, depois, retirando uma fonte
+     por vez. A régua T recebe os agregados genéricos de todas as fontes.
+  2. **Synerise: navegação real, em volume.** Compra, carrinho, visita de
+     página e busca do mesmo usuário. A bateria roda com e sem a navegação. A
+     comparação com o placar público do desafio é informativa, e não critério.
+  3. **Olist: tabelas reais e heterogêneas.** Vendas, pagamentos, avaliações e
+     entregas do vendedor entram como tipos de evento. Teste só funcional,
+     porque o volume é pequeno.
+- **Critério, escrito antes de rodar.**
+  - M2: nas três bases, cada fonte entra com adapter e um bloco de YAML, sem
+    mudança no motor. Os quatro formatos são aceitos: evento com itens, evento
+    simples, estado que muda no tempo e atributo fixo.
+  - M1, na base sintética: com todas as fontes, E ou H empata com T nos 4
+    problemas. E a retirada de cada fonte derruba, por mais que a margem, o
+    problema que depende dela pelo gabarito (navegação: recomendação; crédito:
+    churn; incentivo: pedido nos 7 dias seguintes, tarefa complementar;
+    desconto: propensão a desconto).
+  - M1, em dado real (Synerise): incluir a navegação melhora E em pelo menos um
+    problema por mais que a margem, e E ou H empata com T.
+- **Reserva.** Se as camadas 1 e 2 derem respostas opostas, o MBD (transações,
+  geolocalização e diálogos de atendimento dos mesmos clientes de um banco)
+  entra como segunda base real com vários tipos de dado. É uma base nova e
+  depende de aprovação.
 
-#### F3-H8 — estresse no perfil da base da empresa, com a base sintética B2B
+#### F3-H8 — formas extremas e estrutura conhecida, na base sintética de beleza
 
-- **Pergunta.** O motor v2 aguenta as formas da base da empresa e recupera
-  estrutura conhecida?
+- **Pergunta.** O motor v2 aguenta as formas da base da empresa e recupera uma
+  estrutura que nós plantamos?
 - **Por que importa (M2).** Nenhuma base pública tem pedidos com centenas de
   itens nem clientes com milhares de pedidos. Sem esse teste, o primeiro
   contato com essas formas seria na empresa.
-- **Desenho.** O gerador sintético é estendido para o perfil B2B:
-  - pedidos de 2 a centenas de itens e clientes de 1 a milhares de pedidos;
-  - catálogo de dezenas de milhares de SKUs;
-  - eventos de navegação, crédito e incentivo;
-  - estrutura plantada: segmentos latentes, regras de compra conjunta,
-    sensibilidade a desconto e um padrão que depende da ordem dos eventos.
+- **Desenho.** O tamanho grande da base sintética: pedidos de 2 a centenas de
+  itens, clientes de 1 a milhares de pedidos e catálogo de dezenas de milhares
+  de SKUs, com lançamentos a cada ciclo.
 - **Critério.**
   - Forma: 100% dos eventos entram no contexto, sem truncamento, e o custo de
     pré-treino por pedido não cresce com o tamanho do pedido além do linear.
@@ -407,8 +465,9 @@ Pontos de decisão:
 
 1. **M1 julgada em bases reais.** Veredito da F3-H6 na H&M e da F3-H7 na
    segunda base real, pelo critério de empate.
-2. **M2 demonstrada.** O mesmo código roda nas 4 bases só com adapter e YAML,
-   incluindo várias fontes de evento.
+2. **M2 demonstrada.** O mesmo código roda em todas as bases da seção 3 só
+   com adapter e YAML, incluindo vários tipos de dado do mesmo cliente
+   (F3-H7).
 3. **Formas da empresa testadas.** F3-H8 atendida na base sintética B2B, com a
    projeção de custo para o volume da empresa.
 4. **Reprodutibilidade.** Testes de regressão, de vazamento e de causalidade
@@ -418,11 +477,18 @@ Pontos de decisão:
 6. **Roteiro de implantação.** Modelo de adapter e de YAML, o registro de
    esforço e um guia para definir os 4 problemas com os donos de cada um.
 
-## 8. Decisões em aberto
+## 8. Decisões tomadas e pendências
 
-1. **Base nova com navegação (F3-H7).** A da Synerise é pública, com licença
-   CC BY-NC 4.0 (só pesquisa, como a H&M). Não será baixada sem aprovação.
-2. **Persistência no Colab.** Montar o Google Drive no notebook evita refazer
-   horas de GPU quando o runtime cai (`scripts/colab_persistencia.sh`).
-3. **Licença do TabPFN-3.5,** ainda não aceita na conta da Prior Labs; sem
-   ela a F2-H11 fecha só com o TabICL.
+Decididas em 2026-11-13:
+
+1. **Margens de empate:** as da seção 3.
+2. **Base da empresa:** fora dos experimentos; vai só o código.
+3. **Base sintética:** com viés de perfumaria e beleza de varejo.
+4. **Base da Synerise:** aprovada para a etapa 3.
+
+Pendências operacionais:
+
+1. **Persistência no Colab.** A pasta no Google Drive foi criada; falta
+   confirmar a cópia num runtime acessível (`scripts/colab_persistencia.sh`).
+2. **Licença do TabPFN-3.5.** Informada como aceita; a fila confere antes de
+   rodar o TabPFN.
