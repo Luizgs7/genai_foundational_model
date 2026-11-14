@@ -334,3 +334,68 @@ caem no token ARTIGO_OUTROS (fora do top-2000 do treino), e os pesos do backbone
 são de até 12/2019. Arquivos: `runs/hm_clientes/f2h3/resultado_{val,test}.json`.
 Reprodução: `f2h3_candidatos.py` (local, 6 semanas) → `f2h3_pontuar_fm.py`
 (Colab, 6 semanas × 3 sementes, ~1h40) → `f2h3_ranquear.py --fase val` → `--fase test`.
+
+## Fase 3 — uma solução, vários problemas (desde 2026-11-13)
+
+Plano, margens de empate e critérios em `PLANO_FASE3.md`, escritos antes dos resultados.
+
+### F3-H2 — clusterização com o motor atual (backbone H3)
+
+Uma âncora por cliente; K-means (K = 8, 3 sementes) ajustado em 600 mil clientes
+de treino e aplicado a 742 mil clientes de teste. O índice é a média, sobre os
+4 desfechos, da parcela da incerteza do desfecho explicada pelo segmento. A
+forma de padronização de cada espaço foi escolhida na validação.
+
+| Espaço | Índice (IC 95%) | ARI | Churn | Categoria | LTV | Online |
+| --- | --- | --- | --- | --- | --- | --- |
+| T1 — RFM clássico (4 variáveis) | 0,0717 [0,0710; 0,0724] | 0,973 | 0,159 | 0,002 | 0,103 | 0,023 |
+| T2 — 97 agregados em 32 componentes | 0,0634 [0,0628; 0,0641] | 0,492 | 0,130 | 0,010 | 0,077 | 0,037 |
+| E — embedding em 32 componentes | 0,0420 [0,0416; 0,0424] | 0,713 | 0,136 | 0,005 | 0,001 | 0,026 |
+| H — T2 e E juntos | 0,0506 [0,0501; 0,0512] | 0,919 | 0,145 | 0,004 | 0,032 | 0,022 |
+
+Critério (índice de E ou H em pelo menos 95% do melhor T, com ARI no máximo
+0,05 abaixo): **não empata.** O embedding fica em 59% do índice do RFM e o
+híbrido em 71%. Na validação a distância é maior: 17% e 19%.
+
+**Por quê: o embedding organiza os clientes pelo calendário.** Diagnóstico
+exploratório (`f3h2_diagnostico_calendario.py`): os 8 segmentos do embedding
+explicam 57% da incerteza do **mês da âncora** na validação e 71% no teste; os
+do RFM explicam 0,5%. O embedding quase não explica o LTV (0,001), porque não
+soma nem conta. O número de churn do embedding no teste (0,136, contra 0,015 na
+validação) vem em boa parte do achado abaixo, e não de separar clientes.
+
+Arquivos: `runs/hm_clientes/f3h2/resultado_{val,test}.json` e
+`diagnostico_calendario_{val,test}.json`. Reprodução:
+`f3h2_clusterizacao.py --fase val` e depois `--fase test`.
+
+### Achado: censura unilateral do rótulo de churn no fim do teste
+
+A receita de churn (`tarefa8_rotulos.py`) marca como determinável toda âncora
+que tem uma cesta seguinte, mesmo com a janela de 90 dias ainda aberta no fim
+do dataset. Nos últimos 90 dias do teste, portanto, uma âncora só entra se o
+cliente voltou, sempre com rótulo 0. É uma seleção pelo próprio desfecho.
+
+| Âncoras de teste com rótulo de churn | Quantidade | Taxa de churn |
+| --- | --- | --- |
+| Janela de 90 dias fechada | 1.087.108 | 25,4% |
+| Janela aberta (últimos 90 dias) | 633.352 | 0,0% |
+
+A taxa de 16% publicada para o teste vinha dessa mistura, e não da COVID.
+Treino e validação não são afetados: todas as janelas deles estão fechadas.
+
+AUC de churn no teste, recalculada com as predições guardadas
+(`verificar_censura_churn.py`; conjunto das 3 sementes):
+
+| Modelo | Como publicada | Só com janela fechada |
+| --- | --- | --- |
+| GBDT tradicional (LightGBM) | 0,8244 | 0,8291 |
+| GBDT híbrido (LightGBM) | 0,8206 | 0,8245 |
+| GBDT só embedding (PCA-32) | 0,7702 | 0,7914 |
+| Fusão completa (backbone H3) | 0,8133 | 0,8125 |
+
+A ordem entre os modelos não muda, mas as distâncias mudam: a fusão fica a
+0,017 do GBDT tradicional (publicado: 0,011) e o híbrido, a 0,005 (publicado:
+0,004). **Pendente:** corrigir a receita (determinável só com a janela
+fechada), regerar os rótulos e recalcular os números de churn no teste das
+fases 1 e 2 onde as predições ainda existem. O ajuste fino conjunto (F2-H2) e
+as curvas da F2-H1 não têm predições guardadas.

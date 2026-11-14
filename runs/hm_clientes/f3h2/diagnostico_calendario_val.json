@@ -1,0 +1,23 @@
+{
+ "val": {
+  "taxa_churn_por_mes": {
+   "1": 0.52,
+   "2": 0.501,
+   "3": 0.437,
+   "12": 0.55
+  },
+  "U_churn_dado_mes": 0.0037,
+  "T1": {
+   "U_mes_dado_segmento": 0.0055,
+   "U_churn_dado_segmento": 0.1178
+  },
+  "E": {
+   "U_mes_dado_segmento": 0.5682,
+   "U_churn_dado_segmento": 0.0104
+  },
+  "T2": {
+   "U_mes_dado_segmento": 0.0029,
+   "U_churn_dado_segmento": 0.0872
+  }
+ }
+}

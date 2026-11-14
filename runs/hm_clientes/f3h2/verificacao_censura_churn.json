@@ -1,0 +1,26 @@
+{
+ "T  GBDT tradicional (LightGBM)": {
+  "n": 1720460,
+  "auc_publicada": 0.8243675529784246,
+  "n_limpo": 1087108,
+  "auc_janela_fechada": 0.8290945879197761
+ },
+ "H  GBDT híbrido (LightGBM)": {
+  "n": 1720460,
+  "auc_publicada": 0.8206407054547878,
+  "n_limpo": 1087108,
+  "auc_janela_fechada": 0.8244943718541197
+ },
+ "GBDT só embedding (PCA-32)": {
+  "n": 1720460,
+  "auc_publicada": 0.7702037112749262,
+  "n_limpo": 1087108,
+  "auc_janela_fechada": 0.7913854167170269
+ },
+ "E  fusão completa (backbone H3)": {
+  "n": 1720460,
+  "auc_publicada": 0.8132787813305888,
+  "n_limpo": 1087108,
+  "auc_janela_fechada": 0.8124572365031235
+ }
+}

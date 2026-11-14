@@ -250,7 +250,7 @@ Plano completo, com pergunta, desenho e critério de cada hipótese: **`PLANO_FA
 | Etapa | Hipóteses | Status |
 |---|---|---|
 | 0. Encerrar a rodada atual | F2-H10, F2-H11 | em execução |
-| 1. Placar do motor atual nos 4 problemas | F3-H1 propensão a desconto · F3-H2 clusterização | a iniciar |
+| 1. Placar do motor atual nos 4 problemas | F3-H1 propensão a desconto · F3-H2 clusterização | F3-H2 concluída (não empata); F3-H1 a iniciar |
 | 2. Motor v2 (evento composto) | F3-H3 qualidade e custo · F3-H4 recomendação direta · F3-H5 pré-treino alinhado · F3-H6 teste central | planejada |
 | 3. Estresse e generalização | F3-H7 várias fontes de evento · F3-H8 perfil da empresa com base sintética B2B | planejada |
 | 4. Entrega do código | sem experimento com dados da empresa | depois das etapas 2 e 3 |
