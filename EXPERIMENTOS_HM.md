@@ -393,9 +393,75 @@ AUC de churn no teste, recalculada com as predições guardadas
 | GBDT só embedding (PCA-32) | 0,7702 | 0,7914 |
 | Fusão completa (backbone H3) | 0,8133 | 0,8125 |
 
-A ordem entre os modelos não muda, mas as distâncias mudam: a fusão fica a
-0,017 do GBDT tradicional (publicado: 0,011) e o híbrido, a 0,005 (publicado:
-0,004). **Pendente:** corrigir a receita (determinável só com a janela
-fechada), regerar os rótulos e recalcular os números de churn no teste das
-fases 1 e 2 onde as predições ainda existem. O ajuste fino conjunto (F2-H2) e
-as curvas da F2-H1 não têm predições guardadas.
+A ordem entre os modelos não muda, mas as distâncias mudam.
+
+**Correção aplicada em 2026-11-14.** A receita agora só considera determinável
+a âncora com a janela fechada, como já fazia a de LTV (`tarefa8_rotulos.py`).
+Os rótulos, as features e a amostra da F2-H11 foram corrigidos por
+`corrigir_censura_churn.py` (633.352 rótulos anulados; treino e validação
+idênticos). A AUC do baseline causal no teste passa de 0,744 para 0,728.
+
+Deltas de churn no teste recalculados (bootstrap por cliente, B = 300;
+`h10_bootstrap_churn_corrigido.json`):
+
+| Comparação | Publicado | Corrigido (IC 95%) |
+| --- | --- | --- |
+| Fusão completa (H3) − GBDT tradicional | −0,0111 | −0,0166 [−0,0171; −0,0161] |
+| GBDT híbrido − tradicional | −0,0037 | −0,0046 [−0,0047; −0,0044] |
+| GBDT híbrido com backbone final − tradicional | −0,0055 | −0,0012 [−0,0013; −0,0012] |
+| GBDT só embedding − tradicional | −0,0542 | −0,0377 [−0,0383; −0,0371] |
+| Efeito do cadastro no GBDT híbrido | +0,0008 | +0,0009 [+0,0008; +0,0010] |
+
+F2-H7, churn por faixa de histórico (`f2_h7_segmentos.json`; o original ficou
+em `f2_h7_segmentos_rotulo_original.json`):
+
+| Faixa | AUC do tradicional (publicada → corrigida) | Fusão − tradicional | Híbrido − tradicional |
+| --- | --- | --- | --- |
+| 1 cesta | 0,576 → 0,604 | −0,030 → −0,005 | +0,000 → −0,005 |
+| 2 a 3 cestas | 0,669 → 0,746 | −0,060 → −0,084 | −0,015 → −0,012 |
+| 4 a 10 cestas | 0,577 → 0,649 | −0,000 → −0,018 | −0,010 → −0,009 |
+| 11 ou mais | 0,729 → 0,753 | −0,024 → −0,014 | −0,002 → −0,009 |
+
+F2-H1, churn do GBDT com parte dos clientes rotulados (média das 3 amostras;
+`f2_h1_curvas_churn_corrigido.json`):
+
+| Fração rotulada | Tradicional (publicada → corrigida) | Híbrido (publicada → corrigida) |
+| --- | --- | --- |
+| 1% | 0,8197 → 0,8178 | 0,8179 → 0,8179 |
+| 5% | 0,8212 → 0,8245 | 0,8210 → 0,8229 |
+| 10% | 0,8235 → 0,8264 | 0,8202 → 0,8236 |
+| 25% | 0,8218 → 0,8279 | 0,8198 → 0,8252 |
+| 100% | 0,8242 → 0,8291 | 0,8205 → 0,8245 |
+
+Com o rótulo corrigido a curva fica monótona, como se espera. Com 1% dos
+clientes rotulados o tradicional fica a 0,011 do máximo em churn (publicado:
+0,005).
+
+**O que muda nas conclusões.** Nenhum veredito das fases 1 e 2 se inverte: o
+GBDT tradicional continua o melhor em churn e o embedding continua sem
+agregar. A distância da fusão em churn é maior que a publicada (0,017, e não
+0,011).
+
+**Sem recálculo possível,** porque as predições se perderam com o Colab: o
+ajuste fino conjunto (F2-H2), as curvas de fusão da F2-H1, as variantes de
+fusão da H9, o backbone final na fusão e os modelos XGBoost. Os números de
+churn desses itens seguem com o rótulo antigo e estão marcados assim.
+
+### F3-H2 refeita com o rótulo de churn corrigido
+
+Mesmo protocolo, com o rótulo corrigido e mais um espaço: o embedding do
+backbone final (RoPE), que estava em cache local. Teste, K = 8:
+
+| Espaço | Índice | Razão sobre o RFM | ARI |
+| --- | --- | --- | --- |
+| T1 — RFM clássico | 0,0695 | — | 0,973 |
+| T2 — 97 agregados em 32 componentes | 0,0599 | 86% | 0,492 |
+| E — embedding do backbone H3 | 0,0088 | 13% | 0,713 |
+| E — embedding do backbone final | 0,0058 | 8% | 0,628 |
+| H — agregados e embedding H3 | 0,0292 | 42% | 0,919 |
+| H — agregados e embedding final | 0,0187 | 27% | 0,575 |
+
+O veredito não muda (**não empata**) e a distância real é maior que a do
+primeiro teste: sem o defeito do rótulo, o embedding explica 13% do que o RFM
+explica, perto dos 17% da validação. Os resultados com o rótulo original
+ficaram em `runs/hm_clientes/f3h2/resultado_{val,test}_rotulo_original.json`.

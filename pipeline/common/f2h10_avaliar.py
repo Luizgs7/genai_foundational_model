@@ -7,6 +7,12 @@ braços de referência com IC 95% por bootstrap Poisson por cliente. O mesmo
 peso por cliente vale para as 4 tarefas em cada réplica, o que dá também o IC
 da diferença na MÉDIA das 4 tarefas (critério principal da F2-H10).
 
+As âncoras são as comuns a todos os braços EM CADA TAREFA. (Uma primeira versão
+cruzava também entre tarefas; como "próxima categoria" e "próxima online" só
+têm rótulo quando existe cesta seguinte, isso tirava do churn justamente os
+clientes que não voltaram. Corrigido em 2026-11-14, antes de qualquer
+resultado ser lido.)
+
 Uso: python3 pipeline/common/f2h10_avaliar.py configs/hm_clientes.yaml \\
         --braco T=gbdt/f2h10_trad --braco "E0=f2h10_fusao_e0_s*" ... --ref E0 --ref T [--B 500]
 Gera runs/<nome>/<--saida> (padrão f2h10/resultado_test.json)
@@ -53,26 +59,26 @@ def main():
     rot = ler_tabela(caminho_tabela(config, "rotulos_downstream", "rotulos"), None)
     rot = rot[(rot["split"] == "test") & rot["entidade_id"].isin(am)]
 
-    # âncoras comuns a todos os braços
+    # âncoras comuns a todos os braços, tarefa a tarefa
     preds = {t: {} for t in TAREFAS}
-    comuns = None
+    comuns = {t: None for t in TAREFAS}
     for nome, sub in bracos.items():
         for t in TAREFAS:
             p, n = carregar_predicoes(os.path.join(base, sub), t, "test")
             p = p[p["entidade_id"].isin(am)]
             preds[t][nome] = (p.set_index("evento_id"), n)
             ids = set(p["evento_id"])
-            comuns = ids if comuns is None else comuns & ids
-    print(f"amostra: {len(am):,} clientes; âncoras de teste comuns a todos os braços: {len(comuns):,}", flush=True)
+            comuns[t] = ids if comuns[t] is None else comuns[t] & ids
+    todas = set().union(*comuns.values())
+    print(f"amostra: {len(am):,} clientes; âncoras de teste comuns a todos os braços, por tarefa: "
+          + ", ".join(f"{t}={len(comuns[t]):,}" for t in TAREFAS), flush=True)
 
     rng = np.random.RandomState(0)
     res = {"bracos": bracos, "sementes": {}, "tarefas": {}, "media": {}, "deltas": {}}
     ap_boot = {}
     for t in TAREFAS:
-        df = rot[rot["evento_id"].isin(comuns) & rot[f"{t}_rotulo"].notna()][["evento_id", "entidade_id", f"{t}_rotulo"]].sort_values("evento_id")
+        df = rot[rot["evento_id"].isin(comuns[t]) & rot[f"{t}_rotulo"].notna()][["evento_id", "entidade_id", f"{t}_rotulo"]].sort_values("evento_id")
         tipo = "binaria" if "score" in next(iter(preds[t].values()))[0].columns else "multiclasse"
-        if t == TAREFAS[0]:
-            n_cli = int(df["entidade_id"].nunique())
         res["tarefas"][t] = {"metrica": "auc" if tipo == "binaria" else "accuracy", "n_ancoras": len(df), "modelos": {}}
         v, mapa = {}, {}
         if tipo == "binaria":
@@ -89,10 +95,11 @@ def main():
         ap_boot[t] = (tipo, y, v, None)
 
     # bootstrap conjunto: mesmo peso por cliente nas 4 tarefas (clientes indexados pela 1ª tarefa)
-    ents_glob = pd.factorize(rot[rot["evento_id"].isin(comuns)]["entidade_id"])[1]
+    ents_glob = pd.factorize(rot[rot["evento_id"].isin(todas)]["entidade_id"])[1]
+    n_cli = int(len(ents_glob))
     pos_ent = {e: i for i, e in enumerate(ents_glob)}
     for t in TAREFAS:
-        df_ent = rot[rot["evento_id"].isin(comuns) & rot[f"{t}_rotulo"].notna()].sort_values("evento_id")["entidade_id"]
+        df_ent = rot[rot["evento_id"].isin(comuns[t]) & rot[f"{t}_rotulo"].notna()].sort_values("evento_id")["entidade_id"]
         tipo, y, v, _ = ap_boot[t]
         ap_boot[t] = (tipo, y, v, df_ent.map(pos_ent).to_numpy())
     m_boot = {nome: np.zeros((a.B, len(TAREFAS))) for nome in bracos}
