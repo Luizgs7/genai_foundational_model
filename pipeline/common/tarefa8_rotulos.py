@@ -126,14 +126,21 @@ def media_expandida_causal(df, grupo_col, valor_col):
 # ---------------------------------------------------------------- receitas
 
 def _rotular_churn(df, n_dias, dataset_end):
+    """Churn = sem novo evento em n_dias. Só é determinável o evento cuja janela
+    de n_dias já fechou no fim do dataset, tenha ou não um evento seguinte.
+
+    Até 2026-11-14 um evento com sucessor entrava mesmo com a janela aberta. Nos
+    últimos n_dias do dataset isso deixava só rótulos 0 (quem voltou entra, quem
+    não voltou fica de fora): uma seleção pelo próprio desfecho, que distorcia a
+    taxa e a AUC de churn no fim do período (EXPERIMENTOS_HM.md, "censura
+    unilateral"). A receita de LTV já usava a regra correta."""
     tem_next = df["next_date"].notna()
     gap = df["gap_dias"]
     dias_ate_fim = (dataset_end - df["data_evento"]).dt.days
-    censura_fechada = dias_ate_fim >= n_dias
-    determinavel = tem_next | censura_fechada
+    determinavel = dias_ate_fim >= n_dias
     rotulo = pd.Series(np.nan, index=df.index)
     rotulo.loc[tem_next] = (gap[tem_next] > n_dias).astype(float)
-    rotulo.loc[~tem_next & censura_fechada] = 1.0
+    rotulo.loc[~tem_next & determinavel] = 1.0
     return rotulo, determinavel
 
 
