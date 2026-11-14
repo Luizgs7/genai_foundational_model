@@ -48,3 +48,14 @@ runs/hm_clientes/gbdt/f2h10_*/predicoes_*.parquet
 runs/hm_clientes/gbdt/f2h11_*/predicoes_*.parquet
 runs/hm_clientes/**/*.safetensors
 dados_beleza_b2b/
+# fase 3: artefatos pesados e ligações simbólicas
+runs/hm_clientes_f3h1/**/*.parquet
+runs/hm_clientes_f3h1/caches
+runs/hm_clientes_f3h1/discretizacao
+runs/hm_clientes_f3h1/fusao
+runs/hm_clientes_f3h1/pretreino
+runs/hm_clientes_f3h1/serializacao
+runs/hm_clientes_f3h1/splits
+runs/hm_clientes_f3h1/vocabulario
+runs/beleza_b2b_*/
+*.antes_correcao_churn

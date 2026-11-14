@@ -1,0 +1,24 @@
+{
+ "modelo": "tabicl",
+ "n": 10000,
+ "features": 97,
+ "tarefas": {
+  "churn": {
+   "n_contexto": 10000,
+   "segundos": 170.5
+  },
+  "proxima_online": {
+   "n_contexto": 10000,
+   "segundos": 162.7
+  },
+  "next_category": {
+   "n_contexto": 10000,
+   "segundos": 163.1
+  },
+  "ltv_90d": {
+   "n_contexto": 10000,
+   "segundos": 162.9
+  }
+ },
+ "segundos": 659.5
+}

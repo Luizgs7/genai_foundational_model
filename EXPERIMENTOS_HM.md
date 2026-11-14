@@ -511,3 +511,33 @@ O veredito não muda (**não empata**) e a distância real é maior que a do
 primeiro teste: sem o defeito do rótulo, o embedding explica 13% do que o RFM
 explica, perto dos 17% da validação. Os resultados com o rótulo original
 ficaram em `runs/hm_clientes/f3h2/resultado_{val,test}_rotulo_original.json`.
+
+### F3-H1 — propensão a desconto com o motor atual (parcial)
+
+Pergunta nova, criada só com configuração: a próxima cesta tem algum item
+comprado pelo menos 10% abaixo do preço de referência do artigo? A definição
+foi calibrada só no treino (`runs/hm_clientes/f3h1/relatorio.json`): 50% das
+cestas no treino, 57% na validação e 52% no teste.
+
+| Braço | AUC no teste |
+| --- | --- |
+| T — GBDT tradicional, com o histórico de desconto | 0,6842 |
+| H — GBDT híbrido (features e embedding H3) | 0,6858 |
+| E — fusão com o backbone H3 | pendente (precisa do Colab) |
+
+O híbrido fica 0,0015 acima do tradicional (IC 95% [+0,0014; +0,0017]), dentro
+da margem de empate de 0,01. O critério só se fecha com o braço E. Treino: 17
+min para cada GBDT, com 40 tentativas de HPO. Arquivos em
+`runs/hm_clientes_f3h1/`; reprodução: `scripts/f3_h1_local.sh`.
+
+### F2-H11 — situação em 14/11 (avaliação pendente)
+
+Rodaram no Colab, antes de a sessão acabar: TabICL tradicional com 10 mil e 50
+mil âncoras de contexto e híbrido com 10 mil; TabPFN-3.5 tradicional e híbrido
+com 10 mil e 50 mil. Tempo por configuração: de 11 a 42 min no TabICL e de 23
+a 109 min no TabPFN, contra menos de 1 min do LightGBM. O TabICL com 199 mil
+âncoras foi encerrado duas vezes por falta de memória (52 GB de RAM), na
+tarefa de 10 classes; o TabICL híbrido com 50 mil falhou logo no início, por
+causa ainda não vista; o TabPFN com 199 mil não terminou antes do fim da
+sessão. As predições estão no Drive; falta a avaliação no teste.
+

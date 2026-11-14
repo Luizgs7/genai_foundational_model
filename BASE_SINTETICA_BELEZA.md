@@ -27,6 +27,12 @@ geração é determinística para a mesma semente.
 
 São 7 anos (2019 a 2025), em 122 ciclos de campanha de 21 dias.
 
+As tabelas de formas e de conferência abaixo foram medidas antes de um ajuste
+feito em 14/11: os eventos de navegação passaram a se agrupar em sessões (1 ou
+2 por pedido, nas 72 horas anteriores). A conferência foi refeita e todos os
+efeitos continuam presentes; os números exatos ainda não foram atualizados
+aqui (`gabarito/validacao.json` traz os atuais).
+
 ## Tabelas
 
 | Arquivo | Conteúdo | Natureza |

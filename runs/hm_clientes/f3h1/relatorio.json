@@ -1,0 +1,39 @@
+{
+ "definicao": "preço < (1 − d) × maior mediana diária do artigo até a véspera",
+ "taxa_itens_com_desconto": {
+  "d5": 0.4219224643614429,
+  "d10": 0.39305274477509416,
+  "d20": 0.2996010421939829
+ },
+ "itens_sem_referencia": 0.00825098548762747,
+ "taxa_cestas_com_desconto": {
+  "train": {
+   "algum_5": 0.5226618212436164,
+   "algum_10": 0.49571833588801606,
+   "algum_20": 0.3985462713947619,
+   "maioria_5": 0.3947689904675646,
+   "maioria_10": 0.3645695557292574,
+   "maioria_20": 0.26048781446834013
+  },
+  "val": {
+   "algum_5": 0.5956579477588533,
+   "algum_10": 0.5744782424246935,
+   "algum_20": 0.4723850453417939,
+   "maioria_5": 0.4601429204814768,
+   "maioria_10": 0.42927073553756795,
+   "maioria_20": 0.30410207937498607
+  },
+  "test": {
+   "algum_5": 0.5395529119667051,
+   "algum_10": 0.5231345283069421,
+   "algum_20": 0.4386687386687387,
+   "maioria_5": 0.3809264171333137,
+   "maioria_10": 0.3570282846144915,
+   "maioria_20": 0.26544623958417063
+  }
+ },
+ "escolha": "algum_10",
+ "regra": "regra 1: d = 10% com algum item, taxa do treino dentro de 20–80%",
+ "agregacao_cesta": "max",
+ "d": 0.1
+}

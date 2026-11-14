@@ -1,0 +1,112 @@
+# Base sintética de beleza B2B, tamanho mini (gerar_dados_sinteticos_beleza_b2b.py).
+# Config do motor v2 com TODOS os tipos de dado do mesmo cliente (MOTOR_V2.md):
+# pedidos (itens), navegação (evento), crédito e incentivo (estado) e cadastro.
+nome: beleza_b2b_mini
+entidade_label: cliente
+# visão do v1 (rótulos, features tradicionais e GBDT): adapters/adapter_beleza_b2b.py
+fonte_canonica: runs/beleza_b2b_mini/eventos_canonicos.parquet
+
+campos_categoricos:
+  - nome: categoria
+    estrategia: fechado
+  - nome: tipo_produto
+    estrategia: fechado
+  - nome: marca
+    estrategia: fechado
+  - nome: faixa_preco
+    estrategia: fechado
+  - nome: canal
+    estrategia: fechado
+  - nome: sku
+    estrategia: top_n_outros
+    top_n: 2000
+campos_numericos:
+  - nome: valor
+    agrupar_por: categoria
+    n_buckets: 10
+campos_estaticos_categoricos: [tipo_cliente, uf, canal_aquisicao]
+campos_estaticos_numericos: [idade]
+usa_recencia: true
+usa_mes: true
+ancora: cesta
+
+splits:
+  val_window_days: 180
+  test_window_days: 360
+
+tarefas_downstream:
+  - tipo: churn
+    candidatos_dias: [45, 60, 90, 120]
+    dias_escolhido: 90
+  - tipo: campo_futuro
+    nome: proxima_com_desconto
+    campo_fonte: desconto
+    agregacao_cesta: max
+  - tipo: ltv
+    nome: ltv_90d
+    campo_valor: valor
+    horizonte_dias: 90
+    n_buckets: 10
+  - tipo: campo_futuro
+    nome: proxima_online
+    campo_fonte: online
+    agregacao_cesta: max
+
+features_tradicionais:
+  campo_valor: valor
+  campos_binarios: [online, desconto]
+  campos_composicao: [categoria, faixa_preco]
+  max_categorias_composicao: 12
+  campo_item: sku
+  campo_tipo: tipo_produto
+  campo_grupo_preco: categoria
+  janelas_dias: [7, 30, 90, 180, 365]
+  estaticos_frequencia: []
+
+v2:
+  janela: 512
+  catalogo:
+    tabela: dados_beleza_b2b/mini/produtos.parquet
+    item: sku
+    categoricos: [categoria, tipo_produto, familia, marca, faixa_preco, linha_id]
+    numericos: [preco_lista]
+  fontes:
+    - nome: pedido
+      natureza: itens
+      alvo: true
+      tabela: runs/beleza_b2b_mini/eventos_canonicos.parquet
+      entidade: entidade_id
+      data: data_evento
+      agrupar_por: [pedido_id]
+      item: sku
+      numericos_linha: [quantidade, preco]
+      categoricos_linha: [desconto]
+      valor_linha: [valor]
+      id_linha: evento_id
+      cabecalho:
+        derivado: true
+        categoricos: [canal, forma_pagamento]
+        numericos: []
+    - nome: navegacao
+      natureza: evento
+      tabela: dados_beleza_b2b/mini/navegacao.parquet
+      entidade: cliente_id
+      data: datahora
+      sessao_minutos: 30
+      item: sku
+      categoricos_linha: [tipo, plataforma, categoria]
+    - nome: credito
+      natureza: estado
+      tabela: dados_beleza_b2b/mini/credito.parquet
+      entidade: cliente_id
+      data: data
+      numericos: [limite, disponivel, dias_atraso]
+      categoricos: [bloqueado]
+    - nome: incentivo
+      natureza: estado
+      tabela: dados_beleza_b2b/mini/incentivo.parquet
+      filtro: "evento = 'inicio_ciclo'"
+      entidade: cliente_id
+      data: data
+      numericos: [meta_ciclo]
+      categoricos: [nivel]

@@ -471,13 +471,21 @@ def main():
             nav["cli"].append(cli_.astype(np.int32)); nav["ts"].append(ts_); nav["tipo"].append(np.full(len(cli_), tipo_, np.int8))
             nav["sku"].append(sku_.astype(np.int32)); nav["cat"].append(np.where(sku_ >= 0, cat["cat_id"][np.maximum(sku_, 0)], -1).astype(np.int8))
 
+        # cada pedido com navegação tem 1 ou 2 sessões nas 72 h anteriores; os eventos de uma sessão ficam a minutos uns dos outros
+        sess = np.stack([rng.randint(20, 30 * 60, n_p), rng.randint(31 * 60, 72 * 60, n_p)], axis=1)
+        duas = rng.rand(n_p) < 0.4
+
+        def quando(o):
+            """instante de um evento de navegação do pedido `o`: início de uma das sessões + alguns minutos."""
+            k = np.where(duas[o], rng.randint(0, 2, len(o)), 0)
+            return ts[o] - sess[o, k].astype("timedelta64[m]") + rng.randint(0, 15, len(o)).astype("timedelta64[m]")
+
         # vistas do que será comprado: cada linha de pedido com sessão é vista com probabilidade 0,35 (no máximo ~30 por pedido)
         m = com_sessao[lo] & (rng.rand(len(lo)) < np.minimum(0.35, 30.0 / np.maximum(n_lin[lo], 1)))
-        antes = rng.randint(5, 72 * 60, int(m.sum())).astype("timedelta64[m]")
-        registrar(ped_cli[lo][m], ts[lo][m] - antes, 1, lsku[m])
+        registrar(ped_cli[lo][m], quando(lo[m]), 1, lsku[m])
         # carrinho: pedidos pelo aplicativo ou site
         m2 = m & (canal[lo] <= 1) & (rng.rand(len(lo)) < 0.7)
-        registrar(ped_cli[lo][m2], ts[lo][m2] - rng.randint(1, 30, int(m2.sum())).astype("timedelta64[m]"), 3, lsku[m2])
+        registrar(ped_cli[lo][m2], ts[lo][m2] - rng.randint(1, 15, int(m2.sum())).astype("timedelta64[m]"), 3, lsku[m2])
         # vistas de interesse (não compradas agora): alimentam o pedido do ciclo seguinte
         op = np.flatnonzero(com_sessao)
         n_ruido = rng.poisson(3 + 10 * eng[op])
@@ -488,15 +496,15 @@ def main():
             mm = seg_i == s
             if mm.any():
                 sk[mm] = ids_ativos[amostrar(rng, w_ciclo[s], int(mm.sum()))]
-        registrar(ped_cli[oi], ts[oi] - rng.randint(5, 72 * 60, len(oi)).astype("timedelta64[m]"), 1, sk)
+        registrar(ped_cli[oi], quando(oi), 1, sk)
         novo_int_cli, novo_int_sku = [ped_cli[oi]], [sk]
         # buscas (por categoria) e visualização de campanha
         nb = rng.poisson(1.0, len(op))
         ob = np.repeat(op, nb)
-        registrar(ped_cli[ob], ts[ob] - rng.randint(10, 72 * 60, len(ob)).astype("timedelta64[m]"), 0, np.full(len(ob), -1))
+        registrar(ped_cli[ob], quando(ob), 0, np.full(len(ob), -1))
         nav["cat"][-1] = np.array([rng.choice(8, p=PREF_CAT[s] / PREF_CAT[s].sum()) for s in cli["segmento"][ped_cli[ob]]], dtype=np.int8) if len(ob) else np.zeros(0, np.int8)
         oc = op[rng.rand(len(op)) < 0.3]
-        registrar(ped_cli[oc], ts[oc] - rng.randint(10, 72 * 60, len(oc)).astype("timedelta64[m]"), 2, np.full(len(oc), -1))
+        registrar(ped_cli[oc], quando(oc), 2, np.full(len(oc), -1))
         # sessões sem compra: clientes ativos e engajados que não pediram no ciclo; carrinho abandonado vira interesse forte
         sem = np.flatnonzero(ativo & (np.bincount(ped_cli, minlength=n_cli) == 0) & (rng.rand(n_cli) < 0.3 * cli["engajamento"]))
         if len(sem):
@@ -511,7 +519,8 @@ def main():
                 mm = (cli["segmento"][si] == s) & usa_promo
                 if mm.any():
                     sk2[mm] = ids_ativos[pos_promo[amostrar(rng, w_ciclo[s][pos_promo], int(mm.sum()))]]
-            ts_s = (DIA0 + (d0 + rng.randint(0, dias_ciclo, len(si))).astype("timedelta64[D]")).astype("datetime64[m]") + rng.randint(7 * 60, 23 * 60, len(si)).astype("timedelta64[m]")
+            ini_s = (DIA0 + (d0 + rng.randint(0, dias_ciclo, len(sem))).astype("timedelta64[D]")).astype("datetime64[m]") + rng.randint(7 * 60, 22 * 60, len(sem)).astype("timedelta64[m]")
+            ts_s = np.repeat(ini_s, nv) + rng.randint(0, 15, len(si)).astype("timedelta64[m]")        # uma sessão por cliente
             registrar(si, ts_s, 1, sk2)
             ab = rng.rand(len(si)) < 0.35
             registrar(si[ab], ts_s[ab] + np.timedelta64(3, "m"), 3, sk2[ab])

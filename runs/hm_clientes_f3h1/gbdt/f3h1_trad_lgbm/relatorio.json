@@ -1,0 +1,181 @@
+{
+  "features": "trad",
+  "modelo": "lgbm",
+  "n_features": 101,
+  "sem_cadastro": false,
+  "emb": "fusao",
+  "pca_k": 32,
+  "tarefas": {
+    "proxima_com_desconto": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 1832598,
+      "n_val": 813667,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.03246659262811226,
+        "num_leaves": 90,
+        "min_child_samples": 637,
+        "feature_fraction": 0.4220510493403881,
+        "bagging_fraction": 0.7409173079163102,
+        "lambda_l1": 2.495983149014829e-06,
+        "lambda_l2": 0.10665828058708517
+      },
+      "hpo_melhor_valor": 0.6796628476645361,
+      "val_resumo": {
+        "auc": {
+          "media": 0.6781765885670681,
+          "desvio": 0.0005277695179172256
+        },
+        "pr_auc": {
+          "media": 0.740757629112406,
+          "desvio": 0.00032851095236123486
+        }
+      },
+      "baseline_causal_val_auc": 0.64344973081287,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 178,
+          "val": {
+            "auc": 0.6778653527423185,
+            "pr_auc": 0.7404728997718499
+          },
+          "test": {
+            "auc": 0.6840265513406248,
+            "pr_auc": 0.7163735267103988
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 190,
+          "val": {
+            "auc": 0.6777447031244667,
+            "pr_auc": 0.7405820691521472
+          },
+          "test": {
+            "auc": 0.6839400740072008,
+            "pr_auc": 0.7163096969504199
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 164,
+          "val": {
+            "auc": 0.678919709834419,
+            "pr_auc": 0.7412179184132205
+          },
+          "test": {
+            "auc": 0.6840971458402473,
+            "pr_auc": 0.7164518918842893
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.0,
+      "top_importancia": [
+        [
+          "desconto_share",
+          0.17615373961963504
+        ],
+        [
+          "desconto_ultima_cesta",
+          0.16286741588569562
+        ],
+        [
+          "proxima_com_desconto_baseline_feat",
+          0.12236871697083444
+        ],
+        [
+          "mes",
+          0.10668425934709917
+        ],
+        [
+          "desconto_share_90d",
+          0.07255185387132193
+        ],
+        [
+          "preco_relativo_medio",
+          0.05498937084436975
+        ],
+        [
+          "itens_distintos",
+          0.02384511205469634
+        ],
+        [
+          "tempo_cliente_dias",
+          0.018177351326978963
+        ],
+        [
+          "n_itens",
+          0.017730864440972372
+        ],
+        [
+          "idade",
+          0.0166896534904986
+        ],
+        [
+          "ultima_cesta_preco_relativo",
+          0.016521991908883756
+        ],
+        [
+          "online_share",
+          0.015091587606124229
+        ],
+        [
+          "preco_medio_item",
+          0.01481794322735749
+        ],
+        [
+          "cestas_365d",
+          0.013056767649105223
+        ],
+        [
+          "n_cestas",
+          0.012698478590741984
+        ],
+        [
+          "clube_cod",
+          0.011932613945365314
+        ],
+        [
+          "grupo_produto_12_share",
+          0.008185303725353045
+        ],
+        [
+          "cep_top_cod",
+          0.008144702873040019
+        ],
+        [
+          "itens_365d",
+          0.007642684654443419
+        ],
+        [
+          "tipos_distintos",
+          0.007220548720912799
+        ],
+        [
+          "itens_medio_cesta",
+          0.006631612720610207
+        ],
+        [
+          "proxima_online_baseline_feat",
+          0.006607165737375447
+        ],
+        [
+          "online_share_90d",
+          0.005799928356874949
+        ],
+        [
+          "ltv_90d_baseline_feat",
+          0.005065918791584256
+        ],
+        [
+          "cestas_180d",
+          0.004678879698394328
+        ]
+      ],
+      "tempo_segundos": 993.4348466396332
+    }
+  },
+  "frac_treino": 1.0,
+  "semente_amostra": 0
+}

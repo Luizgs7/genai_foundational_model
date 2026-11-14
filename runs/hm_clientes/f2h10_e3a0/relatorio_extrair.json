@@ -1,0 +1,14 @@
+{
+ "modo": "extrair",
+ "modelo": "Qwen/Qwen3-Embedding-0.6B",
+ "adaptador": null,
+ "pooling": "ultimo",
+ "instrucao": true,
+ "max_tokens": 2048,
+ "n_ancoras": 515825,
+ "n_janelas": 118578,
+ "tokens": 71957225,
+ "dim": 1024,
+ "segundos": 4622.0,
+ "tokens_por_s": 15568.5
+}

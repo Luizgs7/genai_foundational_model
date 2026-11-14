@@ -1,0 +1,181 @@
+{
+  "features": "hibrido",
+  "modelo": "lgbm",
+  "n_features": 133,
+  "sem_cadastro": false,
+  "emb": "fusao",
+  "pca_k": 32,
+  "tarefas": {
+    "proxima_com_desconto": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 1832598,
+      "n_val": 813667,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.036709167712189295,
+        "num_leaves": 69,
+        "min_child_samples": 759,
+        "feature_fraction": 0.4441833195891396,
+        "bagging_fraction": 0.5517578794640661,
+        "lambda_l1": 6.040264018462565e-08,
+        "lambda_l2": 0.002257668410455744
+      },
+      "hpo_melhor_valor": 0.6790480274213753,
+      "val_resumo": {
+        "auc": {
+          "media": 0.6790615600720397,
+          "desvio": 0.0006209378145791286
+        },
+        "pr_auc": {
+          "media": 0.7411180797213258,
+          "desvio": 0.0004695292547068594
+        }
+      },
+      "baseline_causal_val_auc": 0.64344973081287,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 289,
+          "val": {
+            "auc": 0.6799033768760991,
+            "pr_auc": 0.7417752391474104
+          },
+          "test": {
+            "auc": 0.6858298661441353,
+            "pr_auc": 0.7178709293301286
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 252,
+          "val": {
+            "auc": 0.6788571095311832,
+            "pr_auc": 0.7408719178344473
+          },
+          "test": {
+            "auc": 0.6861117291901287,
+            "pr_auc": 0.7180772846426713
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 276,
+          "val": {
+            "auc": 0.6784241938088366,
+            "pr_auc": 0.7407070821821199
+          },
+          "test": {
+            "auc": 0.6843744827011965,
+            "pr_auc": 0.7170896518786436
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.16059644638060924,
+      "top_importancia": [
+        [
+          "desconto_share",
+          0.17340729771240743
+        ],
+        [
+          "desconto_ultima_cesta",
+          0.1291126799081935
+        ],
+        [
+          "proxima_com_desconto_baseline_feat",
+          0.11725559713183127
+        ],
+        [
+          "mes",
+          0.0744069812567659
+        ],
+        [
+          "desconto_share_90d",
+          0.06894786615595673
+        ],
+        [
+          "preco_relativo_medio",
+          0.034555471421741334
+        ],
+        [
+          "emb_pca_11",
+          0.02056351658157351
+        ],
+        [
+          "itens_distintos",
+          0.017344449283848373
+        ],
+        [
+          "idade",
+          0.015018565373617747
+        ],
+        [
+          "emb_pca_3",
+          0.014903210523391632
+        ],
+        [
+          "n_itens",
+          0.014074950645977198
+        ],
+        [
+          "n_cestas",
+          0.013477837433455693
+        ],
+        [
+          "emb_pca_10",
+          0.01293789788937233
+        ],
+        [
+          "online_share",
+          0.012710343979685816
+        ],
+        [
+          "emb_pca_2",
+          0.012627968285871408
+        ],
+        [
+          "cep_top_cod",
+          0.01251070729692792
+        ],
+        [
+          "emb_pca_8",
+          0.011900534678561074
+        ],
+        [
+          "preco_medio_item",
+          0.011802063644812604
+        ],
+        [
+          "clube_cod",
+          0.010632449882304943
+        ],
+        [
+          "emb_pca_23",
+          0.010462608260415835
+        ],
+        [
+          "ultima_cesta_preco_relativo",
+          0.008862676575069318
+        ],
+        [
+          "tempo_cliente_dias",
+          0.008592105570498403
+        ],
+        [
+          "emb_pca_7",
+          0.0077367707617631
+        ],
+        [
+          "grupo_produto_12_share",
+          0.006781712249922666
+        ],
+        [
+          "itens_365d",
+          0.00655076054105498
+        ]
+      ],
+      "tempo_segundos": 1036.7381196022034
+    }
+  },
+  "frac_treino": 1.0,
+  "semente_amostra": 0
+}
