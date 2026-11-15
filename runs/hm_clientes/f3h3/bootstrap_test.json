@@ -1,0 +1,254 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.8124572365031235,
+    "metrica_b": 0.8194054424545705,
+    "delta": 0.006948205951446962,
+    "ic95": [
+      0.006590540307915305,
+      0.007395144115470545
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.8290945879197761,
+    "metrica_b": 0.8194054424545705,
+    "delta": -0.009689145465205606,
+    "ic95": [
+      -0.010030259626110802,
+      -0.009420242534264735
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "metrica_a": 0.8290945879197761,
+    "metrica_b": 0.8124572365031235,
+    "delta": -0.016637351416652568,
+    "ic95": [
+      -0.017067224402627985,
+      -0.01614866209837864
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.35847380238070903,
+    "metrica_b": 0.3338991508728754,
+    "delta": -0.02457465150783361,
+    "ic95": [
+      -0.025212956534037635,
+      -0.023908447278654335
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.37272545691269376,
+    "metrica_b": 0.3338991508728754,
+    "delta": -0.03882630603981835,
+    "ic95": [
+      -0.03957041847510646,
+      -0.0379983181384411
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "metrica_a": 0.37272545691269376,
+    "metrica_b": 0.35847380238070903,
+    "delta": -0.014251654531984737,
+    "ic95": [
+      -0.014834851488284756,
+      -0.01365011062300389
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.3746591874956306,
+    "metrica_b": 0.38525979019563833,
+    "delta": 0.010600602700007733,
+    "ic95": [
+      0.00986184509803317,
+      0.011389415137005306
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.39913789614279355,
+    "metrica_b": 0.38525979019563833,
+    "delta": -0.013878105947155217,
+    "ic95": [
+      -0.01476220582520946,
+      -0.013038689078084774
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "metrica_a": 0.39913789614279355,
+    "metrica_b": 0.3746591874956306,
+    "delta": -0.02447870864716295,
+    "ic95": [
+      -0.02538748272727962,
+      -0.023556455110881558
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.8379908325796172,
+    "metrica_b": 0.8280014054378318,
+    "delta": -0.009989427141785301,
+    "ic95": [
+      -0.01024066298307721,
+      -0.009771030550999904
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8280014054378318,
+    "delta": -0.0168393509578727,
+    "ic95": [
+      -0.017095331708406967,
+      -0.016561620011945104
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8379908325796172,
+    "delta": -0.0068499238160874,
+    "ic95": [
+      -0.0070772220288268985,
+      -0.006629155709794804
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]

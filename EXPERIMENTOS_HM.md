@@ -633,3 +633,53 @@ guardada em `runs/hm_clientes/v2_pretreino_sem_frio/`.
 **Por que importa para a empresa.** Perfumaria e beleza lançam produtos a cada
 ciclo. Sem esse tratamento, a recomendação direta do modelo (F3-H4) nunca
 indicaria um lançamento, e o embedding do cliente aprenderia a ignorá-los.
+
+### F3-H3 — o evento composto (motor v2) contra o v1 na H&M: resultado no teste
+
+Mesmo decoder (256×6, 11,3 milhões de parâmetros), mesmas âncoras e a mesma
+fusão da H4 (embedding + cadastro + baselines causais), 3 sementes, rótulo de
+churn corrigido. O pré-treino v2 inclui a correção do item novo (seção
+anterior) e o critério de época sem as janelas que não cabem na validação.
+Melhor época: 7 de 8.
+
+**Critério, escrito antes de rodar, e resultado.**
+
+| Critério | Exigência | Resultado | |
+|---|---|---|---|
+| Custo | ≤ 1/5 do tempo de GPU por época do v1 | 6,9 min contra 64 min (0,11×) | atendido |
+| Cobertura | 100% das âncoras numa janela, sem truncamento | 100% (maior histórico: 427 cestas; janela 512) | atendido |
+| Qualidade | fusão v2 a até 0,005 da fusão v1 nas 4 tarefas | ganha em 2, perde em 2 | **não atendido** |
+
+| Tarefa | GBDT tradicional (T) | Fusão v1 (H4) | Fusão v2 | v2 − v1 (IC 95%) | v2 − T |
+|---|---|---|---|---|---|
+| Churn 90 dias (AUC) | 0,8291 | 0,8125 | **0,8194** | **+0,0069** [+0,0066; +0,0074] | −0,0097 |
+| Próxima categoria (acc.) | 0,3727 | 0,3585 | 0,3339 | **−0,0246** [−0,0252; −0,0239] | −0,0388 |
+| LTV 90 dias (acc.) | 0,3991 | 0,3747 | **0,3853** | **+0,0106** [+0,0099; +0,0114] | −0,0139 |
+| Próxima online (AUC) | 0,8448 | 0,8380 | 0,8280 | **−0,0100** [−0,0102; −0,0098] | −0,0168 |
+
+**Leitura.**
+
+- **O v2 ganha onde os alvos dele apontam.** O pré-treino do v2 prevê o
+  intervalo até o próximo pedido, o valor e as contagens e gastos futuros, e
+  é exatamente em churn e LTV que ele supera o v1. Em churn, a fusão v2 fica
+  a 0,0097 do GBDT tradicional: **pela primeira vez uma fusão empata com T em
+  churn** pela margem de 0,01 (a v1 ficava a 0,0166).
+- **Perde em composição e canal.** A próxima categoria depende da composição
+  da cesta, que o v2 só aprende pelo artigo exato, e o artigo troca de
+  coleção. O canal ficou fora dos alvos de propósito (teste de transferência).
+- **Na validação as quatro passavam.** Validação (dez/2019 a mar/2020): churn
+  +0,009, categoria −0,004, LTV +0,044, online −0,004. A diferença aparece no
+  teste.
+- **Não é envelhecimento; é a mudança de regime.** Mês a mês no teste, a perda
+  em categoria é maior no início (−0,031 em março, −0,038 em abril, −0,033 em
+  maio de 2020, com as lojas fechadas) e cai até −0,006 em setembro; em canal,
+  de −0,015 em março para −0,006 a partir de junho. Se fosse envelhecimento da
+  representação, a perda cresceria com a distância do corte. Churn e LTV ficam
+  melhores no v2 em todos os meses.
+
+**Consequência.** O v2 resolve a escala (10× mais barato por época e sem
+truncamento) e melhora churn e LTV. Mas não preserva a qualidade nas 4
+tarefas, e o critério não foi atendido como escrito. A variante F3-H3b
+(composição do próximo pedido por atributo, registrada em `PLANO_FASE3.md`
+depois deste resultado) ataca a perda em categoria. Arquivos:
+`runs/hm_clientes/f3h3/bootstrap_test.json`, `runs/hm_clientes/v2_pretreino/v2_relatorio.json`.
