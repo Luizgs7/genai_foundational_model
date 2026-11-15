@@ -512,23 +512,32 @@ primeiro teste: sem o defeito do rótulo, o embedding explica 13% do que o RFM
 explica, perto dos 17% da validação. Os resultados com o rótulo original
 ficaram em `runs/hm_clientes/f3h2/resultado_{val,test}_rotulo_original.json`.
 
-### F3-H1 — propensão a desconto com o motor atual (parcial)
+### F3-H1 — propensão a desconto com o motor atual
 
 Pergunta nova, criada só com configuração: a próxima cesta tem algum item
 comprado pelo menos 10% abaixo do preço de referência do artigo? A definição
 foi calibrada só no treino (`runs/hm_clientes/f3h1/relatorio.json`): 50% das
 cestas no treino, 57% na validação e 52% no teste.
 
-| Braço | AUC no teste |
-| --- | --- |
-| T — GBDT tradicional, com o histórico de desconto | 0,6842 |
-| H — GBDT híbrido (features e embedding H3) | 0,6858 |
-| E — fusão com o backbone H3 | pendente (precisa do Colab) |
+| Braço | AUC no teste | Diferença para T (IC 95% por cliente) |
+| --- | --- | --- |
+| T — GBDT tradicional, com o histórico de desconto | 0,6842 | — |
+| H — GBDT híbrido (features e embedding H3) | 0,6858 | +0,0015 [+0,0014; +0,0017] |
+| E — fusão com o backbone H3 (tarefa única, 3 sementes) | 0,6667 | −0,0175 [−0,0181; −0,0170] |
 
-O híbrido fica 0,0015 acima do tradicional (IC 95% [+0,0014; +0,0017]), dentro
-da margem de empate de 0,01. O critério só se fecha com o braço E. Treino: 17
-min para cada GBDT, com 40 tentativas de HPO. Arquivos em
-`runs/hm_clientes_f3h1/`; reprodução: `scripts/f3_h1_local.sh`.
+**Veredito: critério atendido, pelo braço H.** O critério escrito antes de
+rodar pedia E **ou** H a até 0,01 de T. O híbrido empata (e fica um pouco
+acima). A fusão sozinha fica 0,0175 abaixo, fora da margem: o embedding H3
+não carrega o histórico de desconto que o GBDT recebe pronto (a participação
+de cestas com desconto, por janela). É o mesmo padrão das 4 tarefas antigas
+(E1/E0 abaixo de T; H empata). M2 também atendido: nenhuma linha de código
+específica do problema, além da coluna derivada no adapter.
+
+Custo: 17 min de CPU para cada GBDT (40 tentativas de HPO) e cerca de 2 min de
+L4 para cada semente da fusão, depois de extraídos os embeddings (23 min,
+uma vez para todas as perguntas). Arquivos em `runs/hm_clientes_f3h1/`
+(`f3h1_bootstrap_completo.json`); reprodução: `scripts/f3_h1_local.sh` e o
+bloco 2 de `scripts/fila_colab_f3b.sh`.
 
 ### F2-H11 — modelos tabulares pré-treinados (TabPFN-3.5, TabICL): resultado no teste
 
