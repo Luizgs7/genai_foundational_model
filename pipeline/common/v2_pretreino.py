@@ -190,10 +190,18 @@ def main():
                "segundos": round(estado["segundos"], 1)}
         if lotes_val:
             reg["val"] = avaliar(modelo, d, lotes_val, corte_val, t_val, device, amp)
+            # critério: soma das perdas de validação, sem as janelas futuras que não cabem no período de
+            # validação (com o corte no fim dele, só fecham para as posições do primeiro dia: viram ruído)
+            dias_val = (corte_val - t_val) / 1440.0
+            fora = {f"{p}_{w}" for w in m["janelas_dias"] if w >= dias_val for p in ("cont", "gasto")}
+            reg["criterio"] = sum(v for k, v in reg["val"].items() if k != "total" and k not in fora)
+            reg["criterio_sem"] = sorted(fora)
         estado["historico"].append(reg)
-        criterio = reg["val"]["total"] if lotes_val else reg["treino"]["total"]
-        print(json.dumps({"epoca": reg["epoca"], "treino": round(reg["treino"]["total"], 4),
+        criterio = reg["criterio"] if lotes_val else reg["treino"]["total"]
+        print(json.dumps({"epoca": reg["epoca"], "treino": round(reg["treino"]["total"], 4), "criterio": round(criterio, 4),
                           "val": {k: round(v, 4) for k, v in reg.get("val", {}).items()}, "s": reg["segundos"]}), flush=True)
+        torch.save({"modelo": modelo.state_dict(), "arquitetura": arq, "corte_min": corte, "epoca": estado["epoca"]},
+                   os.path.join(out, f"epoca_{estado['epoca']}.pt"))      # só os pesos, para escolher a época depois
         if criterio < estado["melhor"]:
             estado["melhor"] = criterio
             salvar("melhor.pt")
