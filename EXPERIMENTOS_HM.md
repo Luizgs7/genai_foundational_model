@@ -530,14 +530,57 @@ da margem de empate de 0,01. O critério só se fecha com o braço E. Treino: 17
 min para cada GBDT, com 40 tentativas de HPO. Arquivos em
 `runs/hm_clientes_f3h1/`; reprodução: `scripts/f3_h1_local.sh`.
 
-### F2-H11 — situação em 14/11 (avaliação pendente)
+### F2-H11 — modelos tabulares pré-treinados (TabPFN-3.5, TabICL): resultado no teste
 
-Rodaram no Colab, antes de a sessão acabar: TabICL tradicional com 10 mil e 50
-mil âncoras de contexto e híbrido com 10 mil; TabPFN-3.5 tradicional e híbrido
-com 10 mil e 50 mil. Tempo por configuração: de 11 a 42 min no TabICL e de 23
-a 109 min no TabPFN, contra menos de 1 min do LightGBM. O TabICL com 199 mil
-âncoras foi encerrado duas vezes por falta de memória (52 GB de RAM), na
-tarefa de 10 classes; o TabICL híbrido com 50 mil falhou logo no início, por
-causa ainda não vista; o TabPFN com 199 mil não terminou antes do fim da
-sessão. As predições estão no Drive; falta a avaliação no teste.
+Pergunta: um modelo tabular pré-treinado, **sem ajuste de hiperparâmetros**,
+empata com o LightGBM? Critério do plano: se empatar, vira candidato a cabeça
+leve da bateria. Mesmas features do braço T (97 tradicionais; o híbrido soma o
+embedding H3 em PCA-32), mesmas âncoras de teste da F2-H10, 1 semente por
+braço, bootstrap por cliente (300 reamostras). O "contexto" é o número de
+âncoras de treino que o modelo vê; o LightGBM foi treinado com as mesmas
+amostras, para separar o efeito do modelo do efeito do volume.
+
+| Braço | Churn (AUC) | Próxima online (AUC) | Próxima categoria (acc.) | LTV 90d (acc.) | Média |
+|---|---|---|---|---|---|
+| T — LightGBM, 300 mil âncoras, HPO de 40 tentativas, 3 sementes | 0,8241 | 0,8432 | 0,3645 | 0,3945 | 0,6066 |
+| LightGBM, 50 mil âncoras | 0,8187 | 0,8426 | 0,3597 | 0,3909 | 0,6029 |
+| **TabPFN-3.5, 50 mil âncoras** | 0,8247 | 0,8440 | 0,3678 | 0,3959 | **0,6081** |
+| TabPFN-3.5 híbrido, 50 mil | 0,8252 | 0,8442 | 0,3620 | 0,3989 | 0,6076 |
+| TabICL, 50 mil | 0,8218 | 0,8444 | 0,3606 | 0,3898 | 0,6042 |
+| LightGBM, 10 mil | 0,8131 | 0,8375 | 0,3512 | 0,3850 | 0,5967 |
+| TabPFN-3.5, 10 mil | 0,8204 | 0,8437 | 0,3627 | 0,3946 | 0,6053 |
+| TabICL, 10 mil | 0,8154 | 0,8427 | 0,3594 | 0,3875 | 0,6013 |
+
+Diferenças (IC 95% por cliente):
+
+| Comparação | Churn | Próxima online | Próxima categoria | LTV 90d | Média |
+|---|---|---|---|---|---|
+| TabPFN 50 mil − LightGBM 50 mil | +0,0060 | +0,0014 | +0,0081 | +0,0050 | +0,0051 [+0,0045; +0,0057] |
+| TabPFN 50 mil − T completo | +0,0006 | +0,0008 | +0,0033 | +0,0014 | +0,0015 [+0,0009; +0,0022] |
+| TabICL 50 mil − LightGBM 50 mil | +0,0032 | +0,0018 | +0,0009 | −0,0011 | +0,0012 [+0,0007; +0,0019] |
+| TabPFN 10 mil − LightGBM 10 mil | +0,0073 | +0,0062 | +0,0115 | +0,0096 | +0,0087 [+0,0080; +0,0094] |
+
+**Veredito: critério atendido.** Os dois modelos empatam com o LightGBM em
+todas as tarefas, sem HPO. O TabPFN-3.5 vai além: com 50 mil âncoras supera o
+LightGBM treinado com as mesmas 50 mil e empata com o T completo (seis vezes
+mais dados, HPO e 3 sementes), ligeiramente acima na média. A vantagem cresce
+quando há pouco dado (+0,009 com 10 mil), o que interessa a perguntas novas
+com poucos rótulos. O embedding H3 não acrescenta nada ao TabPFN (híbrido
+0,6076 contra 0,6081).
+
+**Custos e limites práticos.**
+- Tempo por configuração: 23 a 109 min de L4 no TabPFN e 11 a 42 min no
+  TabICL, contra menos de 1 min do LightGBM.
+- O TabPFN-3.5 precisa de uma chave da Prior Labs e da licença aceita; para
+  uso comercial, a licença tem de ser revista antes da entrega à empresa.
+- O TabICL morreu por falta de RAM (52 GB) com 199 mil âncoras, duas vezes, e
+  com 50 mil no híbrido (15/11). Fica registrado como limite: acima de ~50 mil
+  âncoras de contexto, ele não cabe numa máquina comum.
+- O TabPFN com 199 mil âncoras não terminou numa sessão; roda no fim da fila,
+  se sobrar tempo, fora desta avaliação.
+
+**Consequência para a fase 3.** O TabPFN-3.5 entra como cabeça leve candidata
+na bateria (braços E e H), ao lado da fusão e do LightGBM. É coerente com a
+promessa do produto: pergunta nova vira uma cabeça sem ajuste sobre features
+e vetores já calculados. Arquivo: `runs/hm_clientes/f2h11/resultado_test.json`.
 

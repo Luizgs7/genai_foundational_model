@@ -86,6 +86,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("config")
     ap.add_argument("--saida", default="v2_pretreino")
+    ap.add_argument("--dados", default="v2", help="pasta da serialização em runs/<nome>/")
     ap.add_argument("--corte", default=None, help="AAAA-MM-DD; padrão: fim do split de treino")
     ap.add_argument("--n_embd", type=int, default=256); ap.add_argument("--n_layer", type=int, default=6)
     ap.add_argument("--n_head", type=int, default=4); ap.add_argument("--n_kv_heads", type=int, default=2)
@@ -98,7 +99,7 @@ def main():
     ap.add_argument("--dispositivo", default="auto", choices=["auto", "cpu", "cuda"])
     a = ap.parse_args()
     config = carregar_config(a.config)
-    d = DadosV2(run_dir(config, "v2"))
+    d = DadosV2(run_dir(config, a.dados))
     m = d.meta
     device = ("cuda" if torch.cuda.is_available() else "cpu") if a.dispositivo == "auto" else a.dispositivo
     amp = device == "cuda"

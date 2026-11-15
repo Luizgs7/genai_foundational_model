@@ -65,6 +65,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("config")
     ap.add_argument("--pretreino", default="v2_pretreino")
+    ap.add_argument("--dados", default="v2", help="pasta da serialização em runs/<nome>/")
     ap.add_argument("--saida", default=None)
     ap.add_argument("--recomendar", default=None, help="AAAA-MM-DD: recomenda a partir da última posição anterior à data")
     ap.add_argument("--k", type=int, default=12)
@@ -73,7 +74,7 @@ def main():
     a = ap.parse_args()
     t0 = time.time()
     config = carregar_config(a.config)
-    d = DadosV2(run_dir(config, "v2"))
+    d = DadosV2(run_dir(config, a.dados))
     device = ("cuda" if torch.cuda.is_available() else "cpu") if a.dispositivo == "auto" else a.dispositivo
     amp = device == "cuda"
     modelo, ck = carregar_modelo(config, d, a.pretreino, device)

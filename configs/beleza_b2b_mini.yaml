@@ -51,6 +51,12 @@ tarefas_downstream:
     nome: proxima_online
     campo_fonte: online
     agregacao_cesta: max
+  # F3-H7: tarefa complementar que depende do incentivo pelo gabarito (pedidos de
+  # complemento no fim do ciclo). "Sem pedido em 7 dias" é o complemento de "pedido
+  # nos 7 dias seguintes": a AUC é a mesma.
+  - tipo: churn
+    nome: sem_pedido_7d
+    dias_escolhido: 7
 
 features_tradicionais:
   campo_valor: valor

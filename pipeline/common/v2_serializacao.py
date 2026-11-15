@@ -18,9 +18,15 @@ Lê as fontes declaradas em `v2:` no YAML (v2_esquema.py) e grava em runs/<nome>
 Códigos: 0 = ausente, 1 = valor que não apareceu no treino, 2.. = valores vistos no treino.
 Faixas numéricas: quantis calculados só com linhas de treino.
 
-Uso: python3 pipeline/common/v2_serializacao.py <config.yaml>
+Uso: python3 pipeline/common/v2_serializacao.py <config.yaml> [--dados v2] [--janela N]
+         [--sem_fonte NOME ...] [--sem_campo FONTE.CAMPO ...]
+  --dados       pasta de saída em runs/<nome>/ (variantes da ablação da F3-H7 lado a lado)
+  --sem_fonte   retira uma fonte inteira (não pode ser a fonte-alvo)
+  --sem_campo   retira um campo de uma fonte (linha, cabeçalho ou estado)
+  --janela      sobrepõe o tamanho da janela do config
 """
 
+import argparse
 import json
 import os
 import sys
@@ -81,11 +87,45 @@ def minutos(expr):
     return (expr.cast(pl.Datetime("ms")).dt.epoch("ms") // 60000).cast(pl.Int64)
 
 
+def variante(v2, sem_fonte, sem_campo, janela):
+    """aplica a ablação pedida ao esquema: retira fontes e campos, troca a janela."""
+    alvo = v2["fonte_alvo"]
+    if alvo in sem_fonte:
+        raise ValueError(f"a fonte-alvo ({alvo}) não pode ser retirada")
+    nomes = {f["nome"] for f in v2["fontes"]}
+    for n in sem_fonte:
+        if n not in nomes:
+            raise ValueError(f"fonte desconhecida: {n}")
+    v2["fontes"] = [f for f in v2["fontes"] if f["nome"] not in sem_fonte]
+    for fc in sem_campo:
+        fonte, campo = fc.split(".", 1)
+        f = next((x for x in v2["fontes"] if x["nome"] == fonte), None)
+        achou = False
+        listas = [f[k] for k in ("numericos_linha", "categoricos_linha", "numericos", "categoricos")] if f else []
+        if f and isinstance(f.get("cabecalho"), dict):
+            listas += [f["cabecalho"].get("categoricos", []), f["cabecalho"].get("numericos", [])]
+        for lista in listas:
+            if campo in lista:
+                lista.remove(campo); achou = True
+        if not achou:
+            raise ValueError(f"campo desconhecido: {fc}")
+    if janela:
+        v2["janela"] = janela
+    return v2
+
+
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("config")
+    ap.add_argument("--dados", default="v2")
+    ap.add_argument("--sem_fonte", nargs="*", default=[])
+    ap.add_argument("--sem_campo", nargs="*", default=[])
+    ap.add_argument("--janela", type=int, default=None)
+    a = ap.parse_args()
     t0 = time.time()
-    config = carregar_config(sys.argv[1])
-    v2 = esquema(config)
-    out = run_dir(config, "v2")
+    config = carregar_config(a.config)
+    v2 = variante(esquema(config), a.sem_fonte, a.sem_campo, a.janela)
+    out = run_dir(config, a.dados)
     os.makedirs(out, exist_ok=True)
     fontes_pos = [f for f in v2["fontes"] if f["natureza"] in ("itens", "evento")]
     fontes_est = [f for f in v2["fontes"] if f["natureza"] == "estado"]

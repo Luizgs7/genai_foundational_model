@@ -277,6 +277,82 @@ def anexar_estaticos(feats, config, ft):
     return feats.join(pl.DataFrame(dados), on="entidade_id", how="left")
 
 
+def _minutos(serie):
+    return (serie.cast(pl.Datetime("ms")).dt.epoch("ms") // 60000).cast(pl.Int64).to_numpy()
+
+
+def anexar_fontes_extras(feats, config, ft):
+    """F3-H7: agregados genéricos das fontes `evento` e `estado` declaradas na seção `v2:` do config,
+    para a régua tradicional receber todos os tipos de dado sem engenharia por base.
+
+      evento  contagem de eventos por valor de cada campo categórico (top-K do treino) e no total, em
+              janelas de `janelas_dias_extras` dias; dias desde o último evento.
+      estado  valor vigente (o último registro) e média dos numéricos em 90 dias.
+
+    Causal: só registros com data <= a data e hora da âncora (o último item da cesta).
+    Ativação: `fontes_extras: v2` em features_tradicionais."""
+    from v2_esquema import esquema
+    fontes = [f for f in esquema(config)["fontes"] if f["natureza"] in ("evento", "estado")]
+    janelas = ft.get("janelas_dias_extras", [7, 30, 90])
+    K = ft.get("max_categorias_composicao", 12)
+    anc = ler_fonte(config, ["evento_id", "data_evento"])
+    anc = feats.select(["evento_id", "entidade_id"]).join(pl.from_pandas(anc), on="evento_id", how="left", maintain_order="left")
+    ae = anc["entidade_id"].to_numpy().astype(np.int64)
+    at = _minutos(anc["data_evento"])
+    chave_anc = (ae << 32) + at
+    splits_corte = None
+    novas = {}
+    for f in fontes:
+        cols_cat = f["categoricos_linha"] if f["natureza"] == "evento" else f["categoricos"]
+        cols_num = [] if f["natureza"] == "evento" else f["numericos"]
+        df = (pl.read_parquet(f["tabela"]).filter(pl.sql_expr(f["filtro"])) if f["filtro"] else pl.read_parquet(f["tabela"]))
+        df = df.select([f["entidade"], f["data"]] + cols_cat + cols_num).drop_nulls([f["entidade"], f["data"]])
+        e = df[f["entidade"]].cast(pl.Int64).to_numpy()
+        t = _minutos(df[f["data"]])
+        ordem = np.argsort((e << 32) + t, kind="stable")
+        e, t = e[ordem], t[ordem]
+        df = df[ordem]
+        chave = (e << 32) + t
+        fim = np.searchsorted(chave, chave_anc, side="right")          # registros com t <= âncora
+        ultimo = fim - 1
+        valido = (ultimo >= 0) & (e[np.maximum(ultimo, 0)] == ae)
+        if splits_corte is None:                                      # top-K calibrado só com registros do treino
+            sp = pl.read_parquet(caminho_tabela(config, "splits", "splits"), columns=["split", "data_evento"])
+            primeiro_fora = sp.filter(pl.col("split").cast(pl.Utf8) != "train").select(pl.col("data_evento").min())["data_evento"]
+            splits_corte = int(_minutos(primeiro_fora)[0])
+        treino = t < splits_corte
+        p = f["nome"]
+        if f["natureza"] == "evento":
+            novas[f"{p}_dias_desde_ultimo"] = np.where(valido, (at - t[np.maximum(ultimo, 0)]) / 1440.0, np.nan).astype(np.float32)
+            grupos = [("total", np.ones(len(e), bool))]
+            for c in cols_cat:
+                v = df[c].cast(pl.Utf8).to_numpy()
+                top = pd.Series(v[treino]).value_counts().index[:K]
+                grupos += [(f"{c}_{str(val)}", v == val) for val in top]
+            for nome_g, mask in grupos:
+                ch = chave[mask]
+                fim_g = np.searchsorted(ch, chave_anc, side="right")
+                for W in janelas:
+                    ini_g = np.searchsorted(ch, chave_anc - W * 1440, side="right")
+                    novas[f"{p}_{nome_g}_{W}d"] = (fim_g - ini_g).astype(np.float32)
+        else:
+            idx = np.maximum(ultimo, 0)
+            for c in cols_num:
+                x = df[c].cast(pl.Float64).fill_null(np.nan).to_numpy()
+                novas[f"{p}_{c}_atual"] = np.where(valido, x[idx], np.nan).astype(np.float32)
+                cs = np.concatenate([[0.0], np.cumsum(np.nan_to_num(x))])
+                ini = np.searchsorted(chave, chave_anc - 90 * 1440, side="right")
+                n = fim - ini
+                novas[f"{p}_{c}_media_90d"] = np.where(n > 0, (cs[fim] - cs[ini]) / np.maximum(n, 1), np.nan).astype(np.float32)
+            for c in cols_cat:
+                v = df[c].cast(pl.Utf8).to_numpy()
+                cod = {val: k for k, val in enumerate(pd.Series(v[treino]).value_counts().index)}
+                codigos = np.array([cod.get(x, -1) for x in v], dtype=np.float32)
+                novas[f"{p}_{c}_atual_cod"] = np.where(valido, codigos[idx], np.nan).astype(np.float32)
+        print(f"  fonte extra {p} ({f['natureza']}): {df.height:,} registros", flush=True)
+    return feats.with_columns([pl.Series(k, v) for k, v in novas.items()])
+
+
 def anexar_rotulos(feats, config):
     """Rótulos, split, flag de uso downstream e baselines causais numéricos
     (os mesmos que a fusão recebe como feature)."""
@@ -349,6 +425,9 @@ def main(config_path, n_teste_vazamento=0):
     feats = anexar_rotulos(feats, config)
     feats = anexar_estaticos(feats, config, ft)
     mem("rótulos e cadastro")
+    if ft.get("fontes_extras") == "v2":
+        feats = anexar_fontes_extras(feats, config, ft)
+        mem("fontes extras")
 
     if "usar_downstream" in feats.columns:
         feats = feats.filter(pl.col("usar_downstream")).drop("usar_downstream")

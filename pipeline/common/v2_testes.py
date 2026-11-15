@@ -7,7 +7,7 @@
   3. causalidade    alterar eventos futuros não muda o estado das posições anteriores;
   4. aprendizado    num lote pequeno repetido, a perda de cada alvo cai bastante.
 
-Uso: python3 pipeline/common/v2_testes.py <config.yaml>      (roda na CPU, numa base pequena)
+Uso: python3 pipeline/common/v2_testes.py <config.yaml> [pasta_dados=v2]      (roda na CPU, numa base pequena)
 """
 
 import sys
@@ -139,7 +139,7 @@ def teste_aprendizado(d, rng):
 
 def main():
     config = carregar_config(sys.argv[1])
-    d = DadosV2(run_dir(config, "v2"))
+    d = DadosV2(run_dir(config, sys.argv[2] if len(sys.argv) > 2 else "v2"))
     rng = np.random.RandomState(0)
     torch.manual_seed(0)
     teste_serializacao(d, rng)

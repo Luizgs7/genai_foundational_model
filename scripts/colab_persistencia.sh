@@ -28,6 +28,12 @@ persistir() {
     [ -e "$d" ] || continue
     mkdir -p $DRIVE/../hm_clientes_f3h1 && cp -ru "$d" $DRIVE/../hm_clientes_f3h1/ 2>/dev/null
   done
+  # F3-H7/F3-H8: pré-treinos e fusões da base sintética (os dados se regeneram com scripts/preparar_beleza.sh)
+  for d in runs/beleza_b2b_*/pre_* runs/beleza_b2b_*/fus_* runs/beleza_b2b_*/gbdt; do
+    [ -e "$d" ] || continue
+    rel=$(basename $(dirname "$d"))
+    mkdir -p $DRIVE/../$rel && cp -ru "$d" $DRIVE/../$rel/ 2>/dev/null
+  done
 }
 
 restaurar() {
@@ -35,5 +41,9 @@ restaurar() {
   echo "== restaurando do Drive $(date)"
   cp -ru $DRIVE/. $RUNS/ 2>/dev/null
   [ -d $DRIVE/../hm_clientes_f3h1 ] && { mkdir -p runs/hm_clientes_f3h1; cp -ru $DRIVE/../hm_clientes_f3h1/. runs/hm_clientes_f3h1/ 2>/dev/null; }
+  for b in $DRIVE/../beleza_b2b_*; do
+    [ -d "$b" ] || continue
+    mkdir -p runs/$(basename $b) && cp -ru $b/. runs/$(basename $b)/ 2>/dev/null
+  done
   return 0
 }
