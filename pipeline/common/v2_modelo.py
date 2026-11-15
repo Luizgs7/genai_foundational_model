@@ -24,6 +24,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.checkpoint import checkpoint
 
 from modelo_decoder import Bloco, RoPE, norma
 from v2_esquema import FAIXAS_CONTAGEM, FAIXAS_INTERVALO_DIAS, FAIXAS_N_LINHAS
@@ -235,16 +236,33 @@ class ModeloV2(nn.Module):
             partes.append(F.log_softmax(lg.float(), dim=-1))
         return torch.cat(partes) if partes else h.new_zeros((0, self.n_itens + 1))
 
-    def perdas(self, h, lote):
+    def _logp_alvos(self, hq, V, vies, pos, alvo):
+        """log p(alvo) para os pares (posição local, item) de um bloco de estados `hq`."""
+        lg = (self.saida_item(hq) @ V.T.to(hq.dtype) + vies.to(hq.dtype)).float()
+        lg = lg.index_fill(1, torch.zeros(1, dtype=torch.long, device=lg.device), float("-inf"))
+        return lg[pos, alvo] - torch.logsumexp(lg, dim=-1)[pos]
+
+    def perdas(self, h, lote, bloco_itens=2048):
         """dicionário de perdas (cada uma dividida pelo log do número de classes) e a soma."""
         saida = {}
         hp = h.reshape(-1, h.shape[-1])
-        # itens do próximo pedido: média, por posição, de -log p(item)
+        # itens do próximo pedido: média, por posição, de -log p(item), com o softmax sobre o catálogo inteiro.
+        # Em blocos de posições e com recomputação no backward: só a matriz (bloco x catálogo) de um bloco
+        # fica na memória (com 105 mil itens, a matriz do lote inteiro passaria de 10 GB).
         if len(lote["item_onde"]):
-            lp = self.pontuar_itens(hp[lote["item_onde"]])
-            g = lp[lote["item_pos"], lote["item_alvo"]]
-            n = torch.zeros(len(lote["item_onde"]), device=g.device).index_add_(0, lote["item_pos"], torch.ones_like(g))
-            por_pos = torch.zeros(len(lote["item_onde"]), device=g.device).index_add_(0, lote["item_pos"], -g) / n.clamp(min=1)
+            hq = hp[lote["item_onde"]]
+            V = self.vetores_itens()
+            ip, ia = lote["item_pos"], lote["item_alvo"]
+            g = torch.empty(len(ip), device=hq.device)
+            for i in range(0, hq.shape[0], bloco_itens):
+                sel = torch.nonzero((ip >= i) & (ip < i + bloco_itens), as_tuple=True)[0]
+                if not len(sel):
+                    continue
+                args = (hq[i:i + bloco_itens], V, self.vies_item, ip[sel] - i, ia[sel])
+                g[sel] = (checkpoint(self._logp_alvos, *args, use_reentrant=False) if torch.is_grad_enabled()
+                          else self._logp_alvos(*args))
+            n = torch.zeros(len(lote["item_onde"]), device=g.device).index_add_(0, ip, torch.ones_like(g))
+            por_pos = torch.zeros(len(lote["item_onde"]), device=g.device).index_add_(0, ip, -g) / n.clamp(min=1)
             saida["itens"] = por_pos.mean() / math.log(self.n_itens)
         for k, cab in self.cabecas.items():
             lg = cab(h).float()

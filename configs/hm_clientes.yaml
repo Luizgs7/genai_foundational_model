@@ -123,3 +123,13 @@ features_tradicionais:
   campo_grupo_preco: grupo_produto
   janelas_dias: [7, 30, 90, 180, 365]
   estaticos_frequencia: [cep]
+
+# Motor v2 (MOTOR_V2.md): atalho de uma fonte `itens` — uma posição por cesta
+# (cliente e dia), o artigo como item do catálogo inteiro (~105 mil, sem o corte
+# top-2000 do v1) e os atributos do artigo no vetor de item.
+v2:
+  item: artigo
+  atributos_item: [indice, grupo_produto, tipo_produto, cor, linha_vestuario]
+  numericos_linha: [preco]
+  cabecalho_categoricos: [canal]
+  valor_linha: [preco]

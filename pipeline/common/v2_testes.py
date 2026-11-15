@@ -101,8 +101,8 @@ def teste_causalidade(d, modelo, rng):
     corte_pos = torch.tensor([(f - i) // 2 for i, f in jan])
     futuro = torch.arange(T)[None, :] >= corte_pos[:, None]
     alt = {k: (v.clone() if torch.is_tensor(v) else v) for k, v in lote.items()}
-    for k in ("tipo", "dt", "dow", "mes", "nlin"):
-        alt[k][futuro] = torch.randint(0, 2, alt[k][futuro].shape)
+    for k in ("tipo", "dt", "dow", "mes", "nlin"):      # valores sorteados dentro do vocabulário de cada campo
+        alt[k][futuro] = torch.randint(0, getattr(modelo, k).num_embeddings, alt[k][futuro].shape)
     alt["cab"][futuro] = 0
     alt["estado"][futuro] = 0
     lin_fut = futuro.reshape(-1)[alt["lin_pos"]]
