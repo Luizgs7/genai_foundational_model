@@ -58,10 +58,10 @@ done
 
 # ---- 3. F3-H3: motor v2 ----
 if [ -f $R/v2/meta.json ]; then
-  if [ ! -f $R/v2_pretreino/v2_relatorio.json ] || ! python3 -c "import json,sys; sys.exit(0 if len(json.load(open('$R/v2_pretreino/v2_relatorio.json'))['historico']) >= 3 else 1)"; then
+  if [ ! -f $R/v2_pretreino/v2_relatorio.json ] || ! python3 -c "import json,sys; sys.exit(0 if len(json.load(open('$R/v2_pretreino/v2_relatorio.json'))['historico']) >= 8 else 1)"; then
     t "F3-H3 pre-treino v2"
     ( while sleep 600; do persistir; done ) & PERS=$!
-    python3 -u pipeline/common/v2_pretreino.py $C --saida v2_pretreino --epocas 3 --retomar
+    python3 -u pipeline/common/v2_pretreino.py $C --saida v2_pretreino --epocas 8 --retomar
     kill $PERS 2>/dev/null
     persistir
   fi

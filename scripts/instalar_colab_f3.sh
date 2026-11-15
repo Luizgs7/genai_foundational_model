@@ -4,12 +4,13 @@
 set -e
 E=/content/drive/MyDrive/genai_model_artefatos/entrada
 mkdir -p /content/genai_model $E && cd /content/genai_model
-for p in bundle.tar codigo2.tar; do
+for p in bundle.tar codigo2.tar codigo3.tar; do
   if [ -f /content/$p ]; then cp -u /content/$p $E/ 2>/dev/null || echo "sem espaço no Drive para $p"
   elif [ -f $E/$p ]; then cp $E/$p /content/; fi
 done
 tar xf /content/bundle.tar
 tar xf /content/codigo2.tar
+[ -f /content/codigo3.tar ] && tar xf /content/codigo3.tar   # código de 15/11 por cima
 [ -d /content/v2_hm/v2 ] && { rm -rf runs/hm_clientes/v2; mv /content/v2_hm/v2 runs/hm_clientes/v2; }
 [ -d runs/hm_clientes/v2 ] && cp -ru runs/hm_clientes/v2 $E/ 2>/dev/null || true
 [ -d runs/hm_clientes/v2 ] || { [ -d $E/v2 ] && cp -r $E/v2 runs/hm_clientes/v2; } || true
