@@ -178,6 +178,7 @@ class ModeloV2(nn.Module):
         self.ln_f = norma(norm, n_embd, True)
         self.saida_item = nn.Linear(n_embd, d_item, bias=False)
         self.vies_item = nn.Parameter(torch.zeros(self.n_itens + 1))
+        self.vies_novo = nn.Parameter(torch.zeros(1))      # viés de um item sem vetor próprio (novo ou desligado)
         self.cabecas = nn.ModuleDict({k: nn.Linear(n_embd, c) for k, c in d.classes().items()})
         self.apply(lambda mod: self._init(mod, n_layer))
 
@@ -226,20 +227,39 @@ class ModeloV2(nn.Module):
             x = bloco(x)
         return self.ln_f(x)
 
+    def saida_catalogo(self):
+        """vetores, vieses e itens fora do softmax, na SAÍDA.
+
+        Item visto no treino: vetor próprio + atributos e viés próprio. Item novo (não visto no treino):
+        só atributos e o viés compartilhado `vies_novo`. No treino, (a) os itens novos ficam fora do
+        softmax — ainda não existem no período de treino; tratá-los como "nunca comprados" ensina o
+        modelo a não recomendar lançamentos — e (b) uma fração P_SEM_ID dos itens vistos recebe a
+        representação de item novo, para o modelo aprender a pontuar pelos atributos e o `vies_novo`."""
+        V = self.vetores_itens()
+        novo = self.visto < 0.5
+        b = torch.where(novo, self.vies_novo, self.vies_item)
+        fora = torch.zeros_like(novo)
+        fora[0] = True                                          # 'sem item'
+        if self.training:
+            frio = (torch.rand(len(novo), device=V.device) < P_SEM_ID) & ~novo
+            V = V - self.item_id.weight * frio[:, None].to(V.dtype)
+            b = torch.where(frio, self.vies_novo, b)
+            fora = fora | novo
+        return V, b, fora
+
     def pontuar_itens(self, h, bloco=2048):
         """log-probabilidade de cada item do catálogo para cada estado em `h` (N, n_embd) -> (N, n_itens + 1)."""
-        V = self.vetores_itens()
+        V, b, fora = self.saida_catalogo()
         partes = []
         for i in range(0, h.shape[0], bloco):
-            lg = self.saida_item(h[i:i + bloco]) @ V.T.to(h.dtype) + self.vies_item.to(h.dtype)
-            lg[:, 0] = float("-inf")
-            partes.append(F.log_softmax(lg.float(), dim=-1))
+            lg = (self.saida_item(h[i:i + bloco]) @ V.T.to(h.dtype) + b.to(h.dtype)).float()
+            partes.append(F.log_softmax(lg.masked_fill(fora[None, :], float("-inf")), dim=-1))
         return torch.cat(partes) if partes else h.new_zeros((0, self.n_itens + 1))
 
-    def _logp_alvos(self, hq, V, vies, pos, alvo):
+    def _logp_alvos(self, hq, V, vies, fora, pos, alvo):
         """log p(alvo) para os pares (posição local, item) de um bloco de estados `hq`."""
         lg = (self.saida_item(hq) @ V.T.to(hq.dtype) + vies.to(hq.dtype)).float()
-        lg = lg.index_fill(1, torch.zeros(1, dtype=torch.long, device=lg.device), float("-inf"))
+        lg = lg.masked_fill(fora[None, :], float("-inf"))
         return lg[pos, alvo] - torch.logsumexp(lg, dim=-1)[pos]
 
     def perdas(self, h, lote, bloco_itens=2048):
@@ -251,14 +271,17 @@ class ModeloV2(nn.Module):
         # fica na memória (com 105 mil itens, a matriz do lote inteiro passaria de 10 GB).
         if len(lote["item_onde"]):
             hq = hp[lote["item_onde"]]
-            V = self.vetores_itens()
+            V, b, fora = self.saida_catalogo()
             ip, ia = lote["item_pos"], lote["item_alvo"]
+            if self.training:                       # alvo fora do softmax (só com corte posterior ao treino): descartado
+                ok = ~fora[ia]
+                ip, ia = ip[ok], ia[ok]
             g = torch.empty(len(ip), device=hq.device)
             for i in range(0, hq.shape[0], bloco_itens):
                 sel = torch.nonzero((ip >= i) & (ip < i + bloco_itens), as_tuple=True)[0]
                 if not len(sel):
                     continue
-                args = (hq[i:i + bloco_itens], V, self.vies_item, ip[sel] - i, ia[sel])
+                args = (hq[i:i + bloco_itens], V, b, fora, ip[sel] - i, ia[sel])
                 g[sel] = (checkpoint(self._logp_alvos, *args, use_reentrant=False) if torch.is_grad_enabled()
                           else self._logp_alvos(*args))
             n = torch.zeros(len(lote["item_onde"]), device=g.device).index_add_(0, ip, torch.ones_like(g))

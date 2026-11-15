@@ -584,3 +584,43 @@ na bateria (braços E e H), ao lado da fusão e do LightGBM. É coerente com a
 promessa do produto: pergunta nova vira uma cabeça sem ajuste sobre features
 e vetores já calculados. Arquivo: `runs/hm_clientes/f2h11/resultado_test.json`.
 
+
+### Motor v2 na H&M — preparo e um defeito achado no primeiro pré-treino (15/11)
+
+**Serialização.** A H&M entra no v2 com um atalho de 9 linhas no config: uma
+posição por cesta (cliente e dia), o artigo como item do catálogo inteiro e os
+5 atributos do artigo. São 9,08 milhões de posições e 31,8 milhões de linhas,
+serializadas em 50 s na máquina local. O maior histórico tem 427 cestas, então
+todo cliente cabe numa janela de 512: **100% das âncoras sem truncamento**, que
+é o critério de cobertura da F3-H3 (no v1, 11 tokens por item, a janela de 1024
+cortava o histórico de parte dos clientes). Os testes obrigatórios
+(`v2_testes.py`) passam na H&M.
+
+**Custo.** 6 min de L4 por época (444 passos de 0,81 s, 15,7 GB de memória),
+contra 64 min por época do backbone H3 do v1. É menos de um décimo, e o
+critério de custo da F3-H3 pede no máximo um quinto.
+
+**Defeito: o modelo aprendia a não recomendar lançamentos.** Na primeira
+rodada, a perda de itens na validação ficou em 0,996 e depois 1,014, na escala
+em que 1,0 é escolher ao acaso entre os 104 mil artigos; no treino ela estava
+em 0,82. A causa é a troca de coleção: 27% das linhas compradas na validação e
+**69% das do teste** são de artigos que não existiam no treino. Como o softmax
+cobre o catálogo inteiro, esses artigos só apareciam no treino como resposta
+errada, e o viés de cada um afundava.
+
+A correção, no lado da saída (`ModeloV2.saida_catalogo`):
+
+- no treino, os itens que só aparecem depois do corte ficam fora do softmax:
+  ainda não existem no período de treino;
+- na hora de pontuar, um item novo é representado só pelos atributos, com um
+  viés compartilhado de "item novo";
+- esse viés e o caminho pelos atributos são aprendidos desligando ao acaso,
+  no treino, o vetor próprio de 10% dos itens vistos (o desenho já previa isso
+  na entrada; faltava na saída).
+
+O pré-treino foi refeito do zero com a correção. A rodada com o defeito está
+guardada em `runs/hm_clientes/v2_pretreino_sem_frio/`.
+
+**Por que importa para a empresa.** Perfumaria e beleza lançam produtos a cada
+ciclo. Sem esse tratamento, a recomendação direta do modelo (F3-H4) nunca
+indicaria um lançamento, e o embedding do cliente aprenderia a ignorá-los.

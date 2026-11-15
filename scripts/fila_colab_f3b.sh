@@ -32,7 +32,7 @@ while ps -eo args= | awk '/python3 -u pipeline\/common\// && !/awk/' | grep -q .
 
 # ---- 1. F2-H11 ----
 nome=f2h11_tabicl_hibrido_n50000
-if [ ! -f $G/$nome/relatorio.json ] && ! grep -q Traceback /content/$nome.log 2>/dev/null; then
+if [ ! -f $G/$nome/relatorio.json ] && ! grep -q -E "Traceback|Killed|falta de RAM" /content/$nome.log 2>/dev/null; then
   t $nome
   python3 -u pipeline/common/f2h11_tabular.py $C --modelo tabicl --n 50000 --hibrido > /content/$nome.log 2>&1 \
     || { echo "$nome falhou; fim do log:"; tail -30 /content/$nome.log; }
