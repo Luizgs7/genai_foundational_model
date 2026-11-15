@@ -17,7 +17,7 @@ persistir() {
   local d rel
   for d in $RUNS/f2h10_e0 $RUNS/f2h10_e2 $RUNS/f2h10_e3a0 $RUNS/f2h10_e3a $RUNS/f2h10_e3b $RUNS/f2h10_fusao_* $RUNS/f2h10_e1_s* \
            $RUNS/gbdt/f2h11_tabicl_* $RUNS/gbdt/f2h11_tabpfn_* $RUNS/f2h10/resultado*.json $RUNS/f2h11/resultado*.json \
-           $RUNS/v2_pretreino* $RUNS/v2_fusao_s* $RUNS/v2_rec*; do
+           $RUNS/v2_pretreino* $RUNS/v2_fusao_s* $RUNS/v2_rec* $RUNS/v2b_pretreino* $RUNS/v2b_fusao_s* $RUNS/f3h3; do
     [ -e "$d" ] || continue
     rel=$(dirname "${d#$RUNS/}")
     mkdir -p "$DRIVE/$rel"

@@ -154,9 +154,13 @@ def _espalhar(valores, plano, tamanho, preenchimento):
 
 
 class ModeloV2(nn.Module):
-    def __init__(self, d, n_embd=256, n_layer=6, n_head=4, n_kv_heads=2, d_item=64, dropout=0.1, ffn="swiglu", norm="layernorm"):
+    def __init__(self, d, n_embd=256, n_layer=6, n_head=4, n_kv_heads=2, d_item=64, dropout=0.1, ffn="swiglu", norm="layernorm",
+                 alvos_atributos=False):
         super().__init__()
         m = d.meta
+        # F3-H3b: alvos de composição do próximo pedido — para cada atributo do catálogo, a distribuição dos
+        # valores nas linhas do próximo pedido (o item muda de coleção; os atributos permanecem)
+        self.alvos_atributos = alvos_atributos
         self.n_itens = m["n_itens"]
         self.janelas_dias = m["janelas_dias"]
         self.item_id = nn.Embedding(self.n_itens + 1, d_item, padding_idx=0)
@@ -180,6 +184,7 @@ class ModeloV2(nn.Module):
         self.vies_item = nn.Parameter(torch.zeros(self.n_itens + 1))
         self.vies_novo = nn.Parameter(torch.zeros(1))      # viés de um item sem vetor próprio (novo ou desligado)
         self.cabecas = nn.ModuleDict({k: nn.Linear(n_embd, c) for k, c in d.classes().items()})
+        self.cab_atrib = nn.ModuleList([nn.Linear(n_embd, c) for c in m["cards_atrib"]]) if alvos_atributos else None
         self.apply(lambda mod: self._init(mod, n_layer))
 
     @staticmethod
@@ -287,6 +292,14 @@ class ModeloV2(nn.Module):
             n = torch.zeros(len(lote["item_onde"]), device=g.device).index_add_(0, ip, torch.ones_like(g))
             por_pos = torch.zeros(len(lote["item_onde"]), device=g.device).index_add_(0, ip, -g) / n.clamp(min=1)
             saida["itens"] = por_pos.mean() / math.log(self.n_itens)
+            if self.cab_atrib is not None:
+                # entropia cruzada contra a distribuição empírica de cada atributo nas linhas do próximo pedido:
+                # média, por posição, de -log p(valor do atributo de cada linha)
+                for j, cab in enumerate(self.cab_atrib):
+                    lsm = F.log_softmax(cab(hq).float(), dim=-1)
+                    ga = lsm[ip, self.atrib[ia, j]]
+                    pp = torch.zeros(len(lote["item_onde"]), device=g.device).index_add_(0, ip, -ga) / n.clamp(min=1)
+                    saida[f"atrib_{j}"] = pp[n > 0].mean() / math.log(max(cab.out_features, 2))
         for k, cab in self.cabecas.items():
             lg = cab(h).float()
             alvo = lote["alvo"][k]

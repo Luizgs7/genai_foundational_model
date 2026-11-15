@@ -328,6 +328,25 @@ Princípios:
   - Custo: o pré-treino usa no máximo um quinto do tempo de GPU por época.
   - Cobertura: 100% das âncoras numa única janela, sem truncamento.
 
+#### F3-H3b — composição do próximo pedido por atributo (variante, registrada em 15/11)
+
+- **Origem (post hoc, declarado).** A F3-H3 rodou e **não atendeu** o critério
+  de qualidade no teste: o v2 ganhou em churn (+0,007) e LTV (+0,011), mas
+  perdeu em próxima categoria (−0,025) e próxima online (−0,010). Na validação
+  as quatro ficavam dentro de 0,005. A diferença se concentra nos meses do
+  fechamento das lojas (março a junho de 2020) e diminui depois. Esta variante
+  foi desenhada **depois de ver o teste**. Por isso o resultado dela é
+  reportado como evidência mais fraca que a de uma hipótese registrada antes.
+- **Mudança, uma só.** Alvos genéricos de composição: para cada atributo do
+  catálogo, a distribuição dos valores dele nas linhas do próximo pedido
+  (`--alvos_atributos`). Na H&M, o artigo troca de coleção (69% dos artigos do
+  teste não existiam no treino), mas índice, grupo, tipo, cor e linha
+  permanecem. O canal continua **fora** dos alvos (teste de transferência).
+- **Desenho.** Igual à F3-H3: 8 épocas, melhor época pela validação, mesmas
+  âncoras e fusão, 3 sementes; o teste é avaliado uma vez para esta variante.
+- **Critério.** O da F3-H3 (a até 0,005 da fusão do v1 nas 4 tarefas) e,
+  além dele, sem perder o ganho em churn e LTV (a até 0,005 do v2).
+
 #### F3-H4 — recomendação direta do modelo, com identidade de item
 
 - **Pergunta.** Com o catálogo inteiro na saída e o backbone atualizado até a

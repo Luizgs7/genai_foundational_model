@@ -96,11 +96,17 @@ def main():
     ap.add_argument("--val_entidades", type=int, default=20000, help="entidades na validação por época")
     ap.add_argument("--checkpoint_passos", type=int, default=500)
     ap.add_argument("--retomar", action="store_true")
+    ap.add_argument("--alvos_atributos", action="store_true", help="F3-H3b: composição do próximo pedido por atributo do catálogo")
+    ap.add_argument("--trava_gpu", default=os.environ.get("TRAVA_GPU", "/content/trava_gpu"),
+                    help="com janela > 1024 (muita memória), espera enquanto este arquivo existir (outro treino grande na GPU)")
     ap.add_argument("--dispositivo", default="auto", choices=["auto", "cpu", "cuda"])
     a = ap.parse_args()
     config = carregar_config(a.config)
     d = DadosV2(run_dir(config, a.dados))
     m = d.meta
+    if m["janela"] > 1024:
+        while os.path.exists(a.trava_gpu):
+            print(f"esperando a GPU ({a.trava_gpu} existe)", flush=True); time.sleep(60)
     device = ("cuda" if torch.cuda.is_available() else "cpu") if a.dispositivo == "auto" else a.dispositivo
     amp = device == "cuda"
     out = run_dir(config, a.saida)
@@ -113,7 +119,7 @@ def main():
     else:
         corte, corte_val, t_val = m["m_val"], m["m_teste"], m["m_val"]
 
-    arq = {k: getattr(a, k) for k in ("n_embd", "n_layer", "n_head", "n_kv_heads", "d_item", "dropout")}
+    arq = {k: getattr(a, k) for k in ("n_embd", "n_layer", "n_head", "n_kv_heads", "d_item", "dropout", "alvos_atributos")}
     modelo = ModeloV2(d, **arq).to(device)
     jan = d.janelas(corte)
     lotes = lotes_por_orcamento(d, jan, a.orcamento)
