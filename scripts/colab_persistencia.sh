@@ -29,7 +29,7 @@ persistir() {
     mkdir -p $DRIVE/../hm_clientes_f3h1 && cp -ru "$d" $DRIVE/../hm_clientes_f3h1/ 2>/dev/null
   done
   # F3-H7/F3-H8: pré-treinos e fusões da base sintética (os dados se regeneram com scripts/preparar_beleza.sh)
-  for d in runs/beleza_b2b_*/pre_* runs/beleza_b2b_*/fus_* runs/beleza_b2b_*/gbdt; do
+  for d in runs/beleza_b2b_*/pre_* runs/beleza_b2b_*/fus_* runs/beleza_b2b_*/gbdt runs/beleza_b2b_*/f3h7 runs/beleza_b2b_*/f3h8 runs/beleza_b2b_*/rec_*; do
     [ -e "$d" ] || continue
     rel=$(basename $(dirname "$d"))
     mkdir -p $DRIVE/../$rel && cp -ru "$d" $DRIVE/../$rel/ 2>/dev/null
