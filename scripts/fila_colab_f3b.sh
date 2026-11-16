@@ -50,7 +50,9 @@ if [ ! -f $R/f2h11/resultado_test.json ]; then
 fi
 
 # ---- 2. F3-H1, braço E ----
-[ -f $R/fusao/embeddings_eventos_index.parquet ] || { t "extracao H3 (todas as ancoras)"; python3 -u pipeline/common/tarefa13_extrair_embeddings.py $C \
+falta() { local d=$1 p=$2 S; for S in 0 1 2; do [ -f $d/${p}_s$S/predicoes_test.parquet ] || return 0; done; return 1; }
+# as extrações só rodam se alguma fusão que depende delas ainda falta (num runtime novo, as fusões voltam do Drive e os embeddings não)
+falta runs/hm_clientes_f3h1 f3h1_fusao && [ ! -f $R/fusao/embeddings_eventos_index.parquet ] && { t "extracao H3 (todas as ancoras)"; python3 -u pipeline/common/tarefa13_extrair_embeddings.py $C \
     --pretreino pretreino --saida fusao --dtype float16; }
 B=runs/hm_clientes_f3h1
 mkdir -p $B
@@ -72,7 +74,7 @@ if [ -f $R/v2/meta.json ]; then
     kill $PERS 2>/dev/null
     persistir
   fi
-  [ -f $R/v2_fusao/embeddings_eventos_index.parquet ] || { t "F3-H3 extracao v2"; python3 -u pipeline/common/v2_extrair.py $C \
+  falta $R v2_fusao && [ ! -f $R/v2_fusao/embeddings_eventos_index.parquet ] && { t "F3-H3 extracao v2"; python3 -u pipeline/common/v2_extrair.py $C \
       --pretreino v2_pretreino --saida v2_fusao; }
   for S in 0 1 2; do
     [ -f $R/v2_fusao_s$S/predicoes_test.parquet ] || { t "F3-H3 fusao v2 s$S"; $F $C --emb v2_fusao --seed $S \
@@ -94,7 +96,8 @@ beleza() {  # tamanho, épocas, variantes...
       python3 -u pipeline/common/v2_pretreino.py $CB --dados $V --saida pre_$V --epocas $EP --retomar
       kill $PERS 2>/dev/null; persistir
     fi
-    [ -f $RB/emb_$V/embeddings_eventos_index.parquet ] || { t "$T extracao $V"; python3 -u pipeline/common/v2_extrair.py $CB \
+    # emb_v2 e emb_v2_sem_navegacao também alimentam o braço H e os segmentos da F3-H7 (scripts/f3h7_fechar.sh)
+    { falta $RB fus_$V || [ $V = v2 ] || [ $V = v2_sem_navegacao ]; } && [ ! -f $RB/emb_$V/embeddings_eventos_index.parquet ] && { t "$T extracao $V"; python3 -u pipeline/common/v2_extrair.py $CB \
         --dados $V --pretreino pre_$V --saida emb_$V; }
     for S in 0 1 2; do
       [ -f $RB/fus_${V}_s$S/predicoes_test.parquet ] || { t "$T fusao $V s$S"; $F $CB --emb emb_$V --seed $S \
