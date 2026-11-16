@@ -22,7 +22,7 @@ for S in 0 1 2; do
       --saida v2b_fusao_s$S --dispositivo auto --avaliar_teste; }
 done
 persistir
-S=$R/f3h3/bootstrap_v2b.json; rm -f $S
+S=$R/f3h3/bootstrap_v2b.json; mkdir -p $R/f3h3; rm -f $S
 for tt in churn next_category ltv_90d proxima_online; do
   python3 -u pipeline/common/avaliacao.py $C --tarefa $tt --split test --B 300 --saida $S --a "caches/h10_fusao_d_completo_s*" --b "v2b_fusao_s*" --b "v2_fusao_s*"
 done 2>&1 | grep -E "auc|accuracy"

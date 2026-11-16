@@ -1,0 +1,170 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2b_fusao_s*",
+    "metrica_a": 0.8124572365031235,
+    "metrica_b": 0.814841165233435,
+    "delta": 0.0023839287303114576,
+    "ic95": [
+      0.002014392329892678,
+      0.002795697811834724
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.8124572365031235,
+    "metrica_b": 0.8194054424545705,
+    "delta": 0.006948205951446962,
+    "ic95": [
+      0.006590540307915305,
+      0.007395144115470545
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2b_fusao_s*",
+    "metrica_a": 0.35847380238070903,
+    "metrica_b": 0.3559346377197887,
+    "delta": -0.002539164660920301,
+    "ic95": [
+      -0.0030145093702644275,
+      -0.0019349155603377967
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.35847380238070903,
+    "metrica_b": 0.3338991508728754,
+    "delta": -0.02457465150783361,
+    "ic95": [
+      -0.025212956534037635,
+      -0.023908447278654335
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2b_fusao_s*",
+    "metrica_a": 0.3746591874956306,
+    "metrica_b": 0.37946827730087535,
+    "delta": 0.004809089805244748,
+    "ic95": [
+      0.00407040028860967,
+      0.005467546494008606
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.3746591874956306,
+    "metrica_b": 0.38525979019563833,
+    "delta": 0.010600602700007733,
+    "ic95": [
+      0.00986184509803317,
+      0.011389415137005306
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2b_fusao_s*",
+    "metrica_a": 0.8379908325796172,
+    "metrica_b": 0.8288297555272571,
+    "delta": -0.009161077052360023,
+    "ic95": [
+      -0.009440842571890814,
+      -0.008889910340860193
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/caches/h10_fusao_d_completo_s*",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.8379908325796172,
+    "metrica_b": 0.8280014054378318,
+    "delta": -0.009989427141785301,
+    "ic95": [
+      -0.01024066298307721,
+      -0.009771030550999904
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]

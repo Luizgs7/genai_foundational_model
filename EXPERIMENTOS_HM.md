@@ -683,3 +683,51 @@ tarefas, e o critério não foi atendido como escrito. A variante F3-H3b
 (composição do próximo pedido por atributo, registrada em `PLANO_FASE3.md`
 depois deste resultado) ataca a perda em categoria. Arquivos:
 `runs/hm_clientes/f3h3/bootstrap_test.json`, `runs/hm_clientes/v2_pretreino/v2_relatorio.json`.
+
+### F3-H3b — v2 com alvos de composição por atributo: resultado no teste
+
+Variante registrada **depois** de ver o teste da F3-H3 (evidência mais fraca;
+ver `PLANO_FASE3.md`). Uma mudança só: o pré-treino também prevê, para cada
+atributo do catálogo (índice, grupo, tipo, cor, linha), a distribuição dos
+valores nas linhas do próximo pedido. Canal continua fora dos alvos. Mesmo
+desenho: 8 épocas (63 min de GPU, dividindo a placa com outra fila), melhor
+época 7, mesmas âncoras e fusão, 3 sementes. Perda de itens na validação:
+0,9229 (v2: 0,928).
+
+**Critério, escrito antes de rodar:** a até 0,005 da fusão v1 nas 4 tarefas
+e, além disso, a até 0,005 do v2 em churn e LTV.
+
+| Tarefa | T | v1 | v2 | v2b | v2b − v1 (IC 95%) | v2b − v2 | v2b − T |
+|---|---|---|---|---|---|---|---|
+| Churn (AUC) | 0,8291 | 0,8125 | 0,8194 | 0,8148 | +0,0024 [+0,0020; +0,0028] | −0,0046 | −0,0143 |
+| Próxima categoria (acc.) | 0,3727 | 0,3585 | 0,3339 | **0,3559** | −0,0025 [−0,0030; −0,0019] | **+0,0220** | −0,0168 |
+| LTV 90 dias (acc.) | 0,3991 | 0,3747 | 0,3853 | 0,3795 | +0,0048 [+0,0041; +0,0055] | −0,0058 | −0,0196 |
+| Próxima online (AUC) | 0,8448 | 0,8380 | 0,8280 | 0,8288 | **−0,0092** [−0,0094; −0,0089] | +0,0008 | −0,0160 |
+
+**Resultado: não atendido.** Duas condições falham: próxima online fica a
+0,0092 do v1 (o limite era 0,005), e o LTV perde 0,0058 do ganho do v2 (o
+limite era 0,005).
+
+**Leitura.**
+
+- **Os alvos de composição fecham a perda em categoria.** De −0,025 para
+  −0,0025 contra o v1. A hipótese da F3-H3 se confirma: o v2 perdia categoria
+  porque só aprendia a composição pelo artigo exato, e o artigo troca de
+  coleção; o atributo não troca.
+- **Canal não melhora, como esperado.** Canal ficou fora dos alvos de
+  propósito, e a perda em próxima online fica igual à do v2 (−0,009 contra
+  −0,010). É a parte que o pré-treino não ensina e que a fusão sozinha não
+  recupera.
+- **O ganho em churn e LTV cai pela metade.** A mesma representação de 256
+  dimensões passa a dividir capacidade com a composição. Churn: +0,007 → +0,002
+  sobre o v1; LTV: +0,011 → +0,005. E o empate com T em churn, que o v2 tinha
+  (−0,0097), se perde (−0,0143).
+- **Pela margem geral do projeto (0,01), o v2b empata com o v1 nas 4 tarefas**
+  com um oitavo do custo por época e sem truncar histórico. O critério desta
+  hipótese, mais rígido (0,005), não é atendido.
+
+**Consequência.** Nenhuma das duas variantes domina: o v2 é melhor para
+churn e LTV; o v2b, para categoria; nenhuma resolve canal. Para a empresa,
+a escolha depende de qual problema pesa mais, ou de manter as duas cabeças
+de pré-treino. Arquivos: `runs/hm_clientes/f3h3/bootstrap_v2b.json`,
+`runs/hm_clientes/v2b_pretreino/v2_relatorio.json`.

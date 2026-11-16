@@ -346,6 +346,7 @@ Princípios:
   âncoras e fusão, 3 sementes; o teste é avaliado uma vez para esta variante.
 - **Critério.** O da F3-H3 (a até 0,005 da fusão do v1 nas 4 tarefas) e,
   além dele, sem perder o ganho em churn e LTV (a até 0,005 do v2).
+- **Resultado (16/11): não atendido.** Categoria volta para −0,0025 do v1, mas próxima online fica a −0,0092 (canal fora dos alvos) e o LTV perde 0,0058 do ganho do v2. Ver `EXPERIMENTOS_HM.md`.
 
 #### F3-H4 — recomendação direta do modelo, com identidade de item
 
