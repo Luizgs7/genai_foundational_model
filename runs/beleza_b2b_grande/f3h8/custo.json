@@ -1,0 +1,120 @@
+{
+ "cobertura": {
+  "janela": 8192,
+  "n_entidades": 100000,
+  "posicoes_max": 5569,
+  "posicoes_p99": 474.0,
+  "entidades_acima_da_janela": 0,
+  "cobertura_entidades": 1.0,
+  "linhas_por_posicao_max": 897,
+  "linhas_fonte_canonica": 45190593,
+  "linhas_pedido_serializadas": 45190593,
+  "fonte_alvo": "pedido"
+ },
+ "custo": {
+  "janelas": 8,
+  "T": 256,
+  "medidas": [
+   {
+    "L": 1,
+    "posicoes": 2048,
+    "linhas": 2048,
+    "segundos": 0.08679190200018638,
+    "ms_por_mil_linhas": 42.37885839852851,
+    "pico_mb": 1237.47509765625
+   },
+   {
+    "L": 2,
+    "posicoes": 2048,
+    "linhas": 4096,
+    "segundos": 0.08601175199873978,
+    "ms_por_mil_linhas": 20.99896289031733,
+    "pico_mb": 1239.302734375
+   },
+   {
+    "L": 4,
+    "posicoes": 2048,
+    "linhas": 8192,
+    "segundos": 0.08685583999977098,
+    "ms_por_mil_linhas": 10.602519531222043,
+    "pico_mb": 1245.6220703125
+   },
+   {
+    "L": 8,
+    "posicoes": 2048,
+    "linhas": 16384,
+    "segundos": 0.08622898500107112,
+    "ms_por_mil_linhas": 5.262999572819282,
+    "pico_mb": 1255.2138671875
+   },
+   {
+    "L": 16,
+    "posicoes": 2048,
+    "linhas": 32768,
+    "segundos": 0.08951339300074324,
+    "ms_por_mil_linhas": 2.73173196413401,
+    "pico_mb": 1278.58837890625
+   },
+   {
+    "L": 32,
+    "posicoes": 2048,
+    "linhas": 65536,
+    "segundos": 0.08946253000067372,
+    "ms_por_mil_linhas": 1.3650898742778583,
+    "pico_mb": 1317.43798828125
+   },
+   {
+    "L": 64,
+    "posicoes": 2048,
+    "linhas": 131072,
+    "segundos": 0.09985391299960611,
+    "ms_por_mil_linhas": 0.7618248977631081,
+    "pico_mb": 1400.83837890625
+   },
+   {
+    "L": 128,
+    "posicoes": 2048,
+    "linhas": 262144,
+    "segundos": 0.13706791899858217,
+    "ms_por_mil_linhas": 0.5228726158088004,
+    "pico_mb": 1562.53173828125
+   },
+   {
+    "L": 256,
+    "posicoes": 2048,
+    "linhas": 524288,
+    "segundos": 0.2055674490002275,
+    "ms_por_mil_linhas": 0.39208879280133724,
+    "pico_mb": 2079.71484375
+   },
+   {
+    "L": 512,
+    "posicoes": 2048,
+    "linhas": 1048576,
+    "segundos": 0.3358379959990998,
+    "ms_por_mil_linhas": 0.3202800712576864,
+    "pico_mb": 4005.12841796875
+   },
+   {
+    "L": 900,
+    "posicoes": 2048,
+    "linhas": 1843200,
+    "segundos": 0.5482542859990645,
+    "ms_por_mil_linhas": 0.2974469867616452,
+    "pico_mb": 6928.68896484375
+   }
+  ],
+  "ajuste_linear": {
+   "a_segundos": 0.07831627543344652,
+   "b_segundos_por_linha_por_posicao": 0.0005148033984554625,
+   "r2": 0.9977886325689698,
+   "erro_relativo_max": 0.1142647252595401
+  },
+  "inclinacao_loglog_L>=32": 0.5525143790552065
+ },
+ "pre_treino": {
+  "segundos": 403.5667464733124,
+  "posicoes_por_segundo": 24720.5,
+  "epocas": 3
+ }
+}

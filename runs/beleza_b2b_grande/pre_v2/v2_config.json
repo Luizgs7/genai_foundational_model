@@ -1,0 +1,19 @@
+{
+ "arquitetura": {
+  "n_embd": 256,
+  "n_layer": 6,
+  "n_head": 4,
+  "n_kv_heads": 2,
+  "d_item": 64,
+  "dropout": 0.1,
+  "alvos_atributos": false
+ },
+ "corte_min": 28676039,
+ "epocas": 3,
+ "lr": 0.001,
+ "orcamento": 60000,
+ "seed": 0,
+ "n_parametros": 6591376,
+ "n_janelas": 73975,
+ "n_posicoes_treino": 3325463
+}
