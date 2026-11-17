@@ -784,3 +784,64 @@ próprio cliente para a saída. Arquivos: `runs/beleza_b2b_grande/f3h8/custo.jso
 `runs/beleza_b2b_grande/f3h7/segmentos.json`,
 `runs/beleza_b2b_grande/f3h7/recomendacao.json`,
 `runs/beleza_b2b_grande/pre_v2/v2_relatorio.json`.
+
+### F3-H7, camada 1 — todos os tipos de dado do mesmo cliente, na base sintética pequena (17/11)
+
+Base sintética de beleza B2B, tamanho pequeno: 15 mil clientes, 336 mil
+pedidos, 7,2 milhões de linhas, mais navegação (375 mil sessões), crédito e
+incentivo. Motor v2 (janela 512, 12 épocas) com todas as fontes e, depois,
+retirando uma fonte por vez; fusão com 3 sementes. A régua T (LightGBM, 40
+tentativas de HPO, 3 sementes) recebe os agregados genéricos de todas as fontes
+(`fontes_extras: v2`). H = T + embedding v2 em PCA-32.
+
+**M2 (só configuração): atendido.** As quatro fontes entraram com um bloco de
+YAML cada, sem mudança no motor; os formatos evento com itens (pedido), evento
+simples (navegação) e estado (crédito, incentivo) foram aceitos.
+
+**M1, com todas as fontes (teste; margem 0,01 e 5% em MAP/ARI):**
+
+| Problema | T | E (fusão v2) | H (híbrido) | E − T | H − T |
+|---|---|---|---|---|---|
+| Churn 90 dias (AUC) | 0,8750 | 0,8648 | 0,8740 | −0,0102 | **−0,0010** |
+| Próxima com desconto (AUC) | 0,8492 | 0,8442 | 0,8491 | −0,0051 | **−0,0002** |
+| LTV 90 dias (acc.) | 0,5523 | 0,5410 | 0,5509 | −0,0113 | **−0,0014** |
+| Próxima online (AUC) | 0,6633 | 0,6559 | 0,6635 | −0,0073 | **+0,0002** |
+| Sem pedido em 7 dias (AUC) | 0,7654 | 0,7577 | 0,7651 | −0,0077 | **−0,0003** |
+| Segmentos (ARI contra o gabarito) | 0,423 | 0,105 | 0,398 | −75% | −5,9% |
+| Recomendação (MAP@12; T = R1) | 0,300 | 0,036 | — | −88% | — |
+
+H empata com T nas 5 tarefas supervisionadas. Em segmentos, H fica a 5,9%
+de T (a margem era 5%), e E fica longe. Em recomendação, o modelo fica muito
+abaixo da recompra. **Não atendido como escrito** (segmentos e recomendação).
+
+**M1, retirada de cada fonte (E sem a fonte − E com todas; teste):**
+
+| Fonte retirada | Problema que depende dela (gabarito) | Queda | Maior queda em outro problema |
+|---|---|---|---|
+| Navegação | recomendação | MAP@12 +0,0005 (nenhuma) | online −0,0071, churn −0,0059, 7 dias −0,0050 |
+| Crédito | churn | −0,0025 | LTV −0,0089 |
+| Incentivo | sem pedido em 7 dias | −0,0022 | LTV −0,0102 |
+| Desconto | propensão a desconto | −0,0012 | LTV −0,0043 |
+
+Todas as quedas são significativas (IC 95% sem o zero), mas nenhuma passa a
+margem de 0,01 no problema esperado. **Não atendido.**
+
+**Leitura.**
+
+- **O motor recebe todos os tipos de dado só com configuração** e usa cada
+  um: toda retirada piora alguma coisa, e a navegação é a fonte que mais pesa
+  (piora churn, canal e pedido em 7 dias).
+- **O efeito plantado de crédito e incentivo é pequeno também para T.** Entre
+  as 12 features mais importantes de T, nenhuma é de crédito no churn, e
+  nenhuma é de incentivo no pedido em 7 dias. O ritmo de compra domina. O
+  critério supunha que a fonte "dona" de cada problema pesasse mais do que
+  pesa no gerador. Falta o controle: as mesmas ablações em T.
+- **Segmentos e recomendação repetem a F3-H8.** O embedding não carrega o mix
+  de categorias, e o modelo não personaliza a recomendação (por isso a
+  navegação não mexe no MAP: o modelo nem usa o histórico do cliente para
+  recomendar).
+- **H é o caminho que funciona hoje:** empata com T em todas as tarefas
+  supervisionadas, com o embedding respondendo por 8% a 10% da importância.
+
+Arquivos: `runs/beleza_b2b_pequeno/f3h7/` (`bootstrap_test.json`,
+`segmentos.json`, `recomendacao.json`), `runs/beleza_b2b_pequeno/gbdt/f3h7_hibrido_lgbm/relatorio.json`.

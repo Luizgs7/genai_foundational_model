@@ -424,6 +424,7 @@ Princípios:
     desconto: propensão a desconto).
   - M1, em dado real (Synerise): incluir a navegação melhora E em pelo menos um
     problema por mais que a margem, e E ou H empata com T.
+- **Resultado da camada 1 (17/11).** M2 atendido. M1 não: H empata com T nas 5 tarefas supervisionadas, mas segmentos (H −5,9%) e recomendação (0,036 contra 0,300) ficam fora; nenhuma retirada de fonte passa a margem no problema esperado (todas significativas, todas abaixo de 0,01). Ver `EXPERIMENTOS_HM.md`.
 - **Reserva.** Se as camadas 1 e 2 derem respostas opostas, o MBD (transações,
   geolocalização e diálogos de atendimento dos mesmos clientes de um banco)
   entra como segunda base real com vários tipos de dado. É uma base nova e
