@@ -731,3 +731,56 @@ churn e LTV; o v2b, para categoria; nenhuma resolve canal. Para a empresa,
 a escolha depende de qual problema pesa mais, ou de manter as duas cabeças
 de pré-treino. Arquivos: `runs/hm_clientes/f3h3/bootstrap_v2b.json`,
 `runs/hm_clientes/v2b_pretreino/v2_relatorio.json`.
+
+### F3-H8 — formas extremas e estrutura plantada, na base sintética grande (16/11)
+
+Base sintética de beleza B2B, tamanho grande (`BASE_SINTETICA_BELEZA.md`):
+100 mil clientes, 2,25 milhões de pedidos, 45 milhões de linhas, catálogo de
+30 mil SKUs, pedidos de até 897 linhas, clientes com até 5.569 posições
+(pedidos + sessões de navegação). Motor v2 com janela de 8192 posições e
+todas as fontes (pedido, navegação, crédito, incentivo), 3 épocas.
+
+| Critério | Exigência | Resultado | |
+|---|---|---|---|
+| Forma: cobertura | 100% dos eventos no contexto | 100% dos clientes inteiros numa janela (maior: 5.569 de 8.192); 45.190.593 linhas serializadas = 45.190.593 na fonte | atendido |
+| Forma: custo por pedido | não cresce além do linear com o tamanho do pedido | tempo = 0,078 s + 0,00051 s × linhas por pedido (R² 0,998; lote fixo de 2.048 posições, 1 a 900 linhas); custo por linha cai de 42 para 0,30 ms por mil linhas; memória linear (~3 KB por linha) | atendido |
+| Custo: projeção | o tempo medido permite projetar | 24.700 posições/s de treino numa L4 (3 épocas em 6,7 min) | atendido |
+| Estrutura: segmentos | ARI de E ≥ ARI de T (margem de 5%) | E 0,095 contra T 0,451 (RFM 0,010) | **não atendido** |
+| Estrutura: compra conjunta | recomendação direta acima do R1 | v2 0,0006 contra R1 0,0175 (98.569 casos) | **não atendido** |
+
+Recomendação (MAP@12 do primeiro pedido em 21 dias a partir de 06/01/2025,
+10.853 clientes): POP 0,0055, R1 (recompra) 0,284, v2 0,0077.
+
+**Projeção para a empresa.** O custo cresce com o número de posições
+(pedidos + sessões), não com o tamanho dos pedidos. Na proporção da base
+grande (47 posições por cliente), 2 milhões de clientes dariam cerca de 95
+milhões de posições, 66 milhões delas no treino: cerca de 45 minutos por
+época numa L4, ou 2h15 para 3 épocas. É uma projeção linear; o número real
+depende de quantas posições por cliente a base da empresa tiver.
+
+**Leitura.**
+
+- **A escala está resolvida.** Pedidos de centenas de linhas e clientes com
+  milhares de pedidos cabem sem cortar nada, e o custo é linear. O primeiro
+  contato com essas formas não será na empresa.
+- **O embedding não separa os segmentos plantados.** Os segmentos são
+  definidos pelo mix de categorias e pela faixa de preço. As features
+  tradicionais trazem a participação de cada categoria explicitamente; no
+  embedding, o que mais varia é o ritmo e a recência das compras (o que o
+  pré-treino mais pede para prever), e o KMeans agrupa por isso.
+- **A recomendação direta não personaliza.** Para 82 mil clientes, o v2
+  recomenda só 136 itens distintos, e só 11% das recomendações são itens que o
+  cliente já comprou; o R1, só com a recompra, chega a 0,284. A perda de itens
+  na validação fica em 0,91 do sorteio uniforme. O pedido entra no modelo como
+  a média das linhas, o que dilui a identidade de cada item, e a saída não tem
+  como copiar do histórico. É a mesma falha da F2-H3 na H&M (−41% contra o R1),
+  agora com estrutura conhecida: não é falta de sinal na base.
+
+**Consequência.** A F3-H8 confirma o v2 como motor de escala, mas mostra
+duas lacunas de representação que o caminho tradicional não tem: a
+preferência por categoria e a recompra. A F3-H4 (recomendação direta) não deve
+rodar com o motor como está: precisa de um termo que leve o histórico do
+próprio cliente para a saída. Arquivos: `runs/beleza_b2b_grande/f3h8/custo.json`,
+`runs/beleza_b2b_grande/f3h7/segmentos.json`,
+`runs/beleza_b2b_grande/f3h7/recomendacao.json`,
+`runs/beleza_b2b_grande/pre_v2/v2_relatorio.json`.

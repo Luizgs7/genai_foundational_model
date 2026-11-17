@@ -447,6 +447,7 @@ Princípios:
     recomendação direta recupera as regras de compra conjunta acima do R1.
   - Custo: o tempo medido permite projetar o treino para o volume da empresa.
 - **Quando.** A parte de forma roda logo depois da F3-H3.
+- **Resultado (16/11): forma e custo atendidos; estrutura não.** Cobertura 100%, custo linear no tamanho do pedido; segmentos E 0,095 contra T 0,451 (ARI); compra conjunta v2 0,0006 contra R1 0,0175; MAP@12 v2 0,008 contra R1 0,284. Ver `EXPERIMENTOS_HM.md`.
 
 ### Etapa 4 — entrega do código
 
