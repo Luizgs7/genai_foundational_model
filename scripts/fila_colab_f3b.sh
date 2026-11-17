@@ -114,11 +114,11 @@ t "preparo da base grande"; scripts/preparar_beleza.sh grande 8192 so_completo &
 QB=Qwen/Qwen3.5-0.8B-Base
 if [ ! -f $R/f2h10_e3b/relatorio_lm.json ]; then
   t "E3b ensaio"
-  if python3 -u pipeline/common/f2h10_llm.py $C lm --modelo $QB --saida f2h10_e3b_ensaio --lote 4 --max_tokens 128 --passos 2 --max_clientes 200 --estado_a_cada 0; then
+  if python3 -u pipeline/common/f2h10_llm.py $C lm --modelo $QB --saida f2h10_e3b_ensaio --lote 4 --micro 2 --max_tokens 128 --passos 2 --max_clientes 200 --estado_a_cada 0; then
     rm -rf $R/f2h10_e3b_ensaio
     t "E3b treino"
     ( while sleep 300; do persistir; done ) & PERS=$!
-    python3 -u pipeline/common/f2h10_llm.py $C lm --modelo $QB --saida f2h10_e3b --lote 32 --max_tokens 384 --passos 1000 --retomar
+    python3 -u pipeline/common/f2h10_llm.py $C lm --modelo $QB --saida f2h10_e3b --lote 32 --micro 8 --max_tokens 384 --passos 1000 --retomar
     kill $PERS 2>/dev/null
   else
     echo "E3b: o ensaio falhou; treino não iniciado"

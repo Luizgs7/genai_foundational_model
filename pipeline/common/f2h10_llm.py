@@ -268,13 +268,23 @@ def treinar(a, config):
             alvo = torch.arange(a.lote, device=sim.device)
             perda = 0.5 * (F.cross_entropy(sim, alvo) + F.cross_entropy(sim.T, alvo))
         else:
+            # em micro-lotes (--micro): mesma perda média por token do lote inteiro, com acumulação de gradiente
             vs = [np.concatenate(h[1])[-a.max_tokens:] for h in lote]
-            ids, att = lote_padded(vs, pad)
-            rot = ids.masked_fill(att == 0, -100)
-            with torch.autocast("cuda", dtype=torch.bfloat16):
-                perda = m(input_ids=ids, attention_mask=att, labels=rot).loss
-        opt.zero_grad(set_to_none=True)
-        perda.backward()
+            opt.zero_grad(set_to_none=True)
+            micro = a.micro or len(vs)
+            n_tok = sum(max(len(v) - 1, 0) for v in vs)
+            perda = 0.0
+            for k in range(0, len(vs), micro):
+                ids, att = lote_padded(vs[k:k + micro], pad)
+                rot = ids.masked_fill(att == 0, -100)
+                with torch.autocast("cuda", dtype=torch.bfloat16):
+                    pm = m(input_ids=ids, attention_mask=att, labels=rot).loss
+                peso = int((att[:, 1:] > 0).sum()) / max(n_tok, 1)
+                (pm * peso).backward()
+                perda = perda + pm.detach() * peso
+        if a.modo == "contrastivo":
+            opt.zero_grad(set_to_none=True)
+            perda.backward()
         torch.nn.utils.clip_grad_norm_([p for p in m.parameters() if p.requires_grad], 1.0)
         opt.step(); sched.step()
         perdas.append(float(perda.detach()))
@@ -311,6 +321,7 @@ def main():
     ap.add_argument("--max_tokens", type=int, default=2048)
     ap.add_argument("--tokens_por_lote", type=int, default=65536)
     ap.add_argument("--lote", type=int, default=32)
+    ap.add_argument("--micro", type=int, default=0, help="modo lm: micro-lote para acumulação de gradiente (0 = lote inteiro)")
     ap.add_argument("--epocas", type=float, default=1.0)
     ap.add_argument("--passos", type=int, default=0)
     ap.add_argument("--lr", type=float, default=1e-4)
