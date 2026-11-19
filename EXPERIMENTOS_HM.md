@@ -845,3 +845,14 @@ margem de 0,01 no problema esperado. **Não atendido.**
 
 Arquivos: `runs/beleza_b2b_pequeno/f3h7/` (`bootstrap_test.json`,
 `segmentos.json`, `recomendacao.json`), `runs/beleza_b2b_pequeno/gbdt/f3h7_hibrido_lgbm/relatorio.json`.
+
+### Errata da F2-H3: o R1 deixava sem lista os clientes sem recompra (19/11)
+
+Ao refazer o R1 para a F3-H4, achamos um defeito em `f2h3_ranquear.py`: a
+função que completa as listas com os populares só completava os clientes que
+já tinham alguma recompra candidata. Os outros (41% dos clientes na validação,
+39% no teste) ficavam com a lista vazia e AP zero. Corrigido, o R1 sobe de
+0,0198 para **0,0229** na validação e de 0,0229 para **0,0259** no teste. Os
+outros braços da F2-H3 não mudam: todos os clientes tinham candidatos
+populares. As conclusões da F2-H3 ficam: o R3 (backbone sozinho, 0,0192) segue
+abaixo do R1, agora por mais, e o R2 (0,0324) segue acima.

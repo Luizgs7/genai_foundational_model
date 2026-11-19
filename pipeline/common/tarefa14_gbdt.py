@@ -68,6 +68,11 @@ def carregar(config, args, splits):
         fora = campos_cadastro(config)
         nomes = [c for c in nomes if c not in fora]
         categoricas = [c for c in categoricas if c not in fora]
+    if args.sem_prefixo:      # F3-H7, controle: T sem as features de uma fonte (os baselines causais da tarefa ficam)
+        pre = tuple(args.sem_prefixo)
+        nomes = [c for c in nomes if not c.startswith(pre)]
+        categoricas = [c for c in categoricas if not c.startswith(pre)]
+        print(f"sem as features que começam com {list(pre)}: {len(nomes)} features", flush=True)
 
     usar_trad = args.features in ("trad", "hibrido", "hibrido_bruto")
     usar_emb = args.features in ("emb", "emb_pca", "hibrido", "hibrido_bruto")
@@ -232,7 +237,7 @@ def main(args):
     rel_path = os.path.join(out_dir, "relatorio.json")
     relatorio = json.load(open(rel_path, encoding="utf-8")) if os.path.exists(rel_path) else {}
     relatorio.update({"features": args.features, "modelo": args.modelo, "n_features": len(nomes),
-                      "sem_cadastro": args.sem_cadastro, "emb": args.emb, "pca_k": args.pca_k})
+                      "sem_cadastro": args.sem_cadastro, "sem_prefixo": args.sem_prefixo, "emb": args.emb, "pca_k": args.pca_k})
     relatorio.setdefault("tarefas", {})
     split = meta["split"].to_numpy()
     no_treino = np.ones(len(meta), dtype=bool)
@@ -354,6 +359,7 @@ if __name__ == "__main__":
     ap.add_argument("--saida", default=None)
     ap.add_argument("--threads", type=int, default=10)
     ap.add_argument("--sem_cadastro", action="store_true")
+    ap.add_argument("--sem_prefixo", nargs="*", default=[], help="remove as features cujo nome começa com estes prefixos")
     ap.add_argument("--avaliar_teste", action="store_true")
     ap.add_argument("--frac_treino", type=float, default=1.0, help="F2-H1: fração dos clientes de treino com rótulo")
     ap.add_argument("--semente_amostra", type=int, default=0, help="F2-H1: semente da amostra de clientes")

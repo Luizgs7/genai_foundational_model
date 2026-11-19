@@ -119,6 +119,8 @@ def main():
     else:
         corte, corte_val, t_val = m["m_val"], m["m_teste"], m["m_val"]
 
+    if a.corte:      # itens "vistos" até o corte próprio (com o padrão, é o que a serialização já grava)
+        d.item_visto = d.vistos_ate(corte)
     arq = {k: getattr(a, k) for k in ("n_embd", "n_layer", "n_head", "n_kv_heads", "d_item", "dropout", "alvos_atributos")}
     modelo = ModeloV2(d, **arq).to(device)
     jan = d.janelas(corte)

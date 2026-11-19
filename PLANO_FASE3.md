@@ -364,6 +364,22 @@ Princípios:
   - Forma forte: acima do R2 com IC excluindo o zero.
 - **Se não empatar.** A recomendação segue híbrida: a pontuação do modelo
   entra como feature do ranqueador específico.
+- **Ajustes registrados em 19/11, antes de rodar.**
+  - **R1 corrigido.** O R1 da F2-H3 deixava sem lista os clientes sem recompra
+    recente (41% na validação, 39% no teste), em vez de completá-los com os
+    populares. Corrigido: 0,0229 na validação e **0,0259 no teste** (era
+    0,0229). O critério "acima do R1" passa a usar o valor corrigido.
+  - **Dois braços.** M: só o modelo, catálogo inteiro. MH: a pontuação do
+    modelo mais um termo do histórico do próprio cliente,
+    beta × log(1 + nº de compras do artigo) + gama / (1 + dias desde a última / 7).
+    beta e gama saem de uma grade na semana de validação (semente 0) e ficam
+    congelados no teste. A F3-H7 e a F3-H8 mostraram que o v2 sozinho não
+    personaliza (o pedido entra como a média das linhas); o MH testa se a
+    pontuação do modelo acrescenta algo à recompra.
+  - **Itens vistos até o corte.** O backbone de cada semana trata como
+    conhecidos os artigos vendidos até a véspera, e não só os do treino original
+    (até 15/09/2020 são 103.791 artigos, contra 78.989 até 27/12/2019).
+  - Validação com 1 semente (só para a grade); teste com 3.
 
 #### F3-H5 — pré-treino alinhado ao futuro serve a propensão sem ajuste fino
 

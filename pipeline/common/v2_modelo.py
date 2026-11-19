@@ -49,6 +49,18 @@ class DadosV2:
         self.lim_valor = np.asarray(self.meta["limites"]["alvo.valor"], dtype=np.float64)
         self.lim_gasto = {w: np.asarray(self.meta["limites"][f"alvo.gasto_{w}"], dtype=np.float64) for w in self.meta["janelas_dias"]}
 
+    def vistos_ate(self, corte_min):
+        """1 para os itens com alguma linha da fonte-alvo (tipo 0) antes de `corte_min`; 0 nos demais e no padding.
+        Com o corte padrão (fim do treino) reproduz `item_visto_treino` da serialização; com um corte posterior
+        (backbone atualizado até a véspera, F3-H4) os itens lançados até o corte deixam de ser tratados como novos."""
+        t, tipo, n_lin = np.asarray(self.t), np.asarray(self.tipo), np.asarray(self.n_lin)
+        pos = (t < corte_min) & (tipo == 0)
+        linhas = np.repeat(pos, n_lin.astype(np.int64))
+        v = np.zeros(len(self.item_visto), np.float32)
+        v[np.unique(np.asarray(self.lin_item)[linhas])] = 1.0
+        v[0] = 0.0
+        return v
+
     def classes(self):
         """número de classes de cada alvo."""
         c = {"intervalo": len(FAIXAS_INTERVALO_DIAS) + 1, "valor": len(self.lim_valor) + 1, "n_linhas": len(FAIXAS_N_LINHAS) + 1}

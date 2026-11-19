@@ -9,7 +9,7 @@ R=runs/hm_clientes
 F="python3 -u pipeline/common/tarefa13_treinar_fusao.py"
 A="python3 -u pipeline/common/f2h10_avaliar.py $C"
 t() { echo "== $* $(date)"; }
-until grep -q "^FIM" /content/f3b.log; do sleep 60; done
+[ -n "${SEM_ESPERA:-}" ] || until grep -q "^FIM" /content/f3b.log; do sleep 60; done
 # ---- 6. E3b da F2-H10 ----
 QB=Qwen/Qwen3.5-0.8B-Base
 if [ ! -f $R/f2h10_e3b/relatorio_lm.json ]; then
@@ -39,4 +39,13 @@ if [ -f $R/f2h10_e3b/relatorio_lm.json ]; then
   persistir
 fi
 
+# TabPFN de 300 mil âncoras (F2-H11, fora da avaliação já feita)
+G=$R/gbdt
+if [ -f /content/tabpfn_token ]; then
+  export TABPFN_TOKEN=$(cat /content/tabpfn_token)
+  for h in "" --hibrido; do
+    nome=f2h11_tabpfn_$([ -n "$h" ] && echo hibrido || echo trad)_n300000
+    [ -f $G/$nome/relatorio.json ] || { t $nome; python3 -u pipeline/common/f2h11_tabular.py $C --modelo tabpfn --n 300000 $h; persistir; }
+  done
+fi
 echo "FIM $(date)"

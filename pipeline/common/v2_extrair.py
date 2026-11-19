@@ -33,6 +33,8 @@ from v2_pretreino import lotes_por_orcamento  # noqa: E402
 
 def carregar_modelo(config, d, pretreino, device):
     ck = torch.load(os.path.join(run_dir(config, pretreino), "melhor.pt"), map_location=device, weights_only=False)
+    if ck.get("corte_min") is not None and ck["corte_min"] != d.meta["m_val"]:
+        d.item_visto = d.vistos_ate(ck["corte_min"])     # backbone com corte próprio (F3-H4): itens vistos até ele
     modelo = ModeloV2(d, **ck["arquitetura"]).to(device)
     modelo.load_state_dict(ck["modelo"])
     return modelo.eval(), ck
