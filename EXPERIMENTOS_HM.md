@@ -846,6 +846,36 @@ margem de 0,01 no problema esperado. **Não atendido.**
 Arquivos: `runs/beleza_b2b_pequeno/f3h7/` (`bootstrap_test.json`,
 `segmentos.json`, `recomendacao.json`), `runs/beleza_b2b_pequeno/gbdt/f3h7_hibrido_lgbm/relatorio.json`.
 
+**Controle das ablações em T (19/11).** A mesma retirada de fonte na régua T
+(sem as features da fonte; hiperparâmetros congelados do T completo; os
+baselines causais de cada tarefa ficam, como na fusão de E). Queda no teste,
+IC 95% por bootstrap:
+
+| Fonte retirada | Problema que depende dela | Queda em T | Queda em E |
+|---|---|---|---|
+| Navegação | próxima online* | −0,0082 | −0,0071 |
+| Crédito | churn | −0,0019 | −0,0025 |
+| Incentivo | sem pedido em 7 dias | −0,0002 (n.s.) | −0,0022 |
+| Desconto | propensão a desconto | −0,0016 | −0,0012 |
+
+\*T não recomenda; para a navegação, a tarefa supervisionada mais ligada a ela.
+
+- **Nenhuma retirada passa de 0,01 nem em T.** O gerador planta efeitos
+  pequenos dessas fontes: o ritmo de compra domina todas as tarefas. O
+  critério da F3-H7 ("a retirada derruba o problema por mais que a margem")
+  pedia um efeito que a base não tem; nem o caminho tradicional o mostra.
+- **E reage às fontes tanto quanto T, ou mais.** Nos problemas "donos" de
+  cada fonte, as quedas de E e T são da mesma ordem (incentivo: só E reage).
+  Fora deles, E reage mais: sem crédito ou sem incentivo, o LTV de E cai
+  0,009 a 0,010, e o de T não se move. A representação usa as fontes de forma
+  mais espalhada.
+- **Veredito da F3-H7 (camada 1), revisto com o controle.** O critério das
+  ablações, como escrito, não é atendido, mas também não seria por T: o
+  defeito é de calibração do gerador, não do motor. Para a camada real
+  (Synerise), o critério de navegação continua valendo como escrito.
+
+Arquivo: `runs/beleza_b2b_pequeno/f3h7/controle_T.json`.
+
 ### Errata da F2-H3: o R1 deixava sem lista os clientes sem recompra (19/11)
 
 Ao refazer o R1 para a F3-H4, achamos um defeito em `f2h3_ranquear.py`: a

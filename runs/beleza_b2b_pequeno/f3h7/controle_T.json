@@ -1,0 +1,422 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 45325,
+    "n_clientes": 5326,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_navegacao",
+    "metrica_a": 0.8750162436201515,
+    "metrica_b": 0.8750069164368838,
+    "delta": -9.327183267737738e-06,
+    "ic95": [
+      -0.0004495502015343433,
+      0.00046663426311658007
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 45325,
+    "n_clientes": 5326,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_credito",
+    "metrica_a": 0.8750162436201515,
+    "metrica_b": 0.873106131962017,
+    "delta": -0.0019101116581344835,
+    "ic95": [
+      -0.003087493763798202,
+      -0.0008050238176025691
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 45325,
+    "n_clientes": 5326,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_incentivo",
+    "metrica_a": 0.8750162436201515,
+    "metrica_b": 0.8751674835296265,
+    "delta": 0.00015123990947496502,
+    "ic95": [
+      -0.00019654592800748548,
+      0.0005212398265337779
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 45325,
+    "n_clientes": 5326,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_desconto",
+    "metrica_a": 0.8750162436201515,
+    "metrica_b": 0.8752040725272958,
+    "delta": 0.0001878289071443051,
+    "ic95": [
+      -0.0001274077503258003,
+      0.0005675522531268101
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "proxima_com_desconto",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 58898,
+    "n_clientes": 5082,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_navegacao",
+    "metrica_a": 0.8492350877954429,
+    "metrica_b": 0.8491849971697547,
+    "delta": -5.0090625688170576e-05,
+    "ic95": [
+      -0.00017848039277155447,
+      7.605085267061712e-05
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "proxima_com_desconto",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 58898,
+    "n_clientes": 5082,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_credito",
+    "metrica_a": 0.8492350877954429,
+    "metrica_b": 0.8491475554001071,
+    "delta": -8.75323953357654e-05,
+    "ic95": [
+      -0.00019695780464990543,
+      3.54409514432302e-05
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "proxima_com_desconto",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 58898,
+    "n_clientes": 5082,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_incentivo",
+    "metrica_a": 0.8492350877954429,
+    "metrica_b": 0.8491735312757948,
+    "delta": -6.155651964812048e-05,
+    "ic95": [
+      -0.00016702548917940096,
+      5.0462473600634776e-05
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "proxima_com_desconto",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 58898,
+    "n_clientes": 5082,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_desconto",
+    "metrica_a": 0.8492350877954429,
+    "metrica_b": 0.8476147407823887,
+    "delta": -0.0016203470130541353,
+    "ic95": [
+      -0.0020338628131472193,
+      -0.001163492124509716
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 45325,
+    "n_clientes": 5326,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_navegacao",
+    "metrica_a": 0.5523221180364037,
+    "metrica_b": 0.5528957528957529,
+    "delta": 0.0005736348593491369,
+    "ic95": [
+      -0.0013244093447477372,
+      0.0022652308400842995
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 45325,
+    "n_clientes": 5326,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_credito",
+    "metrica_a": 0.5523221180364037,
+    "metrica_b": 0.553800330943188,
+    "delta": 0.001478212906784293,
+    "ic95": [
+      -0.00015071056355919486,
+      0.0029877690552874148
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 45325,
+    "n_clientes": 5326,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_incentivo",
+    "metrica_a": 0.5523221180364037,
+    "metrica_b": 0.5523441809156094,
+    "delta": 2.2062879205697605e-05,
+    "ic95": [
+      -0.0015937851414650067,
+      0.0015413729851601803
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 45325,
+    "n_clientes": 5326,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_desconto",
+    "metrica_a": 0.5523221180364037,
+    "metrica_b": 0.5535135135135135,
+    "delta": 0.0011913954771097801,
+    "ic95": [
+      -0.0002787054910798447,
+      0.0027871039555549806
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 58898,
+    "n_clientes": 5082,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_navegacao",
+    "metrica_a": 0.6632714547437253,
+    "metrica_b": 0.6550891438208075,
+    "delta": -0.008182310922917768,
+    "ic95": [
+      -0.009781797497329292,
+      -0.006684538385485468
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 58898,
+    "n_clientes": 5082,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_credito",
+    "metrica_a": 0.6632714547437253,
+    "metrica_b": 0.6632250846124564,
+    "delta": -4.6370131268846926e-05,
+    "ic95": [
+      -0.0003038167226502908,
+      0.00021618958467508885
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 58898,
+    "n_clientes": 5082,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_incentivo",
+    "metrica_a": 0.6632714547437253,
+    "metrica_b": 0.6632743047236866,
+    "delta": 2.849979961361271e-06,
+    "ic95": [
+      -0.0002263767392696431,
+      0.0002340923155291524
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 58898,
+    "n_clientes": 5082,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_desconto",
+    "metrica_a": 0.6632714547437253,
+    "metrica_b": 0.663378863579775,
+    "delta": 0.00010740883604976048,
+    "ic95": [
+      -0.00015343411081884803,
+      0.0003647202044518127
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "sem_pedido_7d",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 63164,
+    "n_clientes": 5955,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_navegacao",
+    "metrica_a": 0.7654123959419175,
+    "metrica_b": 0.7624221150568988,
+    "delta": -0.0029902808850186258,
+    "ic95": [
+      -0.003666100061483066,
+      -0.0023507945116737483
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "sem_pedido_7d",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 63164,
+    "n_clientes": 5955,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_credito",
+    "metrica_a": 0.7654123959419175,
+    "metrica_b": 0.763134265930785,
+    "delta": -0.0022781300111324176,
+    "ic95": [
+      -0.002883006469771426,
+      -0.0016878932449737932
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "sem_pedido_7d",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 63164,
+    "n_clientes": 5955,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_incentivo",
+    "metrica_a": 0.7654123959419175,
+    "metrica_b": 0.7651810171702869,
+    "delta": -0.00023137877163059706,
+    "ic95": [
+      -0.0005139553469045127,
+      1.571718326029638e-05
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "sem_pedido_7d",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 63164,
+    "n_clientes": 5955,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_lgbm",
+    "b": "runs/beleza_b2b_pequeno/gbdt/f3h7_trad_sem_desconto",
+    "metrica_a": 0.7654123959419175,
+    "metrica_b": 0.765746169491771,
+    "delta": 0.00033377354985353325,
+    "ic95": [
+      8.017296918684247e-05,
+      0.0005612871564245497
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]
