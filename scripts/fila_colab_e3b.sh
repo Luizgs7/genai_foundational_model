@@ -26,7 +26,7 @@ if [ ! -f $R/f2h10_e3b/relatorio_lm.json ]; then
 fi
 if [ -f $R/f2h10_e3b/relatorio_lm.json ]; then
   [ -f $R/f2h10_e3b/embeddings_eventos_index.parquet ] || { t "E3b extracao"; python3 -u pipeline/common/f2h10_llm.py $C extrair --modelo $QB --causal_lm \
-      --adaptador f2h10_e3b/adaptador --pooling media --sem_instrucao --saida f2h10_e3b; }
+      --adaptador f2h10_e3b/adaptador --pooling media --sem_instrucao --saida f2h10_e3b --tokens_por_lote ${TOK_LOTE:-16384}; }
   persistir
   for S in 0 1 2; do
     [ -f $R/f2h10_fusao_e3b_s$S/predicoes_test.parquet ] || { t "fusao e3b s$S"; $F $C --emb f2h10_e3b --seed $S --min_passos 4000 \
