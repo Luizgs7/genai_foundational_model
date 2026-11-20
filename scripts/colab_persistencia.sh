@@ -17,16 +17,18 @@ persistir() {
   local d rel
   for d in $RUNS/f2h10_e0 $RUNS/f2h10_e2 $RUNS/f2h10_e3a0 $RUNS/f2h10_e3a $RUNS/f2h10_e3b $RUNS/f2h10_fusao_* $RUNS/f2h10_e1_s* \
            $RUNS/gbdt/f2h11_tabicl_* $RUNS/gbdt/f2h11_tabpfn_* $RUNS/f2h10/resultado*.json $RUNS/f2h11/resultado*.json \
-           $RUNS/v2_pretreino* $RUNS/v2_fusao_s* $RUNS/v2_rec* $RUNS/v2b_pretreino* $RUNS/v2b_fusao_s* $RUNS/f3h3 $RUNS/f3h4* $RUNS/f3h5*; do
+           $RUNS/v2_pretreino* $RUNS/v2_fusao_s* $RUNS/v2_rec* $RUNS/v2b_pretreino* $RUNS/v2b_fusao_s* $RUNS/f3h3 $RUNS/f3h4* $RUNS/f3h5* \
+           $RUNS/f3h6* $RUNS/gbdt/f3h6_* $RUNS/f2h3/*_v2.json $RUNS/f2h3/*/v2.parquet; do
     [ -e "$d" ] || continue
     rel=$(dirname "${d#$RUNS/}")
     mkdir -p "$DRIVE/$rel"
     cp -ru "$d" "$DRIVE/$rel/" 2>/dev/null
   done
   # F3-H1: fusões de tarefa única (run próprio, com ligações para o run da H&M)
-  for d in runs/hm_clientes_f3h1/f3h1_fusao_s* runs/hm_clientes_f3h1/f3h5_desc_s*; do
+  for d in runs/hm_clientes_f3h1/f3h1_fusao_s* runs/hm_clientes_f3h1/f3h5_desc_s* runs/hm_clientes_f3h1/gbdt/f3h6_*; do
     [ -e "$d" ] || continue
-    mkdir -p $DRIVE/../hm_clientes_f3h1 && cp -ru "$d" $DRIVE/../hm_clientes_f3h1/ 2>/dev/null
+    rel=$(dirname "${d#runs/hm_clientes_f3h1/}")
+    mkdir -p $DRIVE/../hm_clientes_f3h1/$rel && cp -ru "$d" $DRIVE/../hm_clientes_f3h1/$rel/ 2>/dev/null
   done
   # F3-H7/F3-H8: pré-treinos e fusões da base sintética (os dados se regeneram com scripts/preparar_beleza.sh)
   for d in runs/beleza_b2b_*/pre_* runs/beleza_b2b_*/fus_* runs/beleza_b2b_*/gbdt runs/beleza_b2b_*/f3h7 runs/beleza_b2b_*/f3h8 runs/beleza_b2b_*/rec_*; do

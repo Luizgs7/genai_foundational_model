@@ -132,6 +132,7 @@ def main():
     ap.add_argument("--emb_cache", default="caches/pca32_h3.npz", help="npz com evento_id e E (PCA do embedding), relativo a runs/<nome>")
     ap.add_argument("--emb_extra", action="append", default=[], help="NOME=arquivo.npz: outro embedding reduzido, vira o espaço E_NOME")
     ap.add_argument("--B", type=int, default=300)
+    ap.add_argument("--saida", default="f3h2", help="pasta em runs/<nome> (F3-H6: f3h6_cluster)")
     a = ap.parse_args()
     from sklearn.cluster import KMeans
     from sklearn.metrics import adjusted_rand_score
@@ -247,7 +248,7 @@ def main():
     # forma de padronização de cada espaço: escolhida na validação pelo índice principal (K = 8)
     K = KS[0]
     nomes = list(variantes["padronizado"].keys())
-    out = run_dir(config, "f3h2")
+    out = run_dir(config, a.saida)
     if a.fase == "val":
         escolhas = {n: max(variantes, key=lambda v: res["variantes"][v][f"K{K}"][n]["indice"]) for n in nomes}
     else:

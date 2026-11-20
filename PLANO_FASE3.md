@@ -425,6 +425,29 @@ Princípios:
     única; tempo marginal por problema novo menor que o de T; menos pipelines
     a manter.
 - **O que decide.** O veredito de M1 na H&M pelo critério da seção 2.
+- **Mudança de desenho, aprovada em 20/11 antes de rodar: duas etapas.** O
+  segundo corte refaz rótulos, features, HPO, pré-treino e a semana de
+  recomendação. Ele só muda o veredito se o primeiro corte empatar.
+  - **Etapa A — corte atual, motor v2.** A mesma representação nos 4
+    problemas: o backbone `v2_pretreino` (F3-H3), congelado.
+    - Recomendação (protocolo da F2-H3, margem 5% relativo sobre o R2):
+      E = modelo + histórico (MH da F3-H4, já medido); H = o LambdaRank do R2
+      mais três features do v2 (log-probabilidade do artigo, a mesma relativa
+      ao melhor candidato do cliente e o posto), com folhas e árvores
+      escolhidas na validação e 3 sementes do LightGBM, como o R4.
+    - Churn e desconto (margem 0,01 de AUC): E = cabeças leves da F3-H5; H =
+      LightGBM com as 97 features e o PCA-32 do vetor v2, HPO de 40
+      tentativas, 3 sementes, como os híbridos da H10 e da F3-H1. As outras
+      3 tarefas antigas entram como complemento.
+    - Clusterização (protocolo da F3-H2, mesmos desfechos e escolhas de
+      forma na validação): E = PCA-32 do vetor v2; H = T2 e E juntos.
+    - Esforço: a tabela da seção 3 para cada problema e braço.
+    - J (ajuste fino conjunto) fica fora: é bônus de acurácia e não muda o
+      veredito de empate.
+  - **Etapa B — segundo corte, 6 meses antes.** Só roda se a Etapa A
+    empatar nos 4 problemas (E ou H). Se não empatar, o veredito de M1 na
+    H&M sai da Etapa A: não atendida no corte atual. O segundo corte não
+    poderia virar esse resultado, porque o critério exige empate nos dois.
 
 ### Etapa 3 — estresse e generalização
 

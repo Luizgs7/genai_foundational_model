@@ -41,9 +41,16 @@ MAX_ARVORES = 1500
 B_BOOT = 1000
 
 
-def ler_semana(d, semente, outros):
+def ler_semana(d, semente, outros, rep="v1"):
     c = pl.read_parquet(os.path.join(d, "candidatos.parquet"))
     c = c.with_columns(pl.col(pl.Float64).cast(pl.Float32))
+    if rep == "v2":
+        # F3-H6: pontuação do motor v2 (um backbone só; f3h6_pontuar_v2.py). Artigo fora do catálogo do v2: nulo.
+        v = pl.read_parquet(os.path.join(d, "v2.parquet")).select("cliente", "artigo", pl.col("logp").alias("v2_lp"))
+        c = c.join(v, on=["cliente", "artigo"], how="left")
+        c = c.with_columns((pl.col("v2_lp") - pl.col("v2_lp").max().over("cliente")).alias("v2_lp_rel"),
+                           pl.col("v2_lp").rank("ordinal", descending=True).over("cliente").alias("v2_rank"))
+        return c.sort("cliente", "artigo")
     fm = pl.read_parquet(os.path.join(d, f"fm_s{semente}.parquet"))
     af = pl.read_parquet(os.path.join(d, "artigos_fm.parquet"))
     perfil = [f"t{k}" for k in (1, 2, 3, 4, 5, 7, 8)]
@@ -58,7 +65,7 @@ def ler_semana(d, semente, outros):
 
 
 def colunas(c):
-    fm = [x for x in c.columns if x.startswith(("lp_", "fm_"))]
+    fm = [x for x in c.columns if x.startswith(("lp_", "fm_", "v2_"))]
     trad = [x for x in c.columns if x not in fm and x not in ("cliente", "artigo", "rotulo")]
     return {"R2": trad, "R4": trad + fm, "R5": fm}
 
@@ -109,10 +116,10 @@ def treinar(X, y, grupos, folhas, n_arv, semente, Xv=None, yv=None, gv=None):
     return m
 
 
-def preparar_treino(base, semanas, semente, outros):
+def preparar_treino(base, semanas, semente, outros, rep="v1"):
     partes = []
     for w in semanas:
-        c = ler_semana(os.path.join(base, w), semente, outros)
+        c = ler_semana(os.path.join(base, w), semente, outros, rep)
         com_pos = c.group_by("cliente").agg(pl.col("rotulo").max().alias("_p")).filter(pl.col("_p") > 0).select("cliente")
         partes.append(c.join(com_pos, on="cliente", how="semi").with_columns(pl.lit(w).alias("_w")))
     t = pl.concat(partes, how="diagonal_relaxed").sort("_w", "cliente", "artigo")
@@ -125,7 +132,11 @@ def main():
     ap.add_argument("config")
     ap.add_argument("--fase", required=True, choices=["val", "test"])
     ap.add_argument("--sementes", type=int, nargs="+", default=[0, 1, 2])
+    ap.add_argument("--rep", default="v1", choices=["v1", "v2"],
+                    help="v2 (F3-H6): features do motor v2 em vez das do backbone v1; grava *_v2.json")
     a = ap.parse_args()
+    suf = "" if a.rep == "v1" else "_" + a.rep
+    pontuacao = "fm_lp_norm" if a.rep == "v1" else "v2_lp"
     t0 = time.time()
     config = carregar_config(a.config)
     base = run_dir(config, "f2h3")
@@ -137,12 +148,12 @@ def main():
     alvos_por_cli = {cli: set(arts) for cli, arts in alvos.group_by("cliente").agg(pl.col("artigo")).iter_rows()}
     clientes = sorted(alvos_por_cli)
     populares = pl.read_parquet(os.path.join(d_alvo, "populares.parquet")).sort("pop_rank")["artigo"].to_list()
-    escolhas_path = os.path.join(base, "escolhas_val.json")
+    escolhas_path = os.path.join(base, f"escolhas_val{suf}.json")
     escolhas = json.load(open(escolhas_path)) if a.fase == "test" else {}
 
     ap_por = {}
     # braços sem treino
-    c0 = ler_semana(d_alvo, a.sementes[0], outros)
+    c0 = ler_semana(d_alvo, a.sementes[0], outros, a.rep)
     ap_por["R0"] = map12(completar({}, populares, clientes), alvos_por_cli, clientes)
     s1 = np.where(c0["src_rep"].to_numpy() == 1, 1e6 - c0["par_dias_desde_ult"].fill_null(1e5).to_numpy(), np.nan)
     ap_por["R1"] = map12(listas_de_score(c0, s1, populares), alvos_por_cli, clientes)
@@ -152,10 +163,10 @@ def main():
 
     por_semente = {}
     for s in a.sementes:
-        c = ler_semana(d_alvo, s, outros)
-        r = {"R3": map12(listas_de_score(c, c["fm_lp_norm"].to_numpy(), populares), alvos_por_cli, clientes)}
+        c = ler_semana(d_alvo, s, outros, a.rep)
+        r = {"R3": map12(listas_de_score(c, c[pontuacao].to_numpy(), populares), alvos_por_cli, clientes)}
         cols = colunas(c)
-        t, grupos = preparar_treino(base, sem_treino, s, outros)
+        t, grupos = preparar_treino(base, sem_treino, s, outros, a.rep)
         gv = c.group_by("cliente", maintain_order=True).len()["len"].to_numpy()
         for braco in ("R2", "R4", "R5"):
             X = t.select(cols[braco]).to_numpy().astype(np.float32)
@@ -178,7 +189,7 @@ def main():
                 if braco == "R4":
                     imp = dict(zip(cols[braco], m.booster_.feature_importance("gain")))
                     tot = sum(imp.values())
-                    r["_imp_fm_R4"] = sum(v for k, v in imp.items() if k.startswith(("lp_", "fm_"))) / tot
+                    r["_imp_fm_R4"] = sum(v for k, v in imp.items() if k.startswith(("lp_", "fm_", "v2_"))) / tot
             print(f"s{s} {braco} MAP@12={r[braco].mean():.5f} ({time.time() - t0:.0f}s)", flush=True)
         por_semente[s] = r
         del t, X, Xv, c
@@ -201,7 +212,8 @@ def main():
         lo, hi = np.percentile(boot, [2.5, 97.5])
         res["deltas_vs_R2"][b] = {"delta": float(dlt.mean()), "relativo": float(dlt.mean() / ap_por["R2"].mean()),
                                   "ic95": [float(lo), float(hi)], "significativo": bool(lo > 0 or hi < 0)}
-    with open(os.path.join(base, f"resultado_{a.fase}.json"), "w") as f:
+    res["rep"] = a.rep
+    with open(os.path.join(base, f"resultado_{a.fase}{suf}.json"), "w") as f:
         json.dump(res, f, indent=1)
     print(json.dumps(res["map12"], indent=1))
     print(json.dumps(res["deltas_vs_R2"], indent=1))
