@@ -1,0 +1,14 @@
+{
+ "modo": "extrair",
+ "modelo": "Qwen/Qwen3.5-0.8B-Base",
+ "adaptador": "f2h10_e3b/adaptador",
+ "pooling": "media",
+ "instrucao": false,
+ "max_tokens": 2048,
+ "n_ancoras": 515825,
+ "n_janelas": 118206,
+ "tokens": 68182166,
+ "dim": 1024,
+ "segundos": 8353.1,
+ "tokens_por_s": 8162.5
+}

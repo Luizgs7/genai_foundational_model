@@ -351,12 +351,14 @@ AUC em churn e online; accuracy em categoria e LTV.
 | E2 — CoLES nos nossos tokens, só com a amostra | 0,8065 | 0,8359 | 0,3549 | 0,3680 | 0,5913 | −0,0034 [−0,0042; −0,0025] |
 | E3a0 — Qwen3-Embedding-0.6B sem ajuste | 0,8029 | 0,8331 | 0,3411 | 0,3828 | 0,5900 | −0,0048 [−0,0057; −0,0038] |
 | E3a — Qwen3-Embedding-0.6B com LoRA contrastivo | 0,8111 | 0,8322 | 0,3476 | 0,3842 | 0,5938 | −0,0009 [−0,0017; −0,0001] |
+| E3b — Qwen3.5-0.8B-Base com LoRA de próximo token (20/11) | 0,8078 | 0,8290 | 0,3500 | 0,3877 | 0,5936 | −0,0011 [−0,0019; −0,0003] |
 
 Critérios escritos antes de rodar:
 
 - **Principal (algum braço com LLM supera o E0 por 0,005 na média): não
-  atingido pelo E3a,** que empata com o E0 (−0,0009). O E3b ainda vai rodar: o
-  desenho mandava rodá-lo se o E3a ficasse a menos de 0,005 do E0.
+  atingido.** O E3a empata com o E0 (−0,0009). O desenho mandava rodar o E3b
+  se o E3a ficasse a menos de 0,005 do E0. O E3b (rodado em 20/11) também empata
+  com o E0 (−0,0011) e com o E3a (−0,0001 [−0,0008; +0,0005]).
 - **Secundário (algum braço supera o GBDT em uma tarefa, ou empata em todas):
   não atingido.** O mais próximo é o ajuste fino conjunto, que empata com o
   GBDT em categoria (−0,0004 [−0,0019; +0,0011]) e fica a 0,003 em online, mas
@@ -377,6 +379,18 @@ Leitura:
    do efeito da quantidade de dados.
 4. **O ajuste fino conjunto segue o melhor caminho com modelo fundacional:**
    +0,004 sobre o E0 e a 0,008 do GBDT na média.
+5. **O E3b, um LLM de base ajustado a prever o próximo token do histórico em
+   texto, não muda o quadro.** 1.000 passos de LoRA (lote 32, até 384 tokens,
+   perda de 3,08 para 0,70), embedding pela média dos estados. Ganha do E0 em
+   LTV (+0,014 [+0,011; +0,016], o melhor LTV entre os LLMs) e perde em churn
+   (−0,005), online (−0,008) e categoria (−0,005). Na média, empata com o E3a e
+   fica a 0,013 do GBDT, sem passar dele em nenhuma tarefa. Custo: 1,8 h de
+   treino e 2,3 h de extração para 111 mil clientes (cerca de 21 h de L4 por
+   milhão), sem o kernel otimizado da atenção linear do Qwen3.5, que não estava
+   instalado. Saem duas lições de engenharia: os logits do vocabulário inteiro
+   (248 mil tokens) pedem micro-lotes no treino e `logits_to_keep=1` na
+   extração. Arquivos: `runs/hm_clientes/f2h10/resultado_test_e3b.json`;
+   reprodução em `scripts/fila_colab_e3b.sh`.
 
 Arquivos: `runs/hm_clientes/f2h10/resultado_test.json`. Reprodução:
 `scripts/fila_colab_f2h10.sh` e `f2h10_avaliar.py`.
