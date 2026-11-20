@@ -89,7 +89,11 @@ def montar_modelo(a, treino):
 
 
 def estados(m, ids, att):
-    out = m(input_ids=ids, attention_mask=att, output_hidden_states=True)
+    base = m.get_base_model() if hasattr(m, "get_base_model") else m
+    # com cabeça de linguagem, só os estados interessam: logits de uma posição só (o vocabulário inteiro em
+    # todas as posições pede ~7,6 GB por lote de 16 mil tokens)
+    kw = {"logits_to_keep": 1} if type(base).__name__.endswith("ForCausalLM") else {}
+    out = m(input_ids=ids, attention_mask=att, output_hidden_states=True, **kw)
     return out.hidden_states[-1] if hasattr(out, "hidden_states") and out.hidden_states is not None else out.last_hidden_state
 
 
