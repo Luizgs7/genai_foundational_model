@@ -1,0 +1,128 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/f3h5_churn_s*",
+    "metrica_a": 0.8290945879197761,
+    "metrica_b": 0.8105150058461628,
+    "delta": -0.01857958207361332,
+    "ic95": [
+      -0.018938686259846578,
+      -0.018203093751626605
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.8290945879197761,
+    "metrica_b": 0.8194054424545705,
+    "delta": -0.009689145465205606,
+    "ic95": [
+      -0.010030259626110802,
+      -0.009420242534264735
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/f3h5_online_s*",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8305462120123672,
+    "delta": -0.014294544383337326,
+    "ic95": [
+      -0.014530293634017194,
+      -0.014040421178837068
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/v2_fusao_s*",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8280014054378318,
+    "delta": -0.0168393509578727,
+    "ic95": [
+      -0.017095331708406967,
+      -0.016561620011945104
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_com_desconto",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes_f3h1/gbdt/f3h1_trad_lgbm",
+    "b": "runs/hm_clientes_f3h1/f3h5_desc_s*",
+    "metrica_a": 0.6842239222002634,
+    "metrica_b": 0.6716269294563383,
+    "delta": -0.012596992743925117,
+    "ic95": [
+      -0.013058635948470846,
+      -0.012028025424612171
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_com_desconto",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes_f3h1/gbdt/f3h1_trad_lgbm",
+    "b": "runs/hm_clientes_f3h1/f3h1_fusao_s*",
+    "metrica_a": 0.6842239222002634,
+    "metrica_b": 0.6666875712423334,
+    "delta": -0.017536350957930047,
+    "ic95": [
+      -0.018052970511739326,
+      -0.016986778283773075
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]

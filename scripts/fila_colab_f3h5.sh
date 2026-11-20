@@ -15,7 +15,10 @@ falta() { local d=$1 p=$2 S; for S in 0 1 2; do [ -f $d/${p}_s$S/predicoes_test.
 if { falta $R f3h5_churn || falta $R f3h5_online || falta $B f3h5_desc; } && [ ! -f $R/v2_fusao/embeddings_eventos_index.parquet ]; then
   t "extracao v2"; python3 -u pipeline/common/v2_extrair.py $C --pretreino v2_pretreino --saida v2_fusao
 fi
-[ -e $B/v2_fusao ] || ln -s ../hm_clientes/v2_fusao $B/v2_fusao
+mkdir -p $B
+for d in splits discretizacao vocabulario serializacao pretreino caches fusao v2_fusao; do
+  [ -e $B/$d ] || ln -s ../hm_clientes/$d $B/$d
+done
 
 for S in 0 1 2; do
   [ -f $R/f3h5_churn_s$S/predicoes_test.parquet ] || { t "churn s$S"; $F configs/hm_clientes_f3h5_churn_fusao.yaml --emb v2_fusao \

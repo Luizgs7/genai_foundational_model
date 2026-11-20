@@ -407,6 +407,11 @@ Princípios:
   churn fica no limite (−0,0097 [−0,0100; −0,0094]) e canal fora (−0,0168);
   a fusão por pergunta é a forma justa do teste, não uma segunda chance
   escolhida depois de ver o resultado.
+- **Resultado (20/11): não atendido.** E − T no teste: churn −0,0186 (a
+  fusão conjunta da F3-H3 fica em −0,0097, no limite), canal −0,0143,
+  desconto −0,0126 (o v1 ficava em −0,0175). O v2 transfere melhor que o v1
+  para perguntas fora dos alvos, mas o vetor congelado com cabeça leve segue
+  fora da margem; só o híbrido empata. Ver `EXPERIMENTOS_HM.md`.
 
 #### F3-H6 — teste central: uma solução, quatro problemas
 

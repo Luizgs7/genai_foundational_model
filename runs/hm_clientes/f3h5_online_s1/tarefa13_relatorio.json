@@ -1,0 +1,34 @@
+{
+  "n_params": 18004,
+  "n_train": 2000000,
+  "n_val": 940523,
+  "n_test": 2239380,
+  "melhor_epoca": 7,
+  "metricas_validacao": {
+    "proxima_online": {
+      "auc": 0.8198900725225898
+    }
+  },
+  "comparacao_com_baseline_validacao": {
+    "proxima_online": {
+      "metrica": "auc",
+      "modelo": 0.8198900725225898,
+      "baseline": 0.800675606339848,
+      "delta": 0.019214466182741807
+    }
+  },
+  "metricas_teste": {
+    "proxima_online": {
+      "auc": 0.8299816053768297
+    }
+  },
+  "comparacao_com_baseline": {
+    "proxima_online": {
+      "metrica": "auc",
+      "modelo": 0.8299816053768297,
+      "baseline": 0.8034356833001237,
+      "delta": 0.02654592207670603
+    }
+  },
+  "tempo_total_segundos": 101.64682149887085
+}

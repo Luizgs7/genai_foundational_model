@@ -1,0 +1,34 @@
+{
+  "n_params": 18004,
+  "n_train": 2000000,
+  "n_val": 940523,
+  "n_test": 2239380,
+  "melhor_epoca": 7,
+  "metricas_validacao": {
+    "churn": {
+      "auc": 0.7833975710655738
+    }
+  },
+  "comparacao_com_baseline_validacao": {
+    "churn": {
+      "metrica": "auc",
+      "modelo": 0.7833975710655738,
+      "baseline": 0.7338829206567589,
+      "delta": 0.049514650408814975
+    }
+  },
+  "metricas_teste": {
+    "churn": {
+      "auc": 0.8094945197899536
+    }
+  },
+  "comparacao_com_baseline": {
+    "churn": {
+      "metrica": "auc",
+      "modelo": 0.8094945197899536,
+      "baseline": 0.7282899739258172,
+      "delta": 0.08120454586413639
+    }
+  },
+  "tempo_total_segundos": 100.30742979049683
+}

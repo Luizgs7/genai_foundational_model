@@ -951,3 +951,43 @@ recomendação segue híbrida.
 
 Arquivos: `runs/hm_clientes/f3h4/resultado.json`,
 `runs/hm_clientes/f3h4_rec_{val,test}_s*/relatorio_*.json`.
+
+### F3-H5 — embedding congelado do v2 com cabeça leve, dentro e fora dos alvos do pré-treino (20/11)
+
+Pergunta: o vetor do v2, sem ajuste fino, empata com o LightGBM de cada
+pergunta quando recebe só uma cabeça leve? O churn é da família dos alvos do
+pré-treino (intervalo, valor e contagens futuras). Canal e desconto nunca
+foram alvos: medem transferência. Backbone `v2_pretreino` (o da F3-H3),
+cabeça DCNv2 da H4 treinada uma pergunta por vez, 3 sementes, teste avaliado
+uma vez, bootstrap por cliente.
+
+| Pergunta | Grupo | T (LightGBM) | E: cabeça de tarefa única | E − T (IC 95%) | Referência: fusão conjunta do v2 (F3-H3) ou do v1 (F3-H1) |
+| --- | --- | --- | --- | --- | --- |
+| Churn 90 dias | nos alvos | 0,8291 | 0,8105 | −0,0186 [−0,0189; −0,0182] | v2 conjunta: 0,8194, −0,0097 [−0,0100; −0,0094] |
+| Próxima online | fora dos alvos | 0,8448 | 0,8305 | −0,0143 [−0,0145; −0,0140] | v2 conjunta: 0,8280, −0,0168 [−0,0171; −0,0166] |
+| Próxima com desconto | fora dos alvos | 0,6842 | 0,6716 | −0,0126 [−0,0131; −0,0120] | v1 (H3): 0,6667, −0,0175 [−0,0181; −0,0170] |
+
+**Veredito: não atendido.** O critério pedia o limite inferior do IC acima de
+−0,01 nas três perguntas; nenhuma passa.
+
+Leitura:
+
+1. **Fora dos alvos, o v2 transfere melhor que o v1, mas não o bastante.** Em
+   desconto, a distância para T cai de 0,0175 (v1) para 0,0126. Em canal, a
+   cabeça de tarefa única fica a 0,0143. As duas perguntas ficam a cerca de
+   0,013 a 0,014 do LightGBM, a 30–40% além da margem.
+2. **Em churn, a cabeça de tarefa única é pior que a conjunta** (−0,0186
+   contra −0,0097, também na validação: 0,782 contra 0,790). A fusão conjunta
+   recebe os baselines causais das 4 tarefas como entrada, e a de tarefa
+   única só o do churn. É provável que a diferença venha dessas entradas e não
+   da cabeça, mas o teste não separa os dois efeitos. Mesmo a conjunta fica
+   na fronteira: o limite inferior (−0,01003) passa a margem por 0,00003.
+3. **Consequência para o produto.** "Pergunta nova = cabeça leve sobre um
+   vetor já calculado" ainda deixa 0,013 a 0,019 de AUC para trás na H&M. O
+   que já empata é o híbrido (vetor + agregados automáticos; F3-H1: +0,0015
+   em desconto). O caminho da solução única continua sendo H, não E.
+
+Custo: extração dos embeddings do v2 em 69 s para 5,2 milhões de âncoras; cada
+cabeça leva 100 a 140 s de L4. Arquivos: `runs/hm_clientes/f3h5/bootstrap_test.json`;
+reprodução: `scripts/fila_colab_f3h5.sh`.
+
