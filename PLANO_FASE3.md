@@ -396,6 +396,17 @@ Princípios:
 - **Critério.** E congelado dentro de 0,01 de T em churn (pergunta da família
   dos alvos) e nas duas perguntas de fora. Os dois grupos são reportados
   separados.
+- **Como roda (registrado em 20/11, antes de rodar).** O backbone é o v2 da
+  F3-H3 (`v2_pretreino`, 8 épocas), cujos alvos já são os genéricos acima:
+  canal e desconto nunca foram alvo. A cabeça leve é a fusão DCNv2 da H4,
+  treinada **uma pergunta por vez** (a fusão da F3-H3 era conjunta e escolhia
+  a época pelo churn, o que desfavorece as demais). A régua T é o LightGBM com
+  HPO de cada pergunta: `h10_trad_lgbm` em churn e canal, `f3h1_trad_lgbm`
+  (com o histórico de desconto) em desconto. Empate = limite inferior do IC
+  95% de E − T acima de −0,01. Já se sabe, pela fusão conjunta da F3-H3, que
+  churn fica no limite (−0,0097 [−0,0100; −0,0094]) e canal fora (−0,0168);
+  a fusão por pergunta é a forma justa do teste, não uma segunda chance
+  escolhida depois de ver o resultado.
 
 #### F3-H6 — teste central: uma solução, quatro problemas
 
