@@ -79,7 +79,13 @@ def main():
     params_h10 = json.load(open(os.path.join(run_dir(config, "gbdt"), "h10_trad_lgbm", "relatorio.json")))["tarefas"]
     te = df.filter(pl.col("split") == "test")
     Xte = te.select(feats).to_numpy().astype(np.float32)
+    parcial = os.path.join(out, "relatorio_parcial.json")
+    if os.path.exists(parcial):
+        rel = json.load(open(parcial))
     for t in a.tarefas.split(","):
+        if t in rel["tarefas"] and os.path.exists(os.path.join(out, f"predicoes_test_{t}_seed0.parquet")):
+            print(f"{nome} {t}: já feita, pulando", flush=True)
+            continue
         t1 = time.time()
         tr = df.filter((pl.col("split") == "train") & pl.col(f"{t}_rotulo").is_not_null())
         rng = np.random.RandomState(a.semente)
@@ -128,6 +134,7 @@ def main():
         pred.to_parquet(os.path.join(out, f"predicoes_test_{t}_seed0.parquet"), index=False)
         rel["tarefas"][t] = {"n_contexto": int(len(y)), "segundos": round(time.time() - t1, 1), **extra}
         print(f"{nome} {t}: {rel['tarefas'][t]}", flush=True)
+        json.dump(rel, open(parcial, "w"), indent=1)  # retomada por tarefa (o de 300 mil leva horas por tarefa)
     rel["segundos"] = round(time.time() - t0, 1)
     json.dump(rel, open(os.path.join(out, "relatorio.json"), "w"), indent=1)
 

@@ -41,7 +41,7 @@ fi
 
 # TabPFN de 300 mil âncoras (F2-H11, fora da avaliação já feita)
 G=$R/gbdt
-if [ -f /content/tabpfn_token ]; then
+if [ -f /content/tabpfn_token ] && [ -z "${SEM_TABPFN:-}" ]; then
   export TABPFN_TOKEN=$(cat /content/tabpfn_token)
   for h in "" --hibrido; do
     nome=f2h11_tabpfn_$([ -n "$h" ] && echo hibrido || echo trad)_n300000
