@@ -244,7 +244,9 @@ def treinar(a, config):
             for n, v in est["params"].items():
                 treinaveis[n].copy_(v)
         opt.load_state_dict(est["opt"]); sched.load_state_dict(est["sched"])
-        rng.set_state(est["rng"]); torch.set_rng_state(est["torch_rng"]); torch.cuda.set_rng_state_all(est["cuda_rng"])
+        # os estados dos geradores precisam ser ByteTensor na CPU (o map_location acima os leva para a GPU)
+        rng.set_state(est["rng"]); torch.set_rng_state(est["torch_rng"].cpu())
+        torch.cuda.set_rng_state_all([r.cpu() for r in est["cuda_rng"]])
         ordem, p0, log, perdas, ini = est["ordem"], est["p0"], est["log"], est["perdas"], est["passo"]
         t0 -= est["segundos"]
         print(f"retomando do passo {ini}", flush=True)
