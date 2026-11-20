@@ -886,3 +886,54 @@ já tinham alguma recompra candidata. Os outros (41% dos clientes na validação
 outros braços da F2-H3 não mudam: todos os clientes tinham candidatos
 populares. As conclusões da F2-H3 ficam: o R3 (backbone sozinho, 0,0192) segue
 abaixo do R1, agora por mais, e o R2 (0,0324) segue acima.
+
+### F3-H4 — recomendação direta do motor v2, com o backbone atualizado até a véspera (20/11)
+
+Protocolo da F2-H3: semana-alvo de validação 05–11/03/2020 e de teste
+16–22/09/2020; MAP@12 sobre os clientes que compraram na semana (73.571 e
+68.984). Para cada semana, o v2 foi pré-treinado do zero com os eventos até a
+véspera (8 épocas, ~1h30 numa L4), com os artigos vendidos até o corte tratados
+como conhecidos (85 mil na validação, 104 mil no teste). As recomendações saem
+do catálogo inteiro. Validação com 1 semente; teste com 3.
+
+Braços (registrados antes de rodar):
+- **M**: só o modelo: os 12 artigos de maior probabilidade no catálogo.
+- **MH**: o modelo mais o histórico do próprio cliente:
+  logp + beta × log(1 + nº de compras do artigo) + gama / (1 + dias desde a última / 7).
+  Na validação, a grade escolheu beta = 3 e gama = 8 (gama no limite da grade).
+
+| Braço | MAP@12 val | MAP@12 teste | vs R1 corrigido (IC 95%) | % do R2 |
+|---|---|---|---|---|
+| R1 recompra + populares (corrigido) | 0,0228 | 0,0259 | — | 80% |
+| **M** só o modelo | 0,0059 | 0,0075 | −0,0184 [−0,0192; −0,0175] | 23% |
+| **MH** modelo + histórico | 0,0246 | **0,0271** | **+0,0012** [+0,0006; +0,0017] | 84% |
+| R2 LambdaRank tradicional (F2-H3) | 0,0283 | 0,0324 | — | 100% |
+| R4 híbrido (F2-H3) | 0,0287 | 0,0329 | — | 102% |
+
+Sementes no teste: M 0,0071–0,0079; MH 0,0268–0,0274.
+
+**Critério:** necessário (acima do R1) **atendido só pelo MH**; empate (95% do
+R2) **não atendido** (84%); forma forte, não. Como o plano previa, a
+recomendação segue híbrida.
+
+**Leitura.**
+
+- **O modelo sozinho não recomenda.** Com o catálogo inteiro e o backbone
+  atualizado até a véspera, M fica em 0,0075, abaixo até dos populares da
+  semana anterior (0,0087). É o mesmo comportamento da base sintética
+  (F3-H8): o v2 aprende a popularidade média do período de treino, e na moda
+  a lista de populares troca de uma semana para outra. E o pedido entra no
+  modelo como a média das linhas, o que dilui a identidade de cada artigo.
+- **Somado ao histórico, ele acrescenta.** MH passa a recompra pura em 4,6%
+  (+0,0012, IC sem o zero). A pontuação do modelo ajuda a ordenar os artigos
+  já comprados e a escolher o que completa a lista melhor que os populares.
+- **Mas fica longe do ranqueador tradicional** (84% do R2), que usa
+  candidatos de várias fontes e 30 features por par cliente-artigo.
+- **Para a empresa:** a recomendação continua sendo o problema em que a
+  solução única não basta. O caminho é o da F2-H3: o modelo como uma feature
+  a mais do ranqueador (R4 ficou 1,6% acima do R2). Um mecanismo de cópia do
+  histórico na saída do modelo seria o próximo passo de arquitetura, mas não
+  está no plano.
+
+Arquivos: `runs/hm_clientes/f3h4/resultado.json`,
+`runs/hm_clientes/f3h4_rec_{val,test}_s*/relatorio_*.json`.

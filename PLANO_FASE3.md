@@ -380,6 +380,7 @@ Princípios:
     conhecidos os artigos vendidos até a véspera, e não só os do treino original
     (até 15/09/2020 são 103.791 artigos, contra 78.989 até 27/12/2019).
   - Validação com 1 semente (só para a grade); teste com 3.
+- **Resultado (20/11): necessário atendido só com o histórico; empate não.** M 0,0075 (23% do R2); MH 0,0271, acima do R1 corrigido (+0,0012, IC sem o zero) e em 84% do R2. A recomendação segue híbrida. Ver `EXPERIMENTOS_HM.md`.
 
 #### F3-H5 — pré-treino alinhado ao futuro serve a propensão sem ajuste fino
 

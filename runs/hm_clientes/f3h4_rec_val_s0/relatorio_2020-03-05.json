@@ -1,0 +1,12 @@
+{
+ "semana": "2020-03-05",
+ "pretreino": "f3h4_pre_val_s0",
+ "corte_do_backbone": "2020-03-05T00:00",
+ "epoca_do_backbone": null,
+ "topn": 100,
+ "clientes_semana": 73571,
+ "clientes_com_estado": 66930,
+ "pares": 9427355,
+ "itens_vistos_no_corte": 85401,
+ "segundos": 33.3
+}
