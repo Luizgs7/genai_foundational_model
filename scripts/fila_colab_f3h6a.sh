@@ -16,15 +16,14 @@ t() { echo "== $* $(date)"; }
 [ -f $R/f3h6/pontuar_v2.json ] || { t "pontuar v2"; $PY pipeline/common/f3h6_pontuar_v2.py $C > /content/f3h6_pontuar.log 2>&1; t "pontuar v2 fim"; } &
 PONT=$!
 
-# 2. H em churn e nas tarefas antigas: LightGBM com as 97 features e o PCA-32 do v2
+# 2. H em churn (critério): LightGBM com as 97 features e o PCA-32 do v2
 G="$PY pipeline/common/tarefa14_gbdt.py"
-[ -f $R/gbdt/f3h6_hibrido_v2_lgbm/relatorio.json ] || { t "H v2 tarefas antigas"; $G $C --tarefas churn,next_category,ltv_90d,proxima_online \
-    --modelo lgbm --n_trials 40 --seeds 0,1,2 --threads 12 --avaliar_teste --pca_k 32 --features hibrido --emb v2_fusao \
-    --pca_cache $R/caches/pca32_v2.npz --saida f3h6_hibrido_v2_lgbm; }
+GH="--modelo lgbm --n_trials 40 --seeds 0,1,2 --threads 12 --avaliar_teste --pca_k 32 --features hibrido --emb v2_fusao"
+feita() { [ -f $1/gbdt/f3h6_hibrido_v2_lgbm/predicoes_test_$2_seed2.parquet ]; }
+feita $R churn || { t "H v2 churn"; $G $C --tarefas churn $GH --pca_cache $R/caches/pca32_v2.npz --saida f3h6_hibrido_v2_lgbm; }
 persistir
 # 3. H em desconto (run da F3-H1, com o histórico de desconto nas features)
-[ -f $B/gbdt/f3h6_hibrido_v2_lgbm/relatorio.json ] || { t "H v2 desconto"; $G $C1 --tarefas proxima_com_desconto \
-    --modelo lgbm --n_trials 40 --seeds 0,1,2 --threads 12 --avaliar_teste --pca_k 32 --features hibrido --emb v2_fusao \
+feita $B proxima_com_desconto || { t "H v2 desconto"; $G $C1 --tarefas proxima_com_desconto $GH \
     --pca_cache $R/caches/pca32_v2_f3h1.npz --saida f3h6_hibrido_v2_lgbm; }
 persistir
 
@@ -41,13 +40,21 @@ for f in val test; do
   [ -f $R/f2h3/resultado_${f}_v2.json ] || { t "ranqueador v2 $f"; $PY pipeline/common/f2h3_ranquear.py $C --fase $f --rep v2; }
 done
 
-# 6. bootstrap por cliente: H − T (e E da F3-H5 como referência)
+# 6. bootstrap por cliente nas perguntas do critério: H − T
 S=$R/f3h6/bootstrap_test.json; rm -f $S
 A="$PY pipeline/common/avaliacao.py"
-for tf in churn next_category ltv_90d proxima_online; do
+t "bootstrap criterio"
+$A $C --tarefa churn --split test --B 300 --saida $S --a gbdt/h10_trad_lgbm --b gbdt/f3h6_hibrido_v2_lgbm
+$A $C1 --tarefa proxima_com_desconto --split test --B 300 --saida $S --a gbdt/f3h1_trad_lgbm --b gbdt/f3h6_hibrido_v2_lgbm
+persistir
+echo "CRITERIO_PRONTO $(date)"
+
+# 7. complemento: as outras 3 tarefas antigas (multiclasse é lenta: ~1 h cada)
+for tf in proxima_online ltv_90d next_category; do
+  feita $R $tf || { t "H v2 $tf"; $G $C --tarefas $tf $GH --pca_cache $R/caches/pca32_v2.npz --saida f3h6_hibrido_v2_lgbm; }
+  persistir
   $A $C --tarefa $tf --split test --B 300 --saida $S --a gbdt/h10_trad_lgbm --b gbdt/f3h6_hibrido_v2_lgbm
 done
-$A $C1 --tarefa proxima_com_desconto --split test --B 300 --saida $S --a gbdt/f3h1_trad_lgbm --b gbdt/f3h6_hibrido_v2_lgbm
 kill $PERS 2>/dev/null
 persistir
 echo "FIM $(date)"
