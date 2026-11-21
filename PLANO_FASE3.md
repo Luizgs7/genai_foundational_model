@@ -488,6 +488,38 @@ Princípios:
   - M1, em dado real (Synerise): incluir a navegação melhora E em pelo menos um
     problema por mais que a margem, e E ou H empata com T.
 - **Resultado da camada 1 (17/11).** M2 atendido. M1 não: H empata com T nas 5 tarefas supervisionadas, mas segmentos (H −5,9%) e recomendação (0,036 contra 0,300) ficam fora; nenhuma retirada de fonte passa a margem no problema esperado (todas significativas, todas abaixo de 0,01). Ver `EXPERIMENTOS_HM.md`.
+- **Camada 2, Synerise: desenho registrado em 21/11, antes de rodar.**
+  - **Base.** O arquivo bruto do desafio (`synerise_dataset.tar.gz`, 23/06 a
+    08/12/2022). Entram os 909 mil clientes com pelo menos uma compra e todos
+    os eventos deles: 2,3 milhões de compras (1,42 milhão de cestas), 3,6
+    milhões de adições e 1,6 milhão de remoções do carrinho, 5,4 milhões de
+    buscas e 50 milhões de visitas de página.
+  - **Fontes no motor v2.** `compra` (itens, alvo; cesta = cliente e
+    instante), `carrinho` (adição e remoção, evento com item), `busca` e
+    `visita` (eventos simples em sessões de 30 min). O conteúdo da busca (um
+    vetor quantizado) e o identificador da página (milhões de valores) não
+    entram: só a ocorrência e a sessão.
+  - **Catálogo.** Os 100 mil SKUs mais frequentes em compra e carrinho no
+    período de treino viram item do modelo. Os demais entram só com os
+    atributos da linha: categoria (as 50 mais compradas no treino mais
+    "outras") e faixa de preço (as 100 faixas do arquivo em 10 grupos). Sem o
+    corte, a saída teria centenas de milhares de itens e não caberia na L4.
+  - **Splits.** Teste nos últimos 56 dias, validação nos 28 anteriores.
+  - **Problemas.** Desconto e canal não existem na base, e a recomendação
+    pede um gerador de candidatos específico, que fica fora. A bateria tem:
+    churn em 30 dias (AUC), próxima categoria (as 50 mais "outras",
+    accuracy), faixa de gasto em 30 dias (LTV, com a faixa de preço como
+    valor, accuracy) e a clusterização sobre esses desfechos (protocolo da
+    F3-H2). Margens da seção 3.
+  - **Braços.** T: LightGBM com os agregados genéricos de todas as fontes
+    (`fontes_extras: v2`) e HPO de 40 tentativas. E: vetor do v2 congelado
+    com a fusão conjunta. H: T mais o PCA-32 do vetor. Todos com e sem a
+    navegação: sem carrinho, busca e visita, só a compra. 3 sementes; teste
+    avaliado uma vez.
+  - **Critério (o da camada 2, acima).** A navegação melhora E em pelo menos
+    um problema por mais que a margem (E completo − E só compra, IC 95%
+    acima da margem), e E ou H empata com T com todas as fontes. O controle
+    da camada 1 também roda: o quanto T ganha com a navegação.
 - **Reserva.** Se as camadas 1 e 2 derem respostas opostas, o MBD (transações,
   geolocalização e diálogos de atendimento dos mesmos clientes de um banco)
   entra como segunda base real com vários tipos de dado. É uma base nova e

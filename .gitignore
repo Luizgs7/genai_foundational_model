@@ -59,3 +59,6 @@ runs/hm_clientes_f3h1/splits
 runs/hm_clientes_f3h1/vocabulario
 runs/beleza_b2b_*/
 *.antes_correcao_churn
+
+# Synerise (RecSys Challenge 2025), CC BY-NC 4.0 — baixada de recsys.synerise.com/data-set; não versionar
+dados_synerise/
