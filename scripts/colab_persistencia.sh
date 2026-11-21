@@ -30,6 +30,12 @@ persistir() {
     rel=$(dirname "${d#runs/hm_clientes_f3h1/}")
     mkdir -p $DRIVE/../hm_clientes_f3h1/$rel && cp -ru "$d" $DRIVE/../hm_clientes_f3h1/$rel/ 2>/dev/null
   done
+  # F3-H7 camada 2 (Synerise): o que é caro de refazer (as entradas ficam em entrada/synerise.tar)
+  for d in runs/synerise/pre_* runs/synerise/fus_* runs/synerise/gbdt runs/synerise/syn_* runs/synerise/features_tradicionais \
+           runs/synerise/v2 runs/synerise/v2_so_compra; do
+    [ -e "$d" ] || continue
+    mkdir -p $DRIVE/../synerise && cp -ru "$d" $DRIVE/../synerise/ 2>/dev/null
+  done
   # F3-H7/F3-H8: pré-treinos e fusões da base sintética (os dados se regeneram com scripts/preparar_beleza.sh)
   for d in runs/beleza_b2b_*/pre_* runs/beleza_b2b_*/fus_* runs/beleza_b2b_*/gbdt runs/beleza_b2b_*/f3h7 runs/beleza_b2b_*/f3h8 runs/beleza_b2b_*/rec_*; do
     [ -e "$d" ] || continue
@@ -43,6 +49,7 @@ restaurar() {
   echo "== restaurando do Drive $(date)"
   cp -ru $DRIVE/. $RUNS/ 2>/dev/null
   [ -d $DRIVE/../hm_clientes_f3h1 ] && { mkdir -p runs/hm_clientes_f3h1; cp -ru $DRIVE/../hm_clientes_f3h1/. runs/hm_clientes_f3h1/ 2>/dev/null; }
+  [ -d $DRIVE/../synerise ] && { mkdir -p runs/synerise; cp -ru $DRIVE/../synerise/. runs/synerise/ 2>/dev/null; }
   for b in $DRIVE/../beleza_b2b_*; do
     [ -d "$b" ] || continue
     mkdir -p runs/$(basename $b) && cp -ru $b/. runs/$(basename $b)/ 2>/dev/null

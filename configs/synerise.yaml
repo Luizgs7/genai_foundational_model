@@ -1,0 +1,101 @@
+# Synerise (RecSys Challenge 2025, arquivo bruto; CC BY-NC 4.0) — F3-H7, camada 2: navegação real em volume.
+# Desenho em PLANO_FASE3.md. Dados: adapters/adapter_synerise.py (clientes com pelo menos uma compra).
+# Fontes do motor v2: compra (itens, alvo), carrinho (evento com item), busca e visita (eventos simples).
+nome: synerise
+entidade_label: cliente
+fonte_canonica: runs/synerise/eventos_canonicos.parquet
+
+campos_categoricos:
+  - nome: categoria          # as 50 mais compradas no treino + "outras"
+    estrategia: fechado
+  - nome: faixa10            # as 100 faixas de preço do arquivo em 10 grupos
+    estrategia: fechado
+  - nome: sku
+    estrategia: top_n_outros
+    top_n: 2000
+campos_numericos:
+  - nome: valor              # faixa de preço + 1 (só a ordem do preço é conhecida)
+    agrupar_por: categoria
+    n_buckets: 10
+campos_estaticos_categoricos: []
+campos_estaticos_numericos: []
+usa_recencia: true
+usa_mes: true
+ancora: cesta
+
+# 168 dias de dados: teste nos últimos 56, validação nos 28 anteriores
+splits:
+  val_window_days: 28
+  test_window_days: 56
+
+tarefas_downstream:
+  - tipo: churn
+    candidatos_dias: [14, 30, 45]
+    dias_escolhido: 30
+  - tipo: campo_futuro
+    nome: next_category
+    campo_fonte: categoria
+    agregacao_cesta: moda
+  - tipo: ltv
+    nome: ltv_30d
+    campo_valor: valor
+    horizonte_dias: 30
+    n_buckets: 10
+
+features_tradicionais:
+  campo_valor: valor
+  campos_binarios: []
+  campos_composicao: [categoria, faixa10]
+  max_categorias_composicao: 12
+  campo_item: sku
+  campo_tipo: categoria
+  campo_grupo_preco: categoria
+  janelas_dias: [7, 14, 30, 60, 90]
+  estaticos_frequencia: []
+  fontes_extras: v2
+  janelas_dias_extras: [1, 7, 30]
+
+v2:
+  janela: 512
+  catalogo:
+    tabela: dados_synerise/preparado/produtos.parquet
+    item: sku_modelo
+    categoricos: [categoria, faixa10]
+    numericos: []
+  fontes:
+    - nome: compra
+      natureza: itens
+      alvo: true
+      tabela: runs/synerise/eventos_canonicos.parquet
+      entidade: entidade_id
+      data: data_evento
+      agrupar_por: [pedido_id]
+      item: sku_modelo
+      numericos_linha: []
+      categoricos_linha: [categoria, faixa10]
+      valor_linha: [valor]
+      id_linha: evento_id
+      cabecalho:
+        derivado: true
+        categoricos: []
+        numericos: []
+    - nome: carrinho
+      natureza: evento
+      tabela: dados_synerise/preparado/carrinho.parquet
+      entidade: entidade_id
+      data: datahora
+      sessao_minutos: 30
+      item: sku_modelo
+      categoricos_linha: [tipo, categoria, faixa10]
+    - nome: busca
+      natureza: evento
+      tabela: dados_synerise/preparado/busca.parquet
+      entidade: entidade_id
+      data: datahora
+      sessao_minutos: 30
+    - nome: visita
+      natureza: evento
+      tabela: dados_synerise/preparado/visita.parquet
+      entidade: entidade_id
+      data: datahora
+      sessao_minutos: 30
