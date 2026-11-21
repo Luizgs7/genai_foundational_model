@@ -991,3 +991,63 @@ Custo: extração dos embeddings do v2 em 69 s para 5,2 milhões de âncoras; ca
 cabeça leva 100 a 140 s de L4. Arquivos: `runs/hm_clientes/f3h5/bootstrap_test.json`;
 reprodução: `scripts/fila_colab_f3h5.sh`.
 
+### F3-H6, etapa A — a mesma representação (motor v2) nos 4 problemas, no corte atual (20–21/11)
+
+Uma única representação, o backbone `v2_pretreino` congelado, nos 4 problemas
+da empresa, com a régua T de cada um. Desenho e mudança para duas etapas
+registrados em `PLANO_FASE3.md` antes de rodar. Teste avaliado uma vez.
+
+| Problema | Margem | T — régua específica | E — vetor + cabeça leve | H — T + vetor do v2 | Veredito |
+| --- | --- | --- | --- | --- | --- |
+| Recomendação (MAP@12) | 5% relativo | R2 0,0324 | MH (F3-H4) 0,0271: −16% | 0,0323: −0,3% [−0,0003; +0,0001] | **H empata** |
+| Churn 90 dias (AUC) | 0,01 | 0,8291 | 0,8105 (cabeça só de churn) / 0,8194 (conjunta): −0,019 / −0,010 | 0,8226: −0,0065 [−0,0068; −0,0063] | **H empata** |
+| Desconto (AUC) | 0,01 | 0,6842 | 0,6716: −0,0126 | 0,6852: +0,0010 [+0,0008; +0,0011] | **H empata** |
+| Clusterização (índice; ARI) | 5% e ARI −0,05 | RFM 0,0694; ARI 0,966 | 0,0796 (+15%, IC exclui o zero); ARI 0,879 | 0,0796; ARI 0,777 | **não empata: estabilidade** |
+
+**Veredito da etapa A: não atendida, pela estabilidade da clusterização.** O
+H empata em recomendação, churn e desconto. Na clusterização, o índice do v2
+passa o RFM (a forma forte do índice), mas o ARI fica 0,087 abaixo, e o
+critério admite 0,05. Pela regra registrada, a etapa B (segundo corte) não
+roda: o veredito de M1 na H&M é **não atendida no corte atual**.
+
+Leitura:
+
+1. **A clusterização virou.** Com o v1, o embedding explicava 13% do que o RFM
+   explica (0,0088 contra 0,0695); com o v2, 115% (0,0796). Ele empata com o
+   RFM em churn (0,154 contra 0,150) e LTV (0,100 contra 0,103) e o supera no
+   canal (0,061 contra 0,023). O ganho não vem do calendário: os segmentos do
+   v2 explicam 4,5% da incerteza do mês da âncora (no v1 eram 71%), e o mês
+   explica só 0,5% do churn com o rótulo corrigido
+   (`f3h6_cluster/diagnostico_calendario_test.json`).
+2. **A falha de estabilidade vem de uma semente.** ARI por semente:
+   0,926, 0,740 e 0,970. Na sensibilidade (fora do critério), com K = 4 o
+   ARI do E é 0,985 (RFM 0,996) e com K = 16 é 0,839 (RFM 0,817); o índice
+   passa o RFM nos dois. Fica registrado como observação; o critério é K = 8.
+3. **Nos três empates, o mérito é da régua, não do vetor.** O H contém todas as
+   features de T. Na recomendação, as features do v2 respondem por 2–4% do
+   ganho do ranqueador e, sozinhas, não ordenam os candidatos (R5 0,0046,
+   abaixo dos populares). O backbone congelado em 12/2019 não conhece a
+   maior parte dos artigos da semana de teste. Em churn e desconto, o vetor
+   responde por 24% e 13% da importância, mas o H fica no máximo 0,0065 abaixo
+   ou 0,001 acima de T.
+4. **Esforço.** O caminho que empata (H) custa o mesmo que T mais o vetor:
+   não reduz o esforço por problema. O caminho barato (E: uma cabeça de 2 min
+   de L4 por pergunta, sem código específico) só empata na clusterização,
+   em índice.
+
+Registro de esforço (corte atual; tempos medidos nesta rodada ou nas hipóteses citadas):
+
+| Problema | T: código específico e tempo | E: código específico e tempo | H |
+| --- | --- | --- | --- |
+| Custo fixo | 97 features genéricas por YAML (`features_tradicionais.py`) | pré-treino v2: 55 min de L4, uma vez; extração 69 s | os dois custos fixos |
+| Recomendação | geração de candidatos e features de par (`f2h3_candidatos.py`, 217 linhas) + ranqueador (223); ~5 min por semente | MH: 253 linhas (`f3h4_*`); um backbone por semana-alvo | T + pontuação v2 (93 linhas) |
+| Churn | rótulo por YAML; HPO de 40 tentativas: ~35 min de CPU | 0 linhas; cabeça 100 s de L4 | HPO ~35 min de CPU |
+| Desconto | coluna no adapter (113 linhas) + 4 linhas de YAML; HPO ~31 min | a mesma coluna; cabeça 100 s | HPO ~31 min |
+| Clusterização | RFM: 4 colunas; K-means | PCA do vetor; K-means | os dois |
+
+Arquivos: `runs/hm_clientes/f3h6/bootstrap_test.json`,
+`runs/hm_clientes/f2h3/resultado_{val,test}_v2.json`,
+`runs/hm_clientes/f3h6_cluster/resultado_{val,test}.json`; reprodução:
+`scripts/fila_colab_f3h6a.sh`. As tarefas complementares (próxima online,
+LTV e próxima categoria com H do v2) seguem na fila e entram aqui ao fim.
+

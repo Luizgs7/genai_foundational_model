@@ -1,0 +1,48 @@
+{
+ "pretreino": "v2_pretreino",
+ "corte_do_backbone": "2019-12-27T00:00",
+ "semanas": {
+  "2020-02-20": {
+   "pares": 4583468,
+   "clientes": 40000,
+   "clientes_com_estado": 36575,
+   "pares_candidatos_no_catalogo": 5069818,
+   "segundos": 13.8
+  },
+  "2020-02-27": {
+   "pares": 4447823,
+   "clientes": 40000,
+   "clientes_com_estado": 36305,
+   "pares_candidatos_no_catalogo": 4957733,
+   "segundos": 12.2
+  },
+  "2020-03-05": {
+   "pares": 8281851,
+   "clientes": 73571,
+   "clientes_com_estado": 66930,
+   "pares_candidatos_no_catalogo": 9191668,
+   "segundos": 23.0
+  },
+  "2020-09-02": {
+   "pares": 4594898,
+   "clientes": 40000,
+   "clientes_com_estado": 36981,
+   "pares_candidatos_no_catalogo": 5005482,
+   "segundos": 13.8
+  },
+  "2020-09-09": {
+   "pares": 4697114,
+   "clientes": 40000,
+   "clientes_com_estado": 37042,
+   "pares_candidatos_no_catalogo": 5111234,
+   "segundos": 15.0
+  },
+  "2020-09-16": {
+   "pares": 7918648,
+   "clientes": 68984,
+   "clientes_com_estado": 63412,
+   "pares_candidatos_no_catalogo": 8709872,
+   "segundos": 23.2
+  }
+ }
+}

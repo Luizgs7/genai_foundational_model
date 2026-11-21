@@ -1,0 +1,44 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/f3h6_hibrido_v2_lgbm",
+    "metrica_a": 0.8290945879197761,
+    "metrica_b": 0.8225624927207146,
+    "delta": -0.006532095199061505,
+    "ic95": [
+      -0.0067580628345340205,
+      -0.006341455013893719
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "proxima_com_desconto",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes_f3h1/gbdt/f3h1_trad_lgbm",
+    "b": "runs/hm_clientes_f3h1/gbdt/f3h6_hibrido_v2_lgbm",
+    "metrica_a": 0.6842239222002634,
+    "metrica_b": 0.685187286465856,
+    "delta": 0.0009633642655926256,
+    "ic95": [
+      0.0008458365229192466,
+      0.0010824848064341114
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]

@@ -448,6 +448,13 @@ Princípios:
     empatar nos 4 problemas (E ou H). Se não empatar, o veredito de M1 na
     H&M sai da Etapa A: não atendida no corte atual. O segundo corte não
     poderia virar esse resultado, porque o critério exige empate nos dois.
+- **Resultado da etapa A (21/11): não atendida, pela estabilidade da
+  clusterização.** H empata em recomendação (−0,3%), churn (−0,0065) e
+  desconto (+0,0010). Na clusterização, o índice do v2 supera o RFM
+  (0,0796 contra 0,0694), mas o ARI fica 0,087 abaixo (limite: 0,05). A etapa
+  B não roda; M1 na H&M: não atendida no corte atual. O H empata sem reduzir
+  o esforço por problema; o E reduz o esforço, mas só empata no índice da
+  clusterização. Ver `EXPERIMENTOS_HM.md`.
 
 ### Etapa 3 — estresse e generalização
 

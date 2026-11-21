@@ -3,7 +3,9 @@ espaço separam clientes ou separam o CALENDÁRIO? Mede a parcela da incerteza d
 mês da âncora explicada pelo segmento (K = 8, semente 0).
 
 Uso: python3 pipeline/common/f3h2_diagnostico_calendario.py val|test
-Gera runs/hm_clientes/f3h2/diagnostico_calendario_<fase>.json"""
+Gera runs/hm_clientes/f3h2/diagnostico_calendario_<fase>.json
+F3-H6: CACHE=caches/pca32_v2.npz SAIDA=f3h6_cluster usam o vetor do v2 e gravam em runs/hm_clientes/f3h6_cluster/
+(o espaço E é então posto na escala por bloco, a forma escolhida na validação da F3-H6)."""
 import json, os, sys
 import numpy as np, polars as pl
 sys.path.insert(0, "pipeline/common")
@@ -15,7 +17,9 @@ config = carregar_config("configs/hm_clientes.yaml")
 fdir = run_dir(config, "features_tradicionais")
 info = json.load(open(os.path.join(fdir, "features_info.json")))
 arq = os.path.join(fdir, "features.parquet")
-z = np.load(os.path.join(run_dir(config, ""), "caches/pca32_h3.npz"))
+CACHE = os.environ.get("CACHE", "caches/pca32_h3.npz")
+SAIDA = os.environ.get("SAIDA", "f3h2")
+z = np.load(os.path.join(run_dir(config, ""), CACHE))
 ev, E = z["evento_id"], z["E"]
 pos = pl.DataFrame({"evento_id": ev, "_p": np.arange(len(ev))})
 rfm = ["gap_ultimo", "cestas_365d", "valor_365d", "tempo_cliente_dias"]
@@ -38,7 +42,7 @@ for fase in sys.argv[1:]:
         return sel.select("evento_id").join(df, on="evento_id", how="left")
     tr, av = carregar(esc["train"]), carregar(esc[fase])
     emb = [E[d.select("evento_id").join(pos, on="evento_id", how="left")["_p"].to_numpy()].astype(np.float32) for d in (tr, av)]
-    esp = {"T1": m.padronizar(*m.espaco_rfm(tr, av, rfm)), "E": m.padronizar(*emb)}
+    esp = {"T1": m.padronizar(*m.espaco_rfm(tr, av, rfm)), "E": m.padronizar(*emb) if SAIDA == "f3h2" else m.escala_bloco(*emb)}
     t2 = m.espaco_agregados(tr, av, num, cat)
     esp["T2"] = m.escala_bloco(t2[0], t2[1])
     mes = av["mes"].to_numpy().astype(np.int64)
@@ -56,4 +60,4 @@ for fase in sys.argv[1:]:
         saida[fase][n] = {"U_mes_dado_segmento": round(m.incerteza_explicada(seg * len(meses) + y, 8, len(meses)), 4),
                           "U_churn_dado_segmento": round(m.incerteza_explicada((seg * 2 + ci)[okc], 8, 2), 4)}
     print(fase, json.dumps(saida[fase], ensure_ascii=False), flush=True)
-json.dump(saida, open(f"runs/hm_clientes/f3h2/diagnostico_calendario_{sys.argv[1]}.json", "w"), indent=1, ensure_ascii=False)
+json.dump(saida, open(f"runs/hm_clientes/{SAIDA}/diagnostico_calendario_{sys.argv[1]}.json", "w"), indent=1, ensure_ascii=False)

@@ -1,0 +1,26 @@
+{
+ "test": {
+  "taxa_churn_por_mes": {
+   "3": 0.601,
+   "4": 0.611,
+   "5": 0.526,
+   "6": 0.52,
+   "7": NaN,
+   "8": NaN,
+   "9": NaN
+  },
+  "U_churn_dado_mes": 0.0052,
+  "T1": {
+   "U_mes_dado_segmento": 0.0042,
+   "U_churn_dado_segmento": 0.1501
+  },
+  "E": {
+   "U_mes_dado_segmento": 0.0448,
+   "U_churn_dado_segmento": 0.1551
+  },
+  "T2": {
+   "U_mes_dado_segmento": 0.0106,
+   "U_churn_dado_segmento": 0.1283
+  }
+ }
+}

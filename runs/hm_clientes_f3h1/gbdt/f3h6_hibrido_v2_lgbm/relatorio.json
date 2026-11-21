@@ -1,0 +1,182 @@
+{
+  "features": "hibrido",
+  "modelo": "lgbm",
+  "n_features": 133,
+  "sem_cadastro": false,
+  "sem_prefixo": [],
+  "emb": "v2_fusao",
+  "pca_k": 32,
+  "tarefas": {
+    "proxima_com_desconto": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 1832598,
+      "n_val": 813667,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.027839672345405162,
+        "num_leaves": 166,
+        "min_child_samples": 896,
+        "feature_fraction": 0.4289689109406549,
+        "bagging_fraction": 0.8033607151356733,
+        "lambda_l1": 6.487329874163801e-05,
+        "lambda_l2": 0.23906219034574905
+      },
+      "hpo_melhor_valor": 0.6801378603092426,
+      "val_resumo": {
+        "auc": {
+          "media": 0.6800445669773412,
+          "desvio": 0.0005989417309987122
+        },
+        "pr_auc": {
+          "media": 0.7421867201546988,
+          "desvio": 0.00038962520241223297
+        }
+      },
+      "baseline_causal_val_auc": 0.64344973081287,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 228,
+          "val": {
+            "auc": 0.6794033512767116,
+            "pr_auc": 0.7417361409887109
+          },
+          "test": {
+            "auc": 0.6848681753753288,
+            "pr_auc": 0.7173305081996904
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 562,
+          "val": {
+            "auc": 0.6808444749576864,
+            "pr_auc": 0.7426866831963949
+          },
+          "test": {
+            "auc": 0.684558876122577,
+            "pr_auc": 0.7169363442666443
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 782,
+          "val": {
+            "auc": 0.6798858746976256,
+            "pr_auc": 0.7421373362789905
+          },
+          "test": {
+            "auc": 0.684608604573153,
+            "pr_auc": 0.7171349520368682
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.1337518036171576,
+      "top_importancia": [
+        [
+          "desconto_share",
+          0.14963188657153464
+        ],
+        [
+          "desconto_ultima_cesta",
+          0.1219935429312199
+        ],
+        [
+          "proxima_com_desconto_baseline_feat",
+          0.10000280530845329
+        ],
+        [
+          "mes",
+          0.08174760101049111
+        ],
+        [
+          "desconto_share_90d",
+          0.06729185675122198
+        ],
+        [
+          "preco_relativo_medio",
+          0.031033251617077075
+        ],
+        [
+          "itens_distintos",
+          0.018062273076573106
+        ],
+        [
+          "tempo_cliente_dias",
+          0.016543564735728118
+        ],
+        [
+          "idade",
+          0.01510623068348586
+        ],
+        [
+          "preco_medio_item",
+          0.013922165316227595
+        ],
+        [
+          "ultima_cesta_preco_relativo",
+          0.01247746301397494
+        ],
+        [
+          "n_itens",
+          0.012385135485076476
+        ],
+        [
+          "emb_pca_6",
+          0.012082570074616801
+        ],
+        [
+          "online_share",
+          0.01191929819604916
+        ],
+        [
+          "n_cestas",
+          0.011412135548650467
+        ],
+        [
+          "cep_top_cod",
+          0.01030689401699274
+        ],
+        [
+          "emb_pca_8",
+          0.00982375321351049
+        ],
+        [
+          "clube_cod",
+          0.00938095328175614
+        ],
+        [
+          "emb_pca_2",
+          0.00874521991777319
+        ],
+        [
+          "emb_pca_0",
+          0.007134188980838479
+        ],
+        [
+          "itens_medio_cesta",
+          0.006900625817671374
+        ],
+        [
+          "emb_pca_4",
+          0.006828684105622476
+        ],
+        [
+          "grupo_produto_12_share",
+          0.006640544210444915
+        ],
+        [
+          "cestas_365d",
+          0.006419908726559671
+        ],
+        [
+          "itens_365d",
+          0.006242319620371463
+        ]
+      ],
+      "tempo_segundos": 1877.7076733112335
+    }
+  },
+  "frac_treino": 1.0,
+  "semente_amostra": 0
+}
