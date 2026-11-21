@@ -121,6 +121,7 @@ def carregar(config, args, splits):
             E = pca.transform(E).astype(np.float32)
             print(f"PCA k={args.pca_k}: variância explicada {pca.explained_variance_ratio_.sum():.3f}")
             if cache and not os.path.exists(cache):
+                os.makedirs(os.path.dirname(cache) or ".", exist_ok=True)
                 np.savez(cache, E=E, evento_id=meta["evento_id"].to_numpy())
                 print(f"PCA gravada em {cache}")
             nomes_e = [f"emb_pca_{i}" for i in range(args.pca_k)]
