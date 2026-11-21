@@ -290,6 +290,8 @@ class ModeloV2(nn.Module):
             hq = hp[lote["item_onde"]]
             V, b, fora = self.saida_catalogo()
             ip, ia = lote["item_pos"], lote["item_alvo"]
+            ok = ia > 0                             # linha sem item do catálogo (Synerise: SKU fora do corte): sem alvo de item
+            ip, ia = ip[ok], ia[ok]
             if self.training:                       # alvo fora do softmax (só com corte posterior ao treino): descartado
                 ok = ~fora[ia]
                 ip, ia = ip[ok], ia[ok]
