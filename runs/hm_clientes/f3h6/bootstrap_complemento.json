@@ -1,0 +1,65 @@
+[
+  {
+    "tarefa": "proxima_online",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/f3h6_hibrido_v2_lgbm",
+    "metrica_a": 0.8448407563957046,
+    "metrica_b": 0.8447401092016097,
+    "delta": -0.00010064719409486056,
+    "ic95": [
+      -0.00014581744364804415,
+      -5.7087909200742584e-05
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/f3h6_hibrido_v2_lgbm",
+    "metrica_a": 0.39913789614279355,
+    "metrica_b": 0.3987625884456742,
+    "delta": -0.00037530769711935363,
+    "ic95": [
+      -0.0008382266261442006,
+      -2.7575578198671403e-06
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1496949,
+    "n_clientes": 439765,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/h10_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/f3h6_hibrido_v2_lgbm",
+    "metrica_a": 0.37272545691269376,
+    "metrica_b": 0.3734415801740741,
+    "delta": 0.0007161232613803192,
+    "ic95": [
+      0.0004733217350336966,
+      0.0009376005872844302
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]

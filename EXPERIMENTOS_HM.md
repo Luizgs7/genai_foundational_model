@@ -1048,8 +1048,25 @@ Registro de esforço (corte atual; tempos medidos nesta rodada ou nas hipóteses
 Arquivos: `runs/hm_clientes/f3h6/bootstrap_test.json`,
 `runs/hm_clientes/f2h3/resultado_{val,test}_v2.json`,
 `runs/hm_clientes/f3h6_cluster/resultado_{val,test}.json`; reprodução:
-`scripts/fila_colab_f3h6a.sh`. As tarefas complementares (próxima online,
-LTV e próxima categoria com H do v2) seguem na fila e entram aqui ao fim.
+`scripts/fila_colab_f3h6a.sh`.
+
+**Tarefas complementares (H do v2 contra T, teste, bootstrap por cliente,
+B = 300).** Não fazem parte do critério da F3-H6; mostram se o H do v2 fica
+empatado também fora dos quatro problemas.
+
+| Tarefa | T | H (T + PCA-32 do v2) | H − T [IC 95%] | Leitura |
+| --- | --- | --- | --- | --- |
+| Próxima compra online (AUC) | 0,8448 | 0,8447 | −0,0001 [−0,0001; −0,0001] | empate |
+| LTV 90 dias (acurácia) | 0,3991 | 0,3988 | −0,0004 [−0,0008; −0,0000] | empate |
+| Próxima categoria (acurácia) | 0,3727 | 0,3734 | +0,0007 [+0,0005; +0,0009] | empate (ganho pequeno, abaixo da margem) |
+
+As três diferenças são significativas no bootstrap, mas ficam muito dentro da
+margem de 0,01: o vetor do v2 nem atrapalha nem acrescenta de forma útil
+quando entra ao lado das features tradicionais. A HPO da próxima categoria
+(10 classes) levou 6.545 s, a mais cara da bateria. Arquivos:
+`runs/hm_clientes/f3h6/bootstrap_complemento.json`,
+`runs/hm_clientes/gbdt/f3h6_hibrido_v2_lgbm/relatorio.json`; reprodução:
+`scripts/fila_colab_f3h6c.sh`.
 
 ### F3-H7, camada 2 — Synerise: navegação real em volume (21–22/11)
 
