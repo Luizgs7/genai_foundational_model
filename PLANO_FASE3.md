@@ -534,6 +534,9 @@ Princípios:
   E e H como na Synerise, com e sem as fontes além da venda, 3 sementes. O
   critério é só o de M2 (cada fonte por adapter e YAML, sem mudar o motor);
   os números são relatados, sem veredito de M1, porque o volume é pequeno.
+- **Resultado da camada 3 (22/11): M2 atendido** nos quatro formatos, sem mudar
+  o motor. Em churn, H empata com T (−0,0007); as tarefas de nota e de atraso
+  ficam perto do acaso em todos os braços. Ver `EXPERIMENTOS_HM.md`.
 - **Reserva.** Se as camadas 1 e 2 derem respostas opostas, o MBD (transações,
   geolocalização e diálogos de atendimento dos mesmos clientes de um banco)
   entra como segunda base real com vários tipos de dado. É uma base nova e

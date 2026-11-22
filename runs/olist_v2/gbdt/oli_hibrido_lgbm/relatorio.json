@@ -1,0 +1,520 @@
+{
+  "features": "hibrido",
+  "modelo": "lgbm",
+  "n_features": 174,
+  "sem_cadastro": false,
+  "sem_prefixo": [],
+  "emb": "emb_v2",
+  "pca_k": 32,
+  "tarefas": {
+    "churn": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 46334,
+      "n_val": 9332,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.0427832198219104,
+        "num_leaves": 15,
+        "min_child_samples": 50,
+        "feature_fraction": 0.8851335942830624,
+        "bagging_fraction": 0.6915729510334341,
+        "lambda_l1": 0.0007242990450546699,
+        "lambda_l2": 0.047605264247336236
+      },
+      "hpo_melhor_valor": 0.8863052158196589,
+      "val_resumo": {
+        "auc": {
+          "media": 0.8854578296317991,
+          "desvio": 0.0004002577306007468
+        },
+        "pr_auc": {
+          "media": 0.3935661222128231,
+          "desvio": 0.0035214967307092304
+        }
+      },
+      "baseline_causal_val_auc": 0.8442452541494554,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 149,
+          "val": {
+            "auc": 0.8856380643067229,
+            "pr_auc": 0.3919495472889735
+          },
+          "test": {
+            "auc": 0.8763486293331896,
+            "pr_auc": 0.40670616686986777
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 129,
+          "val": {
+            "auc": 0.8849030124204134,
+            "pr_auc": 0.39029501965009
+          },
+          "test": {
+            "auc": 0.875622138294889,
+            "pr_auc": 0.4039556953478236
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 116,
+          "val": {
+            "auc": 0.885832412168261,
+            "pr_auc": 0.398453799699406
+          },
+          "test": {
+            "auc": 0.8754673798534712,
+            "pr_auc": 0.4015758871736266
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.12365524045746226,
+      "top_importancia": [
+        [
+          "pagamento_total_90d",
+          0.18908902996326468
+        ],
+        [
+          "cestas_30d",
+          0.1558276116555115
+        ],
+        [
+          "pagamento_total_30d",
+          0.15502374034194089
+        ],
+        [
+          "cestas_90d",
+          0.08358489766672773
+        ],
+        [
+          "gap_medio",
+          0.043244764393767
+        ],
+        [
+          "ultima_cesta_grupo_dominante",
+          0.03491486046331
+        ],
+        [
+          "itens_90d",
+          0.0323968858696131
+        ],
+        [
+          "emb_pca_0",
+          0.02221371395676663
+        ],
+        [
+          "pagamento_tipo_credit_card_90d",
+          0.01788429426067193
+        ],
+        [
+          "gap_ultimo",
+          0.015377287836668245
+        ],
+        [
+          "mes",
+          0.01346458910625505
+        ],
+        [
+          "pagamento_tipo_credit_card_30d",
+          0.008261188577676515
+        ],
+        [
+          "taxa_recompra_item",
+          0.007546472265736299
+        ],
+        [
+          "avaliacao_dias_desde_ultimo",
+          0.005788090405714606
+        ],
+        [
+          "emb_pca_3",
+          0.005596186227792317
+        ],
+        [
+          "entrega_dias_atraso_atual",
+          0.0055746701383495925
+        ],
+        [
+          "emb_pca_4",
+          0.005036741203594105
+        ],
+        [
+          "emb_pca_22",
+          0.00487255878745962
+        ],
+        [
+          "emb_pca_12",
+          0.004763556597395523
+        ],
+        [
+          "avaliacao_nota_5_30d",
+          0.004339020549330974
+        ],
+        [
+          "churn_baseline_feat",
+          0.004309676955525684
+        ],
+        [
+          "emb_pca_13",
+          0.004252868129218804
+        ],
+        [
+          "emb_pca_16",
+          0.004186617963993371
+        ],
+        [
+          "avaliacao_total_90d",
+          0.004153899039347539
+        ],
+        [
+          "gap_desvio",
+          0.004037371538350063
+        ]
+      ],
+      "tempo_segundos": 549.9304807186127
+    },
+    "risco_review_negativo": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 44956,
+      "n_val": 8981,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.04067284695295671,
+        "num_leaves": 19,
+        "min_child_samples": 27,
+        "feature_fraction": 0.7545213141155136,
+        "bagging_fraction": 0.9266621703587206,
+        "lambda_l1": 0.4300327601550966,
+        "lambda_l2": 0.036786426823778966
+      },
+      "hpo_melhor_valor": 0.5880766210323158,
+      "val_resumo": {
+        "auc": {
+          "media": 0.5818802906501611,
+          "desvio": 0.0011308956943805542
+        },
+        "pr_auc": {
+          "media": 0.1675174512813724,
+          "desvio": 0.002227491370819613
+        }
+      },
+      "baseline_causal_val_auc": 0.572376892007953,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 75,
+          "val": {
+            "auc": 0.5829445487369964,
+            "pr_auc": 0.16910080130561533
+          },
+          "test": {
+            "auc": 0.56273521109962,
+            "pr_auc": 0.14083915639981304
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 70,
+          "val": {
+            "auc": 0.5823820395738204,
+            "pr_auc": 0.16908423524412441
+          },
+          "test": {
+            "auc": 0.561238637874803,
+            "pr_auc": 0.13864808405797116
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 97,
+          "val": {
+            "auc": 0.5803142836396666,
+            "pr_auc": 0.16436731729437748
+          },
+          "test": {
+            "auc": 0.56434639019028,
+            "pr_auc": 0.13616566374499867
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.24707228928986533,
+      "top_importancia": [
+        [
+          "ultima_cesta_grupo_dominante",
+          0.13121750495881326
+        ],
+        [
+          "risco_review_negativo_baseline_feat",
+          0.130253530376475
+        ],
+        [
+          "mes",
+          0.08732548498160524
+        ],
+        [
+          "entrega_dias_atraso_media_90d",
+          0.044433044125403255
+        ],
+        [
+          "risco_atraso_entrega_baseline_feat",
+          0.03100813807001382
+        ],
+        [
+          "emb_pca_1",
+          0.024691418734669904
+        ],
+        [
+          "tendencia_90_365",
+          0.01933591755005652
+        ],
+        [
+          "seller_state_cod",
+          0.016051101034227563
+        ],
+        [
+          "tempo_cliente_dias",
+          0.015415580176744699
+        ],
+        [
+          "emb_pca_20",
+          0.01155569888914524
+        ],
+        [
+          "preco_max",
+          0.01141892696554966
+        ],
+        [
+          "emb_pca_17",
+          0.010763213460435154
+        ],
+        [
+          "emb_pca_3",
+          0.010708253123906497
+        ],
+        [
+          "emb_pca_15",
+          0.01044057790991004
+        ],
+        [
+          "emb_pca_19",
+          0.010374596767808112
+        ],
+        [
+          "gap_max",
+          0.01005917515446144
+        ],
+        [
+          "emb_pca_4",
+          0.009076763758767927
+        ],
+        [
+          "ultima_cesta_preco_relativo",
+          0.009037435507317402
+        ],
+        [
+          "emb_pca_5",
+          0.008787172260643019
+        ],
+        [
+          "emb_pca_12",
+          0.008244415953346705
+        ],
+        [
+          "valor_365d",
+          0.008237358984645204
+        ],
+        [
+          "ultima_cesta_valor",
+          0.008167031423326832
+        ],
+        [
+          "emb_pca_31",
+          0.00811187259500021
+        ],
+        [
+          "emb_pca_23",
+          0.007770737670845577
+        ],
+        [
+          "emb_pca_9",
+          0.007698482894052081
+        ]
+      ],
+      "tempo_segundos": 427.20501351356506
+    },
+    "risco_atraso_entrega": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 44463,
+      "n_val": 8933,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.17939414166569193,
+        "num_leaves": 64,
+        "min_child_samples": 32,
+        "feature_fraction": 0.7404576779710377,
+        "bagging_fraction": 0.5753487157755361,
+        "lambda_l1": 0.03849705703380778,
+        "lambda_l2": 0.2457722243605041
+      },
+      "hpo_melhor_valor": 0.5230550807677492,
+      "val_resumo": {
+        "auc": {
+          "media": 0.49505013528569153,
+          "desvio": 0.016093874966965065
+        },
+        "pr_auc": {
+          "media": 0.05861797684705627,
+          "desvio": 0.0027210480850935834
+        }
+      },
+      "baseline_causal_val_auc": 0.5351387572169669,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 1,
+          "val": {
+            "auc": 0.5174362842452719,
+            "pr_auc": 0.06244226812825916
+          },
+          "test": {
+            "auc": 0.47495951199718794,
+            "pr_auc": 0.052626048473700456
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 2,
+          "val": {
+            "auc": 0.48741577802535946,
+            "pr_auc": 0.057076305455861995
+          },
+          "test": {
+            "auc": 0.4585364368434338,
+            "pr_auc": 0.04950350916918579
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 2,
+          "val": {
+            "auc": 0.4802983435864433,
+            "pr_auc": 0.05633535695704764
+          },
+          "test": {
+            "auc": 0.4622890967253374,
+            "pr_auc": 0.05091479649101001
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.30504549175669265,
+      "top_importancia": [
+        [
+          "mes",
+          0.18325542921357516
+        ],
+        [
+          "entrega_dias_atraso_media_90d",
+          0.1274148040497368
+        ],
+        [
+          "risco_atraso_entrega_baseline_feat",
+          0.04624768337312649
+        ],
+        [
+          "emb_pca_26",
+          0.024364131412219693
+        ],
+        [
+          "ultima_cesta_grupo_dominante",
+          0.023086769381090794
+        ],
+        [
+          "emb_pca_3",
+          0.01994355633151645
+        ],
+        [
+          "avaliacao_nota_1_90d",
+          0.017266074973844137
+        ],
+        [
+          "emb_pca_4",
+          0.016881008453505153
+        ],
+        [
+          "emb_pca_1",
+          0.01629015752676414
+        ],
+        [
+          "preco_relativo_medio",
+          0.015374957085519383
+        ],
+        [
+          "emb_pca_7",
+          0.015320705608702552
+        ],
+        [
+          "entrega_dias_atraso_atual",
+          0.01430024592151952
+        ],
+        [
+          "emb_pca_31",
+          0.014121184565319128
+        ],
+        [
+          "risco_review_negativo_baseline_feat",
+          0.014009713798549312
+        ],
+        [
+          "emb_pca_28",
+          0.013570296786603172
+        ],
+        [
+          "emb_pca_2",
+          0.012788048797042222
+        ],
+        [
+          "emb_pca_25",
+          0.012646578653262732
+        ],
+        [
+          "emb_pca_16",
+          0.012529348192983007
+        ],
+        [
+          "emb_pca_23",
+          0.011153402785599342
+        ],
+        [
+          "emb_pca_20",
+          0.01107537439579056
+        ],
+        [
+          "emb_pca_5",
+          0.01064917549007254
+        ],
+        [
+          "emb_pca_13",
+          0.009932786015060606
+        ],
+        [
+          "valor_7d",
+          0.009889501715253364
+        ],
+        [
+          "emb_pca_24",
+          0.009864367531506463
+        ],
+        [
+          "preco_max",
+          0.009203950875452626
+        ]
+      ],
+      "tempo_segundos": 476.4014632701874
+    }
+  },
+  "frac_treino": 1.0,
+  "semente_amostra": 0
+}

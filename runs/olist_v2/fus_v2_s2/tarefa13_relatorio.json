@@ -1,0 +1,70 @@
+{
+  "n_params": 14155,
+  "n_train": 46334,
+  "n_val": 9332,
+  "n_test": 13399,
+  "melhor_epoca": 36,
+  "metricas_validacao": {
+    "churn": {
+      "auc": 0.8651286530008181
+    },
+    "risco_review_negativo": {
+      "auc": 0.5727702437393251
+    },
+    "risco_atraso_entrega": {
+      "auc": 0.4962250332735908
+    }
+  },
+  "comparacao_com_baseline_validacao": {
+    "churn": {
+      "metrica": "auc",
+      "modelo": 0.8651286530008181,
+      "baseline": 0.8442452541494554,
+      "delta": 0.0208833988513627
+    },
+    "risco_review_negativo": {
+      "metrica": "auc",
+      "modelo": 0.5727702437393251,
+      "baseline": 0.572376892007953,
+      "delta": 0.00039335173137200474
+    },
+    "risco_atraso_entrega": {
+      "metrica": "auc",
+      "modelo": 0.4962250332735908,
+      "baseline": 0.5351387572169669,
+      "delta": -0.03891372394337611
+    }
+  },
+  "metricas_teste": {
+    "churn": {
+      "auc": 0.8471254929961197
+    },
+    "risco_review_negativo": {
+      "auc": 0.557665565812548
+    },
+    "risco_atraso_entrega": {
+      "auc": 0.527038053414675
+    }
+  },
+  "comparacao_com_baseline": {
+    "churn": {
+      "metrica": "auc",
+      "modelo": 0.8471254929961197,
+      "baseline": 0.8261846165865854,
+      "delta": 0.020940876409534348
+    },
+    "risco_review_negativo": {
+      "metrica": "auc",
+      "modelo": 0.557665565812548,
+      "baseline": 0.5699000110659438,
+      "delta": -0.012234445253395787
+    },
+    "risco_atraso_entrega": {
+      "metrica": "auc",
+      "modelo": 0.527038053414675,
+      "baseline": 0.506890185212708,
+      "delta": 0.020147868201967012
+    }
+  },
+  "tempo_total_segundos": 88.96807169914246
+}

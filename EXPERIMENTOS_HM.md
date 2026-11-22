@@ -1117,3 +1117,33 @@ três tarefas. Arquivos: `runs/synerise/syn_bootstrap_test.json`,
 `runs/synerise/syn_cluster/resultado_{val,test}.json`; reprodução:
 `adapters/adapter_synerise.py` (local) e `scripts/fila_colab_synerise.sh`.
 
+### F3-H7, camada 3 — Olist: os quatro formatos em tabelas reais (teste funcional, 22/11)
+
+Entidade = vendedor (3.053; 112 mil linhas de venda em 98 mil pedidos, 2016-09
+a 2018-09). Os quatro formatos do motor v2 entraram só por adapter (95 linhas)
+e YAML (100 linhas): venda (itens, alvo), pagamento e avaliação (eventos),
+entrega (estado: dias de atraso contra a data prometida, vigente até a próxima
+entrega) e a UF do vendedor (atributo fixo). Serialização: 261 mil posições.
+Critério: só o de M2. Os números são relatados sem veredito de M1, porque o
+teste tem 1.358 a 1.585 vendedores.
+
+**M2: atendido.** Nenhuma mudança no motor; o pipeline roda de ponta a ponta
+(pré-treino de 51 s na L4, fusões, LightGBM, clusterização e bootstrap).
+
+| Tarefa (AUC no teste) | T | E | H | O que as fontes além da venda dão a E / T / H |
+| --- | --- | --- | --- | --- |
+| Churn 30 dias | 0,8772 | 0,8471 (−0,030) | 0,8765 (−0,0007 [−0,0021; +0,0005]) | +0,0035* / +0,0024* / +0,0010 |
+| Avaliação negativa no próximo pedido | 0,5645 | 0,5581 (−0,0065) | 0,5642 (−0,0003) | +0,0059 / +0,0019 / −0,0029 |
+| Atraso no próximo pedido | 0,4948 | 0,5125 (+0,018) | 0,4607 (−0,034*) | +0,0096* / +0,0003 / +0,0043 |
+
+\* IC 95% exclui o zero.
+
+Leitura: o histórico do vendedor quase não prevê a nota e o atraso do próximo
+pedido (AUC perto de 0,5 em todos os braços, como o baseline simples). Em
+churn, o padrão das outras bases se repete: H empata com T, E fica abaixo. As
+fontes extras dão pouco (no máximo +0,0035 em churn). Na clusterização, nenhum
+espaço empata com o RFM (H 93%, E 71%; ARI de todos entre 0,45 e 0,61 com tão
+poucos vendedores). Arquivos: `runs/olist_v2/oli_bootstrap_test.json` e
+`runs/olist_v2/oli_cluster/`; reprodução: `adapters/adapter_olist_v2.py` e
+`scripts/fila_colab_olist.sh`.
+

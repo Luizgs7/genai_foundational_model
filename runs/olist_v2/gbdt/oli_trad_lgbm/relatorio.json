@@ -1,0 +1,520 @@
+{
+  "features": "trad",
+  "modelo": "lgbm",
+  "n_features": 142,
+  "sem_cadastro": false,
+  "sem_prefixo": [],
+  "emb": "fusao",
+  "pca_k": 32,
+  "tarefas": {
+    "churn": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 46334,
+      "n_val": 9332,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.021975860536242203,
+        "num_leaves": 26,
+        "min_child_samples": 54,
+        "feature_fraction": 0.8471715414287052,
+        "bagging_fraction": 0.7137413991516874,
+        "lambda_l1": 6.654725438775778,
+        "lambda_l2": 3.2495238937843003
+      },
+      "hpo_melhor_valor": 0.8864626504393104,
+      "val_resumo": {
+        "auc": {
+          "media": 0.8862341500941442,
+          "desvio": 0.00010757026115696659
+        },
+        "pr_auc": {
+          "media": 0.40249346374578915,
+          "desvio": 0.002397798606028167
+        }
+      },
+      "baseline_causal_val_auc": 0.8442452541494554,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 230,
+          "val": {
+            "auc": 0.8861300028688086,
+            "pr_auc": 0.4057997480032149
+          },
+          "test": {
+            "auc": 0.8766158372550246,
+            "pr_auc": 0.40023203126900636
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 229,
+          "val": {
+            "auc": 0.8861901921587706,
+            "pr_auc": 0.40149264097094367
+          },
+          "test": {
+            "auc": 0.8774204563452022,
+            "pr_auc": 0.402628281208428
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 243,
+          "val": {
+            "auc": 0.8863822552548535,
+            "pr_auc": 0.4001880022632089
+          },
+          "test": {
+            "auc": 0.876631437904361,
+            "pr_auc": 0.4018454005641704
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.0,
+      "top_importancia": [
+        [
+          "cestas_30d",
+          0.19400214941165242
+        ],
+        [
+          "pagamento_total_30d",
+          0.17777585565652054
+        ],
+        [
+          "pagamento_total_90d",
+          0.173456524492949
+        ],
+        [
+          "cestas_90d",
+          0.08702121736671646
+        ],
+        [
+          "pagamento_tipo_credit_card_90d",
+          0.048098504221136804
+        ],
+        [
+          "gap_medio",
+          0.04787960532896661
+        ],
+        [
+          "ultima_cesta_grupo_dominante",
+          0.04236702200673643
+        ],
+        [
+          "itens_90d",
+          0.029555944779867598
+        ],
+        [
+          "mes",
+          0.02042532950333773
+        ],
+        [
+          "gap_ultimo",
+          0.012932454329233694
+        ],
+        [
+          "entrega_dias_atraso_atual",
+          0.008324241941977121
+        ],
+        [
+          "entrega_dias_atraso_media_90d",
+          0.0073612889465983124
+        ],
+        [
+          "pagamento_tipo_credit_card_30d",
+          0.006968106731636415
+        ],
+        [
+          "avaliacao_dias_desde_ultimo",
+          0.005716371574811292
+        ],
+        [
+          "taxa_recompra_item",
+          0.005597584571043385
+        ],
+        [
+          "gap_desvio",
+          0.005196699690178882
+        ],
+        [
+          "seller_state_cod",
+          0.005011717164503677
+        ],
+        [
+          "gap_ultimo_sobre_medio",
+          0.004868054321142426
+        ],
+        [
+          "itens_distintos",
+          0.0048237388127273136
+        ],
+        [
+          "avaliacao_total_30d",
+          0.004495959830899433
+        ],
+        [
+          "avaliacao_nota_5_30d",
+          0.0043631536158872325
+        ],
+        [
+          "dia_semana",
+          0.00410514501838416
+        ],
+        [
+          "gap_max",
+          0.003937368354026148
+        ],
+        [
+          "risco_review_negativo_baseline_feat",
+          0.003865415861957955
+        ],
+        [
+          "avaliacao_total_90d",
+          0.003819925956818094
+        ]
+      ],
+      "tempo_segundos": 452.72507786750793
+    },
+    "risco_review_negativo": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 44956,
+      "n_val": 8981,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.09969220264189649,
+        "num_leaves": 17,
+        "min_child_samples": 428,
+        "feature_fraction": 0.8023827217708956,
+        "bagging_fraction": 0.6051912805369204,
+        "lambda_l1": 1.4465607560792659e-07,
+        "lambda_l2": 6.900096401402642e-06
+      },
+      "hpo_melhor_valor": 0.5839939491820088,
+      "val_resumo": {
+        "auc": {
+          "media": 0.5744229877742613,
+          "desvio": 0.0018763489779066056
+        },
+        "pr_auc": {
+          "media": 0.1631897363132452,
+          "desvio": 0.0010068004518456724
+        }
+      },
+      "baseline_causal_val_auc": 0.572376892007953,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 28,
+          "val": {
+            "auc": 0.5719075177123902,
+            "pr_auc": 0.16423998972265583
+          },
+          "test": {
+            "auc": 0.5558337056529115,
+            "pr_auc": 0.13460841879253707
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 21,
+          "val": {
+            "auc": 0.5764123894001768,
+            "pr_auc": 0.16349719387260633
+          },
+          "test": {
+            "auc": 0.5646902875136292,
+            "pr_auc": 0.13476213158717606
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 29,
+          "val": {
+            "auc": 0.5749490562102167,
+            "pr_auc": 0.1618320253444735
+          },
+          "test": {
+            "auc": 0.5611077280788278,
+            "pr_auc": 0.13504156340720386
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.0,
+      "top_importancia": [
+        [
+          "ultima_cesta_grupo_dominante",
+          0.19732743755524737
+        ],
+        [
+          "risco_review_negativo_baseline_feat",
+          0.14243688565669296
+        ],
+        [
+          "mes",
+          0.13359028239069412
+        ],
+        [
+          "entrega_dias_atraso_media_90d",
+          0.053781879903105304
+        ],
+        [
+          "risco_atraso_entrega_baseline_feat",
+          0.03617322074428395
+        ],
+        [
+          "entrega_dias_atraso_atual",
+          0.023693646947076406
+        ],
+        [
+          "tendencia_90_365",
+          0.021842191137969934
+        ],
+        [
+          "preco_max",
+          0.021346060887681945
+        ],
+        [
+          "seller_state_cod",
+          0.01882136260549671
+        ],
+        [
+          "itens_medio_cesta",
+          0.017769332528744984
+        ],
+        [
+          "ultima_cesta_valor",
+          0.016812796980081625
+        ],
+        [
+          "tempo_cliente_dias",
+          0.016680541048612305
+        ],
+        [
+          "avaliacao_dias_desde_ultimo",
+          0.012250863841248166
+        ],
+        [
+          "gap_max",
+          0.01026791380064391
+        ],
+        [
+          "gap_ultimo_sobre_medio",
+          0.010013815222547982
+        ],
+        [
+          "ultima_cesta_preco_relativo",
+          0.009854662262913283
+        ],
+        [
+          "gap_desvio",
+          0.009294738430454811
+        ],
+        [
+          "valor_total",
+          0.008782091117034745
+        ],
+        [
+          "gap_medio",
+          0.008278871803436085
+        ],
+        [
+          "tendencia_30_90",
+          0.007763635495182296
+        ],
+        [
+          "avaliacao_nota_5_30d",
+          0.007452099750390205
+        ],
+        [
+          "preco_relativo_medio",
+          0.006750647334546878
+        ],
+        [
+          "valor_7d",
+          0.0061078400425992945
+        ],
+        [
+          "itens_distintos",
+          0.0060932299223669445
+        ],
+        [
+          "dia_semana",
+          0.005976627705817723
+        ]
+      ],
+      "tempo_segundos": 310.5093083381653
+    },
+    "risco_atraso_entrega": {
+      "tipo": "binaria",
+      "classes": null,
+      "n_treino": 44463,
+      "n_val": 8933,
+      "melhores_hiperparametros": {
+        "learning_rate": 0.133367552982581,
+        "num_leaves": 72,
+        "min_child_samples": 203,
+        "feature_fraction": 0.4081375249050825,
+        "bagging_fraction": 0.7716836976723682,
+        "lambda_l1": 2.855719094395482e-08,
+        "lambda_l2": 0.223429412419946
+      },
+      "hpo_melhor_valor": 0.5231201286194401,
+      "val_resumo": {
+        "auc": {
+          "media": 0.511137637717297,
+          "desvio": 0.004444342113515708
+        },
+        "pr_auc": {
+          "media": 0.059009634520394184,
+          "desvio": 0.002012465973014595
+        }
+      },
+      "baseline_causal_val_auc": 0.5351387572169669,
+      "por_semente": [
+        {
+          "seed": 0,
+          "n_arvores": 1,
+          "val": {
+            "auc": 0.5056499364514783,
+            "pr_auc": 0.05863648133840052
+          },
+          "test": {
+            "auc": 0.5592775471760429,
+            "pr_auc": 0.061382263634242665
+          }
+        },
+        {
+          "seed": 1,
+          "n_arvores": 3,
+          "val": {
+            "auc": 0.5112277897339728,
+            "pr_auc": 0.056752730711246924
+          },
+          "test": {
+            "auc": 0.45476836910903984,
+            "pr_auc": 0.04642569086607133
+          }
+        },
+        {
+          "seed": 2,
+          "n_arvores": 1,
+          "val": {
+            "auc": 0.5165351869664404,
+            "pr_auc": 0.06163969151153512
+          },
+          "test": {
+            "auc": 0.5011591275823266,
+            "pr_auc": 0.052387932540112786
+          }
+        }
+      ],
+      "participacao_importancia_embedding": 0.0,
+      "top_importancia": [
+        [
+          "entrega_dias_atraso_media_90d",
+          0.18648089184313954
+        ],
+        [
+          "mes",
+          0.1742833520144382
+        ],
+        [
+          "entrega_dias_atraso_atual",
+          0.04647396959623032
+        ],
+        [
+          "ultima_cesta_grupo_dominante",
+          0.042432877345321106
+        ],
+        [
+          "tempo_cliente_dias",
+          0.04066848480509004
+        ],
+        [
+          "risco_review_negativo_baseline_feat",
+          0.032284459014088704
+        ],
+        [
+          "ultima_cesta_valor",
+          0.024484112126495046
+        ],
+        [
+          "gap_desvio",
+          0.018799795690914473
+        ],
+        [
+          "seller_state_cod",
+          0.01664443079437887
+        ],
+        [
+          "cestas_365d",
+          0.01608849744133554
+        ],
+        [
+          "avaliacao_nota_1_90d",
+          0.01553915807050626
+        ],
+        [
+          "preco_relativo_medio",
+          0.014673131570531631
+        ],
+        [
+          "preco_medio_item",
+          0.014464874999443893
+        ],
+        [
+          "valor_medio_cesta",
+          0.01439789017528558
+        ],
+        [
+          "itens_medio_cesta",
+          0.013707495951545077
+        ],
+        [
+          "avaliacao_nota_5_30d",
+          0.013595327326820473
+        ],
+        [
+          "pagamento_parcelas_2_30d",
+          0.012318772473206547
+        ],
+        [
+          "valor_30d",
+          0.011875680866742715
+        ],
+        [
+          "cestas_180d",
+          0.011433581734404088
+        ],
+        [
+          "ultima_cesta_preco_relativo",
+          0.011109857960103352
+        ],
+        [
+          "tendencia_30_90",
+          0.010270767301686592
+        ],
+        [
+          "valor_90d",
+          0.008980624247078049
+        ],
+        [
+          "itens_365d",
+          0.008819904120055433
+        ],
+        [
+          "n_cestas",
+          0.008162011529880803
+        ],
+        [
+          "avaliacao_dias_desde_ultimo",
+          0.008089227857267784
+        ]
+      ],
+      "tempo_segundos": 323.5019528865814
+    }
+  },
+  "frac_treino": 1.0,
+  "semente_amostra": 0
+}

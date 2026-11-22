@@ -1,0 +1,317 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 9472,
+    "n_clientes": 1585,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "b": "runs/olist_v2/fus_v2_s*",
+    "metrica_a": 0.8771652297220576,
+    "metrica_b": 0.8471093931260044,
+    "delta": -0.030055836596053154,
+    "ic95": [
+      -0.03933471591733702,
+      -0.022669170737319968
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 9472,
+    "n_clientes": 1585,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_hibrido_lgbm",
+    "metrica_a": 0.8771652297220576,
+    "metrica_b": 0.8764900336187753,
+    "delta": -0.0006751961032822607,
+    "ic95": [
+      -0.002085872418760795,
+      0.0005002896362579167
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 9472,
+    "n_clientes": 1585,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/olist_v2/fus_v2_so_compra_s*",
+    "b": "runs/olist_v2/fus_v2_s*",
+    "metrica_a": 0.8436526012460301,
+    "metrica_b": 0.8471093931260044,
+    "delta": 0.0034567918799742747,
+    "ic95": [
+      0.0015822840431044317,
+      0.005616092898414565
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 9472,
+    "n_clientes": 1585,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_trad_so_compra_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "metrica_a": 0.8747789543995516,
+    "metrica_b": 0.8771652297220576,
+    "delta": 0.002386275322506015,
+    "ic95": [
+      0.0013093022187731147,
+      0.003673448254553551
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 9472,
+    "n_clientes": 1585,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_hibrido_so_compra_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_hibrido_lgbm",
+    "metrica_a": 0.8755304064767906,
+    "metrica_b": 0.8764900336187753,
+    "delta": 0.0009596271419847202,
+    "ic95": [
+      -0.0004731920083861528,
+      0.0025388737264227077
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "risco_review_negativo",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11561,
+    "n_clientes": 1358,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "b": "runs/olist_v2/fus_v2_s*",
+    "metrica_a": 0.5645305568338262,
+    "metrica_b": 0.5580594512248597,
+    "delta": -0.006471105608966576,
+    "ic95": [
+      -0.018618347253511254,
+      0.006729422666990173
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "risco_review_negativo",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11561,
+    "n_clientes": 1358,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_hibrido_lgbm",
+    "metrica_a": 0.5645305568338262,
+    "metrica_b": 0.5642109360225809,
+    "delta": -0.0003196208112453691,
+    "ic95": [
+      -0.006876492115743702,
+      0.00674995541893678
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "risco_review_negativo",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11561,
+    "n_clientes": 1358,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/olist_v2/fus_v2_so_compra_s*",
+    "b": "runs/olist_v2/fus_v2_s*",
+    "metrica_a": 0.5522058619525109,
+    "metrica_b": 0.5580594512248597,
+    "delta": 0.0058535892723488026,
+    "ic95": [
+      -0.00030240044063727654,
+      0.011260871136442616
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "risco_review_negativo",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11561,
+    "n_clientes": 1358,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_trad_so_compra_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "metrica_a": 0.5626271826139034,
+    "metrica_b": 0.5645305568338262,
+    "delta": 0.0019033742199228154,
+    "ic95": [
+      -0.00537387399748428,
+      0.008622004971249899
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "risco_review_negativo",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11561,
+    "n_clientes": 1358,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_hibrido_so_compra_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_hibrido_lgbm",
+    "metrica_a": 0.5671408598971792,
+    "metrica_b": 0.5642109360225809,
+    "delta": -0.002929923874598339,
+    "ic95": [
+      -0.009436198071686077,
+      0.005106006227432126
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "risco_atraso_entrega",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11493,
+    "n_clientes": 1359,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "b": "runs/olist_v2/fus_v2_s*",
+    "metrica_a": 0.4947942100681543,
+    "metrica_b": 0.5125123557707052,
+    "delta": 0.01771814570255087,
+    "ic95": [
+      -0.008309973817341113,
+      0.04347116790603697
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "risco_atraso_entrega",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11493,
+    "n_clientes": 1359,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_hibrido_lgbm",
+    "metrica_a": 0.4947942100681543,
+    "metrica_b": 0.46070584772972295,
+    "delta": -0.03408836233843138,
+    "ic95": [
+      -0.05889370856714666,
+      -0.011395864081625746
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "risco_atraso_entrega",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11493,
+    "n_clientes": 1359,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/olist_v2/fus_v2_so_compra_s*",
+    "b": "runs/olist_v2/fus_v2_s*",
+    "metrica_a": 0.502949755951412,
+    "metrica_b": 0.5125123557707052,
+    "delta": 0.009562599819293194,
+    "ic95": [
+      0.0013018734342108182,
+      0.016654836558710594
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "risco_atraso_entrega",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11493,
+    "n_clientes": 1359,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_trad_so_compra_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_trad_lgbm",
+    "metrica_a": 0.49449467846687,
+    "metrica_b": 0.4947942100681543,
+    "delta": 0.00029953160128431966,
+    "ic95": [
+      -0.02647369106475157,
+      0.02627024708251289
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "risco_atraso_entrega",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 11493,
+    "n_clientes": 1359,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/olist_v2/gbdt/oli_hibrido_so_compra_lgbm",
+    "b": "runs/olist_v2/gbdt/oli_hibrido_lgbm",
+    "metrica_a": 0.45643860980771,
+    "metrica_b": 0.46070584772972295,
+    "delta": 0.004267237922012945,
+    "ic95": [
+      -0.023889438197995008,
+      0.031253454285068254
+    ],
+    "B": 300,
+    "significativo": false
+  }
+]
