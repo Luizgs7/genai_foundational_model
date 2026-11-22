@@ -520,6 +520,11 @@ Princípios:
     um problema por mais que a margem (E completo − E só compra, IC 95%
     acima da margem), e E ou H empata com T com todas as fontes. O controle
     da camada 1 também roda: o quanto T ganha com a navegação.
+- **Resultado da camada 2 (22/11).** M2 atendido. M1: a navegação melhora E em
+  churn por mais que a margem (+0,022), a primeira parte do critério; mas o
+  empate com T só sai do H nos três problemas supervisionados, e a
+  clusterização não empata (H 92% do RFM com ARI 0,55; E com navegação, 36%). A
+  navegação ajuda T tanto quanto E (+0,027 em churn). Ver `EXPERIMENTOS_HM.md`.
 - **Reserva.** Se as camadas 1 e 2 derem respostas opostas, o MBD (transações,
   geolocalização e diálogos de atendimento dos mesmos clientes de um banco)
   entra como segunda base real com vários tipos de dado. É uma base nova e

@@ -1,0 +1,317 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/synerise/gbdt/syn_trad_lgbm",
+    "b": "runs/synerise/fus_v2_s*",
+    "metrica_a": 0.7644996881468668,
+    "metrica_b": 0.7478870389717702,
+    "delta": -0.016612649175096528,
+    "ic95": [
+      -0.017907949083014345,
+      -0.015369474704549036
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_trad_lgbm",
+    "b": "runs/synerise/gbdt/syn_hibrido_lgbm",
+    "metrica_a": 0.7644996881468668,
+    "metrica_b": 0.7643374352419784,
+    "delta": -0.0001622529048883603,
+    "ic95": [
+      -0.0009426480762960154,
+      0.000596872230285089
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/synerise/fus_v2_so_compra_s*",
+    "b": "runs/synerise/fus_v2_s*",
+    "metrica_a": 0.7260348954467475,
+    "metrica_b": 0.7478870389717702,
+    "delta": 0.021852143525022738,
+    "ic95": [
+      0.020591960402071584,
+      0.023097524200990014
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_trad_so_compra_lgbm",
+    "b": "runs/synerise/gbdt/syn_trad_lgbm",
+    "metrica_a": 0.7370618151162169,
+    "metrica_b": 0.7644996881468668,
+    "delta": 0.027437873030649818,
+    "ic95": [
+      0.025985142438568216,
+      0.02889624638836334
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_hibrido_so_compra_lgbm",
+    "b": "runs/synerise/gbdt/syn_hibrido_lgbm",
+    "metrica_a": 0.740110785505668,
+    "metrica_b": 0.7643374352419784,
+    "delta": 0.02422664973631039,
+    "ic95": [
+      0.0226191791310865,
+      0.025852461680534088
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 110255,
+    "n_clientes": 69854,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/synerise/gbdt/syn_trad_lgbm",
+    "b": "runs/synerise/fus_v2_s*",
+    "metrica_a": 0.7810711532356809,
+    "metrica_b": 0.7741689719287107,
+    "delta": -0.006902181306970179,
+    "ic95": [
+      -0.007911515969587724,
+      -0.0058451456858705925
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 110255,
+    "n_clientes": 69854,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_trad_lgbm",
+    "b": "runs/synerise/gbdt/syn_hibrido_lgbm",
+    "metrica_a": 0.7810711532356809,
+    "metrica_b": 0.7814067389234048,
+    "delta": 0.00033558568772396047,
+    "ic95": [
+      -5.915539706284056e-05,
+      0.0006876404562288413
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 110255,
+    "n_clientes": 69854,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/synerise/fus_v2_so_compra_s*",
+    "b": "runs/synerise/fus_v2_s*",
+    "metrica_a": 0.7671851616706725,
+    "metrica_b": 0.7741689719287107,
+    "delta": 0.006983810258038181,
+    "ic95": [
+      0.006222624845089816,
+      0.007592734671772874
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 110255,
+    "n_clientes": 69854,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_trad_so_compra_lgbm",
+    "b": "runs/synerise/gbdt/syn_trad_lgbm",
+    "metrica_a": 0.780808126615573,
+    "metrica_b": 0.7810711532356809,
+    "delta": 0.000263026620107909,
+    "ic95": [
+      -6.358723879847927e-05,
+      0.000557298054103616
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "next_category",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 110255,
+    "n_clientes": 69854,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_hibrido_so_compra_lgbm",
+    "b": "runs/synerise/gbdt/syn_hibrido_lgbm",
+    "metrica_a": 0.7805450999954651,
+    "metrica_b": 0.7814067389234048,
+    "delta": 0.0008616389279397785,
+    "ic95": [
+      0.0004520296931800921,
+      0.0012549292085157005
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_30d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/synerise/gbdt/syn_trad_lgbm",
+    "b": "runs/synerise/fus_v2_s*",
+    "metrica_a": 0.8631588501980193,
+    "metrica_b": 0.848358756562824,
+    "delta": -0.0148000936351953,
+    "ic95": [
+      -0.015567327321656495,
+      -0.013856154475100288
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_30d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_trad_lgbm",
+    "b": "runs/synerise/gbdt/syn_hibrido_lgbm",
+    "metrica_a": 0.8631588501980193,
+    "metrica_b": 0.8631779594215638,
+    "delta": 1.910922354453337e-05,
+    "ic95": [
+      -0.00034701661820701614,
+      0.0005052403134492761
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "ltv_30d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 6,
+    "a": "runs/synerise/fus_v2_so_compra_s*",
+    "b": "runs/synerise/fus_v2_s*",
+    "metrica_a": 0.8442837146419648,
+    "metrica_b": 0.848358756562824,
+    "delta": 0.004075041920859168,
+    "ic95": [
+      0.003436001090191007,
+      0.004744573863781315
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_30d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_trad_so_compra_lgbm",
+    "b": "runs/synerise/gbdt/syn_trad_lgbm",
+    "metrica_a": 0.8627527791976992,
+    "metrica_b": 0.8631588501980193,
+    "delta": 0.00040607100032008514,
+    "ic95": [
+      -7.649022164168962e-05,
+      0.0008552261931740492
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "ltv_30d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 209323,
+    "n_clientes": 181232,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/synerise/gbdt/syn_hibrido_so_compra_lgbm",
+    "b": "runs/synerise/gbdt/syn_hibrido_lgbm",
+    "metrica_a": 0.8629725352684607,
+    "metrica_b": 0.8631779594215638,
+    "delta": 0.00020542415310309536,
+    "ic95": [
+      -0.00026521869186163505,
+      0.000788282379640903
+    ],
+    "B": 300,
+    "significativo": false
+  }
+]

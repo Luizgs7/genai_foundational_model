@@ -1051,3 +1051,69 @@ Arquivos: `runs/hm_clientes/f3h6/bootstrap_test.json`,
 `scripts/fila_colab_f3h6a.sh`. As tarefas complementares (próxima online,
 LTV e próxima categoria com H do v2) seguem na fila e entram aqui ao fim.
 
+### F3-H7, camada 2 — Synerise: navegação real em volume (21–22/11)
+
+Base do RecSys Challenge 2025 (arquivo bruto, 23/06 a 08/12/2022; CC BY-NC
+4.0). Os 909 mil clientes com compra e todos os eventos deles: 1,42 milhão de
+cestas, 5,2 milhões de eventos de carrinho, 5,4 milhões de buscas e 50 milhões
+de visitas de página. No motor v2, 11,9 milhões de posições (7,4 milhões são
+sessões de visita). Desenho registrado em `PLANO_FASE3.md` antes de rodar.
+Teste: os últimos 56 dias; validação: os 28 anteriores.
+
+| Problema | T (LightGBM) | E (vetor v2 + fusão) | H (T + vetor) | E − T | H − T |
+| --- | --- | --- | --- | --- | --- |
+| Churn 30 dias (AUC) | 0,7645 | 0,7479 | 0,7643 | −0,0166 [−0,0179; −0,0154] | −0,0002 [−0,0009; +0,0006] |
+| Próxima categoria (accuracy) | 0,7811 | 0,7742 | 0,7814 | −0,0069 [−0,0079; −0,0058] | +0,0003 [−0,0001; +0,0007] |
+| LTV 30 dias (accuracy) | 0,8632 | 0,8484 | 0,8632 | −0,0148 [−0,0156; −0,0139] | +0,0000 [−0,0003; +0,0005] |
+| Clusterização (índice; ARI) | RFM 0,0573; 0,963 | 0,0208 (36%); 0,968 | 0,0528 (92%); 0,552 | não empata | não empata |
+
+O que a navegação (carrinho, busca e visita) acrescenta, com o braço só de compras como referência:
+
+| Problema | E | T (controle) | H |
+| --- | --- | --- | --- |
+| Churn (AUC) | **+0,0219** [+0,0206; +0,0231] | +0,0274 [+0,0260; +0,0289] | +0,0242 [+0,0226; +0,0259] |
+| Próxima categoria | +0,0070 [+0,0062; +0,0076] | +0,0003 | +0,0009 |
+| LTV | +0,0041 [+0,0034; +0,0047] | +0,0004 | +0,0002 |
+| Clusterização (índice) | −0,029 (0,0208 contra 0,0499) | — | +0,0055 |
+
+**Veredito.**
+
+- **M2: atendido.** As quatro fontes entraram por adapter (103 linhas, só
+  leitura e filtros) e YAML (101 linhas), sem mudança no motor. Duas correções
+  genéricas saíram do caminho: a linha de compra sem item do catálogo não vira
+  alvo de item na validação (o catálogo do modelo é cortado nos 100 mil SKUs
+  mais frequentes), e o GBDT cria a pasta do cache do PCA.
+- **M1, primeira parte: atendida.** A navegação melhora E em churn por mais que
+  a margem (+0,022, IC inteiro acima de 0,01). É a primeira vez, nas três bases,
+  que retirar uma fonte derruba o vetor por mais que a margem.
+- **M1, segunda parte: não atendida.** H empata com T nos três problemas
+  supervisionados (diferenças de no máximo 0,0003), e E empata só na próxima
+  categoria. Na clusterização, nenhum espaço aprendido empata: H chega a 92% do
+  RFM com estabilidade baixa (ARI 0,55), e E com todas as fontes cai para 36%.
+
+Leitura:
+
+1. **A navegação vale tanto para T quanto para E.** Em churn, T ganha +0,027 com
+   os agregados genéricos das três fontes, e E ganha +0,022. O ganho é real, mas
+   não é exclusivo da representação aprendida: os agregados por YAML já capturam
+   a navegação.
+2. **Onde a navegação ajuda só o E, o efeito é pequeno.** Próxima categoria
+   (+0,007) e LTV (+0,004) melhoram em E e não mudam em T, mas ficam abaixo da
+   margem.
+3. **A navegação atrapalha a clusterização pelo vetor.** O vetor com as 7,4
+   milhões de sessões de visita organiza os clientes pelo jeito de navegar, e os
+   segmentos explicam menos os desfechos de compra (36% do RFM contra 87% sem a
+   navegação). O vetor só de compras fica perto do RFM e é o mais estável
+   (ARI 0,986).
+4. **Limitação do desenho.** Com 79% de churn em 30 dias, as faixas de gasto do
+   LTV colapsaram em duas (gastou ou não), e o LTV virou quase o complemento do
+   churn. A próxima categoria tem 72% de "outras", o que comprime as diferenças.
+   O pré-treino com todas as fontes sobreajustou a partir da época 3 (a melhor
+   foi a 2); o só de compras melhorou até a 7.
+
+Custo (L4 e CPU do Colab): pré-treino 27 min com todas as fontes e 3 min só com
+compras; fusão ~16 min por semente; HPO do LightGBM 2,7 h (T) e 3,8 h (H) nas
+três tarefas. Arquivos: `runs/synerise/syn_bootstrap_test.json`,
+`runs/synerise/syn_cluster/resultado_{val,test}.json`; reprodução:
+`adapters/adapter_synerise.py` (local) e `scripts/fila_colab_synerise.sh`.
+
