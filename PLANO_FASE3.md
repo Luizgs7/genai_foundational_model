@@ -525,6 +525,15 @@ Princípios:
   empate com T só sai do H nos três problemas supervisionados, e a
   clusterização não empata (H 92% do RFM com ARI 0,55; E com navegação, 36%). A
   navegação ajuda T tanto quanto E (+0,027 em churn). Ver `EXPERIMENTOS_HM.md`.
+- **Camada 3, Olist: como roda (registrado em 22/11, antes de rodar).**
+  Entidade = vendedor (3 mil; 112 mil linhas de venda, 2016-09 a 2018-09). Os
+  quatro formatos: venda (itens, alvo), pagamento e avaliação (eventos),
+  entrega (estado: dias de atraso contra a data prometida) e a UF do vendedor
+  (atributo fixo). Tarefas do config antigo (`olist_sellers.yaml`): churn em
+  30 dias, risco de avaliação negativa e risco de atraso no próximo pedido. T,
+  E e H como na Synerise, com e sem as fontes além da venda, 3 sementes. O
+  critério é só o de M2 (cada fonte por adapter e YAML, sem mudar o motor);
+  os números são relatados, sem veredito de M1, porque o volume é pequeno.
 - **Reserva.** Se as camadas 1 e 2 derem respostas opostas, o MBD (transações,
   geolocalização e diálogos de atendimento dos mesmos clientes de um banco)
   entra como segunda base real com vários tipos de dado. É uma base nova e

@@ -1,0 +1,100 @@
+# Olist (Kaggle, olistbr/brazilian-ecommerce) no motor v2 — F3-H7, camada 3: teste funcional dos quatro formatos.
+# Entidade = vendedor. Dados: adapters/adapter_olist_v2.py. Tarefas iguais às de configs/olist_sellers.yaml.
+nome: olist_v2
+entidade_label: vendedor
+fonte_canonica: runs/olist_v2/eventos_canonicos.parquet
+
+campos_categoricos:
+  - nome: categoria
+    estrategia: fechado
+  - nome: produto
+    estrategia: top_n_outros
+    top_n: 200
+campos_numericos:
+  - nome: preco
+    agrupar_por: null
+    n_buckets: 10
+  - nome: frete
+    agrupar_por: null
+    n_buckets: 10
+campos_estaticos_categoricos: [seller_state]
+campos_estaticos_numericos: []
+campo_data_nascimento: null
+usa_recencia: true
+usa_mes: true
+ancora: cesta
+
+splits:
+  val_window_days: 60
+  test_window_days: 90
+
+tarefas_downstream:
+  - tipo: churn
+    candidatos_dias: [14, 30, 45]
+    dias_escolhido: 30
+  - tipo: campo_futuro
+    nome: risco_review_negativo
+    campo_fonte: review_score
+    limiar: 2
+    operador: "<="
+  - tipo: campo_futuro
+    nome: risco_atraso_entrega
+    campo_fonte: atraso
+
+features_tradicionais:
+  campo_valor: valor
+  campos_binarios: []
+  campos_composicao: [categoria]
+  max_categorias_composicao: 12
+  campo_item: produto
+  campo_tipo: categoria
+  campo_grupo_preco: categoria
+  janelas_dias: [7, 30, 90, 180, 365]
+  estaticos_frequencia: []
+  fontes_extras: v2
+  janelas_dias_extras: [7, 30, 90]
+
+v2:
+  janela: 512
+  catalogo:
+    item: produto
+    categoricos: [categoria]
+    numericos: []
+  fontes:
+    - nome: venda
+      natureza: itens
+      alvo: true
+      tabela: runs/olist_v2/eventos_canonicos.parquet
+      entidade: entidade_id
+      data: data_evento
+      agrupar_por: [pedido_id]
+      item: produto
+      numericos_linha: [preco, frete]
+      categoricos_linha: []
+      valor_linha: [valor]
+      id_linha: evento_id
+      cabecalho:
+        derivado: true
+        categoricos: []
+        numericos: []
+    - nome: pagamento
+      natureza: evento
+      tabela: dados_olist/preparado/pagamento.parquet
+      entidade: entidade_id
+      data: datahora
+      sessao_minutos: 30
+      categoricos_linha: [tipo, parcelas]
+    - nome: avaliacao
+      natureza: evento
+      tabela: dados_olist/preparado/avaliacao.parquet
+      entidade: entidade_id
+      data: datahora
+      sessao_minutos: 30
+      categoricos_linha: [nota]
+    - nome: entrega
+      natureza: estado
+      tabela: dados_olist/preparado/entrega.parquet
+      entidade: entidade_id
+      data: data
+      numericos: [dias_atraso]
+      categoricos: [atrasou]
