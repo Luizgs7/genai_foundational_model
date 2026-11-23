@@ -631,8 +631,36 @@ vantagem. O custo é o limite prático: 10,3 h de L4 para as quatro tarefas
 por ajuste do LightGBM. Com 50 mil âncoras, o TabPFN já entrega quase tudo
 (0,6081) em uma fração do tempo. Arquivos:
 `runs/hm_clientes/f2h11/resultado_test_tabpfn300k_trad.json`,
-`runs/hm_clientes/gbdt/f2h11_tabpfn_trad_n300000/relatorio.json`. O híbrido
-com 300 mil âncoras está em execução e entra aqui ao fim.
+`runs/hm_clientes/gbdt/f2h11_tabpfn_trad_n300000/relatorio.json`.
+
+**TabPFN híbrido com 300 mil âncoras (23/11).** As 97 features mais o PCA-32
+do embedding H3, mesmo protocolo. Avaliação conjunta de todos os braços de
+300 mil em `runs/hm_clientes/f2h11/resultado_test_tabpfn300k.json`.
+
+| Braço | Churn (AUC) | Próxima online (AUC) | Próxima categoria (acc.) | LTV 90d (acc.) | Média |
+|---|---|---|---|---|---|
+| T — LightGBM completo | 0,8241 | 0,8432 | 0,3645 | 0,3945 | 0,6066 |
+| LightGBM híbrido, 300 mil | 0,8224 | 0,8435 | 0,3649 | 0,3918 | 0,6057 |
+| TabPFN-3.5, 300 mil | 0,8255 | 0,8434 | 0,3703 | 0,3973 | **0,6091** |
+| TabPFN-3.5 híbrido, 50 mil | 0,8252 | 0,8442 | 0,3620 | 0,3989 | 0,6076 |
+| TabPFN-3.5 híbrido, 300 mil | 0,8248 | 0,8444 | 0,3646 | 0,3985 | 0,6081 |
+
+| Comparação | Churn | Próxima online | Próxima categoria | LTV 90d | Média |
+|---|---|---|---|---|---|
+| TabPFN híbrido 300 mil − T | +0,0007 | +0,0013 | +0,0001 | +0,0041 | +0,0015 [+0,0009; +0,0022] |
+| TabPFN híbrido 300 mil − TabPFN 300 mil | −0,0007 | +0,0011 | −0,0057 | +0,0012 | −0,0010 [−0,0016; −0,0005] |
+
+O embedding também não acrescenta ao TabPFN com mais contexto: o híbrido
+empata com o T (+0,0015) e fica um pouco abaixo do TabPFN só com as features
+tradicionais (−0,0010), puxado pela próxima categoria (−0,0057). É o mesmo
+padrão dos 50 mil e do LightGBM. Levou 11,1 h de L4.
+
+**Fechamento da F2-H11.** O critério continua atendido, e agora em todos os
+tamanhos: o TabPFN-3.5 empata com o LightGBM sem HPO, com leve vantagem que
+cresce pouco com o contexto (de +0,0015 com 50 mil para +0,0026 com 300 mil,
+contra o T) e custa muito mais GPU (cerca de 10 h por modo com 300 mil, contra
+23 a 109 min com 50 mil). Na prática, 50 mil âncoras de contexto bastam. O
+vetor do backbone não melhora o TabPFN em nenhum tamanho.
 
 
 ### Motor v2 na H&M — preparo e um defeito achado no primeiro pré-treino (15/11)

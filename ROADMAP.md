@@ -221,7 +221,7 @@ Detalhes em `EXPERIMENTOS_HM.md`.
 
 ---
 
-## Fase 2 do experimento H&M — hipóteses priorizadas (desde 2026-10-22; falta só o TabPFN com 300 mil âncoras)
+## Fase 2 do experimento H&M — hipóteses priorizadas (2026-10-22 a 2026-11-23, concluída)
 
 Prefixo F2 para não confundir com as etapas H0–H10 da fase 1. Toda hipótese responde a uma das duas hipóteses macro do projeto:
 - **M1:** um modelo fundacional próprio de clientes traz benefício real para uma empresa?
@@ -235,7 +235,7 @@ Prefixo F2 para não confundir com as etapas H0–H10 da fase 1. Toda hipótese 
 | F2-H7 | Clientes com pouco histórico (1–3 cestas) | M1 | concluída; sem relevância prática |
 | F2-H3 | Recomendação do próximo artigo (MAP@12) | M1 | concluída; não confirmada (híbrido +1,6%) |
 | F2-H10 | LLM open source com ajuste fino | M1, M2 | concluída em 20/11; principal não atingido (E3a e E3b empatam com o E0, abaixo do GBDT) |
-| F2-H11 | Modelo tabular pré-treinado como régua | M1 | atingida com 10 e 50 mil âncoras (TabPFN e TabICL empatam com o LightGBM); TabPFN com 300 mil em execução no Colab desde 22/11 |
+| F2-H11 | Modelo tabular pré-treinado como régua | M1 | concluída em 23/11; atingida: TabPFN e TabICL empatam com o LightGBM sem HPO; o TabPFN com 300 mil âncoras fica +0,0026 acima do T, a cerca de 10 h de L4 por modo; o embedding não acrescenta |
 
 Resultados em `EXPERIMENTOS_HM.md`. As demais hipóteses da fase 2 foram reorganizadas na fase 3: F2-H4 e F2-H5 viraram a F3-H5 e a F3-H4, a F2-H9 (base da empresa) saiu dos experimentos, porque a empresa recebe só o código no fim, e a F2-H8 (transferência entre empresas) segue adiada. Pesquisa de modelos e análise de impacto: https://claude.ai/artifact/JiMFj6SQn89ixNTJLhMPUn
 
@@ -264,7 +264,6 @@ Plano, com pergunta, desenho e critério de cada hipótese escritos antes de rod
 **Balanço.** M2 está demonstrado: o mesmo motor roda em quatro bases (H&M, sintética B2B, Synerise, Olist) e nos quatro formatos de dado só com adapter e YAML. M1 não está atendido no corte atual. A representação aprendida empata com o ML tradicional quando entra **ao lado** das features tradicionais (H), mas aí não reduz o esforço por problema; sozinha (E), reduz o esforço, mas fica de 0,01 a 0,02 abaixo em AUC e não dá segmentos estáveis.
 
 **Pendências.**
-- TabPFN com 300 mil âncoras (F2-H11), em execução.
 - Revisão completa do artigo com os resultados da fase 3 e as erratas (rótulo de churn e R1).
 - Etapa 4: critérios de entrega do código (seção 7 do `PLANO_FASE3.md`).
 
@@ -283,7 +282,7 @@ Errata e achados metodológicos registrados na fase 3: a censura unilateral do r
 
 ## Ordem de execução recomendada
 
-`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (✅) → 8 (✅) → 9 (✅) → 11 (✅) → 12 (✅) → 13 (✅) → H&M H0–H10 (✅) → fase 2 (✅, menos o TabPFN de 300 mil) → fase 3 (✅ etapas 0 a 3) → entrega do código → 10`
+`7 (✅) → 4 (✅) → 5 (✅) → 3 (✅) → 6 (✅) → 8 (✅) → 9 (✅) → 11 (✅) → 12 (✅) → 13 (✅) → H&M H0–H10 (✅) → fase 2 (✅) → fase 3 (✅ etapas 0 a 3) → entrega do código → 10`
 
 ## Protocolo de execução
 
