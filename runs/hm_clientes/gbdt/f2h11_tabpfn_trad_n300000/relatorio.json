@@ -1,0 +1,24 @@
+{
+ "modelo": "tabpfn",
+ "n": 300000,
+ "features": 97,
+ "tarefas": {
+  "churn": {
+   "n_contexto": 199146,
+   "segundos": 9995.5
+  },
+  "proxima_online": {
+   "n_contexto": 182417,
+   "segundos": 8603.0
+  },
+  "next_category": {
+   "n_contexto": 182417,
+   "segundos": 8602.6
+  },
+  "ltv_90d": {
+   "n_contexto": 199146,
+   "segundos": 9980.4
+  }
+ },
+ "segundos": 37182.2
+}

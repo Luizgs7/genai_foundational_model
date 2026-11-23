@@ -599,13 +599,40 @@ com poucos rótulos. O embedding H3 não acrescenta nada ao TabPFN (híbrido
 - O TabICL morreu por falta de RAM (52 GB) com 199 mil âncoras, duas vezes, e
   com 50 mil no híbrido (15/11). Fica registrado como limite: acima de ~50 mil
   âncoras de contexto, ele não cabe numa máquina comum.
-- O TabPFN com 199 mil âncoras não terminou numa sessão; roda no fim da fila,
-  se sobrar tempo, fora desta avaliação.
+- O TabPFN com 199 mil âncoras não terminou numa sessão; rodou no fim da
+  fase 3, com retomada por tarefa (resultado logo abaixo).
 
 **Consequência para a fase 3.** O TabPFN-3.5 entra como cabeça leve candidata
 na bateria (braços E e H), ao lado da fusão e do LightGBM. É coerente com a
 promessa do produto: pergunta nova vira uma cabeça sem ajuste sobre features
 e vetores já calculados. Arquivo: `runs/hm_clientes/f2h11/resultado_test.json`.
+
+**TabPFN com 300 mil âncoras, só com as features tradicionais (22–23/11).**
+Contexto efetivo de 182 a 199 mil âncoras de treino, conforme a tarefa. Mesma
+amostra e mesmo protocolo da tabela acima (bootstrap por cliente, B = 300).
+
+| Braço | Churn (AUC) | Próxima online (AUC) | Próxima categoria (acc.) | LTV 90d (acc.) | Média |
+|---|---|---|---|---|---|
+| T — LightGBM completo | 0,8241 | 0,8432 | 0,3645 | 0,3945 | 0,6066 |
+| LightGBM, 300 mil âncoras | 0,8241 | 0,8432 | 0,3644 | 0,3942 | 0,6065 |
+| TabPFN-3.5, 50 mil | 0,8247 | 0,8440 | 0,3678 | 0,3959 | 0,6081 |
+| **TabPFN-3.5, 300 mil** | 0,8255 | 0,8434 | 0,3703 | 0,3973 | **0,6091** |
+
+| Comparação | Churn | Próxima online | Próxima categoria | LTV 90d | Média |
+|---|---|---|---|---|---|
+| TabPFN 300 mil − T | +0,0014 | +0,0002 | +0,0058 | +0,0029 | +0,0026 [+0,0021; +0,0031] |
+| TabPFN 300 mil − TabPFN 50 mil | +0,0008 | −0,0006 | +0,0025 | +0,0015 | +0,0011 [+0,0007; +0,0014] |
+
+Com seis vezes mais contexto, o TabPFN sobe um pouco (+0,0011 na média) e
+fica acima do T em três tarefas, com IC sem o zero, e empatado em próxima
+online. Todos os ganhos ficam abaixo da margem de 0,01: é empate, com leve
+vantagem. O custo é o limite prático: 10,3 h de L4 para as quatro tarefas
+(2,4 a 2,8 h cada), contra cerca de 2 h de CPU do T com HPO e menos de 1 min
+por ajuste do LightGBM. Com 50 mil âncoras, o TabPFN já entrega quase tudo
+(0,6081) em uma fração do tempo. Arquivos:
+`runs/hm_clientes/f2h11/resultado_test_tabpfn300k_trad.json`,
+`runs/hm_clientes/gbdt/f2h11_tabpfn_trad_n300000/relatorio.json`. O híbrido
+com 300 mil âncoras está em execução e entra aqui ao fim.
 
 
 ### Motor v2 na H&M — preparo e um defeito achado no primeiro pré-treino (15/11)
