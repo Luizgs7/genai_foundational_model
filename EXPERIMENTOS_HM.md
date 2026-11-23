@@ -731,8 +731,11 @@ Melhor época: 7 de 8.
 - **O v2 ganha onde os alvos dele apontam.** O pré-treino do v2 prevê o
   intervalo até o próximo pedido, o valor e as contagens e gastos futuros, e
   é exatamente em churn e LTV que ele supera o v1. Em churn, a fusão v2 fica
-  a 0,0097 do GBDT tradicional: **pela primeira vez uma fusão empata com T em
-  churn** pela margem de 0,01 (a v1 ficava a 0,0166).
+  a 0,0097 do GBDT tradicional (a v1 ficava a 0,0166). É a fusão mais perto de
+  T em churn até aqui, mas **não é empate pela regra**: o limite inferior do IC
+  é −0,01003 [−0,01003; −0,00942], 0,00003 além da margem. (Errata de 23/11: a
+  primeira redação dizia "pela primeira vez uma fusão empata com T"; a regra de
+  empate usa o limite inferior do IC, não o ponto.)
 - **Perde em composição e canal.** A próxima categoria depende da composição
   da cesta, que o v2 só aprende pelo artigo exato, e o artigo troca de
   coleção. O canal ficou fora dos alvos de propósito (teste de transferência).
@@ -789,8 +792,8 @@ limite era 0,005).
   recupera.
 - **O ganho em churn e LTV cai pela metade.** A mesma representação de 256
   dimensões passa a dividir capacidade com a composição. Churn: +0,007 → +0,002
-  sobre o v1; LTV: +0,011 → +0,005. E o empate com T em churn, que o v2 tinha
-  (−0,0097), se perde (−0,0143).
+  sobre o v1; LTV: +0,011 → +0,005. E a distância para T em churn, que no v2
+  ficava no limite da margem (−0,0097), volta a crescer (−0,0143).
 - **Pela margem geral do projeto (0,01), o v2b empata com o v1 nas 4 tarefas**
   com um oitavo do custo por época e sem truncar histórico. O critério desta
   hipótese, mais rígido (0,005), não é atendido.

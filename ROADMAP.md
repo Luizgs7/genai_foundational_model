@@ -252,7 +252,7 @@ Plano, com pergunta, desenho e critério de cada hipótese escritos antes de rod
 | 0 | F2-H10, F2-H11 | ver tabela da fase 2 |
 | 1 | F3-H1 propensão a desconto | atendida pelo híbrido (H); M2 atendido |
 | 1 | F3-H2 clusterização (motor v1) | não empata, nem com o rótulo de churn corrigido |
-| 2 | F3-H3 motor v2 (evento composto) | custo e cobertura atendidos; qualidade não (perde em próxima categoria); primeira fusão a empatar com T em churn |
+| 2 | F3-H3 motor v2 (evento composto) | custo e cobertura atendidos; qualidade não (perde em próxima categoria); a fusão mais perto de T em churn (−0,0097), no limite da margem, sem empate pela regra |
 | 2 | F3-H3b composição por atributo | não atendida |
 | 2 | F3-H4 recomendação direta | só com o histórico (MH 0,0271, acima do R1 corrigido e em 84% do R2); o modelo sozinho fica em 23% do R2 |
 | 2 | F3-H5 vetor congelado + cabeça leve | não atendida (churn −0,019, canal −0,014, desconto −0,013) |
@@ -263,9 +263,14 @@ Plano, com pergunta, desenho e critério de cada hipótese escritos antes de rod
 
 **Balanço.** M2 está demonstrado: o mesmo motor roda em quatro bases (H&M, sintética B2B, Synerise, Olist) e nos quatro formatos de dado só com adapter e YAML. M1 não está atendido no corte atual. A representação aprendida empata com o ML tradicional quando entra **ao lado** das features tradicionais (H), mas aí não reduz o esforço por problema; sozinha (E), reduz o esforço, mas fica de 0,01 a 0,02 abaixo em AUC e não dá segmentos estáveis.
 
-**Pendências.**
-- Revisão completa do artigo com os resultados da fase 3 e as erratas (rótulo de churn e R1).
-- Etapa 4: critérios de entrega do código (seção 7 do `PLANO_FASE3.md`).
+**Artigo revisado (23/11).** Fases 1 a 3, as três erratas (rótulo de churn, R1 e o empate da fusão v2 em churn), diagramas e glossário para leitores com pouca formação em DL; números conferidos contra os JSONs, revisão por rubrica e comparação cega com a versão anterior, por agentes de revisão (`.claude/agents/`). https://claude.ai/artifact/Nbv3oh512k2YaSNFSZjh7W
+
+**Próximos passos (seção 11 do artigo, em ordem de valor).**
+1. Etapa 4: preparar a entrega do motor (critérios da seção 7 do `PLANO_FASE3.md`): testes de regressão e de vazamento do v2, um comando por etapa fora do Colab, modelos de adapter e YAML, guia de implantação.
+2. Ajuste fino conjunto no motor v2 (nunca testado; melhor resultado do modelo fundacional na fase 2).
+3. Estabilizar a clusterização do v2, como hipótese nova, num corte ainda não visto (não muda o veredito de M1 na H&M).
+4. Recomendação com cópia do histórico na saída do modelo.
+5. Base da empresa, com o mesmo protocolo e critérios fixados antes.
 
 Errata e achados metodológicos registrados na fase 3: a censura unilateral do rótulo de churn no fim do teste (corrigida em 14/11) e o R1 da F2-H3 que deixava sem lista os clientes sem recompra (corrigido em 19/11).
 
