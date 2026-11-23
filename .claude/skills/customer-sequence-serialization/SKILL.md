@@ -27,3 +27,18 @@ description: Como discretizar campos numéricos, desenhar um vocabulário fechad
 3. Campos redundantes/determinísticos entre si (ex. um total que é função exata de preço × quantidade) — serializar só um, nunca ambos, para não inflar o vocabulário sem adicionar sinal.
 4. Clientes com um único evento devem gerar uma sequência válida e mínima (`BOS` + evento + `EOS`) sem tratamento especial no código — a ausência de contexto é o comportamento correto para esse caso, não um erro.
 5. Sempre fazer um spot-check manual: decodificar de volta 3-5 sequências para forma legível e conferir visualmente contra as linhas originais da fonte.
+
+## Lições do projeto (atualizado em 2026-11-23)
+
+- **Situação.** Esta skill descreve a serialização por token do motor v1. Para
+  bases novas, usar o motor v2 (evento composto: uma posição por pedido ou
+  sessão), na skill `motor-v2-nova-base`.
+- **Custo do token por campo:** cada item virava cerca de 11 tokens; a janela de
+  1.024 tokens guardava ~93 itens, e clientes grandes perdiam quase todo o
+  histórico. No v2, a cobertura é de 100% das âncoras numa janela de 512 posições.
+- **`top_n_outros` apaga a identidade do item:** na H&M só 2.000 artigos tinham
+  token próprio (27% das vendas) e 90% das compras da semana de teste caíam em
+  "outros". Recomendação precisa de vetor por item do catálogo.
+- **Data absoluta como alvo é armadilha:** o token de mês dominou a perda e o
+  embedding aprendeu o calendário. Tempo entra como delta e calendário só como
+  entrada.

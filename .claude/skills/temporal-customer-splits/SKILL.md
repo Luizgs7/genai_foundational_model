@@ -25,3 +25,19 @@ Um Customer Foundation Model treina com Next Token Prediction sobre a sequência
 - Fazer split por cliente (ex. `train_test_split` aleatório sobre CPFs) sem também respeitar a ordem temporal — gera leakage porque o mesmo período de tempo aparece em treino e teste.
 - Recalcular buckets/estatísticas de normalização separadamente em cada split — sempre "fit" no treino, "transform" em todos.
 - Excluir clientes com poucas transações — eles são um caso de uso real (cliente novo), não ruído a descartar.
+
+## Lições do projeto (atualizado em 2026-11-23)
+
+- **Janela de teste maior que o horizonte do rótulo.** Com teste de 90 dias e
+  churn de 121, nenhum rótulo de teste fechava (taxa 0% por construção). A janela
+  de teste tem de caber o horizonte mais longo das tarefas, com folga.
+- **Pré-treino até a data de corte.** O pré-treino não usa rótulo, então pode usar
+  todos os eventos anteriores ao corte de cada avaliação, como rodaria em produção;
+  rótulos e features continuam limitados pelo split.
+- **Âncoras comuns por tarefa** em comparações entre braços; cruzar âncoras entre
+  tarefas tira do churn os clientes que não voltaram.
+- **Teste avaliado uma vez.** Escolhas de época, hiperparâmetros e forma do
+  espaço de clusterização são feitas na validação.
+- **Frequências do adapter (catálogo top-N, categorias top-K) também são
+  "estatísticas de treino":** calcular só antes do corte.
+- Ver a skill `protocolo-avaliacao` para o bootstrap por cliente e as margens.

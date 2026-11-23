@@ -28,3 +28,22 @@ Toda tarefa downstream derivada de um log de transações deve ter o rótulo cal
 1. O rótulo é calculado com um corte temporal consistente com o split de treino/val/teste (ver skill `temporal-customer-splits`) — nenhum rótulo de treino depende de um evento que só existe no futuro além do corte de validação.
 2. A taxa de positivos (base rate) foi calculada e documentada — uma tarefa com base rate abaixo de ~2-3% ou acima de ~97-98% provavelmente é degenerada e não vale o esforço de fine-tuning até ser recalibrada.
 3. Existe um baseline simples e sua métrica já calculada, antes de qualquer treino do modelo — o valor do Customer Foundation Model só se justifica se ele superar esse baseline.
+
+## Lições do projeto (atualizado em 2026-11-23)
+
+- **Censura dos dois lados (achado de 2026-11-14).** Uma âncora só é
+  determinável se a janela do rótulo **fechou** antes do fim dos dados. Aceitar
+  "tem próxima compra" com a janela aberta seleciona pelo desfecho: nos últimos
+  90 dias do teste da H&M só entravam rótulos 0 (taxa publicada 16%, real
+  25,4%). A regra vale para churn, LTV e qualquer janela futura.
+- **Uma âncora por evento rotulado**, não a última transação de cada split
+  (essa escolha inflou o churn para 83% no treino).
+- **Receitas genéricas** (`tarefa8_rotulos.py`): `churn`, `campo_futuro`
+  (`shift(-1)` com limiar e operador), `ltv`. Pergunta nova é uma entrada no
+  YAML; não escrever rótulo à mão.
+- **Conferir a distribuição de classes**, não só a taxa de positivos: o LTV de
+  30 dias da Synerise colapsou em 2 classes; as tarefas de nota e de atraso da
+  Olist ficaram perto do acaso em todos os braços. Tarefa degenerada é
+  relatada, mas não entra no veredito.
+- O baseline relevante para o projeto não é só a regra simples: é o LightGBM
+  com as features genéricas e HPO (braço T). Ver a skill `protocolo-avaliacao`.

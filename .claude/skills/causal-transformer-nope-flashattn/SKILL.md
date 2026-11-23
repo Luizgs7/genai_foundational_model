@@ -29,3 +29,23 @@ description: Como configurar e instanciar um Transformer causal estilo GPT-2 no 
 - Superdimensionar o modelo antes de saber se o volume de dados justifica — o gargalo mais comum nesse tipo de projeto é volume/qualidade de sequência, não VRAM.
 - Tentar usar FlashAttention2 com pesos em float32 — vai falhar ou não ativar de fato.
 - Ativar NoPE mas deixar a máscara causal desabilitada por engano — sem causalidade, o NoPE não tem como o modelo inferir ordem.
+
+## Lições do projeto (atualizado em 2026-11-23)
+
+- **Situação.** Esta skill descreve o backbone do motor v1 (fila de tokens). O
+  backbone final do v1 e o do motor v2 usam RoPE, SwiGLU e atenção agrupada
+  (256 dimensões, 6 camadas); ver `MOTOR_V2.md` e a skill `motor-v2-nova-base`.
+- **Ablações (H8 da H&M):** o RoPE melhorou a perda de pré-treino, mas não mudou
+  nenhuma métrica downstream; tamanho, posição e normalização não mudaram o
+  downstream. Não gastar GPU com ablação de arquitetura sem uma hipótese
+  downstream registrada.
+- **NoPE e calendário:** com NoPE e o token de mês absoluto como alvo, o mês
+  dominava quase metade da perda, e o embedding passou a codificar o calendário
+  (57–71% do mês explicados pelos segmentos). No v2, o tempo é só entrada.
+- **Duplo deslocamento:** `GPT2LMHeadModel` desloca `labels` internamente;
+  passar rótulos já deslocados ensina a prever dois passos à frente (perda 47×
+  pior que o acaso). Conferir a perda inicial contra ln(tamanho do vocabulário).
+- **Dimensionamento:** razão tokens/parâmetro perto de 1 (Tarefa 12) evitou o
+  sobreajuste da primeira versão (16× mais parâmetros que tokens).
+- **Extração com LLMs grandes:** pedir `logits_to_keep=1` (não materializar os
+  logits do vocabulário inteiro) e limitar tokens por lote (16 mil numa L4).
