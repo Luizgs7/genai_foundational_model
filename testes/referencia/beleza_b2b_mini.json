@@ -1,0 +1,294 @@
+{
+ "splits/splits.parquet": {
+  "sha256": "e80432d2a64345b4e59ea1054a5340ee6f39bffccd7a02fe96167e867eee7f8e",
+  "linhas": 906155,
+  "colunas": [
+   "evento_id",
+   "entidade_id",
+   "data_evento",
+   "split",
+   "elegivel_downstream"
+  ]
+ },
+ "discretizacao/discretizado.parquet": {
+  "sha256": "68186c2e14b946c52d176734762a2ae9c9ba6eb395d52244763075b576b0b359",
+  "linhas": 906155,
+  "colunas": [
+   "evento_id",
+   "entidade_id",
+   "split",
+   "valor",
+   "valor_bucket"
+  ]
+ },
+ "rotulos_downstream/rotulos.parquet": {
+  "sha256": "2b6cd025cea939fe363648683e071e183bd2a6514a055bf96286d558a3da386a",
+  "linhas": 42636,
+  "colunas": [
+   "evento_id",
+   "entidade_id",
+   "split",
+   "n_eventos_anteriores",
+   "n_cestas_anteriores",
+   "itens_cesta",
+   "churn_rotulo",
+   "churn_baseline",
+   "proxima_com_desconto_rotulo",
+   "proxima_com_desconto_baseline",
+   "ltv_90d_rotulo",
+   "ltv_90d_baseline",
+   "proxima_online_rotulo",
+   "proxima_online_baseline",
+   "sem_pedido_7d_rotulo",
+   "sem_pedido_7d_baseline"
+  ]
+ },
+ "features_tradicionais/features.parquet": {
+  "sha256": "bce27bf99be3e4cd3f7f12f599847a395502b9a4daf46ca86efc6bc66c210394",
+  "linhas": 42636,
+  "colunas": [
+   "n_cestas",
+   "n_itens",
+   "valor_total",
+   "valor_medio_cesta",
+   "itens_medio_cesta",
+   "preco_medio_item",
+   "tempo_cliente_dias",
+   "gap_ultimo",
+   "gap_medio",
+   "gap_desvio",
+   "gap_ultimo_sobre_medio",
+   "gap_max",
+   "cestas_7d",
+   "itens_7d",
+   "valor_7d",
+   "cestas_30d",
+   "itens_30d",
+   "valor_30d",
+   "cestas_90d",
+   "itens_90d",
+   "valor_90d",
+   "cestas_180d",
+   "itens_180d",
+   "valor_180d",
+   "cestas_365d",
+   "itens_365d",
+   "valor_365d",
+   "tendencia_30_90",
+   "tendencia_90_365",
+   "online_share",
+   "online_share_90d",
+   "online_ultima_cesta",
+   "desconto_share",
+   "desconto_share_90d",
+   "desconto_ultima_cesta",
+   "categoria_1_share",
+   "categoria_1_share_90d",
+   "categoria_4_share",
+   "categoria_4_share_90d",
+   "categoria_0_share",
+   "categoria_0_share_90d",
+   "categoria_7_share",
+   "categoria_7_share_90d",
+   "categoria_6_share",
+   "categoria_6_share_90d",
+   "categoria_3_share",
+   "categoria_3_share_90d",
+   "categoria_5_share",
+   "categoria_5_share_90d",
+   "categoria_2_share",
+   "categoria_2_share_90d",
+   "faixa_preco_0_share",
+   "faixa_preco_0_share_90d",
+   "faixa_preco_1_share",
+   "faixa_preco_1_share_90d",
+   "faixa_preco_2_share",
+   "faixa_preco_2_share_90d",
+   "preco_max",
+   "preco_relativo_medio",
+   "itens_distintos",
+   "taxa_recompra_item",
+   "tipos_distintos",
+   "ultima_cesta_itens",
+   "ultima_cesta_valor",
+   "ultima_cesta_preco_relativo",
+   "ultima_cesta_grupo_dominante",
+   "mes",
+   "dia_semana",
+   "evento_id",
+   "entidade_id",
+   "split",
+   "churn_rotulo",
+   "churn_baseline_feat",
+   "churn_baseline",
+   "proxima_com_desconto_rotulo",
+   "proxima_com_desconto_baseline_feat",
+   "proxima_com_desconto_baseline",
+   "ltv_90d_rotulo",
+   "ltv_90d_baseline_feat",
+   "ltv_90d_baseline",
+   "proxima_online_rotulo",
+   "proxima_online_baseline_feat",
+   "proxima_online_baseline",
+   "sem_pedido_7d_rotulo",
+   "sem_pedido_7d_baseline_feat",
+   "sem_pedido_7d_baseline",
+   "idade",
+   "tipo_cliente_cod",
+   "uf_cod",
+   "canal_aquisicao_cod"
+  ]
+ },
+ "v2/alvo_cont_180.npy": {
+  "sha256": "80e19b2c4299a1433098880450e5a8641aab347fcca5b13acb7d1e6b66089423",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/alvo_cont_30.npy": {
+  "sha256": "fa7fe5300a182a4d8109f5097e114a9a9d53fad02050a07bfd7958bf3ae618e8",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/alvo_cont_90.npy": {
+  "sha256": "4d6f2bc1aecae3d409b1113a015747c222078d441ac1bad555bfc856b2882019",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/alvo_gasto_180.npy": {
+  "sha256": "e82d0371dbeaa304b3fee334b53e8eb99bffd6a401ffa4699c09d01aa1a4b613",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/alvo_gasto_30.npy": {
+  "sha256": "a6f8c8d4a79463b459d18f36ffe9e88249d0d1c6021e8e5f9623c17bd29f3636",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/alvo_gasto_90.npy": {
+  "sha256": "77ff6a1b444d2381b7e7f1a1043068ace7a03d2fbc3755929abb124af15d4064",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/alvo_prox.npy": {
+  "sha256": "b2da8da51eb74ba9d6d511a00c8ea93f2273564aa0ba12ce8c09da3fc0ed726f",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/ent_ini.npy": {
+  "sha256": "a879590bed5ef4e0deebc1a39399c44065bb28b34339d1e256bab43936338bdd",
+  "forma": [
+   2001
+  ]
+ },
+ "v2/item_atrib.npy": {
+  "sha256": "3dcbfd0bb0fa8933f6a586a66e2c4995e83759bf4934ffc9d660f1c840687365",
+  "forma": [
+   1508,
+   7
+  ]
+ },
+ "v2/item_visto_treino.npy": {
+  "sha256": "32756f72dfa79dd42f765532cf5ba2a116a1b5c3130c13cdcd889173d895b6da",
+  "forma": [
+   1508
+  ]
+ },
+ "v2/lin_campos.npy": {
+  "sha256": "1c96011b57a4e573a265cf4c26a817f2ebe586df121ac98873b8e0ebb9687743",
+  "forma": [
+   1353956,
+   6
+  ]
+ },
+ "v2/lin_item.npy": {
+  "sha256": "6206eeb92dad15f6b39adcdceb44966e15ef94c787b09b57b06c12f2fd31b2db",
+  "forma": [
+   1353956
+  ]
+ },
+ "v2/pos_cab.npy": {
+  "sha256": "cddb23f8f01f64daa83b4e6ea9839e3a716337ada438616a4e4606b8ded252c9",
+  "forma": [
+   94592,
+   2
+  ]
+ },
+ "v2/pos_ent.npy": {
+  "sha256": "a92c355e019e0dfb86a5bf69bc042a82fcd38d775a136a9e8ccd8509d6357771",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/pos_estado.npy": {
+  "sha256": "0cfa7d046e9237bc85c8593e55c5716f13b9fa00744540647652fcdfca5ed80e",
+  "forma": [
+   94592,
+   6
+  ]
+ },
+ "v2/pos_id_ancora.npy": {
+  "sha256": "b80e7dd3a665be80697db5c43d684fe5275fc28a6da3b8410cb89b160a73a93e",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/pos_lin_ini.npy": {
+  "sha256": "71a8531f90b0798e05a7612c740161634d8cd6c868af726bade6615615fb11e5",
+  "forma": [
+   94593
+  ]
+ },
+ "v2/pos_n_lin.npy": {
+  "sha256": "27a23ba6458021226ef3ed29c7ba9ed85a73ca34cab928ec985c11f9663e0f39",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/pos_split.npy": {
+  "sha256": "75a2aad97aadb752accb654e9e415a6f8d03b910bff4e63817eb09585dc9501a",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/pos_t_min.npy": {
+  "sha256": "464b0aa51caca1905de04900459ca29dee0f0a0877771dbf3728246a6cf01bd9",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/pos_tipo.npy": {
+  "sha256": "9e53df76db7fbb45d39cc95c8833a18cb88f42361a3a2fabb8fdce9e3c670abf",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/pos_valor.npy": {
+  "sha256": "b2eb25e5c3c4034e92d6c183aee7d6e90a61e7bc779bcde83f730224ed59ad86",
+  "forma": [
+   94592
+  ]
+ },
+ "v2/entidades.parquet": {
+  "sha256": "e56ebde959d0156da74126248535de8baeeaa3595f42ad7f7fcbfc94559406f6",
+  "linhas": 2000,
+  "colunas": [
+   "entidade"
+  ]
+ },
+ "v2/itens.parquet": {
+  "sha256": "36d43e92d46615d50d8be4cbc95ad9ea1013b5f89406b0e0ef9dd1534e11d2e4",
+  "linhas": 1507,
+  "colunas": [
+   "item",
+   "idx",
+   "visto_treino"
+  ]
+ }
+}

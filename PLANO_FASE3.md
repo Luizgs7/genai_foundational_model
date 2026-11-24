@@ -619,6 +619,17 @@ Pontos de decisão:
 6. **Roteiro de implantação.** Modelo de adapter e de YAML, o registro de
    esforço e um guia para definir os 4 problemas com os donos de cada um.
 
+**Situação em 23/11/2026.**
+
+| Critério | Situação |
+|---|---|
+| 1. M1 julgada em bases reais | feito: não atendida na H&M (F3-H6) nem na Synerise (F3-H7) |
+| 2. M2 demonstrada | feito: quatro bases, quatro formatos, só adapter e YAML |
+| 3. Formas da empresa testadas | forma e custo atendidos (F3-H8), com projeção de custo; estrutura não |
+| 4. Reprodutibilidade | feito: `testes/testar.py` regenera a base mini e compara 28 artefatos com a referência, testa vazamento das variáveis e causalidade, censura e aprendizado do v2; versões em `requirements.txt` |
+| 5. Independência do Colab | feito: `motor.py <config> <etapa>` (ou `tudo`), com retomada e registro de tempo por etapa; validado de ponta a ponta na CPU (base mini, 19 min) |
+| 6. Roteiro de implantação | feito: `GUIA_IMPLANTACAO.md`, `configs/modelo_empresa.yaml`, `adapters/modelo_adapter.py` |
+
 ## 8. Decisões tomadas e pendências
 
 Decididas em 2026-11-13:

@@ -1,0 +1,105 @@
+# MODELO DE CONFIGURAÇÃO para uma base nova (copie, renomeie e preencha).
+# Guia: GUIA_IMPLANTACAO.md. Exemplos reais: configs/synerise.yaml, configs/olist_v2.yaml,
+# configs/beleza_b2b_pequeno.yaml (todos os tipos de dado da empresa, em base sintética).
+# Tudo o que é específico da empresa fica aqui e no adapter; o motor não muda.
+
+nome: minha_empresa                 # vira a pasta runs/<nome>/
+entidade_label: cliente
+fonte_canonica: runs/minha_empresa/eventos_canonicos.parquet   # gerada pelo adapter (fonte-alvo: os pedidos)
+
+# Passo opcional: o motor roda o adapter se a fonte canônica ainda não existir.
+motor:
+  adapter:
+    script: adapters/adapter_minha_empresa.py
+    args: []
+
+# ---- campos da fonte-alvo (linhas de pedido) usados por rótulos, variáveis e GBDT
+campos_categoricos:
+  - nome: categoria                 # poucas classes: `fechado`
+    estrategia: fechado
+  - nome: sku                       # alta cardinalidade: os N mais frequentes NO TREINO, o resto em "outros"
+    estrategia: top_n_outros
+    top_n: 2000
+campos_numericos:
+  - nome: valor                     # em faixas de quantil calculadas só no treino
+    agrupar_por: categoria          # faixas separadas por categoria (preços de escalas diferentes)
+    n_buckets: 10
+campos_estaticos_categoricos: [tipo_cliente, uf]    # atributos fixos do cliente (cadastro)
+campos_estaticos_numericos: []
+usa_recencia: true
+usa_mes: true
+ancora: cesta                       # um momento avaliado por pedido
+
+# ---- tempo: validação e teste são os últimos dias da base (o teste precisa caber o maior horizonte das tarefas)
+splits:
+  val_window_days: 90
+  test_window_days: 180
+
+# ---- perguntas de negócio: uma entrada por pergunta (receitas: churn, campo_futuro, ltv)
+tarefas_downstream:
+  - tipo: churn                     # "não compra de novo em N dias"; a âncora só entra com a janela fechada
+    candidatos_dias: [45, 60, 90, 120]
+    dias_escolhido: 90
+  - tipo: campo_futuro              # um campo do próximo pedido; aqui, "o próximo pedido usa desconto"
+    nome: proxima_com_desconto
+    campo_fonte: desconto
+    agregacao_cesta: max
+  - tipo: ltv                       # gasto nos próximos N dias, em faixas
+    nome: ltv_90d
+    campo_valor: valor
+    horizonte_dias: 90
+    n_buckets: 10
+
+# ---- braço T: as variáveis tradicionais geradas por configuração
+features_tradicionais:
+  campo_valor: valor
+  campos_binarios: [desconto]       # proporção de pedidos com o campo = 1, por janela
+  campos_composicao: [categoria]    # participação de cada categoria, por janela
+  max_categorias_composicao: 12
+  campo_item: sku
+  campo_tipo: categoria
+  campo_grupo_preco: categoria
+  janelas_dias: [7, 30, 90, 180, 365]
+  estaticos_frequencia: []
+  fontes_extras: v2                 # também agrega as fontes extras declaradas no bloco v2
+  janelas_dias_extras: [7, 30, 90]
+
+# ---- motor v2: o histórico, uma posição por pedido ou sessão
+v2:
+  janela: 512                       # posições por cliente; aumente se algum cliente tiver mais pedidos+sessões
+  catalogo:
+    tabela: dados_minha_empresa/preparado/produtos.parquet   # opcional: atributos de todo o catálogo
+    item: sku
+    categoricos: [categoria, marca]
+    numericos: []
+  fontes:
+    - nome: pedido                  # natureza `itens`: um evento com várias linhas
+      natureza: itens
+      alvo: true                    # exatamente uma fonte é o alvo do pré-treino
+      tabela: runs/minha_empresa/eventos_canonicos.parquet
+      entidade: entidade_id
+      data: data_evento
+      agrupar_por: [pedido_id]
+      item: sku
+      numericos_linha: [quantidade]
+      categoricos_linha: [desconto]
+      valor_linha: [valor]
+      id_linha: evento_id
+      cabecalho:
+        derivado: true
+        categoricos: [canal]
+        numericos: []
+    - nome: navegacao               # natureza `evento`: eventos simples, agrupados em sessões de 30 min
+      natureza: evento
+      tabela: dados_minha_empresa/preparado/navegacao.parquet
+      entidade: entidade_id
+      data: datahora
+      sessao_minutos: 30
+      categoricos_linha: [tipo_pagina]
+    - nome: credito                 # natureza `estado`: vale até mudar; não ocupa posição
+      natureza: estado
+      tabela: dados_minha_empresa/preparado/credito.parquet
+      entidade: entidade_id
+      data: data
+      numericos: [limite]
+      categoricos: [situacao]

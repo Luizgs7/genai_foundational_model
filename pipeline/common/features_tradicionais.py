@@ -405,7 +405,8 @@ def main(config_path, n_teste_vazamento=0):
         # subconjunto de clientes (as features de um cliente só dependem dos
         # eventos dele; a calibração acima usou a base inteira)
         rng = np.random.RandomState(0)
-        clientes = rng.choice(np.unique(ev["ent"].to_numpy()), 5000, replace=False)
+        todos = np.unique(ev["ent"].to_numpy())
+        clientes = rng.choice(todos, min(5000, len(todos)), replace=False)
         ev = ev.filter(pl.col("ent").is_in(clientes))
         sub = calcular_features(cestas(ev, calib, ft), ft)
         rot = ler_tabela(caminho_tabela(config, "rotulos_downstream", "rotulos"), ["evento_id", "split"])

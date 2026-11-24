@@ -259,14 +259,14 @@ Plano, com pergunta, desenho e critério de cada hipótese escritos antes de rod
 | 2 | F3-H6 teste central, etapa A | **não atendida** pela estabilidade da clusterização (ARI −0,087; limite 0,05). H empata em recomendação, churn e desconto, e também em próxima online, LTV e próxima categoria. A etapa B não roda |
 | 3 | F3-H7 vários tipos de dado | **M2 atendido nas 3 camadas** (sintética, Synerise, Olist). M1: H empata com T nas tarefas supervisionadas; E sozinho e a clusterização não |
 | 3 | F3-H8 formas extremas (base B2B sintética) | forma e custo atendidos; estrutura plantada não recuperada |
-| 4 | Entrega do código | pendente (critérios na seção 7 do plano) |
+| 4 | Entrega do código | pronta em 23/11 (critérios da seção 7 do plano atendidos) |
 
 **Balanço.** M2 está demonstrado: o mesmo motor roda em quatro bases (H&M, sintética B2B, Synerise, Olist) e nos quatro formatos de dado só com adapter e YAML. M1 não está atendido no corte atual. A representação aprendida empata com o ML tradicional quando entra **ao lado** das features tradicionais (H), mas aí não reduz o esforço por problema; sozinha (E), reduz o esforço, mas fica de 0,01 a 0,02 abaixo em AUC e não dá segmentos estáveis.
 
 **Artigo revisado (23/11).** Fases 1 a 3, as três erratas (rótulo de churn, R1 e o empate da fusão v2 em churn), diagramas e glossário para leitores com pouca formação em DL; números conferidos contra os JSONs, revisão por rubrica e comparação cega com a versão anterior, por agentes de revisão (`.claude/agents/`). https://claude.ai/artifact/Nbv3oh512k2YaSNFSZjh7W
 
 **Próximos passos (seção 11 do artigo, em ordem de valor).**
-1. Etapa 4: preparar a entrega do motor (critérios da seção 7 do `PLANO_FASE3.md`): testes de regressão e de vazamento do v2, um comando por etapa fora do Colab, modelos de adapter e YAML, guia de implantação.
+1. ✅ Etapa 4 (23/11): `motor.py` (um comando por etapa, com retomada e registro de esforço), `testes/testar.py` (regressão, vazamento, causalidade), `requirements.txt`, `GUIA_IMPLANTACAO.md` e os modelos `configs/modelo_empresa.yaml` e `adapters/modelo_adapter.py`.
 2. Ajuste fino conjunto no motor v2 (nunca testado; melhor resultado do modelo fundacional na fase 2).
 3. Estabilizar a clusterização do v2, como hipótese nova, num corte ainda não visto (não muda o veredito de M1 na H&M).
 4. Recomendação com cópia do histórico na saída do modelo.
