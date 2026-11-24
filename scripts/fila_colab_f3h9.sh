@@ -5,7 +5,7 @@ cd /content/genai_model
 source scripts/colab_persistencia.sh
 export LD_LIBRARY_PATH=/usr/lib64-nvidia:${LD_LIBRARY_PATH:-}
 C=configs/hm_clientes.yaml
-C1=configs/hm_clientes_f3h1.yaml
+C1=configs/hm_clientes_f3h9.yaml
 R=runs/hm_clientes
 B=runs/hm_clientes_f3h1
 t() { echo "== $* $(date)"; }
