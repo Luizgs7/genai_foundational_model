@@ -25,7 +25,8 @@ persistir() {
     cp -ru "$d" "$DRIVE/$rel/" 2>/dev/null
   done
   # F3-H1: fusões de tarefa única (run próprio, com ligações para o run da H&M)
-  for d in runs/hm_clientes_f3h1/f3h1_fusao_s* runs/hm_clientes_f3h1/f3h5_desc_s* runs/hm_clientes_f3h1/gbdt/f3h6_*; do
+  for d in runs/hm_clientes_f3h1/f3h1_fusao_s* runs/hm_clientes_f3h1/f3h5_desc_s* runs/hm_clientes_f3h1/gbdt/f3h6_* runs/hm_clientes_f3h1/gbdt/f3h1_trad_lgbm \
+           runs/hm_clientes_f3h1/f3h9*; do
     [ -e "$d" ] || continue
     rel=$(dirname "${d#runs/hm_clientes_f3h1/}")
     mkdir -p $DRIVE/../hm_clientes_f3h1/$rel && cp -ru "$d" $DRIVE/../hm_clientes_f3h1/$rel/ 2>/dev/null
