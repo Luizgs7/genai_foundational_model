@@ -567,6 +567,49 @@ Princípios:
 Não é um experimento. A empresa recebe o código e roda no ambiente dela, com
 os dados dela. O pacote só sai quando os critérios da seção 7 forem atendidos.
 
+### Etapa 5 — próximos passos do artigo revisado (registrados em 23/11/2026)
+
+Os próximos passos da seção 11 do artigo revisado, na ordem dele. O passo 1 é a
+etapa 4 acima. Cada hipótese abaixo é registrada antes de rodar.
+
+#### F3-H9 — ajuste fino conjunto do backbone v2 com a cabeça de cada tarefa
+
+- **Pergunta.** Na fase 2, o ajuste fino conjunto foi o melhor uso do modelo
+  fundacional (F2-H2, no v1), mas nunca rodou no v2. Ajustado junto com as
+  tarefas, o vetor do v2 empata com T nas perguntas supervisionadas em que o
+  vetor congelado não empata (F3-H5)?
+- **Desenho.**
+  - Backbone `v2_pretreino` (o da F3-H3, F3-H5 e F3-H6) + a cabeça DCNv2 da H4,
+    treinados juntos, com as cinco tarefas da H&M ao mesmo tempo (churn,
+    próxima categoria, gasto em 90 dias, próxima online e próxima com
+    desconto; `configs/hm_clientes_f3h1.yaml`).
+  - Taxa de aprendizado de 5×10⁻⁵ no backbone e 3×10⁻³ na cabeça, com
+    aquecimento de 5% e decaimento linear, como na F2-H2.
+  - 3 épocas sobre as âncoras de treino; a época é escolhida pela AUC de churn
+    na validação; 3 sementes; teste avaliado uma vez.
+  - Cada âncora usa o mesmo contexto da extração dos vetores (janela de 512
+    posições, causal).
+  - Script: `pipeline/common/v2_ajuste_conjunto.py`.
+- **Régua.** T: o LightGBM da H10 (`gbdt/h10_trad_lgbm`) em churn, categoria,
+  gasto e próxima online; o da F3-H1 (`gbdt/f3h1_trad_lgbm`) em desconto.
+  Referência do vetor congelado: a fusão conjunta do v2 (`v2_fusao_s*`, F3-H3)
+  e a fusão de desconto da F3-H5 (`f3h5_desc_s*`).
+- **Critério, escrito antes de rodar.**
+  - Principal: o ajuste conjunto empata com T (limite inferior do IC 95% de
+    E − T acima de −0,01) em churn, próxima online e desconto, as três
+    perguntas de AUC da bateria.
+  - Secundário: supera o vetor congelado por pelo menos 0,005, com IC sem o
+    zero, em pelo menos duas das cinco tarefas.
+  - Esforço: horas de GPU por semente. O ajuste é um treino por conjunto de
+    perguntas; uma pergunta nova exige ajustar de novo. Isso entra no registro
+    de esforço, ao lado dos 100 s da cabeça leve.
+- **O que muda com o resultado.** Se o principal for atendido, o caminho E
+  passa a empatar nas perguntas supervisionadas da H&M, com mais custo por
+  pergunta que a cabeça leve. O veredito de M1 na H&M não muda sozinho: a
+  recomendação e a clusterização seguem como estão.
+- **Custo estimado.** Uma época de ajuste perto de uma época de pré-treino
+  (cerca de 7 min de L4) mais a validação; menos de 2 h de L4 nas 3 sementes.
+
 ## 5. O que sai da fila
 
 - **Ablações de arquitetura do backbone** (tamanho, posição, normalização). A
