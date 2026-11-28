@@ -105,6 +105,8 @@ python3 testes/testar.py configs/beleza_b2b_mini.yaml
 ```
 
 Regenera a base mini do zero e compara 28 artefatos com a referência (`testes/referencia/`), roda o
-teste de vazamento das variáveis e os testes de causalidade, censura e aprendizado do motor v2. Se a
+teste de vazamento das variáveis, o teste de perturbação do futuro (baselines dos rótulos e features
+idênticos antes de uma data T quando tudo depois dela muda) e os testes de causalidade, censura e
+aprendizado do motor v2. Se a
 mudança altera um artefato de propósito, grave a referência nova (`--gravar_referencia`) no mesmo
 commit e explique o porquê.

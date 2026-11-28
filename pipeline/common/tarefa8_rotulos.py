@@ -82,7 +82,7 @@ def metrica_por_split(df, mascara_valida, y_true_col, y_pred_col, metrica_fn, **
     return saida
 
 
-def moda_causal_por_grupo(df, grupo_col, valor_col):
+def moda_causal_por_grupo(df, grupo_col, valor_col, retornar_apos=False):
     """Moda de `valor_col` considerando só linhas ANTERIORES do mesmo grupo
     (causal). NaN em `valor_col` não contamina a contagem, mas a linha ainda
     recebe o melhor palpite corrente.
@@ -105,6 +105,8 @@ def moda_causal_por_grupo(df, grupo_col, valor_col):
     recorde = valido & (contagem_valor > maximo_anterior)
 
     moda_apos = valor.where(recorde).groupby(grupo, sort=False).ffill()
+    if retornar_apos:
+        return moda_apos
     saida = moda_apos.groupby(grupo, sort=False).shift(1)
     if pd.api.types.is_numeric_dtype(valor):
         return saida.astype(float)  # mesmo dtype que o legado produzia (float com NaN)
@@ -238,7 +240,14 @@ def receita_ltv(df, cfg, dataset_end):
     rotulo_bucket = pd.Series(np.searchsorted(edges, rotulo.to_numpy(), side="right"), index=df.index).astype(float)
     rotulo_bucket = rotulo_bucket.where(rotulo.notna())
 
-    baseline = moda_causal_por_grupo(df.assign(_ltv_bucket=rotulo_bucket), "entidade_id", "_ltv_bucket")
+    # baseline causal: moda das faixas das linhas anteriores CUJA JANELA JÁ FECHOU (data + H <= data da
+    # linha). Antes (até 27/11/2026) era a moda de todas as linhas anteriores: a faixa de uma cesta a menos
+    # de H dias soma gasto posterior à âncora, e o baseline vazava o futuro (errata em EXPERIMENTOS_HM.md).
+    moda_apos = moda_causal_por_grupo(df.assign(_ltv_bucket=rotulo_bucket), "entidade_id", "_ltv_bucket",
+                                      retornar_apos=True).to_numpy(dtype=float)
+    k = np.searchsorted(chave, chave - horizonte * 86400, side="right") - 1   # última linha com data + H <= data
+    inicio = np.r_[0, np.flatnonzero(np.diff(ent_cod)) + 1][np.cumsum(np.r_[1, np.diff(ent_cod) != 0]) - 1]
+    baseline = pd.Series(np.where(k >= inicio, moda_apos[np.maximum(k, 0)], np.nan), index=df.index)
     fallback = rotulo_bucket[df["split"] == "train"].mode()
     baseline = baseline.fillna(fallback.iloc[0] if len(fallback) else np.nan)
 

@@ -22,7 +22,7 @@
   ]
  },
  "rotulos_downstream/rotulos.parquet": {
-  "sha256": "2b6cd025cea939fe363648683e071e183bd2a6514a055bf96286d558a3da386a",
+  "sha256": "c7f471474ffa70f3108f26624b38a32d3f9a2c937bbde17b2026e9d896a77577",
   "linhas": 42636,
   "colunas": [
    "evento_id",
@@ -44,7 +44,7 @@
   ]
  },
  "features_tradicionais/features.parquet": {
-  "sha256": "bce27bf99be3e4cd3f7f12f599847a395502b9a4daf46ca86efc6bc66c210394",
+  "sha256": "e1d0a1a6fe7329554a8a31281819da1f22cfe7f2f09d4fbb19b66b7bce6f19ed",
   "linhas": 42636,
   "colunas": [
    "n_cestas",

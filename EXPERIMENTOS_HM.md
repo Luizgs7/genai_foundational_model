@@ -1258,3 +1258,43 @@ essa receita seria uma hipótese nova; pela regra, este resultado fica como est�
 Arquivos (no Drive, `genai_model_artefatos/hm_clientes_f3h1/f3h9/bootstrap_test.json` e
 `f3h9_ft_s*/v2_ajuste_relatorio.json`); reprodução: `scripts/fila_colab_f3h9.sh`.
 
+
+### Achado: o baseline de LTV vazava o futuro (27/11)
+
+Achado pela auditoria de vazamento do corte novo da F3-H10 (agente `auditor-vazamento`) e
+confirmado no código e por força bruta.
+
+**O defeito.** O `ltv_90d_baseline` (e a feature `ltv_90d_baseline_feat`, que entra no T, no H e,
+como entrada numérica, nas fusões e cabeças do E) era a moda das faixas de LTV das âncoras
+anteriores do cliente. A faixa de uma âncora anterior soma o gasto dos 90 dias seguintes a ela;
+se ela fica a menos de 90 dias da âncora atual, essa soma inclui compras **posteriores** à âncora
+atual. Na H&M, isso vale para cerca de 73% das âncoras de validação e teste. Os outros baselines
+(churn, próxima categoria, próxima online, próxima com desconto) usam só o que já é conhecido na
+data da âncora; o novo teste de perturbação do futuro confirma isso.
+
+**O tamanho, no T da H&M (validação, mesmos hiperparâmetros da H10, semente 0).** A feature era a
+mais importante do T em churn (42% do ganho) e em LTV (38%).
+
+| T (validação) | Com a feature vazada | Sem a feature | Diferença |
+| --- | --- | --- | --- |
+| Churn 90 dias (AUC) | 0,8003 | 0,7843 | −0,0160 |
+| LTV 90 dias (acurácia) | 0,4244 | 0,4082 | −0,0162 |
+
+"Sem a feature" é o limite de baixo: a versão corrigida devolve a parte legítima do sinal. Na
+clusterização, o efeito é desprezível (a auditoria refez o T2 com e sem a feature: churn 0,0926
+nos dois; LTV 0,0623 contra 0,0613), e o T1 (RFM) e o E não a usam.
+
+**Correção.** `tarefa8_rotulos.py`: o baseline de LTV passa a ser a moda das faixas das âncoras
+anteriores **cuja janela já fechou** (data + 90 dias ≤ data da âncora), com o mesmo desempate.
+Conferido contra força bruta (0 divergências em 2.225 linhas). Novo teste,
+`testes/teste_futuro.py`, no `testes/testar.py`: perturba todos os eventos a partir de uma data T
+(depois do treino mais o maior horizonte) e exige baselines e features idênticos nas âncoras
+anteriores a T. Ele falha com o código antigo e passa com o novo (5 baselines e 78 features
+idênticos na base mini). O teste de vazamento antigo das features deixava os `*_baseline_feat` de
+fora, por virem de outro script.
+
+**O que fica sob errata.** Todo número de T, H e E que usou a feature: na H&M, desde a fase 1
+(GBDT da H10, fusões, F2-H1 a F2-H11, F3-H1, F3-H5, F3-H6, F3-H9), e nas bases com tarefa de LTV
+(Synerise, sintéticas). Não se sabe ainda a direção do efeito sobre E − T: o E também recebia a
+feature. A clusterização (F3-H2, F3-H6, F3-H10) não muda de forma relevante. Os resultados
+corrigidos entram como errata, com os números antigos mantidos para comparação.

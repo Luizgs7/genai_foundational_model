@@ -111,6 +111,9 @@ def main():
         print("\n### 2. Vazamento das variáveis tradicionais", flush=True)
         if not rodar(os.path.join(AQUI, "pipeline", "common", "features_tradicionais.py"), tmp_cfg, "--teste_vazamento", 300):
             falhas.append("vazamento")
+        print("\n### 2b. Vazamento por perturbação do futuro (baselines dos rótulos e features)", flush=True)
+        if not rodar(os.path.join(AQUI, "testes", "teste_futuro.py"), tmp_cfg):
+            falhas.append("vazamento (perturbação do futuro)")
         # 3. motor v2
         print("\n### 3. Motor v2: serialização, censura, causalidade, aprendizado", flush=True)
         if not rodar(os.path.join(AQUI, "pipeline", "common", "v2_testes.py"), tmp_cfg, "v2"):
