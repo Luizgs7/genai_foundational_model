@@ -5,6 +5,7 @@ cd /content/genai_model
 source scripts/colab_persistencia.sh
 R=runs/hm_clientes; C=configs/hm_clientes.yaml
 E=/content/drive/MyDrive/genai_model_artefatos/entrada
+for S_ in 0 1 2; do ln -sfn ../hm_clientes_f3h1/f3h9_ft_s$S_ $R/f3h9_ft_s$S_; done
 [ -d $R/gbdt/h10_trad_lgbm_media ] || tar xf $E/h10_trad_lgbm_media.tar -C $R/gbdt || exit 1
 S=runs/hm_clientes_f3h1/f3h9/bootstrap_contra_t.json; rm -f $S
 for tf in churn proxima_online next_category ltv_90d; do

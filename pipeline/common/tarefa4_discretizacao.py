@@ -27,8 +27,11 @@ def calcular_edges(train_df, campo, agrupar_por, n_buckets):
     percentis = np.linspace(0, 100, n_buckets + 1)[1:-1]
     edges_por_grupo = {}
     if agrupar_por:
-        for grupo, sub in train_df.groupby(agrupar_por):
-            edges_por_grupo[grupo] = np.quantile(sub[campo].values, percentis / 100).tolist()
+        # só os grupos presentes no treino (com categorias fixas, um grupo que só aparece depois viria vazio);
+        # os grupos nunca vistos no treino caem na faixa -1 em aplicar_buckets
+        for grupo, sub in train_df.groupby(agrupar_por, observed=True):
+            if len(sub):
+                edges_por_grupo[grupo] = np.quantile(sub[campo].values, percentis / 100).tolist()
     else:
         edges_por_grupo[SEM_GRUPO] = np.quantile(train_df[campo].values, percentis / 100).tolist()
     return edges_por_grupo

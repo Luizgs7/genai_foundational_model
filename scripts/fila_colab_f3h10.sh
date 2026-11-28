@@ -15,6 +15,17 @@ R2=runs/hm_clientes_corte2
 PY="python3 -u"
 t() { echo "== $* $(date)"; }
 ( while sleep 600; do persistir; done ) & PERS=$!
+trap "kill $PERS 2>/dev/null" EXIT
+
+# 0. corte atual: rótulos e features refeitos com o baseline de LTV corrigido (errata de 27/11); os
+#    antigos ficam em rotulos_downstream_ate_27nov. Os dois preparos (atual e novo) não rodam juntos (memória).
+if [ ! -f $R/rotulos_downstream/.baseline_ltv_corrigido ]; then
+  t "corte atual: rótulos e features com o baseline corrigido"
+  [ -d $R/rotulos_downstream ] && { rm -rf $R/rotulos_downstream_ate_27nov; mv $R/rotulos_downstream $R/rotulos_downstream_ate_27nov; }
+  rm -rf $R/features_tradicionais
+  $PY motor.py $C preparar || exit 1
+  touch $R/rotulos_downstream/.baseline_ltv_corrigido
+fi
 
 # B (em segundo plano): o corte novo pelo motor. O preparo é CPU; o pré-treino espera a GPU livre.
 (
