@@ -267,7 +267,7 @@ Plano, com pergunta, desenho e critério de cada hipótese escritos antes de rod
 
 **Próximos passos (seção 11 do artigo, em ordem de valor).**
 1. ✅ Etapa 4 (23/11): `motor.py` (um comando por etapa, com retomada e registro de esforço), `testes/testar.py` (regressão, vazamento, causalidade), `requirements.txt`, `GUIA_IMPLANTACAO.md` e os modelos `configs/modelo_empresa.yaml` e `adapters/modelo_adapter.py`.
-2. Ajuste fino conjunto no motor v2 (nunca testado; melhor resultado do modelo fundacional na fase 2).
+2. ✅ F3-H9 (24/11), ajuste fino conjunto no motor v2: não atendida. Fica de 0,013 a 0,027 abaixo de T em churn, online e desconto e piora 3 das 5 tarefas contra o vetor congelado.
 3. Estabilizar a clusterização do v2, como hipótese nova, num corte ainda não visto (não muda o veredito de M1 na H&M).
 4. Recomendação com cópia do histórico na saída do modelo.
 5. Base da empresa, com o mesmo protocolo e critérios fixados antes.

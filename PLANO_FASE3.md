@@ -607,6 +607,9 @@ etapa 4 acima. Cada hipótese abaixo é registrada antes de rodar.
   passa a empatar nas perguntas supervisionadas da H&M, com mais custo por
   pergunta que a cabeça leve. O veredito de M1 na H&M não muda sozinho: a
   recomendação e a clusterização seguem como estão.
+- **Resultado (24/11): não atendida.** O ajustado fica de 0,013 a 0,027 abaixo de T em churn,
+  próxima online e desconto, e piora churn, LTV e desconto em relação ao vetor congelado; só a
+  próxima categoria melhora (+0,0068). Custo real: 5 min de L4 por semente. Ver `EXPERIMENTOS_HM.md`.
 - **Custo estimado.** Uma época de ajuste perto de uma época de pré-treino
   (cerca de 7 min de L4) mais a validação; menos de 2 h de L4 nas 3 sementes.
 

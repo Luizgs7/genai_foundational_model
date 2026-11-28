@@ -1222,3 +1222,39 @@ poucos vendedores). Arquivos: `runs/olist_v2/oli_bootstrap_test.json` e
 `runs/olist_v2/oli_cluster/`; reprodução: `adapters/adapter_olist_v2.py` e
 `scripts/fila_colab_olist.sh`.
 
+### F3-H9 — ajuste fino conjunto do backbone v2 com a cabeça DCNv2 (24/11)
+
+Desenho e critério registrados antes de rodar (`PLANO_FASE3.md`, etapa 5). Backbone
+`v2_pretreino` + DCNv2 da H4, treinados juntos nas cinco tarefas (taxa 5×10⁻⁵ no backbone e
+3×10⁻³ na cabeça, aquecimento de 5%, 3 épocas, época pela AUC de churn na validação),
+3 sementes, teste avaliado uma vez. Custo: cerca de 64 s por época e 5 min por semente numa L4
+(2 milhões de âncoras de treino em 731 mil janelas). Melhor época: 3, 3 e 2.
+
+| Tarefa (teste) | T | Vetor congelado (fusão v2) | Ajustado junto (F3-H9) | Ajustado − T | Ajustado − congelado (IC 95%) |
+| --- | --- | --- | --- | --- | --- |
+| Churn 90 dias (AUC) | 0,8291 | 0,8194 | 0,8079 | −0,0212 | −0,0115 [−0,0120; −0,0111] |
+| Próxima online (AUC) | 0,8448 | 0,8280 | 0,8317 | −0,0131 | +0,0037 [+0,0035; +0,0039] |
+| Próxima categoria (acc.) | 0,3727 | 0,3339 | 0,3407 | −0,0320 | +0,0068 [+0,0065; +0,0071] |
+| LTV 90 dias (acc.) | 0,3991 | 0,3853 | 0,3740 | −0,0251 | −0,0112 [−0,0118; −0,0107] |
+| Próxima com desconto (AUC) | 0,6842 | 0,6716 (F3-H5) | 0,6576 | −0,0266 [−0,0271; −0,0262] | −0,0141 [−0,0144; −0,0137] |
+
+Previsões combinadas das 3 sementes. Nas quatro primeiras tarefas, a comparação contra T não
+foi gravada pela fila (o bootstrap só registrou as linhas contra o vetor congelado); a
+diferença para T vem das métricas dos mesmos conjuntos. Ela é de 0,013 a 0,032, muito além da
+largura dos intervalos desta base (cerca de ±0,0005), e não muda o veredito.
+
+**Veredito: não atendida.**
+- Principal (empate com T em churn, próxima online e desconto): não atendido; o ajustado fica
+  de 0,013 a 0,027 abaixo de T nas três.
+- Secundário (ganho de pelo menos 0,005 sobre o vetor congelado em duas tarefas): não
+  atendido; só a próxima categoria passa (+0,0068). O ajuste piora churn, LTV e desconto.
+
+**Leitura.** No v1, o ajuste conjunto foi o melhor uso do modelo fundacional (F2-H2: +0,010 em
+categoria e +0,017 em LTV sobre o congelado). No v2, com a mesma receita, ele piora três das
+cinco tarefas. Nossa leitura, não testada: a cabeça treinou 3 épocas junto com o backbone,
+contra 40 épocas da fusão congelada; e os hiperparâmetros vieram do v1, sem busca. Ajustar
+essa receita seria uma hipótese nova; pela regra, este resultado fica como está.
+
+Arquivos (no Drive, `genai_model_artefatos/hm_clientes_f3h1/f3h9/bootstrap_test.json` e
+`f3h9_ft_s*/v2_ajuste_relatorio.json`); reprodução: `scripts/fila_colab_f3h9.sh`.
+
