@@ -1232,16 +1232,17 @@ Desenho e critério registrados antes de rodar (`PLANO_FASE3.md`, etapa 5). Back
 
 | Tarefa (teste) | T | Vetor congelado (fusão v2) | Ajustado junto (F3-H9) | Ajustado − T | Ajustado − congelado (IC 95%) |
 | --- | --- | --- | --- | --- | --- |
-| Churn 90 dias (AUC) | 0,8291 | 0,8194 | 0,8079 | −0,0212 | −0,0115 [−0,0120; −0,0111] |
-| Próxima online (AUC) | 0,8448 | 0,8280 | 0,8317 | −0,0131 | +0,0037 [+0,0035; +0,0039] |
-| Próxima categoria (acc.) | 0,3727 | 0,3339 | 0,3407 | −0,0320 | +0,0068 [+0,0065; +0,0071] |
-| LTV 90 dias (acc.) | 0,3991 | 0,3853 | 0,3740 | −0,0251 | −0,0112 [−0,0118; −0,0107] |
+| Churn 90 dias (AUC) | 0,8291 | 0,8194 | 0,8079 | −0,0212 [−0,0217; −0,0208] | −0,0115 [−0,0120; −0,0111] |
+| Próxima online (AUC) | 0,8448 | 0,8280 | 0,8317 | −0,0131 [−0,0134; −0,0129] | +0,0037 [+0,0035; +0,0039] |
+| Próxima categoria (acc.) | 0,3727 | 0,3339 | 0,3407 | −0,0320 [−0,0327; −0,0313] | +0,0068 [+0,0065; +0,0071] |
+| LTV 90 dias (acc.) | 0,3991 | 0,3853 | 0,3740 | −0,0251 [−0,0259; −0,0241] | −0,0112 [−0,0118; −0,0107] |
 | Próxima com desconto (AUC) | 0,6842 | 0,6716 (F3-H5) | 0,6576 | −0,0266 [−0,0271; −0,0262] | −0,0141 [−0,0144; −0,0137] |
 
 Previsões combinadas das 3 sementes. Nas quatro primeiras tarefas, a comparação contra T não
-foi gravada pela fila (o bootstrap só registrou as linhas contra o vetor congelado); a
-diferença para T vem das métricas dos mesmos conjuntos. Ela é de 0,013 a 0,032, muito além da
-largura dos intervalos desta base (cerca de ±0,0005), e não muda o veredito.
+foi gravada pela primeira fila (a pasta de T não estava no Colab e a fila seguia calada); ela foi
+gravada em 28/11 com as mesmas previsões (`f3h9/bootstrap_contra_t.json`, T como a média das 3
+sementes da H10) e confirma as diferenças pontuais. Os números de T, do congelado e do ajustado em
+churn e LTV estão sob a errata do baseline de LTV (abaixo): os três recebiam a feature vazada.
 
 **Veredito: não atendida.**
 - Principal (empate com T em churn, próxima online e desconto): não atendido; o ajustado fica
