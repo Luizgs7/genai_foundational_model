@@ -656,6 +656,20 @@ etapa 4 acima. Cada hipótese abaixo é registrada antes de rodar.
     máximo 0,05 abaixo do ARI do melhor T.
   - E é o caminho que reduz o esforço; por isso é o principal. H é reportado
     e, pela regra da F3-H6, também contaria como empate do problema.
+- **Escolha na validação (28/11, antes de abrir o teste do corte novo).** A
+  regra escolheu 10 reinícios. ARI do E (sementes) na validação do corte
+  atual: 3 reinícios 0,875 (0,928; 0,726; 0,969), reproduzindo a F3-H6;
+  10 reinícios 0,926 (0,928; 0,899; 0,953); 30 reinícios 0,859 (0,902;
+  0,710; 0,964). RFM entre 0,957 e 0,967. Duas notas, registradas antes do
+  teste: (1) com 30 reinícios a semente instável volta, então a premissa
+  (instabilidade só do procedimento) fica fraca; parece haver duas soluções
+  do K-means quase empatadas; (2) com 10 reinícios, o melhor T pelo índice
+  passou a ser o T2 (índice 0,0555 contra 0,0552 do RFM), que é instável
+  (ARI 0,716), e o critério compara com ele. Leitura adicional, mais
+  exigente, fixada agora: o ARI do E também contra o do RFM (T1), com a
+  mesma margem de 0,05. Os rótulos e features do corte atual foram refeitos
+  com o baseline de LTV corrigido (errata de 27/11), o que muda o T2, mas
+  não o RFM nem o E.
 - **O que muda com o resultado.** Se atendida, a clusterização empata pelo
   caminho E, e o motor passa a usar o número de reinícios escolhido. O
   veredito de M1 na H&M (F3-H6, etapa A) não muda: ele vem do corte atual, com
