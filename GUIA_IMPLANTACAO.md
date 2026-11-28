@@ -6,9 +6,11 @@ artigo (seção 11) e `PLANO_FASE3.md`.
 
 **O que o estudo deixou como recomendação.** O motor genérico está pronto: conecta a base por adaptador
 e YAML e gera automaticamente as variáveis do modelo tradicional (T) para qualquer pergunta. O vetor do
-cliente (motor v2) ainda não pagou o seu custo nas bases públicas: ao lado das variáveis, não mudou o
-resultado; sozinho, ficou abaixo. Na empresa ele é avaliado de novo, problema a problema, com critério
-fixado antes.
+cliente (motor v2) pagou o seu custo só na clusterização: sozinho, deu segmentos que explicam um pouco
+mais do futuro que o RFM, com a mesma estabilidade (F3-H10, com 10 reinícios do K-means). Nas
+perguntas supervisionadas, ao lado das variáveis, não mudou o resultado; sozinho, ficou abaixo (números
+sob a errata do baseline de LTV de 27/11). Na empresa ele é avaliado de novo, problema a problema, com
+critério fixado antes.
 
 ## 1. Antes de qualquer dado: os 4 problemas e seus donos
 

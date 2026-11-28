@@ -675,6 +675,12 @@ etapa 4 acima. Cada hipótese abaixo é registrada antes de rodar.
   veredito de M1 na H&M (F3-H6, etapa A) não muda: ele vem do corte atual, com
   o procedimento registrado na época. As perguntas supervisionadas seguem
   empatando só pelo H.
+- **Resultado (28/11): atendida, na forma forte.** No teste do corte novo, o
+  índice do E é 0,0745 contra 0,0726 do RFM (IC do delta [+0,0014; +0,0025])
+  e o ARI 0,963 contra 0,961. A vantagem vem do canal da próxima compra; em
+  churn e LTV o RFM explica mais. A premissa fica só em parte confirmada (30
+  reinícios desfizeram o ganho na validação). O motor passa a usar 10
+  reinícios. Ver `EXPERIMENTOS_HM.md`.
 - **Custo estimado.** Cerca de 1 h de CPU do Colab no preparo, cerca de 50 min
   de L4 no pré-treino e menos de 1 h de CPU na clusterização.
 

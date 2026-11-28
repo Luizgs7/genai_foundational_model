@@ -149,7 +149,8 @@ class Motor:
         for fase in ("val", "test"):
             if not self.existe("motor_cluster", f"resultado_{fase}.json"):
                 self.run(comum("f3h2_clusterizacao.py"), self.config_path, "--fase", fase,
-                         "--emb_cache", "caches/pca32_v2.npz", "--saida", "motor_cluster"); feito = False
+                         "--emb_cache", "caches/pca32_v2.npz", "--saida", "motor_cluster",
+                         "--n_init", 10); feito = False   # 10 reinícios: F3-H10
         return feito
 
     def avaliar(self):

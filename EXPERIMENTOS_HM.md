@@ -1260,6 +1260,62 @@ Arquivos (no Drive, `genai_model_artefatos/hm_clientes_f3h1/f3h9/bootstrap_test.
 `f3h9_ft_s*/v2_ajuste_relatorio.json`); reprodução: `scripts/fila_colab_f3h9.sh`.
 
 
+### F3-H10 — segmentos do v2 com mais reinícios do K-means, num corte nunca usado como teste (27–28/11)
+
+Desenho, regra de escolha e critério registrados antes de rodar (`PLANO_FASE3.md`). Uma mudança
+só, igual para todos os espaços: o número de reinícios do K-means. Corte novo: a H&M até
+25/03/2020 (teste de 27/09/2019 a 25/03/2020), refeita inteira pelo motor só com YAML e um adapter
+de corte; o v2 foi pré-treinado do zero só com o treino desse corte. Teste avaliado uma vez.
+
+**Escolha na validação do corte atual (K = 8, ARI do E por semente).**
+
+| Reinícios | E | RFM (T1) | T2 |
+| --- | --- | --- | --- |
+| 3 (reprodução da F3-H6) | 0,875 (0,928; 0,726; 0,969) | 0,957 | 0,904 |
+| 10 (escolhido) | 0,926 (0,928; 0,899; 0,953) | 0,967 | 0,716 |
+| 30 | 0,859 (0,902; 0,710; 0,964) | 0,963 | 0,659 |
+
+**Teste do corte novo (10 reinícios, K = 8, 706.722 clientes).**
+
+| Espaço | Índice [IC 95%] | ARI (sementes) | Churn | LTV | Online | Categoria |
+| --- | --- | --- | --- | --- | --- | --- |
+| T1 — RFM (melhor T) | 0,0726 [0,0719; 0,0735] | 0,961 (0,946; 0,974; 0,964) | 0,157 | 0,107 | 0,025 | 0,001 |
+| T2 — agregados | 0,0571 [0,0566; 0,0579] | 0,835 | 0,117 | 0,077 | 0,029 | 0,005 |
+| E — vetor do v2 | 0,0745 [0,0738; 0,0753] | 0,963 (0,974; 0,958; 0,956) | 0,145 | 0,096 | 0,054 | 0,003 |
+| H — T2 + E | 0,0761 [0,0754; 0,0769] | 0,837 (0,568; 0,980; 0,961) | 0,148 | 0,097 | 0,056 | 0,003 |
+
+E − RFM no índice: +0,0019 [+0,0014; +0,0025] (razão 1,026); ARI +0,002. Sensibilidade (fora
+do critério): K = 4, E 0,0645 contra 0,0591 do RFM, ARI 0,986 contra 0,989; K = 16, E 0,0816
+contra 0,0806, ARI 0,897 contra 0,944.
+
+**Veredito: atendida, na forma forte.** O índice do E passa o do RFM com IC sem o zero, e o ARI
+fica 0,002 acima (limite: −0,05). Passa também na leitura mais exigente registrada antes do teste
+(ARI contra o RFM), porque aqui o melhor T já é o RFM. O H não empata: uma das sementes cai para
+0,568.
+
+**Leitura.**
+1. **Pela primeira vez, a representação sozinha empata com a régua tradicional num dos 4
+   problemas, com estabilidade.** O caminho é o barato: PCA do vetor e K-means, sem código
+   específico.
+2. **A vantagem é pequena e vem de um desfecho só.** O E explica menos do churn (0,145 contra
+   0,157) e do LTV (0,096 contra 0,107) que o RFM, e mais do canal da próxima compra (0,054
+   contra 0,025). O índice é a média dos quatro desfechos; quem usa os segmentos para churn ou
+   valor continua melhor servido pelo RFM.
+3. **A premissa fica só em parte confirmada.** Na validação, 30 reinícios desfizeram o ganho de
+   10 (a semente instável voltou a 0,710). No corte novo, as três sementes ficaram estáveis com
+   10 reinícios, mas não se sabe quanto disso é dos reinícios e quanto é do corte: a F3-H10 não
+   isola as duas causas. Parece haver soluções do K-means quase empatadas no espaço do v2.
+4. **M2, de novo.** O corte novo saiu só com YAML e um adapter de 30 linhas
+   (`adapters/cortar_canonica.py`), em 34 min de Colab: preparo 248 s, serialização 21 s,
+   pré-treino 1.711 s de L4, extração 78 s.
+5. **O veredito de M1 na H&M (F3-H6) não muda,** como registrado: ele vem do corte atual e do
+   procedimento da época. A clusterização deixa de ser o motivo pelo qual o E não empata; as
+   perguntas supervisionadas seguem sob a errata do baseline de LTV.
+
+Arquivos: `runs/hm_clientes_corte2/f3h10_cluster/resultado_{val,test}.json`,
+`runs/hm_clientes/f3h10_val_n{3,10,30}/resultado_val.json`; reprodução:
+`scripts/fila_colab_f3h10.sh`.
+
 ### Achado: o baseline de LTV vazava o futuro (27/11)
 
 Achado pela auditoria de vazamento do corte novo da F3-H10 (agente `auditor-vazamento`) e
