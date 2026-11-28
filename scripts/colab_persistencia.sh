@@ -19,7 +19,7 @@ persistir() {
            $RUNS/gbdt/f2h11_tabicl_* $RUNS/gbdt/f2h11_tabpfn_* $RUNS/f2h10/resultado*.json $RUNS/f2h11/resultado*.json \
            $RUNS/v2_pretreino* $RUNS/v2_fusao_s* $RUNS/v2_rec* $RUNS/v2b_pretreino* $RUNS/v2b_fusao_s* $RUNS/f3h3 $RUNS/f3h4* $RUNS/f3h5* \
            $RUNS/f3h6* $RUNS/gbdt/f3h6_* $RUNS/f2h3/*_v2.json $RUNS/f2h3/*/v2.parquet \
-           $RUNS/f3h10* $RUNS/caches/pca32_v2.npz; do
+           $RUNS/f3h10* $RUNS/caches/pca32_v2.npz $RUNS/errata_* $RUNS/gbdt/errata_*; do
     [ -e "$d" ] || continue
     rel=$(dirname "${d#$RUNS/}")
     mkdir -p "$DRIVE/$rel"
