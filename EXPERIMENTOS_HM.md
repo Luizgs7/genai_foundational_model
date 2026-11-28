@@ -18,6 +18,10 @@ Números consolidados em `runs/hm_clientes/resultados_consolidados.json`
 | H8 | Quais escolhas de arquitetura importam? | **RoPE** domina a loss de pré-treino (0,91 vs 1,59), mas a diferença é quase toda o token de mês do calendário, que o NoPE não extrapola; o resto é ±1–2%. **A loss não se traduz em downstream**: o backbone final (5M, 4× mais barato) empata na validação e perde no teste. |
 | H9 | Qual o efeito do cadastro na fusão? | **Pequeno**: +0,007 em categoria, ≈0 em online, −0,003 em churn e −0,002 em LTV no teste. O **embedding** pesa mais: +0,025 em online e +0,026 em categoria, mas −0,004 em churn e −0,008 em LTV. |
 
+> **Errata (28/11).** Os números de T e H em churn e LTV desta tabela usavam um baseline de LTV
+> que vazava o futuro. No corte atual, o T corrigido dá churn 0,814 e LTV 0,382 no teste. Ver a
+> seção "Errata do baseline de LTV: resultados corrigidos", na fase 3.
+
 Conclusão operacional: **nesta base, o modelo fundacional não supera o ML
 tradicional bem-feito em nenhuma das 4 tarefas**. Ele agrega sinal real
 (sequencial) a online e categoria **na fusão**, mas o GBDT com RFM e composição
@@ -1028,6 +1032,10 @@ uma vez, bootstrap por cliente.
 **Veredito: não atendido.** O critério pedia o limite inferior do IC acima de
 −0,01 nas três perguntas; nenhuma passa.
 
+> **Errata (28/11).** O T de churn usava o baseline de LTV vazado. Contra o T corrigido (0,8137),
+> a cabeça de churn fica em −0,0032 [−0,0034; −0,0030] e empata. O veredito não muda, porque
+> canal e desconto seguem fora. Ver "Errata do baseline de LTV: resultados corrigidos".
+
 Leitura:
 
 1. **Fora dos alvos, o v2 transfere melhor que o v1, mas não o bastante.** Em
@@ -1061,6 +1069,10 @@ registrados em `PLANO_FASE3.md` antes de rodar. Teste avaliado uma vez.
 | Churn 90 dias (AUC) | 0,01 | 0,8291 | 0,8105 (cabeça só de churn) / 0,8194 (conjunta): −0,019 / −0,010 | 0,8226: −0,0065 [−0,0068; −0,0063] | **H empata** |
 | Desconto (AUC) | 0,01 | 0,6842 | 0,6716: −0,0126 | 0,6852: +0,0010 [+0,0008; +0,0011] | **H empata** |
 | Clusterização (índice; ARI) | 5% e ARI −0,05 | RFM 0,0694; ARI 0,966 | 0,0796 (+15%, IC exclui o zero); ARI 0,879 | 0,0796; ARI 0,777 | **não empata: estabilidade** |
+
+> **Errata (28/11).** Em churn, o T correto é 0,8137, e não 0,8291. Com ele, o H fica em
+> +0,0006 e o E empata (conjunta −0,0023; cabeça só de churn −0,0032). O veredito da etapa A não
+> muda. Ver "Errata do baseline de LTV: resultados corrigidos".
 
 **Veredito da etapa A: não atendida, pela estabilidade da clusterização.** O
 H empata em recomendação, churn e desconto. Na clusterização, o índice do v2
@@ -1351,7 +1363,59 @@ idênticos na base mini). O teste de vazamento antigo das features deixava os `*
 fora, por virem de outro script.
 
 **O que fica sob errata.** Todo número de T, H e E que usou a feature: na H&M, desde a fase 1
-(GBDT da H10, fusões, F2-H1 a F2-H11, F3-H1, F3-H5, F3-H6, F3-H9), e nas bases com tarefa de LTV
+(GBDT da H10, fusões, F2-H1 a F2-H11, F3-H1, o T da F3-H5, F3-H6, F3-H9; as cabeças de tarefa única da F3-H5 não recebiam a feature), e nas bases com tarefa de LTV
 (Synerise, sintéticas). Não se sabe ainda a direção do efeito sobre E − T: o E também recebia a
 feature. A clusterização (F3-H2, F3-H6, F3-H10) não muda de forma relevante. Os resultados
 corrigidos entram como errata, com os números antigos mantidos para comparação.
+
+### Errata do baseline de LTV: resultados corrigidos (28/11)
+
+T, H e a fusão conjunta do E refeitos no corte atual, com rótulos e features corrigidos e o mesmo
+protocolo de antes: T com HPO de 40 tentativas, o H como T mais o PCA-32 do v2, a fusão DCNv2 do v2
+congelado e 3 sementes. Teste avaliado uma vez, com bootstrap por cliente (B = 300; 1.087.108 âncoras
+de 523.408 clientes). As cabeças de tarefa única da F3-H5 não foram refeitas, porque nunca
+receberam a feature: cada uma só recebe o baseline da própria tarefa.
+
+| Teste | T antigo (com vazamento) | T corrigido | H corrigido: H − T [IC 95%] | E fusão conjunta: E − T [IC 95%] | E cabeça só de churn (F3-H5): E − T [IC 95%] |
+| --- | --- | --- | --- | --- | --- |
+| Churn 90 dias (AUC) | 0,8291 | 0,8137 | 0,8143: +0,0006 [+0,0004; +0,0007] | 0,8114: −0,0023 [−0,0026; −0,0021] | 0,8105: −0,0032 [−0,0034; −0,0030] |
+| LTV 90 dias (acurácia) | 0,3991 | 0,3820 | 0,3821: +0,0001 [−0,0005; +0,0008] | 0,3720: −0,0099 [−0,0109; −0,0090] | — |
+
+T antigo contra T corrigido, nas mesmas âncoras: churn +0,0154 [+0,0151; +0,0157] e LTV +0,0172
+[+0,0165; +0,0178]. Esse era o tamanho do vazamento no teste. A fusão conjunta também o recebia: em
+churn ela cai de 0,8194 para 0,8114 (−0,008, metade da queda do T). Na validação, o T corrigido dá
+0,7847 em churn e 0,4114 em LTV.
+
+**O que muda.**
+1. **Em churn, o vetor sozinho passa a empatar com o T.** A cabeça leve da F3-H5 fica 0,0032 abaixo,
+   e a fusão conjunta 0,0023 abaixo. Nos dois casos, o limite inferior do IC fica bem acima de
+   −0,01. Antes da errata, a cabeça de churn ficava a −0,0186 e a conjunta no limite (−0,0097).
+2. **Em LTV, o E fica no limite e não empata pela regra.** A diferença é −0,0099, e o limite
+   inferior do IC fica em −0,0109, 0,0009 além da margem.
+3. **O H continua empatando com o T, agora com folga nos dois:** +0,0006 em churn e +0,0001 em LTV.
+   O vetor responde por 47% do ganho do H em churn e 44% em LTV. Ainda assim, o H não passa o T
+   de forma útil.
+
+**Vereditos revistos (pela regra registrada, sem reabrir o teste das outras tarefas).**
+- **F3-H5: continua não atendida.** Churn passa a empatar, mas canal (−0,0143) e desconto (−0,0126)
+  seguem fora da margem. Nessas duas tarefas, a feature vazada tinha menos de 1% do ganho do T, e o
+  T delas não foi refeito.
+- **F3-H6, etapa A: continua não atendida no corte atual,** pela estabilidade da clusterização. Os
+  três empates do H se mantêm. A linha do E muda: com o T corrigido, o E (vetor + cabeça leve, sem
+  código específico) empata em churn, além do índice da clusterização. Recomendação (−16%) e
+  desconto (−0,0126) seguem fora.
+- **F3-H9: continua não atendida.** Canal e desconto não mudam. Em churn, o ajustado (0,8079) fica
+  cerca de 0,006 abaixo do T corrigido. Esse número não tem IC e não é limpo: o ajuste conjunto
+  recebia a feature vazada como entrada, como a fusão conjunta.
+
+**Leitura para M1 na H&M.** O caminho barato, uma cabeça de cerca de 2 min de L4 sobre um vetor já
+calculado, agora empata em 2 dos 4 problemas: churn (corte atual) e clusterização (índice e
+estabilidade no corte novo, F3-H10). Recomendação e desconto continuam pedindo o H. Parte da
+distância que víamos entre E e T em churn era o T usando o futuro.
+
+Ainda sob errata, sem refazer: as tabelas da fase 1 e da fase 2 da H&M que mostram T, H ou fusões em
+churn e LTV (H10, F2-H1 a F2-H11). Nas outras bases com LTV (Synerise e sintéticas), o efeito ainda
+não foi medido. Arquivos: `runs/hm_clientes/errata_ltv/bootstrap_test.json`,
+`runs/hm_clientes/gbdt/errata_{trad,hibrido_v2}_lgbm/relatorio.json` e
+`runs/hm_clientes/errata_v2_fusao_s*/tarefa13_relatorio.json`. Reprodução:
+`scripts/fila_colab_errata_ltv.sh`, depois do passo 0 de `scripts/fila_colab_f3h10.sh`.

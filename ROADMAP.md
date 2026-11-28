@@ -269,11 +269,11 @@ Plano, com pergunta, desenho e critério de cada hipótese escritos antes de rod
 1. ✅ Etapa 4 (23/11): `motor.py` (um comando por etapa, com retomada e registro de esforço), `testes/testar.py` (regressão, vazamento, causalidade), `requirements.txt`, `GUIA_IMPLANTACAO.md` e os modelos `configs/modelo_empresa.yaml` e `adapters/modelo_adapter.py`.
 2. ✅ F3-H9 (24/11), ajuste fino conjunto no motor v2: não atendida. Fica de 0,013 a 0,027 abaixo de T em churn, online e desconto e piora 3 das 5 tarefas contra o vetor congelado.
 3. ✅ F3-H10 (28/11), clusterização do v2 com 10 reinícios do K-means, num corte nunca usado como teste (H&M até 25/03/2020): atendida na forma forte. O E empata com o RFM em índice (+2,6%) e estabilidade (ARI 0,963 contra 0,961); a vantagem vem do canal, e em churn e LTV o RFM explica mais. Não muda o veredito de M1 na H&M.
-3b. Errata do baseline de LTV (27/11): a feature vazava o futuro e era a mais importante do T em churn e LTV; T, H e E refeitos em churn e LTV (em andamento).
+3b. ✅ Errata do baseline de LTV (27–28/11): a feature vazava o futuro e era a mais importante do T em churn e LTV. O T corrigido cai 0,015 em churn (0,8137) e 0,017 em LTV (0,3820). O E passa a empatar em churn (cabeça leve −0,0032; fusão conjunta −0,0023) e fica no limite em LTV (−0,0099, IC até −0,0109). O H empata nos dois. Nenhum veredito registrado muda (F3-H5, F3-H6 e F3-H9 seguem não atendidas por outras tarefas). Na H&M, o E agora empata em 2 dos 4 problemas: churn e clusterização.
 4. Recomendação com cópia do histórico na saída do modelo.
 5. Base da empresa, com o mesmo protocolo e critérios fixados antes.
 
-Errata e achados metodológicos registrados na fase 3: a censura unilateral do rótulo de churn no fim do teste (corrigida em 14/11) e o R1 da F2-H3 que deixava sem lista os clientes sem recompra (corrigido em 19/11).
+Errata e achados metodológicos registrados na fase 3: a censura unilateral do rótulo de churn no fim do teste (corrigida em 14/11), o R1 da F2-H3 que deixava sem lista os clientes sem recompra (corrigido em 19/11) e o baseline de LTV que vazava o futuro (corrigido em 27/11, com o teste de perturbação do futuro).
 
 ---
 

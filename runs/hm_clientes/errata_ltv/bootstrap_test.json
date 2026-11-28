@@ -1,0 +1,149 @@
+[
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/errata_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/errata_hibrido_v2_lgbm",
+    "metrica_a": 0.8137048864521812,
+    "metrica_b": 0.8142700783646956,
+    "delta": 0.0005651919125143623,
+    "ic95": [
+      0.00040915665051619585,
+      0.0007139491120116245
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/errata_trad_lgbm",
+    "b": "runs/hm_clientes/errata_v2_fusao_s*",
+    "metrica_a": 0.8137048864521812,
+    "metrica_b": 0.8113705265210694,
+    "delta": -0.0023343599311117513,
+    "ic95": [
+      -0.0025668609468411374,
+      -0.0020955059242109774
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/errata_trad_lgbm",
+    "b": "runs/hm_clientes/f3h5_churn_s*",
+    "metrica_a": 0.8137048864521812,
+    "metrica_b": 0.8105150058461628,
+    "delta": -0.003189880606018436,
+    "ic95": [
+      -0.003434052042958552,
+      -0.0029510945802184636
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "churn",
+    "split": "test",
+    "tipo": "binaria",
+    "metrica": "auc",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/gbdt/errata_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/h10_trad_lgbm_media",
+    "metrica_a": 0.8137048864521812,
+    "metrica_b": 0.8290945879197761,
+    "delta": 0.015389701467594885,
+    "ic95": [
+      0.015123495677620395,
+      0.015720091115250676
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/errata_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/errata_hibrido_v2_lgbm",
+    "metrica_a": 0.38196388951235755,
+    "metrica_b": 0.38208531259083733,
+    "delta": 0.00012142307847978762,
+    "ic95": [
+      -0.0005212581210107439,
+      0.0007573262792625086
+    ],
+    "B": 300,
+    "significativo": false
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 3,
+    "a": "runs/hm_clientes/gbdt/errata_trad_lgbm",
+    "b": "runs/hm_clientes/errata_v2_fusao_s*",
+    "metrica_a": 0.38196388951235755,
+    "metrica_b": 0.37201823553869534,
+    "delta": -0.009945653973662205,
+    "ic95": [
+      -0.01087302132505132,
+      -0.009015540933758599
+    ],
+    "B": 300,
+    "significativo": true
+  },
+  {
+    "tarefa": "ltv_90d",
+    "split": "test",
+    "tipo": "multiclasse",
+    "metrica": "accuracy",
+    "n_ancoras": 1087108,
+    "n_clientes": 523408,
+    "sementes_a": 3,
+    "sementes_b": 1,
+    "a": "runs/hm_clientes/gbdt/errata_trad_lgbm",
+    "b": "runs/hm_clientes/gbdt/h10_trad_lgbm_media",
+    "metrica_a": 0.38196388951235755,
+    "metrica_b": 0.39913789614279355,
+    "delta": 0.017174006630436,
+    "ic95": [
+      0.016474874177033024,
+      0.017828057894158773
+    ],
+    "B": 300,
+    "significativo": true
+  }
+]

@@ -412,6 +412,9 @@ Princípios:
   desconto −0,0126 (o v1 ficava em −0,0175). O v2 transfere melhor que o v1
   para perguntas fora dos alvos, mas o vetor congelado com cabeça leve segue
   fora da margem; só o híbrido empata. Ver `EXPERIMENTOS_HM.md`.
+- **Errata (28/11).** Contra o T de churn corrigido (0,8137; o antigo usava o baseline de LTV
+  vazado), a cabeça de churn fica em −0,0032 [−0,0034; −0,0030] e empata. O veredito não muda,
+  porque canal e desconto seguem fora.
 
 #### F3-H6 — teste central: uma solução, quatro problemas
 
@@ -455,6 +458,9 @@ Princípios:
   B não roda; M1 na H&M: não atendida no corte atual. O H empata sem reduzir
   o esforço por problema; o E reduz o esforço, mas só empata no índice da
   clusterização. Ver `EXPERIMENTOS_HM.md`.
+- **Errata (28/11).** Com o T de churn corrigido (0,8137), o H fica em +0,0006 e o E empata
+  (fusão conjunta −0,0023; cabeça só de churn −0,0032). O veredito da etapa A não muda: o E passa
+  a empatar em churn e no índice da clusterização, e segue fora em recomendação e desconto.
 
 ### Etapa 3 — estresse e generalização
 
