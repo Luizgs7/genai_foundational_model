@@ -613,7 +613,7 @@ etapa 4 acima. Cada hipótese abaixo é registrada antes de rodar.
 - **Custo estimado.** Uma época de ajuste perto de uma época de pré-treino
   (cerca de 7 min de L4) mais a validação; menos de 2 h de L4 nas 3 sementes.
 
-#### F3-H10 — segmentos estáveis com o vetor do v2, num corte ainda não visto (registrada em 27/11/2026)
+#### F3-H10 — segmentos estáveis com o vetor do v2, num corte nunca usado como teste (registrada em 27/11/2026)
 
 - **Pergunta.** Na F3-H6, os segmentos do v2 explicaram mais do futuro que os
   do RFM (índice 0,0796 contra 0,0694), mas o ARI ficou 0,087 abaixo, por
@@ -643,6 +643,13 @@ etapa 4 acima. Cada hipótese abaixo é registrada antes de rodar.
     com o treino do corte novo), extração e PCA-32. O backbone não vê nada da
     janela de teste nova. A forma de padronização é escolhida na validação do
     corte novo, como no protocolo. O teste é avaliado uma vez.
+  - **Sobreposição, registrada antes de rodar (auditoria de 27/11).** O
+    período do teste novo é o fim do treino e toda a validação do corte atual.
+    As âncoras da validação atual, usadas para escolher o número de reinícios,
+    são as mesmas cestas de cerca de metade do teste novo. Nada passa para os
+    artefatos do corte novo (backbone, features, PCA e K-means são refeitos),
+    e o ARI não usa rótulos; mas o teste novo não é um período inédito, só um
+    corte que nenhum experimento usou como teste.
 - **Critério, escrito antes de rodar** (o da F3-H2, no teste do corte novo).
   - Principal: E empata com o melhor entre T1 e T2. O limite inferior do IC
     95% de índice_E − 0,95 × índice_T fica acima de zero, e o ARI do E fica no
