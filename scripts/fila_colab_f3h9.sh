@@ -32,11 +32,15 @@ done
 S=$B/f3h9/bootstrap_test.json; mkdir -p $B/f3h9; rm -f $S
 t "bootstrap"
 A="python3 -u pipeline/common/avaliacao.py"
+# T da H&M: as previsões das 3 sementes (1,3 GB) não vão ao Drive; a média delas (o que o bootstrap usa)
+# está em entrada/h10_trad_lgbm_media.tar. Sem T, a fila para em vez de seguir calada.
+TH=gbdt/h10_trad_lgbm; [ -d $R/$TH ] || { TH=gbdt/h10_trad_lgbm_media; [ -d $R/$TH ] || \
+  tar xf /content/drive/MyDrive/genai_model_artefatos/entrada/h10_trad_lgbm_media.tar -C $R/gbdt || exit 1; }
 for tf in churn proxima_online next_category ltv_90d; do
-  $A $C --tarefa $tf --split test --B 300 --saida $S --a gbdt/h10_trad_lgbm --b "f3h9_ft_s*" --b "v2_fusao_s*"
-  $A $C --tarefa $tf --split test --B 300 --saida $S --a "v2_fusao_s*" --b "f3h9_ft_s*"
+  $A $C --tarefa $tf --split test --B 300 --saida $S --a $TH --b "f3h9_ft_s*" --b "v2_fusao_s*" || exit 1
+  $A $C --tarefa $tf --split test --B 300 --saida $S --a "v2_fusao_s*" --b "f3h9_ft_s*" || exit 1
 done
-$A $C1 --tarefa proxima_com_desconto --split test --B 300 --saida $S --a gbdt/f3h1_trad_lgbm --b "f3h9_ft_s*" --b "f3h5_desc_s*"
-$A $C1 --tarefa proxima_com_desconto --split test --B 300 --saida $S --a "f3h5_desc_s*" --b "f3h9_ft_s*"
+$A $C1 --tarefa proxima_com_desconto --split test --B 300 --saida $S --a gbdt/f3h1_trad_lgbm --b "f3h9_ft_s*" --b "f3h5_desc_s*" || exit 1
+$A $C1 --tarefa proxima_com_desconto --split test --B 300 --saida $S --a "f3h5_desc_s*" --b "f3h9_ft_s*" || exit 1
 persistir
 echo "FIM $(date)"

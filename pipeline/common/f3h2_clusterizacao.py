@@ -133,7 +133,11 @@ def main():
     ap.add_argument("--emb_extra", action="append", default=[], help="NOME=arquivo.npz: outro embedding reduzido, vira o espaço E_NOME")
     ap.add_argument("--B", type=int, default=300)
     ap.add_argument("--saida", default="f3h2", help="pasta em runs/<nome> (F3-H6: f3h6_cluster)")
+    ap.add_argument("--n_init", type=int, default=3, help="reinícios do K-means em cada ajuste (F3-H2 a F3-H6: 3)")
+    ap.add_argument("--ks", default="8,4,16", help="valores de K; o primeiro é o principal")
     a = ap.parse_args()
+    global KS
+    KS = [int(k) for k in a.ks.split(",")]
     from sklearn.cluster import KMeans
     from sklearn.metrics import adjusted_rand_score
     t0 = time.time()
@@ -215,7 +219,7 @@ def main():
         print(f"desfecho {t}: {int(ok.sum()):,} âncoras com rótulo, {len(cls)} classes", flush=True)
 
     n_tr = t1_tr.shape[0]
-    res = {"fase": a.fase, "n_clientes_treino": n_tr, "n_clientes_avaliados": av.height, "desfechos": tarefas,
+    res = {"fase": a.fase, "n_init": a.n_init, "ks": KS, "n_clientes_treino": n_tr, "n_clientes_avaliados": av.height, "desfechos": tarefas,
            "rfm": rfm, "variancia_explicada_T2": var_t2, "variantes": {}}
     atribuicoes = {}
     for nome_v, esp in variantes.items():
@@ -227,14 +231,14 @@ def main():
                 for s in SEMENTES:
                     r = np.random.RandomState(1000 + s)
                     perm = r.permutation(n_tr)
-                    km = KMeans(n_clusters=K, n_init=3, random_state=s).fit(xtr[perm[:N_AJUSTE]])
+                    km = KMeans(n_clusters=K, n_init=a.n_init, random_state=s).fit(xtr[perm[:N_AJUSTE]])
                     seg = km.predict(xav)
                     atribuicoes[(nome_v, K, n, s)] = seg
                     us.append({t: incerteza_explicada(seg[ok] * nc + y, K, nc) for t, (ok, y, nc) in desfechos.items()})
                     tamanhos.append(np.sort(np.bincount(seg, minlength=K) / len(seg)).tolist())
                     meio = n_tr // 2
-                    ka = KMeans(n_clusters=K, n_init=3, random_state=s).fit(xtr[perm[:meio][:N_AJUSTE]])
-                    kb = KMeans(n_clusters=K, n_init=3, random_state=s).fit(xtr[perm[meio:][:N_AJUSTE]])
+                    ka = KMeans(n_clusters=K, n_init=a.n_init, random_state=s).fit(xtr[perm[:meio][:N_AJUSTE]])
+                    kb = KMeans(n_clusters=K, n_init=a.n_init, random_state=s).fit(xtr[perm[meio:][:N_AJUSTE]])
                     aris.append(float(adjusted_rand_score(ka.predict(xav), kb.predict(xav))))
                 por_desfecho = {t: float(np.mean([u[t] for u in us])) for t in desfechos}
                 linha[n] = {"indice": float(np.mean(list(por_desfecho.values()))), "por_desfecho": por_desfecho,

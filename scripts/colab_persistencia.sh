@@ -18,7 +18,8 @@ persistir() {
   for d in $RUNS/f2h10_e0 $RUNS/f2h10_e2 $RUNS/f2h10_e3a0 $RUNS/f2h10_e3a $RUNS/f2h10_e3b $RUNS/f2h10_fusao_* $RUNS/f2h10_e1_s* \
            $RUNS/gbdt/f2h11_tabicl_* $RUNS/gbdt/f2h11_tabpfn_* $RUNS/f2h10/resultado*.json $RUNS/f2h11/resultado*.json \
            $RUNS/v2_pretreino* $RUNS/v2_fusao_s* $RUNS/v2_rec* $RUNS/v2b_pretreino* $RUNS/v2b_fusao_s* $RUNS/f3h3 $RUNS/f3h4* $RUNS/f3h5* \
-           $RUNS/f3h6* $RUNS/gbdt/f3h6_* $RUNS/f2h3/*_v2.json $RUNS/f2h3/*/v2.parquet; do
+           $RUNS/f3h6* $RUNS/gbdt/f3h6_* $RUNS/f2h3/*_v2.json $RUNS/f2h3/*/v2.parquet \
+           $RUNS/f3h10* $RUNS/caches/pca32_v2.npz; do
     [ -e "$d" ] || continue
     rel=$(dirname "${d#$RUNS/}")
     mkdir -p "$DRIVE/$rel"
@@ -30,6 +31,12 @@ persistir() {
     [ -e "$d" ] || continue
     rel=$(dirname "${d#runs/hm_clientes_f3h1/}")
     mkdir -p $DRIVE/../hm_clientes_f3h1/$rel && cp -ru "$d" $DRIVE/../hm_clientes_f3h1/$rel/ 2>/dev/null
+  done
+  # F3-H10: corte novo da H&M (o preparo se refaz pelo motor; o pré-treino e o PCA são o que custa GPU)
+  for d in runs/hm_clientes_corte2/v2_pretreino runs/hm_clientes_corte2/caches runs/hm_clientes_corte2/f3h10_cluster \
+           runs/hm_clientes_corte2/motor_registro.json; do
+    [ -e "$d" ] || continue
+    mkdir -p $DRIVE/../hm_clientes_corte2 && cp -ru "$d" $DRIVE/../hm_clientes_corte2/ 2>/dev/null
   done
   # F3-H7 camada 2 (Synerise): o que é caro de refazer (as entradas ficam em entrada/synerise.tar)
   for d in runs/synerise/pre_* runs/synerise/fus_* runs/synerise/gbdt runs/synerise/syn_* runs/synerise/features_tradicionais \
@@ -50,6 +57,7 @@ restaurar() {
   echo "== restaurando do Drive $(date)"
   cp -ru $DRIVE/. $RUNS/ 2>/dev/null
   [ -d $DRIVE/../hm_clientes_f3h1 ] && { mkdir -p runs/hm_clientes_f3h1; cp -ru $DRIVE/../hm_clientes_f3h1/. runs/hm_clientes_f3h1/ 2>/dev/null; }
+  [ -d $DRIVE/../hm_clientes_corte2 ] && { mkdir -p runs/hm_clientes_corte2; cp -ru $DRIVE/../hm_clientes_corte2/. runs/hm_clientes_corte2/ 2>/dev/null; }
   [ -d $DRIVE/../synerise ] && { mkdir -p runs/synerise; cp -ru $DRIVE/../synerise/. runs/synerise/ 2>/dev/null; }
   for b in $DRIVE/../beleza_b2b_*; do
     [ -d "$b" ] || continue

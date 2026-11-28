@@ -613,6 +613,50 @@ etapa 4 acima. Cada hipótese abaixo é registrada antes de rodar.
 - **Custo estimado.** Uma época de ajuste perto de uma época de pré-treino
   (cerca de 7 min de L4) mais a validação; menos de 2 h de L4 nas 3 sementes.
 
+#### F3-H10 — segmentos estáveis com o vetor do v2, num corte ainda não visto (registrada em 27/11/2026)
+
+- **Pergunta.** Na F3-H6, os segmentos do v2 explicaram mais do futuro que os
+  do RFM (índice 0,0796 contra 0,0694), mas o ARI ficou 0,087 abaixo, por
+  causa de uma das três sementes (0,926, 0,740 e 0,970; na validação, 0,928,
+  0,726 e 0,969). A hipótese é que a instabilidade vem do procedimento, e não
+  da representação: com só 3 reinícios, o K-means cai às vezes num mínimo
+  local diferente. Com mais reinícios, os segmentos do v2 empatam com o RFM em
+  índice e em estabilidade, num corte que nenhum experimento usou como teste?
+- **Desenho.**
+  - Uma mudança só, igual para todos os espaços (T1, T2, E e H): o número de
+    reinícios de cada ajuste do K-means (`--n_init` em
+    `f3h2_clusterizacao.py`). O resto do protocolo da F3-H2 e da F3-H6 fica
+    igual: K = 8 como principal, 3 sementes, metades disjuntas para o ARI,
+    forma de padronização escolhida na validação, os mesmos desfechos e o
+    bootstrap por cliente.
+  - **Escolha do número de reinícios, na validação do corte atual** (já usada
+    como desenvolvimento na F3-H6; o teste do corte atual não é reavaliado).
+    Os candidatos são 10 e 30. Vence o menor em que o ARI do E (K = 8) fica no
+    máximo 0,05 abaixo do ARI do melhor T com o mesmo número de reinícios. Se
+    nenhum passar, a hipótese fecha sem rodar o teste: a instabilidade não é do
+    procedimento.
+  - **Corte novo, 6 meses antes.** Os dados terminam em 25/03/2020, a véspera
+    da janela de teste atual. As janelas são as mesmas (validação de 90 dias,
+    teste de 180, de 27/09/2019 a 25/03/2020). O pipeline é refeito inteiro
+    pelo motor, só com YAML e um adaptador que corta a tabela canônica:
+    splits, rótulos, features, serialização, pré-treino do v2 (8 épocas, só
+    com o treino do corte novo), extração e PCA-32. O backbone não vê nada da
+    janela de teste nova. A forma de padronização é escolhida na validação do
+    corte novo, como no protocolo. O teste é avaliado uma vez.
+- **Critério, escrito antes de rodar** (o da F3-H2, no teste do corte novo).
+  - Principal: E empata com o melhor entre T1 e T2. O limite inferior do IC
+    95% de índice_E − 0,95 × índice_T fica acima de zero, e o ARI do E fica no
+    máximo 0,05 abaixo do ARI do melhor T.
+  - E é o caminho que reduz o esforço; por isso é o principal. H é reportado
+    e, pela regra da F3-H6, também contaria como empate do problema.
+- **O que muda com o resultado.** Se atendida, a clusterização empata pelo
+  caminho E, e o motor passa a usar o número de reinícios escolhido. O
+  veredito de M1 na H&M (F3-H6, etapa A) não muda: ele vem do corte atual, com
+  o procedimento registrado na época. As perguntas supervisionadas seguem
+  empatando só pelo H.
+- **Custo estimado.** Cerca de 1 h de CPU do Colab no preparo, cerca de 50 min
+  de L4 no pré-treino e menos de 1 h de CPU na clusterização.
+
 ## 5. O que sai da fila
 
 - **Ablações de arquitetura do backbone** (tamanho, posição, normalização). A

@@ -144,6 +144,8 @@ class Motor:
 
     def clusterizar(self):
         feito = True
+        if not self.existe("caches", "pca32_v2.npz"):   # o híbrido grava o mesmo cache; sem ele, só a PCA
+            self.run(comum("v2_pca_cache.py"), self.config_path, "--emb", "emb_v2"); feito = False
         for fase in ("val", "test"):
             if not self.existe("motor_cluster", f"resultado_{fase}.json"):
                 self.run(comum("f3h2_clusterizacao.py"), self.config_path, "--fase", fase,
